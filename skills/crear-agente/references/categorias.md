@@ -1,4 +1,4 @@
-# Categorias de agentes X-DD
+# Categorias de agentes Evol-DD
 
 Usar la categoria que mejor describe el DOMINIO de responsabilidad del agente.
 
@@ -23,7 +23,7 @@ Usar la categoria que mejor describe el DOMINIO de responsabilidad del agente.
 
 ## Regla de decision
 
-Si el agente tiene responsabilidad sobre el SISTEMA X-DD mismo (gobernanza, arquitectura
+Si el agente tiene responsabilidad sobre el SISTEMA Evol-DD mismo (gobernanza, arquitectura
 del framework, seguridad del pipeline) → `specialized` o `engineering`.
 
 Si el agente tiene responsabilidad sobre el DOMINIO DEL PROYECTO del usuario → elegir

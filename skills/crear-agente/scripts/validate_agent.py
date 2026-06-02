@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Valida que un agente recien creado cumpla los requisitos de X-DD.
+"""Valida que un agente recien creado cumpla los requisitos de Evol-DD.
 
 Uso: python3 validate_agent.py <agent_file.md> [--registry registry.json]
 Exit 0 = OK | Exit 1 = error

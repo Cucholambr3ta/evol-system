@@ -1,3 +1,3 @@
 # tests
 
-Directorio canónico del proyecto (X-DD scaffolding). Borrá este placeholder al añadir contenido real.
+Directorio canónico del proyecto (Evol-DD scaffolding). Borra este placeholder al añadir contenido real.

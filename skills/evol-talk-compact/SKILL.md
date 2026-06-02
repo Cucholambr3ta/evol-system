@@ -1,6 +1,6 @@
 ---
 name: evol-talk-compact
-description: Compresion de output del orquestador X-DD. 3 niveles. Ahorro tokens ~50-75%.
+description: Compresion de output del orquestador Evol-DD. 3 niveles. Ahorro tokens ~50-75%.
 category: compression
 trigger: /compact-talk
 ---
