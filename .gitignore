@@ -1,0 +1,55 @@
+# Framework Evol-DD (tooling accessible via global wrapper)
+scripts/
+prompts/
+skills/
+templates/
+evals/
+schemas/
+src/
+tests/
+.github/
+
+# IDE configs (OUTPUT of evol-adapt.sh, not source)
+.claude/
+.opencode/
+.cursor/
+.windsurf/
+.agents/
+.antigravity/
+.codex/
+.github/prompts/
+.github/workflows/
+
+# Runtime state (NOT versionable)
+.evol/
+.xdd/
+dialog/
+tool_result/
+.evol-mcp-exclude
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# OVERRIDE — commit these
+!memoria.md
+!lecciones.md
+!AGENT_MEMORY.md
+!memory/
+!evol.profile.yml
+!CLAUDE.md
+!AGENTS.md
+!.agent/hooks/
+!.agent/workflows/
+!.github/workflows/
+!docs/

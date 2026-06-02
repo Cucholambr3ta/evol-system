@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evol-dd"
+version = "0.1.0-dev"
+description = "El framework que evoluciona."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Evol-DD Team"}
+]
+requires-python = ">=3.10"
+keywords = ["agents", "development", "framework", "ai", "dd"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "bats"]
+
+[project.scripts]
+evol = "evol_cli:main"
+evol-gate = "evol_cli:gate"
+evol-eval = "evol_cli:eval_"
+evol-flow = "evol_cli:flow"
+evol-provider = "evol_cli:provider"
+evol-shield = "evol_cli:shield"
+evol-orchestrate = "evol_cli:orchestrate"
+evol-agent = "evol_cli:agent"
+evol-evolve = "evol_cli:evolve"
+evol-research = "evol_cli:research"
+evol-memory = "evol_cli:memory"
+evol-lessons = "evol_cli:lessons"
+
+[project.urls]
+Homepage = "https://github.com/Cucholambr3ta/evol-system"
+Documentation = "https://github.com/Cucholambr3ta/evol-system#readme"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.json", "*.yml", "*.yaml", "*.sh", "*.schema.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]

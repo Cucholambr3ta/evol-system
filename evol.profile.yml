@@ -1,0 +1,9 @@
+profile: custom
+version: 1
+trigger: evol
+brand:
+  name: "Evol-DD"
+  color: "#7C3AED"
+  tagline: "El framework que evoluciona."
+capabilities: []
+stacks: []
