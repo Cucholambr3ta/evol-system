@@ -1,0 +1,16 @@
+name: evol-compact
+description: Eval suite for evol-compact skill
+grader: structural
+threshold: 0.7
+
+cases:
+  - id: compact-001
+    weight: 1
+  - id: compact-002
+    weight: 1
+  - id: compact-003
+    weight: 1
+  - id: compact-004
+    weight: 1
+  - id: compact-005
+    weight: 1

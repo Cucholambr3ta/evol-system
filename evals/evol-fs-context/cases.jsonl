@@ -1,0 +1,5 @@
+{"id":"fs-context-001","description":"SKILL.md has frontmatter with name, description, category, trigger","assertions":[{"type":"structural","check":"frontmatter","path":"skills/evol-fs-context/SKILL.md","required":["name","description","category","trigger"]}]}
+{"id":"fs-context-002","description":"File contains mount/unmount/list pattern","assertions":[{"type":"output_match","check":"pattern","path":"skills/evol-fs-context/SKILL.md","pattern":"mount.*unmount.*list"}]}
+{"id":"fs-context-003","description":"References itself in Reference section","assertions":[{"type":"output_match","check":"reference","path":"skills/evol-fs-context/SKILL.md","pattern":"skills/evol-fs-context/SKILL.md"}]}
+{"id":"fs-context-004","description":"Has Philosophy section","assertions":[{"type":"structural","check":"section","path":"skills/evol-fs-context/SKILL.md","required":["Philosophy","When to Use"]}]}
+{"id":"fs-context-005","description":"Has implementation strategies","assertions":[{"type":"output_match","check":"implementation","path":"skills/evol-fs-context/SKILL.md","pattern":"offset|limit|stream|memory-map"}]}

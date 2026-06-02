@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Evol-DD Agent Registry",
+  "description": "Schema for agent registry with core and ephemeral agents",
+  "type": "object",
+  "required": ["$schema", "version", "generated", "agents"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "pattern": "registry\\.schema\\.json$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "agents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "category", "ephemeral", "retired"],
+        "properties": {
+          "id": {
+            "oneOf": [
+              {"type": "integer", "minimum": 1},
+              {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}
+            ],
+            "description": "Numeric ID for core, kebab-case name for ephemeral"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Agent name"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Brief description of agent purpose"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["core", "ephemeral"],
+            "description": "Agent category"
+          },
+          "file": {
+            "type": "string",
+            "pattern": "^(core|ephemeral)/[a-z0-9-]+\\.md$",
+            "description": "Path to agent prompt file (core agents)"
+          },
+          "triggers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^/evol\\s"
+            },
+            "description": "CLI trigger patterns (core agents)"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Associated skill identifiers"
+          },
+          "ephemeral": {
+            "type": "boolean",
+            "description": "True if agent is temporary and can be retired"
+          },
+          "retired": {
+            "anyOf": [
+              {"type": "null"},
+              {"type": "boolean"},
+              {"type": "string", "format": "date-time"}
+            ],
+            "description": "Timestamp when agent was retired, null/boolean if active"
+          }
+        }
+      }
+    }
+  }
+}
