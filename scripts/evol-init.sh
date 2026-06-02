@@ -80,7 +80,6 @@ tests/
 
 # Runtime
 .evol/
-.xdd/
 dialog/
 tool_result/
 

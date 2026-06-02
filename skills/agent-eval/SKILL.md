@@ -1,6 +1,6 @@
 ---
 name: agent-eval
-description: Eval-harness para skills/agents/workflows X-DD. 4 grader types. Suite por skill.
+description: Eval-harness para skills/agents/workflows Evol-DD. 4 grader types. Suite por skill.
 category: quality-gate
 trigger: /eval
 ---

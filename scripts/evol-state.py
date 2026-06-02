@@ -17,7 +17,7 @@ def init_db():
     conn = get_db()
     c = conn.cursor()
     
-    # Base tables (X-DD heritage)
+    # Base tables for Evol-DD runtime state.
     c.execute("""
         CREATE TABLE IF NOT EXISTS instincts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -1,7 +1,7 @@
 ---
 name: crear-agente
 description: >
-  Crea nuevos agentes X-DD desde cero (permanentes o efimeros): genera el .md del agente
+  Crea nuevos agentes Evol-DD desde cero (permanentes o efimeros): genera el .md del agente
   con identidad, mision, reglas y limites; registra en registry.json; crea
   agent.template.md si no existe. Usar SOLO cuando el usuario quiera CREAR un agente
   nuevo — "crear agente", "crea un agente para X", "nuevo agente que haga Y", "añadir
@@ -11,7 +11,7 @@ description: >
   crear skills (usar /crear-skill), crear workflows, o preguntas generales sobre el
   sistema. Soporta agentes permanentes (prompts/agents/<categoria>/)
   y agentes efimeros (van a prompts/agents/ephemeral/, tienen fecha de expiracion).
-origin: x-dd
+origin: evol-dd
 category: lifecycle
 when_to_use:
   - El usuario quiere un agente especializado que no existe en el registry
@@ -34,9 +34,9 @@ compatible_with:
   - codex
 ---
 
-# Crear Agente X-DD
+# Crear Agente Evol-DD
 
-Skill para crear agentes X-DD con identidad, mision y reglas bien definidas. Genera el
+Skill para crear agentes Evol-DD con identidad, mision y reglas bien definidas. Genera el
 archivo `.md` del agente, lo registra en `registry.json`, y opcionalmente crea
 `templates/agent.template.md` como base para futuros agentes efimeros.
 
@@ -138,7 +138,7 @@ Añadir entry al final del array `agents`:
   "color": "<color>",
   "vibe": "<personalidad>",
   "prompt_file": "prompts/agents/<categoria>/<archivo>.md",
-  "ide_compat": ["claude-code", "opencode", "mcp"],
+  "ide_compat": ["claude-code", "opencode", "cursor", "windsurf", "vscode-copilot", "antigravity", "codex"],
   "skills": [],
   "constraints": [],
   "triggers": [],
@@ -179,7 +179,7 @@ Registry: registry.json actualizado (N+1 agentes)
 Tipo: permanente | efimero (expira en N dias)
 
 Para invocar este agente en el sistema:
-  /xdd → mencionar el agente por nombre
+  /evol → mencionar el agente por nombre
   O via composition_pattern si necesita coordinacion con otros agentes
 ```
 

@@ -5,7 +5,6 @@
 
 # Evol-DD runtime state (never versionable)
 .evol/
-.xdd/
 dialog/
 tool_result/
 memory/raw/

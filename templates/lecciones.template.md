@@ -19,13 +19,13 @@ Cada lección sigue la estructura:
 
 Categorías sugeridas: `ARQUITECTURA`, `SEGURIDAD`, `DOMINIO`, `TESTING`, `DEVOPS`, `PROCESO`, `HERRAMIENTAS`.
 
-Motor nativo disponible en `scripts/xdd-lessons.py`:
-- `xdd-lessons add` — añadir lección con deduplicación fuzzy
-- `xdd-lessons suggest-fix "titulo"` — investigador propone mejoras
-- `xdd-lessons apply-fix "titulo" --fix "descripcion"` — marcar mejoras aplicadas
-- `xdd-lessons search QUERY` — buscar antes de decidir (Art. 9)
-- `xdd-lessons list --pendientes` — lecciones con mejoras pendientes
-- `xdd-lessons stats` — total, por categoría, mejoras pendientes/aplicadas
+Motor nativo disponible en `scripts/evol-lessons.py`:
+- `evol-lessons add` — añadir lección con deduplicación fuzzy
+- `evol-lessons suggest-fix "titulo"` — investigador propone mejoras
+- `evol-lessons apply-fix "titulo" --fix "descripcion"` — marcar mejoras aplicadas
+- `evol-lessons search QUERY` — buscar antes de decidir (Art. 9)
+- `evol-lessons list --pendientes` — lecciones con mejoras pendientes
+- `evol-lessons stats` — total, por categoría, mejoras pendientes/aplicadas
 
 ---
 

@@ -92,22 +92,22 @@ check_structure() {
     return $missing
 }
 
-# X-DD residue check
-check_residues() {
-    echo "--- X-DD Residue Detection ---"
+# Legacy artifact check (Evol-DD strict mode — no xdd-*, no .xdd/)
+check_legacy_artifacts() {
+    echo "--- Legacy Artifact Detection ---"
     local found=0
-    
+
     for artifact in xdd.profile.yml .xdd/ xdd-init.sh xdd-doctor.sh xdd-gate.py mcp.json; do
         if [ -e "$REPO_ROOT/$artifact" ]; then
-            echo -e "${YELLOW}[WARN]${NC} X-DD artefact detected: $artifact"
+            echo -e "${YELLOW}[WARN]${NC} Legacy artefact detected: $artifact"
             found=$((found+1))
         fi
     done
-    
+
     if [ $found -eq 0 ]; then
-        echo -e "${GREEN}[OK]${NC} No X-DD residues detected"
+        echo -e "${GREEN}[OK]${NC} No legacy artefacts detected"
     fi
-    
+
     echo ""
     return 0
 }
@@ -121,7 +121,7 @@ fi
 check_mode
 check_deps
 check_structure
-check_residues
+check_legacy_artifacts
 
 echo "=== Doctor Complete ==="
 exit 0
