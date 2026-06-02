@@ -5,6 +5,7 @@ TRIGGER="${EVOL_TRIGGER:-evol}"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKFLOWS_DIR="$REPO_ROOT/.agent/workflows"
 EXPECTED_ROOT="$(realpath "$REPO_ROOT")"
+AGENT_MANIFEST="$REPO_ROOT/agent.yaml"
 
 TRIGGER_REGEX='^[A-Za-z0-9_-]+$'
 
@@ -153,6 +154,20 @@ main() {
     done
 
     sanitize_trigger "$TRIGGER"
+
+    if [ -f "$AGENT_MANIFEST" ] && command -v python3 >/dev/null 2>&1; then
+        python3 -c "
+import yaml, sys
+try:
+    with open('$AGENT_MANIFEST') as f:
+        m = yaml.safe_load(f)
+    targets = set(m.get('ide_orchestrator_compatibility', {}).get('targets', []))
+    if '$target' not in targets and '$target' != 'all':
+        print(f'[warn] Target \"$target\" not in agent.yaml compatibility list')
+except:
+    pass
+" 2>/dev/null || true
+    fi
 
     if [ -z "$target" ]; then
         usage; exit 1

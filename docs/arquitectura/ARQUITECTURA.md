@@ -469,30 +469,22 @@ evol-dd/
 ├── .agent/
 │   ├── hooks/
 │   │   ├── hooks.json
-│   │   └── scripts/          # 11 hooks
-│   └── workflows/            # 56 workflows SSoT
+│   │   └── scripts/          # 9 hook scripts
+│   └── workflows/            # 21 workflows
 ├── .evol/
 │   ├── agents/retired/      # Snapshots archivados
-│   ├── qa/                   # QA_REPORT.md
-│   └── traces/               # Session replay NDJSON
+│   ├── qa/                   # QA_REPORT.md (por shield)
+│   └── traces/               # Session replay NDJSON (roadmap)
 ├── prompts/agents/
-│   ├── core/                 # 16 agentes
+│   ├── core/                 # 16 agentes core
 │   ├── ephemeral/            # Agentes dinamicos
 │   └── registry.json         # Registro unificado
-├── scripts/                  # 23 scripts
-├── skills/                   # 7 skills
+├── scripts/                  # 25 scripts (23 + 2 helpers)
+├── skills/                   # 9 skills
 ├── evals/                    # 7 eval suites
-├── templates/                # 4 templates
-├── schemas/                  # 5 JSON schemas
-├── docs/                     # Documentacion completa
-│   ├── arquitectura/
-│   ├── requisitos/
-│   ├── diagramas/
-│   ├── qa/
-│   ├── seguridad/
-│   ├── guias/
-│   ├── usuario/
-│   └── operaciones/
-├── manifests/                # 3 JSON manifests
-└── tests/                    # pytest + bats
+├── templates/                # 8 templates
+├── schemas/                  # 2 schemas (registry.schema.json + hooks.schema.json)
+├── docs/                     # Documentacion
+├── manifests/                # 3 JSON manifests (profiles, modules, components)
+└── tests/                    # pytest + bats (5 test files)
 ```

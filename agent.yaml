@@ -1,0 +1,386 @@
+name: evol-dd
+version: 0.1.0-dev
+canonical_trigger: /evol
+description: Multi-agent development framework with domain-driven design, security by design, and agent lifecycle management.
+
+trigger_aliases:
+  - /evol
+  - /anmax
+
+supported_commands:
+  shell:
+    - evol-init
+    - evol-doctor
+    - evol-gate
+    - evol-state
+    - evol-shield
+    - evol-eval
+    - evol-memory
+    - evol-evolve
+    - evol-research
+    - evol-lessons
+    - evol-orchestrate
+    - evol-flow
+    - evol-provider
+    - evol-agent
+    - evol-adapt
+    - evol-brand
+    - evol-start
+    - evol-global-install
+  python:
+    - evol
+    - evol-gate
+    - evol-eval
+    - evol-flow
+    - evol-provider
+    - evol-shield
+    - evol-orchestrate
+    - evol-agent
+    - evol-evolve
+    - evol-research
+    - evol-memory
+    - evol-lessons
+
+install_profiles:
+  minimal:
+    description: Core minimum with lessons and memory. For tiny projects or CI-only setups.
+    modules:
+      - core
+      - workflows-core
+      - lessons-engine
+      - continuous-memory
+      - memory
+  core:
+    description: Standard for projects. Default profile. Includes agents, gate, CI and growth engine.
+    extends: minimal
+    modules:
+      - agents-core
+      - gate-keeper
+      - ci-runtime
+      - growth-engine
+  developer:
+    description: Active development with ephemeral agents, hooks, lifecycle, evolution and eval.
+    extends: core
+    modules:
+      - hooks-runtime
+      - lifecycle-agents
+      - evolve-skills
+      - researcher
+      - eval-harness
+  security:
+    description: Security focus with SecDD, strict hooks, agent shield and eval.
+    extends: core
+    modules:
+      - security-suite
+      - hooks-strict
+  research:
+    description: Research and continuous evolution with eval harness, observability and lifecycle.
+    extends: core
+    modules:
+      - eval-harness
+      - evolve-skills
+      - researcher
+      - observability
+      - lifecycle-agents
+  full:
+    description: Complete installation. All modules. For maximum capability.
+    extends: developer
+    modules:
+      - security-suite
+      - hooks-strict
+      - observability
+      - platform-configs
+  lean:
+    description: Lightweight. Depends on global install. Minimal footprint.
+    modules:
+      - core
+      - workflows-core
+      - memory
+      - global-wrapper
+  custom:
+    description: Custom profile. User-defined.
+
+workflows:
+  path: .agent/workflows/
+  files:
+    - architect-workflow.md
+    - builder-workflow.md
+    - qa-workflow.md
+    - sec-workflow.md
+    - devops-workflow.md
+    - domain-workflow.md
+    - doc-workflow.md
+    - ux-workflow.md
+    - data-workflow.md
+    - reviewer-workflow.md
+    - orchestrator-workflow.md
+    - pm-workflow.md
+    - release-workflow.md
+    - analyst-workflow.md
+    - agent-factory-workflow.md
+    - researcher-workflow.md
+
+core_agents:
+  count: 16
+  registry_path: prompts/agents/registry.json
+  agents:
+    - id: 1
+      name: evol-architect
+      triggers: ["/evol architect"]
+      description: System design, architectural decisions, ADRs
+    - id: 2
+      name: evol-builder
+      triggers: ["/evol build", "/evol builder"]
+      description: Code implementation, TDD, feature construction
+    - id: 3
+      name: evol-qa
+      triggers: ["/evol qa", "/evol test"]
+      description: Quality, unit tests, integration, E2E, Gherkin/BDD cases
+    - id: 4
+      name: evol-sec
+      triggers: ["/evol sec", "/evol security"]
+      description: Security (SecDD, STRIDE threat modeling, auditing)
+    - id: 5
+      name: evol-devops
+      triggers: ["/evol devops", "/evol ci"]
+      description: CI/CD, infrastructure, pipelines, automation
+    - id: 6
+      name: evol-domain
+      triggers: ["/evol domain", "/evol ddd"]
+      description: DDD, domain modeling, entities, bounded contexts
+    - id: 7
+      name: evol-doc
+      triggers: ["/evol doc", "/evol documentation"]
+      description: Technical documentation (no emojis, Mermaid mandatory)
+    - id: 8
+      name: evol-ux
+      triggers: ["/evol ux", "/evol user"]
+      description: User discovery, product research, validation
+    - id: 9
+      name: evol-data
+      triggers: ["/evol data", "/evol analytics"]
+      description: Data engineering, analytics, data pipelines
+    - id: 10
+      name: evol-reviewer
+      triggers: ["/evol review", "/evol reviewer"]
+      description: Code review, peer review, quality analysis
+    - id: 11
+      name: evol-orchestrator
+      triggers: ["/evol orchestrate"]
+      description: Lead agent composition, coordination patterns
+    - id: 12
+      name: evol-pm
+      triggers: ["/evol pm", "/evol project"]
+      description: Project management, tracking, sprints, metrics
+    - id: 13
+      name: evol-release
+      triggers: ["/evol release", "/evol version"]
+      description: Release management, CHANGELOG, semantic versioning
+    - id: 14
+      name: evol-analyst
+      triggers: ["/evol analyze", "/evol analyst"]
+      description: Impact analysis, metrics, blast radius
+    - id: 15
+      name: evol-agent-factory
+      triggers: ["/evol agent create", "/evol factory"]
+      description: Creates ephemeral agents via guided interaction
+    - id: 16
+      name: evol-researcher
+      triggers: ["/evol research", "/evol researcher"]
+      description: Autonomous research (skills, methodologies, frameworks)
+
+skills:
+  path: skills/
+  available:
+    - agent-eval
+    - evol-ai-review
+    - evol-compact
+    - evol-evolve
+    - evol-fs-context
+    - evol-sandbox
+    - evol-skill-manager
+    - evol-talk-compact
+    - crear-agente
+    - crear-skill
+  index_path: .claude/skills/
+
+hooks:
+  path: .agent/hooks/
+  config_file: hooks.json
+  scripts_path: .agent/hooks/scripts/
+  profiles:
+    - minimal
+    - standard
+    - strict
+  default_profile: standard
+  hooks:
+    - id: post:edit:mempalace-index
+      event: PostToolUse
+      trigger: edit
+      script: post-edit-mempalace-index.sh
+    - id: pre:bash:dangerous-command
+      event: PreToolUse
+      trigger: bash
+      script: pre-bash-dangerous-command.sh
+    - id: pre:write:doc-file-warning
+      event: PreToolUse
+      trigger: write
+      script: pre-write-doc-file-warning.sh
+    - id: post:bash:pr-logger
+      event: PostToolUse
+      trigger: bash
+      script: post-bash-pr-logger.sh
+    - id: post:write:auto-organize
+      event: PostToolUse
+      trigger: write
+      script: post-write-auto-organize.sh
+    - id: session:start:context-load
+      event: SessionStart
+      script: session-start-context-load.sh
+    - id: stop:git-check
+      event: Stop
+      script: stop-git-check.sh
+    - id: pre:edit:config-protection
+      event: PreToolUse
+      trigger: edit
+      script: pre-edit-config-protection.sh
+    - id: pre:tool:temporal-awareness
+      event: PreToolUse
+      script: pre-tool-temporal-awareness.sh
+    - id: stop:pattern-extraction
+      event: Stop
+      script: stop-pattern-extraction.sh
+
+schemas:
+  path: schemas/
+  registry: prompts/agents/registry.json
+  profiles: manifests/install-profiles.json
+  modules: manifests/install-modules.json
+  components: manifests/install-components.json
+
+scripts:
+  path: scripts/
+  shell_scripts:
+    - evol-adapt.sh
+    - evol-brand.sh
+    - evol-doctor.sh
+    - evol-global-install.sh
+    - evol-init.sh
+    - evol-start.sh
+  python_scripts:
+    - evol-agent-lifecycle.py
+    - evol-eval.py
+    - evol-evolve.py
+    - evol-flow.py
+    - evol-gate.py
+    - evol-lessons.py
+    - evol-memory.py
+    - evol-orchestrate.py
+    - evol-provider.py
+    - evol-researcher.py
+    - evol-shield.py
+    - evol-state.py
+    - evol-update.py
+  helpers:
+    - _evol_common.py
+    - generate-equipo.sh
+    - validate-registry.py
+
+optional_dependencies:
+  python_packages:
+    - jsonschema
+    - pyyaml
+    - anthropic
+    - openai
+  system_tools:
+    - git
+    - python3 (>=3.10)
+    - bats (for shell tests)
+  optional_tools:
+    - mempalace (for memory indexing)
+    - gitleaks (for secret scanning)
+    - semgrep (for static analysis)
+
+ide_orchestrator_compatibility:
+  targets:
+    - claude-code
+    - opencode
+    - cursor
+    - windsurf
+    - vscode-copilot
+    - antigravity
+    - codex
+  adapter_script: scripts/evol-adapt.sh
+  trigger_var: EVOL_TRIGGER
+
+runtime_state_policy:
+  state_dir: .evol/
+  gate_key: .evol/.gate-key
+  gate_log: .evol/.gate-log.jsonl
+  permissions:
+    gate_key: "0600"
+    gate_log: "0600"
+    state_dir: "0700"
+  required_gate: true
+
+paths_excluded_from_indexing:
+  always_exclude:
+    - .evol/
+    - .xdd/
+    - .git/
+    - dialog/
+    - tool_result/
+    - memory/raw/
+  always_exclude_patterns:
+    - "*.key"
+    - "*.pem"
+    - ".env*"
+    - "*.secret*"
+    - "*.token*"
+  recommended_allowlist:
+    - docs/
+    - prompts/
+    - .agent/workflows/
+    - AGENTS.md
+    - CLAUDE.md
+    - memoria.md
+    - lecciones.md
+
+evals:
+  path: evals/
+  suites:
+    - agent-eval
+    - evol-ai-review
+    - evol-compact
+    - evol-fs-context
+    - evol-sandbox
+    - evol-skill-manager
+    - evol-talk-compact
+  grader_types:
+    - structural
+    - behavioral
+    - output_match
+    - pass_at_k
+
+documentation:
+  constitution: docs/constitucion.md
+  gate: docs/GATE.md
+  config: docs/CONFIG.md
+  architecture: docs/arquitectura/ARQUITECTURA.md
+  equipo: docs/equipo.md
+  qa_plan: docs/qa/PLAN_QA.md
+  qa_matriz: docs/qa/MATRIZ_TRAZABILIDAD.md
+  qa_report: docs/qa/REPORTE_QA.md
+  qa_checklist: docs/qa/CHECKLIST_RELEASE.md
+  fixes_audit: docs/qa/FIXES_DESARROLLADOR_AUDITORIA_FULL.md
+
+package:
+  pyproject: pyproject.toml
+  version_source: VERSION
+  src_path: src/
+  tests_path: tests/
+
+constitution:
+  path: docs/constitucion.md
+  version: "1.0"
+  articles: 9

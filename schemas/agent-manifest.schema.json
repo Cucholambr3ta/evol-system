@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://evol-dd.dev/schemas/agent-manifest.json",
+  "title": "Evol-DD Framework Manifest",
+  "description": "Machine-readable manifest for the Evol-DD multi-agent development framework",
+  "type": "object",
+  "required": ["name", "version", "canonical_trigger"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Framework name (lowercase, hyphenated)"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.]+)?$",
+      "description": "Semantic version"
+    },
+    "canonical_trigger": {
+      "type": "string",
+      "pattern": "^/[a-z]+$",
+      "description": "Primary trigger command"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "trigger_aliases": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^/[a-z]+" },
+      "uniqueItems": true
+    },
+    "supported_commands": {
+      "type": "object",
+      "properties": {
+        "shell": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^evol-[a-z]" }
+        },
+        "python": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^evol(-[a-z]+)*$" }
+        }
+      }
+    },
+    "install_profiles": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "object",
+          "required": ["description"],
+          "properties": {
+            "description": { "type": "string" },
+            "extends": { "type": "string" },
+            "modules": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "workflows": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "files": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "\\.md$" }
+        }
+      }
+    },
+    "core_agents": {
+      "type": "object",
+      "required": ["count", "registry_path"],
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 16
+        },
+        "registry_path": { "type": "string" },
+        "agents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string", "pattern": "^evol-[a-z]+(-[a-z]+)*$" },
+              "triggers": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "available": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "index_path": { "type": "string" }
+      }
+    },
+    "hooks": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "config_file": { "type": "string" },
+        "scripts_path": { "type": "string" },
+        "profiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "default_profile": { "type": "string" },
+        "hooks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "event"],
+            "properties": {
+              "id": { "type": "string" },
+              "event": { "type": "string" },
+              "trigger": { "type": "string" },
+              "script": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "registry": { "type": "string" },
+        "profiles": { "type": "string" },
+        "modules": { "type": "string" },
+        "components": { "type": "string" }
+      }
+    },
+    "scripts": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "shell_scripts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "python_scripts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "helpers": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "optional_dependencies": {
+      "type": "object",
+      "properties": {
+        "python_packages": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "system_tools": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "optional_tools": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "ide_orchestrator_compatibility": {
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "adapter_script": { "type": "string" },
+        "trigger_var": { "type": "string" }
+      }
+    },
+    "runtime_state_policy": {
+      "type": "object",
+      "properties": {
+        "state_dir": { "type": "string" },
+        "gate_key": { "type": "string" },
+        "gate_log": { "type": "string" },
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "gate_key": { "type": "string", "pattern": "^[0-7]{3,4}$" },
+            "gate_log": { "type": "string", "pattern": "^[0-7]{3,4}$" },
+            "state_dir": { "type": "string", "pattern": "^[0-7]{3,4}$" }
+          }
+        },
+        "required_gate": { "type": "boolean" }
+      }
+    },
+    "paths_excluded_from_indexing": {
+      "type": "object",
+      "properties": {
+        "always_exclude": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "always_exclude_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "recommended_allowlist": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "evals": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "suites": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "grader_types": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "package": {
+      "type": "object",
+      "properties": {
+        "pyproject": { "type": "string" },
+        "version_source": { "type": "string" },
+        "src_path": { "type": "string" },
+        "tests_path": { "type": "string" }
+      }
+    },
+    "constitution": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "version": { "type": "string" },
+        "articles": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

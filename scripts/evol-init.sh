@@ -6,6 +6,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROFILES_MANIFEST="${REPO_ROOT}/manifests/install-profiles.json"
 MODULES_MANIFEST="${REPO_ROOT}/manifests/install-modules.json"
 GITIGNORE_TEMPLATE="${REPO_ROOT}/templates/gitignore.template"
+AGENT_MANIFEST="${REPO_ROOT}/agent.yaml"
 
 show_usage() {
     echo "Usage: $0 <destination> [--profile=<profile>] [--pip-mode]"
@@ -104,6 +105,35 @@ def resolve(profile_id, seen=None):
 modules = resolve('$profile')
 print(' '.join(modules))
 " 2>/dev/null
+}
+
+verify_manifest() {
+    if [ ! -f "$AGENT_MANIFEST" ]; then
+        echo "[warn] agent.yaml not found. Framework may be incomplete."
+        return 0
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        local profile_ok
+        profile_ok=$(python3 -c "
+import yaml, sys
+try:
+    with open('$AGENT_MANIFEST') as f:
+        m = yaml.safe_load(f)
+    profiles_in_manifest = set(m.get('install_profiles', {}).keys())
+    profile = '$profile'
+    if profile not in profiles_in_manifest:
+        print(f'[warn] Profile \"{profile}\" not in agent.yaml manifest')
+        sys.exit(1)
+except Exception as e:
+    print(f'[warn] Could not verify manifest: {e}')
+    sys.exit(0)
+" 2>/dev/null) || profile_ok=0
+
+        if [ $? -eq 0 ] && [ -n "$profile_ok" ]; then
+            echo "[init] Manifest verified: profile '$profile' found in agent.yaml"
+        fi
+    fi
 }
 
 install_files_for_module() {
@@ -211,6 +241,8 @@ if '$profile' not in ids:
     modules=$(resolve_modules "$profile")
 
     echo "[evol-init] Installing modules: $modules"
+
+    verify_manifest
 
     for module in $modules; do
         echo "  Module: $module"
