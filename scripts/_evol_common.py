@@ -5,7 +5,16 @@ Stdlib only — no external dependencies
 """
 import os, sys, logging, json, subprocess, hashlib
 
-EVOL_VERSION = "0.1.0-dev"
+def _load_version():
+    """Load version from VERSION file (single source of truth)."""
+    version_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "VERSION")
+    try:
+        with open(version_file) as f:
+            return f.read().strip()
+    except (FileNotFoundError, IOError):
+        return "0.0.0"
+
+EVOL_VERSION = _load_version()
 
 def _get_evol_home():
     """Get EVOL_HOME, defaulting to ~/.evol."""
