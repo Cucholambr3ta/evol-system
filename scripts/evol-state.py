@@ -195,7 +195,7 @@ def main():
     p.add_argument("--min-confidence", type=float, default=0.0)
     p.add_argument("--include-invalidated", action="store_true")
     
-sub.add_parser("evolve", help="Show evolution status")
+    sub.add_parser("evolve", help="Show evolution status")
     p = sub.add_parser("prune", help="Prune old instincts")
     p.add_argument("--days", type=int, default=90)
     

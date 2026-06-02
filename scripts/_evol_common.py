@@ -6,8 +6,17 @@ Stdlib only — no external dependencies
 import os, sys, logging, json, subprocess, hashlib
 
 EVOL_VERSION = "0.1.0-dev"
-EVOL_STATE_DB = os.path.expanduser("~/.evol/state.db")
-EVOL_DATA_DIR = os.path.dirname(os.path.abspath(__file__)) + "/.."
+
+def _get_evol_home():
+    """Get EVOL_HOME, defaulting to ~/.evol."""
+    return os.environ.get("EVOL_HOME", os.path.expanduser("~/.evol"))
+
+def get_state_db():
+    """Get state database path with EVOL_STATE_DB override."""
+    return os.environ.get("EVOL_STATE_DB") or os.path.join(_get_evol_home(), "state.db")
+
+EVOL_STATE_DB = get_state_db()
+EVOL_DATA_DIR = os.environ.get("EVOL_DATA_DIR") or os.path.dirname(os.path.abspath(__file__)) + "/.."
 
 # === Logging ===
 def get_logger(name="evol"):
@@ -83,6 +92,14 @@ def get_data_dir():
     if os.environ.get("EVOL_DATA_DIR"):
         return os.environ["EVOL_DATA_DIR"]
     return os.path.dirname(os.path.abspath(__file__)) + "/.."
+
+def get_evol_home():
+    """Return EVOL_HOME or EVOL_DATA_DIR or project dir for gate/state."""
+    if os.environ.get("EVOL_HOME"):
+        return os.environ["EVOL_HOME"]
+    if os.environ.get("EVOL_DATA_DIR"):
+        return os.environ["EVOL_DATA_DIR"]
+    return os.path.join(os.path.expanduser("~/.evol"))
 
 # === Constants ===
 HOOK_PROFILES = ["minimal", "standard", "strict"]
