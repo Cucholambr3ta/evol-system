@@ -44,3 +44,4 @@ Manage skill lifecycle: install, update, rollback, validate.
 
 ## Reference
 scripts/evol-evolve.py (sync-community, install-skill)
+skills/evol-skill-manager/SKILL.md

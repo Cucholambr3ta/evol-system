@@ -143,17 +143,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate eval suites
-        run: python3 scripts/evol-eval.py validate --all 2>/dev/null || true
+      - name: Install dependencies
+        run: pip install pyyaml
 
-      - name: Check eval structure
+      - name: Validate eval suites
+        run: python3 scripts/evol-eval.py validate --all
+
+      - name: Run structural evals
         run: |
-          if [ -d evals ] && [ -n "$(ls -A evals 2>/dev/null)" ]; then
-            for suite in evals/*/; do
-              if [ -f "${suite}grader.yaml" ]; then
-                echo "Suite: $suite"
-              fi
-            done
-          else
-            echo "No eval suites found - skipping"
+          echo "=== Running Eval Suites ==="
+          python3 scripts/evol-eval.py run --all
+          exit_code=$?
+          echo "Eval exit code: $exit_code"
+
+      - name: Upload report
+        if: always()
+        run: |
+          if [ -f .evol/reports/latest.json ]; then
+            echo "=== Eval Report ==="
+            python3 scripts/evol-eval.py report
           fi
+
+      - name: Fail on eval failure
+        run: |
+          if [ ! -f .evol/reports/latest.json ]; then
+            echo "FAIL: No eval report generated"
+            exit 1
+          fi
+          passed=$(python3 -c "import json; r=json.load(open('.evol/reports/latest.json')); print(int(r.get('overall_passed', False)))")
+          if [ "$passed" -eq 0 ]; then
+            echo "FAIL: Evals did not pass quality gate"
+            exit 1
+          fi
+          echo "OK: All eval suites passed"
