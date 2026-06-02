@@ -1,0 +1,22 @@
+[
+  {"query": "necesito un agente que sepa de contratos legales para nuestro saas", "should_trigger": true},
+  {"query": "crea un agente experto en kubernetes para el equipo de infra", "should_trigger": true},
+  {"query": "quiero un agente efimero para esta semana que revise los tests del sprint 4", "should_trigger": true},
+  {"query": "crear agente", "should_trigger": true},
+  {"query": "nuevo agente que me ayude con seo y posicionamiento organico", "should_trigger": true},
+  {"query": "existe algun agente que sepa de redshift y spark? si no hay crealo", "should_trigger": true},
+  {"query": "añadir un especialista en wcag 2.1 al sistema por unos dias", "should_trigger": true},
+  {"query": "quiero un agente que sea experto en ddd y bounded contexts", "should_trigger": true},
+  {"query": "necesito alguien en el sistema que sepa revisar prs de python", "should_trigger": true},
+  {"query": "agente para analisis financiero de nuestro ecommerce b2b", "should_trigger": true},
+  {"query": "como mejoro esta funcion para que sea mas rapida", "should_trigger": false},
+  {"query": "crea una skill para generar reportes de cobertura de tests", "should_trigger": false},
+  {"query": "revisa este PR y dime si hay problemas de seguridad", "should_trigger": false},
+  {"query": "como puedo usar el agente code-reviewer para mi proyecto", "should_trigger": false},
+  {"query": "quiero crear un workflow nuevo para el pipeline de release", "should_trigger": false},
+  {"query": "que agentes tengo disponibles en el sistema", "should_trigger": false},
+  {"query": "el agente de marketing no esta funcionando bien, arreglalo", "should_trigger": false},
+  {"query": "necesito un script que automatice el deploy a produccion", "should_trigger": false},
+  {"query": "como instalo x-dd en un proyecto nuevo", "should_trigger": false},
+  {"query": "genera documentacion para esta api rest que tengo", "should_trigger": false}
+]
