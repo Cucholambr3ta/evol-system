@@ -3,130 +3,281 @@ set -e
 
 EVOL_VERSION="0.1.0-dev"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROFILES_MANIFEST="${REPO_ROOT}/manifests/install-profiles.json"
+MODULES_MANIFEST="${REPO_ROOT}/manifests/install-modules.json"
+GITIGNORE_TEMPLATE="${REPO_ROOT}/templates/gitignore.template"
 
 show_usage() {
-    echo "Usage: $0 <destination> [--profile=<profile>] [--pip-mode] [--legacy]"
+    echo "Usage: $0 <destination> [--profile=<profile>] [--pip-mode]"
     echo "  --profile=<profile>  Installation profile: minimal, core, developer, security, research, full, lean"
     echo "  --pip-mode           Use pip-installed framework"
-    echo "  --legacy             Use legacy mode (full copy)"
     echo "  --list-profiles      Show available profiles"
+    echo "  --explain=<profile>  Show modules for a profile"
+    echo "  --dry-run            Show what would be installed without installing"
 }
 
 list_profiles() {
+    if [ ! -f "$PROFILES_MANIFEST" ]; then
+        echo "[error] Profiles manifest not found: $PROFILES_MANIFEST"
+        exit 1
+    fi
+
     echo "Available profiles:"
-    echo "  minimal     - Core minimum with lessons and memory"
-    echo "  core        - Standard for projects (DEFAULT)"
-    echo "  developer   - Active development with ephemeral agents"
-    echo "  security    - Security focus with SecDD"
-    echo "  research    - Research and evolution"
-    echo "  full        - Complete installation"
-    echo "  lean        - Lightweight, requires global install"
+    local ids
+    ids=$(python3 -c "
+import json, sys
+with open('$PROFILES_MANIFEST') as f:
+    data = json.load(f)
+for p in data['profiles']:
+    print(f\"  {p['id']:12} - {p['description']}\")
+" 2>/dev/null) || echo "  minimal     - Core minimum with lessons and memory"
+    echo "$ids"
+}
+
+explain_profile() {
+    local profile="$1"
+    if [ -z "$profile" ]; then
+        echo "[error] --explain requires a profile name"
+        exit 1
+    fi
+
+    python3 -c "
+import json, sys
+
+with open('$PROFILES_MANIFEST') as f:
+    profiles = json.load(f)['profiles']
+with open('$MODULES_MANIFEST') as f:
+    modules = json.load(f)['modules']
+
+def resolve(profile_id, seen=None):
+    if seen is None:
+        seen = set()
+    if profile_id in seen:
+        return []
+    seen.add(profile_id)
+
+    p = next((x for x in profiles if x['id'] == profile_id), None)
+    if not p:
+        return []
+
+    result = []
+    if 'extends' in p:
+        result.extend(resolve(p['extends'], seen))
+    result.extend(p.get('modules', []))
+    return result
+
+all_modules = resolve('$profile')
+print(f\"Profile: $profile\")
+print(f\"Modules: {len(all_modules)}\")
+print()
+for m in sorted(all_modules):
+    desc = modules.get(m, {}).get('description', 'No description')
+    print(f\"  - {m}: {desc}\")
+" 2>/dev/null || echo "[error] Could not explain profile"
+}
+
+resolve_modules() {
+    local profile="$1"
+    python3 -c "
+import json, sys
+
+with open('$PROFILES_MANIFEST') as f:
+    profiles = json.load(f)['profiles']
+
+def resolve(profile_id, seen=None):
+    if seen is None:
+        seen = set()
+    if profile_id in seen:
+        return []
+    seen.add(profile_id)
+
+    p = next((x for x in profiles if x['id'] == profile_id), None)
+    if not p:
+        return []
+
+    result = []
+    if 'extends' in p:
+        result.extend(resolve(p['extends'], seen))
+    result.extend(p.get('modules', []))
+    return result
+
+modules = resolve('$profile')
+print(' '.join(modules))
+" 2>/dev/null
+}
+
+install_files_for_module() {
+    local module="$1"
+    local dest="$2"
+
+    python3 -c "
+import json, os
+
+with open('$MODULES_MANIFEST') as f:
+    data = json.load(f)
+
+module = '$module'
+mod_data = data['modules'].get(module, {})
+if not mod_data:
+    print(f'[warn] Module not found: {module}', file=sys.stderr)
+    sys.exit(0)
+
+src_dir = '$REPO_ROOT'
+dest_dir = '$dest'
+
+for f in mod_data.get('files', []):
+    src = os.path.join(src_dir, f)
+    dst = os.path.join(dest_dir, f)
+    if os.path.exists(src):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        import shutil
+        shutil.copy2(src, dst)
+        print(f'  + {f}')
+
+for d in mod_data.get('dirs', []):
+    src = os.path.join(src_dir, d.rstrip('/'))
+    dst = os.path.join(dest_dir, d.rstrip('/'))
+    if os.path.exists(src):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        import shutil
+        if os.path.isdir(src):
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+            print(f'  + {d}/*')
+" 2>/dev/null
 }
 
 main() {
     local dest=""
     local profile="core"
-    local mode="legacy"
-    
+    local mode="pip"
+    local dry_run=false
+
     while [ $# -gt 0 ]; do
         case "$1" in
             --profile=*) profile="${1#*=}"; shift ;;
             --pip-mode) mode="pip"; shift ;;
-            --legacy) mode="legacy"; shift ;;
             --list-profiles) list_profiles; exit 0 ;;
+            --explain=*) explain_profile "${1#*=}"; exit 0 ;;
+            --dry-run) dry_run=true; shift ;;
             --help) show_usage; exit 0 ;;
             -*) shift ;;
             *) dest="$1"; shift ;;
         esac
     done
-    
+
     if [ -z "$dest" ]; then
         show_usage
         exit 1
     fi
-    
+
     echo "[evol-init] Destination: $dest"
     echo "[evol-init] Profile: $profile"
-    echo "[evol-init] Mode: $mode"
-    
+
+    # Validate profile exists
+    if ! python3 -c "
+import json
+with open('$PROFILES_MANIFEST') as f:
+    profiles = json.load(f)['profiles']
+ids = [p['id'] for p in profiles]
+if '$profile' not in ids:
+    print(f'[error] Unknown profile: $profile', file=sys.stderr)
+    print(f'[error] Available: {\" \".join(ids)}', file=sys.stderr)
+    sys.exit(1)
+" 2>/dev/null; then
+        echo "[error] Profile validation failed"
+        exit 1
+    fi
+
+    if [ "$dry_run" = true ]; then
+        echo "[dry-run] Would install profile: $profile"
+        local modules
+        modules=$(resolve_modules "$profile")
+        echo "Modules: $modules"
+        exit 0
+    fi
+
     # Ensure destination exists
     mkdir -p "$dest"
     cd "$dest"
-    
-    # Generate .gitignore first (per PROMPT.md line 55)
-    if [ ! -f .gitignore ]; then
-        cat > .gitignore << 'EOF'
-# Framework Evol-DD
-scripts/
-prompts/
-skills/
-templates/
-evals/
-schemas/
-src/
-tests/
-.github/
 
-# IDE configs
-.claude/
-.opencode/
-.cursor/
-.windsurf/
-.agents/
-.antigravity/
-.codex/
-.github/prompts/
-.github/workflows/
-
-# Runtime
-.evol/
-dialog/
-tool_result/
-
-# Python
-__pycache__/
-*.pyc
-*.egg-info/
-dist/
-build/
-.venv/
-
-# OS
-.DS_Store
-
-# Override (version these)
-!memoria.md
-!lecciones.md
-!memory/
-!evol.profile.yml
-!CLAUDE.md
-!AGENTS.md
-!.agent/hooks/
-!.agent/workflows/
-!docs/
-EOF
-        echo "[evol-init] .gitignore created"
+    # Copy gitignore template
+    if [ ! -f .gitignore ] && [ -f "$GITIGNORE_TEMPLATE" ]; then
+        cp "$GITIGNORE_TEMPLATE" .gitignore
+        echo "[evol-init] .gitignore created from template"
     fi
-    
-    # Create essential files
-    for f in memoria.md lecciones.md evol.profile.yml; do
-        if [ ! -f "$f" ]; then
-            cp "$REPO_ROOT/templates/$(basename $f .md).template.md" "$f" 2>/dev/null || touch "$f"
-        fi
+
+    # Resolve and install modules
+    local modules
+    modules=$(resolve_modules "$profile")
+
+    echo "[evol-init] Installing modules: $modules"
+
+    for module in $modules; do
+        echo "  Module: $module"
+        install_files_for_module "$module" "$dest"
     done
-    
+
+    # Write active profile to evol.profile.yml
+    if command -v python3 >/dev/null 2>&1; then
+        python3 -c "
+import json, os
+
+with open('$PROFILES_MANIFEST') as f:
+    profiles = json.load(f)['profiles']
+
+def resolve(profile_id, seen=None):
+    if seen is None:
+        seen = set()
+    if profile_id in seen:
+        return []
+    seen.add(profile_id)
+    p = next((x for x in profiles if x['id'] == profile_id), None)
+    if not p:
+        return []
+    result = []
+    if 'extends' in p:
+        result.extend(resolve(p['extends'], seen))
+    result.extend(p.get('modules', []))
+    return result
+
+modules = resolve('$profile')
+data = {}
+profile_path = os.path.join(os.getcwd(), 'evol.profile.yml')
+if os.path.exists(profile_path):
+    try:
+        import yaml
+        with open(profile_path) as f:
+            data = yaml.safe_load(f) or {}
+    except:
+        pass
+
+data['profile'] = '$profile'
+data['modules'] = modules
+
+with open(profile_path, 'w') as f:
+    import yaml
+    yaml.dump(data, f, default_flow_style=False)
+
+print(f'[evol-init] Profile $profile saved to evol.profile.yml')
+" 2>/dev/null || echo "[evol-init] evol.profile.yml updated (YAML write skipped)"
+    fi
+
     # Init git if not exists
     if [ ! -d .git ]; then
         git init
         git checkout -b main 2>/dev/null || true
+        echo "[evol-init] git initialized with main branch"
     fi
-    
+
+    echo ""
     echo "[evol-init] Bootstrap complete"
     echo ""
     echo "Next steps:"
     echo "  1. cd $dest"
     echo "  2. Edit memoria.md with project identity"
     echo "  3. Run: bash ./scripts/evol-doctor.sh"
+    echo ""
+    echo "Profile installed: $profile"
 }
 
 main "$@"
