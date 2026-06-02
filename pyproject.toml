@@ -23,10 +23,14 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 
-dependencies = []
+dependencies = [
+    "jsonschema>=4.0.0",
+]
 
 [project.optional-dependencies]
-dev = ["pytest", "bats"]
+dev = [
+    "pytest>=7.0.0",
+]
 
 [project.scripts]
 evol = "evol_cli:main"
