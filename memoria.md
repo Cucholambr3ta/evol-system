@@ -12,8 +12,8 @@
 
 ## Estado Actual
 - **Fase X-DD activa:** 6-Retro (CIERRE FINAL)
-- **Último hito:** Framework completo, 87 archivos, documentacion granular, branches a develop
-- **Próximo paso:** Release v0.1.0-dev
+- **Último hito:** Fix 025 — Release cleanup + final docs review aplicado
+- **Próximo paso:** Merge fix/025 a develop, luego release v0.1.0
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -21,6 +21,11 @@
 - 2026-06-02: Remote configurado a https://github.com/Cucholambr3ta/evol-system.git
 - 2026-06-02: GitFlow violado — todo en un commit, corregido post-hoc con branches
 - 2026-06-02: Lecciones registradas sobre GitFlow y orquestador
+- 2026-06-02: Fix 002 — Migración estricta evol vs xdd (no shims legacy)
+- 2026-06-02: Fix 005 — Opcion A: scripts como ejecutables con subprocess dispatch
+- 2026-06-02: Fix 009 — CI sin masks (`|| true` eliminados), gates reales activos
+- 2026-06-02: Fix 011 — Eval harness con 4 grader types implementados
+- 2026-06-02: Fix 022 — Manifesto `agent.yaml` como SSoT de capacidades
 
 ## Riesgos Activos
 - Ninguno — proyecto completo
@@ -28,6 +33,48 @@
 ---
 
 ## Bitácora de Sesiones
+
+### Sesión Fixes — 2026-06-02 (post-auditoría)
+- **Meta:** Aplicar 21 fixes de auditoría full, estabilizar proyecto para release
+- **Archivos modificados:**
+  - `.gitignore`, `templates/gitignore.template` (Fix 001)
+  - `evol.profile.yml`, `AGENTS.md`, `CLAUDE.md`, `docs/constitucion.md` (Fix 002)
+  - `scripts/evol-init.sh`, `manifests/*.json` (Fix 003, Fix 014)
+  - `scripts/evol-global-install.sh` (Fix 004)
+  - `scripts/*.py`, `pyproject.toml` entrypoints (Fix 005)
+  - `scripts/evol-gate.py` payload/sign verifying (Fix 006)
+  - `mempalace.yaml`, `evol.config.yml`, hooks (Fix 007, Fix 008)
+  - `.github/workflows/ci.yml` (Fix 009)
+  - `tests/*.py`, `tests/*.bats` (Fix 010)
+  - `scripts/evol-eval.py` (Fix 011)
+  - `prompts/agents/registry.json`, `scripts/generate-equipo.sh` (Fix 012)
+  - `pyproject.toml` deps (Fix 013)
+  - `scripts/evol-doctor.sh` blocking mode (Fix 014)
+  - `scripts/evol-shield.py` CI mode, flags (Fix 015)
+  - `scripts/evol-evolve.py` quarantine/pin (Fix 016)
+  - `scripts/evol-brand.sh` sanitized (Fix 017)
+  - `scripts/evol-adapt.sh` sanitized (Fix 018)
+  - `CHANGELOG.md`, `VERSION`, `main` branch (Fix 019)
+  - 12+ docs actualizados con datos reales (Fix 020)
+  - Runtime permissions hardened (Fix 021)
+  - `agent.yaml` manifesto (Fix 022)
+- **Decisiones:**
+  - Fix 002: Migración estricta evol vs xdd (no shims legacy)
+  - Fix 005: Opción A — scripts como ejecutables con subprocess dispatch
+  - Fix 009: CI sin masks (`|| true` eliminados), gates reales activos
+  - Fix 011: Eval harness con 4 grader types (structural, behavioral, output_match, pass_at_k)
+  - Fix 022: Manifesto `agent.yaml` como SSoT de capacidades
+- **Tests ejecutados:**
+  - `pytest tests/`, `bats tests/*.bats`
+  - `evol-doctor.sh`, `evol-shield.py audit --ci --no-write`
+  - `validate-registry.py --strict`
+  - `evol-eval.py validate --all && evol-eval.py run --all`
+  - `git ls-files scripts src tests evals schemas prompts templates`
+- **Bloqueos:**
+  - Ninguno crítico — todos resueltos
+- **Próxima sesión:** Release v0.1.0-dev
+
+---
 
 ### Sesión Sprint Completo — 2026-06-02
 - **Meta:** Construir Evol-DD completo (11 sprints)
@@ -53,3 +100,26 @@
 - **Bloqueos:**
   - Ninguno — todos resueltos
 - **Próxima sesión:** Release v0.1.0-dev y primer merge a main
+
+### Sesión Fix 025 — Release Cleanup + Final Docs — 2026-06-02
+- **Meta:** Limpieza profunda + revisión final de docs para release
+- **Hitos:**
+  - Clasificados todos los archivos del repo (source/generated/runtime/local-memory/qa-evidence/delete-safe)
+  - Eliminados archivos de prueba/ephemeral: `test-agent.md`, `evol-profile.md`
+  - Eliminados artefactos corruptos o accidentales: `"El framework que evoluciona."` (branding test), `PYEOF` (stderr artifact)
+  - Eliminados logs de hooks bloqueados: `.hook-blocked.log`
+  - Eliminados archivos de memoria de usuario: `AGENT_MEMORY.md` (no es parte del release)
+  - Verificado `.gitignore` cubre outputs sin ignorar source crítico (con `!` rules para dirs fuente)
+  - Actualizado `memoria.md` con sesión Fix 025
+  - Verificado `docs/equipo.md` sincronizado con registry (16 core, 0 ephemeral actuales)
+  - Verificado `lecciones.md` con aprendizaje de gate key
+  - Verificado `docs/qa/REPORTE_QA.md` distingue planificado/implementado/ejecutado/pendiente
+  - Verificado `README.md` y `INSTALL.md` sin TBD ni refs xdd- legacy
+  - Verificado `CHECKLIST_RELEASE.md` con comandos ejecutables reales
+- **Decisiones:**
+  - Archivos JSON corruptos de pruebas de branding no son parte del release
+  - `AGENT_MEMORY.md` es memoria del usuario, no del framework
+  - Test ephemeral agents (test-agent) no tracked ni versionado
+- **Bloqueos:**
+  - Ninguno
+- **Próxima sesión:** Merge a develop, crear release branch, tag v0.1.0
