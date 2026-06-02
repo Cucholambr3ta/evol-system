@@ -55,8 +55,25 @@ Documentation = "https://github.com/Cucholambr3ta/evol-system#readme"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# Empaquetar TODOS los data dirs dentro del paquete instalado.
+# Sin esto, evol --version reporta "0.1.0-dev" (stale) y evol init --list-profiles
+# falla con "manifest no disponible" — bug identico al de X-DD pre-fix (ADR-0048).
+# Los scripts bash reciben EVOL_DATA_DIR inyectado por _run_shell() en evol_cli.
 [tool.setuptools.package-data]
-"*" = ["*.md", "*.json", "*.yml", "*.yaml", "*.sh", "*.schema.json"]
+"*" = [
+    "*.md", "*.json", "*.yml", "*.yaml", "*.sh", "*.schema.json",
+    "*.py", "*.txt",
+]
+
+# MANIFEST.in para sdist — garantiza que los data dirs llegan al wheel
+# via SOURCES.txt. setuptools los copia a evol_cli/<dir> por la config abajo.
+[tool.setuptools.data-files]
+"evol_cli/scripts"   = ["scripts/*.py", "scripts/*.sh"]
+"evol_cli/manifests" = ["manifests/*.json"]
+"evol_cli/templates" = ["templates/*.md", "templates/*.yml", "templates/*.yaml", "templates/*.template"]
+"evol_cli/agent"     = [".agent/workflows/*.md", ".agent/hooks/hooks.json"]
+"evol_cli/docs"      = ["docs/*.md"]
+"evol_cli"           = ["VERSION"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
