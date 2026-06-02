@@ -84,7 +84,7 @@ def audit_directory(directory, extensions=None):
     for ext in extensions:
         for filepath in Path(directory).rglob(f"*{ext}"):
             rel = str(filepath.relative_to(Path(REPO_ROOT)))
-            if any(skip in rel for skip in [".git/", "node_modules/", "dialog/", "tool_result/", "docs/SECURITY_PERMISSIONS.md", "docs/GATE.md"]):
+            if any(skip in rel for skip in [".git/", "node_modules/", "dialog/", "tool_result/", "docs/SECURITY_PERMISSIONS.md", "docs/GATE.md", "docs/qa/FIXES_DESARROLLADOR_AUDITORIA_FULL.md"]):
                 continue
             
             scan_file(str(filepath), violations)
@@ -126,11 +126,42 @@ def supply_chain_scan(directory):
     
     return results
 
+def check_permissions(directory):
+    """Check for dangerous permission patterns."""
+    violations = []
+    sensitive = {
+        ".evol/.gate-key": (0o600, "secret"),
+        ".evol/.gate-log.jsonl": (0o640, "sensitive log"),
+        ".evol/": (0o750, "runtime dir"),
+        "memory/": (0o750, "memory dir"),
+        "dialog/": (0o750, "dialog dir"),
+        "tool_result/": (0o750, "tool_result dir"),
+    }
+    for path_suffix, (expected_mode, kind) in sensitive.items():
+        full_path = os.path.join(directory, path_suffix)
+        if not os.path.exists(full_path):
+            continue
+        try:
+            mode = os.stat(full_path).st_mode & 0o777
+            if mode & 0o022:
+                violations.append({
+                    "rule": "dangerous_permissions",
+                    "file": path_suffix,
+                    "severity": "HIGH",
+                    "message": f"{kind} is group-writable ({oct(mode)})"
+                })
+        except OSError:
+            pass
+    return violations
+
 def audit(ci_mode=False, no_write=False):
     """Run full security audit."""
     print("=== Evol-DD AgentShield Audit ===")
     
     violations = []
+    
+    perm_violations = check_permissions(".")
+    violations.extend(perm_violations)
     
     for dir_path in [".agent/", "scripts/", "prompts/", "skills/", "docs/"]:
         if os.path.exists(dir_path):
