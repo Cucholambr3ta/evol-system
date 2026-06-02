@@ -235,22 +235,6 @@
       "skills": [],
       "ephemeral": false,
       "retired": null
-    },
-    {
-      "id": "test-agent",
-      "name": "test-agent",
-      "category": "ephemeral",
-      "description": "Testing agent lifecycle",
-      "prompt_file": "prompts/agents/ephemeral/20260602052537-test-agent.md",
-      "ephemeral": true,
-      "created_for_task": "Testing agent lifecycle",
-      "expires_after_days": 7,
-      "created_at": "2026-06-02T05:25:14.714131",
-      "retired": false,
-      "sessions_used": 0,
-      "retired_at": "2026-06-02T05:25:31.300794",
-      "recalled": true,
-      "recalled_at": "2026-06-02T05:25:37.641918"
     }
   ]
 }

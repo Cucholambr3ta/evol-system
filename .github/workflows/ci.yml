@@ -75,6 +75,21 @@ jobs:
       - name: Registry validation
         run: python3 scripts/validate-registry.py --strict
 
+      - name: Check equipo sync
+        run: |
+          echo "=== Checking equipo.md sync ==="
+          cp docs/equipo.md docs/equipo.md.saved
+          bash scripts/generate-equipo.sh > /dev/null 2>&1
+          if ! diff -q docs/equipo.md docs/equipo.md.saved > /dev/null 2>&1; then
+            echo "FAIL: docs/equipo.md is out of sync with registry.json"
+            echo "Run 'bash scripts/generate-equipo.sh' to regenerate"
+            diff docs/equipo.md docs/equipo.md.saved || true
+            mv docs/equipo.md.saved docs/equipo.md
+            exit 1
+          fi
+          rm -f docs/equipo.md.saved
+          echo "OK: docs/equipo.md is in sync"
+
       - name: Shield audit
         run: python3 scripts/evol-shield.py audit --ci --no-write
 
