@@ -1,5 +1,5 @@
 ---
-description: Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via xdd-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity, VSCode Copilot o Codex.
+description: Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity, VSCode Copilot o Codex.
 ---
 
 # /crear-skill
@@ -57,7 +57,7 @@ skills/<nombre>/
 │   └── *.py / *.sh
 └── evals/                (requerido si skill tiene outputs verificables)
     ├── evals.json        (prompts de prueba + assertions)
-    └── cases.jsonl       (formato xdd-eval.py)
+    └── cases.jsonl       (formato evol-eval.py)
 ```
 
 ### Formato del SKILL.md
@@ -69,7 +69,7 @@ description: >
   Descripcion que determina el triggering. Incluir: QUE hace + CUANDO usar.
   Ser especifico sobre contextos de activacion. Listar frases tipicas del usuario.
   Evitar "undertriggering" — si el usuario menciona X o Y, usar esta skill.
-origin: x-dd
+origin: evol-dd
 category: context-engineering | quality-gate | security | compression | research | lifecycle
 when_to_use:
   - caso de uso 1
@@ -142,7 +142,7 @@ Crear 2-3 prompts realistas — lo que un usuario real escribiria. Guardar en
 Mostrar al usuario: "Aqui estan los casos de prueba que voy a correr. ¿Los apruebas
 o quieres añadir alguno?"
 
-Tambien generar `skills/<nombre>/evals/cases.jsonl` para `xdd-eval.py`:
+Tambien generar `skills/<nombre>/evals/cases.jsonl` para `evol-eval.py`:
 
 ```jsonl
 {"id": "eval-1", "prompt": "...", "expected": "..."}
@@ -203,7 +203,7 @@ Skills subjetivas (estilo de escritura, diseño visual) → eval cualitativo sin
 
 ### 5.3 Cuando terminen los runs: evaluar + mostrar resultados
 
-1. Evaluar cada assertion contra los outputs (o usar `xdd-eval.py` si disponible).
+1. Evaluar cada assertion contra los outputs (o usar `evol-eval.py` si disponible).
 2. Generar tabla comparativa:
 
 | Eval | Con skill | Sin skill | Delta |
@@ -272,14 +272,14 @@ Recordar: listar frases explicitas del usuario que deben activarla.
 
 ## 7. PORTAR A 7 IDEs
 
-Una vez la skill esta lista, portarla a todos los IDEs con `xdd-adapt.sh`:
+Una vez la skill esta lista, portarla a todos los IDEs con `evol-adapt.sh`:
 
 ```bash
 # Verificar primero (sin escribir)
-bash scripts/xdd-adapt.sh all --dest=. --dry-run
+bash scripts/evol-adapt.sh all --dest=. --dry-run
 
 # Aplicar a todos los IDEs
-bash scripts/xdd-adapt.sh all --dest=.
+bash scripts/evol-adapt.sh all --dest=.
 ```
 
 La skill en `skills/<nombre>/` es automaticamente:
@@ -301,7 +301,7 @@ grep -r "mcpServers" .claude/ .opencode/ .cursor/ 2>/dev/null | wc -l
 1. Actualizar `prompts/workflows/03_workflows_catalog.md` con la nueva skill.
 2. Si la skill fue auto-generada desde instincts: registrar en `evol-state.py`:
    ```bash
-   python3 scripts/xdd-state.py --db ~/.xdd/state.db record-instinct \
+   python3 scripts/evol-state.py --db ~/.xdd/state.db record-instinct \
      --category HERRAMIENTAS \
      --pattern "skill <nombre> creada via /crear-skill" \
      --context "caso de uso: <descripcion>"
@@ -314,9 +314,9 @@ grep -r "mcpServers" .claude/ .opencode/ .cursor/ 2>/dev/null | wc -l
 
 ## CONEXIONES DE INTEROPERABILIDAD (Art. 6)
 
-- **Predecesores:** `/xdd` (orquestador), `/fase-requisitos` (si la skill resuelve un requisito)
+- **Predecesores:** `/orchestrate` (orquestador), `/fase-requisitos` (si la skill resuelve un requisito)
 - **Sucesores:** `/evolve` (si la skill se genera desde instincts), `/technical-documentation` (documentar la skill)
-- **Scripts vinculados:** `xdd-eval.py` (eval harness), `xdd-adapt.sh` (portabilidad IDE), `xdd-state.py` (registro)
+- **Scripts vinculados:** `evol-eval.py` (eval harness), `evol-adapt.sh` (portabilidad IDE), `evol-state.py` (registro)
 - **Skills relacionadas:** `agent-eval` (eval de agentes), `evol-skill-manager` (gestion de skills)
 
 ---
@@ -326,7 +326,7 @@ grep -r "mcpServers" .claude/ .opencode/ .cursor/ 2>/dev/null | wc -l
 | Error | Causa probable | Solucion |
 |-------|---------------|----------|
 | Skill no se activa en Claude Code | Description muy vaga | Ir a paso 6 (optimizar triggering) |
-| Skill no aparece en Codex | No se corrio xdd-adapt.sh codex | `bash scripts/xdd-adapt.sh codex --dest=.` |
+| Skill no aparece en Codex | No se corrio evol-adapt.sh codex | `bash scripts/evol-adapt.sh codex --dest=.` |
 | Eval falla sin razon clara | Prompt de eval muy ambiguo | Reescribir el prompt del eval con mas contexto |
 | Assertions siempre pasan (con y sin skill) | Assertions no discriminan | Disenar assertions mas especificas sobre el valor que añade la skill |
 | SKILL.md > 500 lineas | Skill sobrediseñada | Mover secciones a `references/`; mantener SKILL.md como indice |
