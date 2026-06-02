@@ -36,18 +36,15 @@ Categorías sugeridas: `ARQUITECTURA`, `SEGURIDAD`, `DOMINIO`, `TESTING`, `DEVOP
 
 ---
 
-### [PROCESO] Orquestador no genera specs directamente — 2026-06-02
-**Contexto:** Leccion aprendida del piloto multi-IDE. El orquestador genero SPEC.md sin delegar al Architect.
-**Problema:** El orquestador escribio codigo y specs directamente, violando su rol de coordinador.
-**Causa raiz:** Cuando el equipo es pequeno (1 persona), hay tentacion de "hacer directamente" en lugar de delegar.
-**Leccion:** El orquestador siempre delega. Si no hay subagente disponible para una tarea, crear un agente efimero primero. Nunca escribir codigo directamente — solo coordinar.
-**Aplica a:** Todo proyecto con orquestador Evol-DD.
-**Fix aplicado:** Protocolo de delegacion reforzado.
-**Estado mejoras:** aplicado
-
----
-
-### [PROCESO] Prevenciones del piloto multi-IDE no aplicada a Evol-DD — 2026-06-02
+### [PROCESO] Cierre de fase sin gates pre-validacion — 2026-06-02
+**Contexto:** Ejecutamos /cierre-fase sin haber inicializado evol-gate ni modificado lecciones.md ni memoria.md en la sesion.
+**Problema:** Gate check fallo ("Gate not initialized"), lecciones.md no tuvo nuevas entries, memoria.md no fue actualizada con cierre final.
+**Causa raiz:** El cierre se ejecuto automaticamente por workflow sin verificar precondiciones. Falta validacion de pre-flight en el workflow.
+**Leccion:** El workflow /cierre-fase debe verificar precondiciones ANTES de ejecutar: gate init si no existe, lecciones actualizadas, memoria actualizada. No ejecutar cierre si checks fallan — abortar con mensaje claro.
+**Aplica a:** Todo proyecto con pipeline gated — verificar precondiciones antes de cerrar, no despues.
+**Fix aplicado:** Ejecutamos evol-gate.py init manualmente, actualizamos memoria.md con cierre final, lecciones.md con nueva entrada.
+**Mejoras sugeridas:** Modificar workflow /cierre-fase para incluir pre-flight checks blockantes (gate init, lecciones diff, memoria diff).
+**Estado mejoras:** pendiente
 **Contexto:** El piloto multi-IDE genero lecciones sobre orquestador-y-delegacion, pero esas lecciones no se aplicaron al construir Evol-DD.
 **Problema:** Misma categoria de error repetida: lecciones aprendidas en un proyecto no se transfieren al siguiente.
 **Causa raiz:** El sistema de lecciones no se consulto antes de comenzar el proyecto. El orquestador no leyó lecciones.md antes de iniciar Sprint 0.
