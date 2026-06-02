@@ -852,6 +852,7 @@ Modulos opcionales:
 - `eval-harness`: evol-eval.py + evals/
 - `lifecycle-agents`: evol-agent-lifecycle.py + templates/agent.template.md
 - `evolve-skills`: evol-evolve.py + evol-skill-manager skill
+- `growth-engine` (required en core+): `skills/crear-skill/` + `skills/crear-agente/` — herramientas nativas de crecimiento del sistema. Permiten al agente crear nuevas skills con loop iterativo de eval y crear agentes guiados con validacion. Incluir en perfiles `core`, `developer`, `research` y `full`. Sin este modulo el sistema no puede crecer ni expandir sus capacidades.
 - `researcher`: evol-researcher.py + agente evol-researcher + workflow `/evol research`. Depende de tabla `research_proposals` en evol-state.py.
 - `observability`: spans, cost tracking, session replay (NDJSON en .evol/traces/)
 - `security-suite`: evol-shield.py + ADRs seguridad
@@ -864,15 +865,107 @@ Cada skill vive en `skills/<nombre>/SKILL.md` con frontmatter YAML. El frontmatt
 
 Skills permanentes del sistema:
 
-| Nombre | Categoría | Trigger |
-|--------|-----------|---------|
-| `evol-fs-context` | context-engineering | `/fs-context` |
-| `evol-compact` | context-engineering | `/compact` |
-| `evol-talk-compact` | compression | `/compact-talk` |
-| `evol-ai-review` | quality-gate | pre-commit hook |
-| `evol-sandbox` | security | `/sandbox` |
-| `agent-eval` | quality-gate | `/eval` |
-| `evol-skill-manager` | lifecycle | `/skill` |
+| Nombre | Categoría | Trigger | Descripcion |
+|--------|-----------|---------|-------------|
+| `evol-fs-context` | context-engineering | `/fs-context` | Filesystem-paradigm context curation |
+| `evol-compact` | context-engineering | `/compact` | Compactacion de contexto provider-agnostic |
+| `evol-talk-compact` | compression | `/compact-talk` | Compresion de output del orquestador |
+| `evol-ai-review` | quality-gate | pre-commit hook | Code review AI-powered pre-commit |
+| `evol-sandbox` | security | `/sandbox` | Entorno aislado provider-agnostic |
+| `agent-eval` | quality-gate | `/eval` | Eval-harness para skills/agents/workflows |
+| `evol-skill-manager` | lifecycle | `/skill` | Gestion del ciclo de vida de skills |
+| `crear-skill` | **growth** | `/crear-skill` | **Loop iterativo de creacion de skills: captura intencion → draft → evals cuantitativos/cualitativos (runs paralelos with-skill vs baseline) → optimizacion de description (recall/precision >= 0.85) → portabilidad a 7 IDEs. Mecanismo nativo de crecimiento del sistema.** |
+| `crear-agente` | **growth** | auto-trigger | **Crea agentes Evol-DD (permanentes o efimeros): genera .md con identidad/mision/reglas/limites, registra en registry.json, crea agent.template.md si no existe. Se activa cuando el usuario dice "crear agente / nuevo agente / necesito un agente para X". Ciclo de vida completo integrado con evol-agent-lifecycle.py.** |
+
+## Herramientas de crecimiento nativas (Growth Engine)
+
+Evol-DD tiene dos skills de crecimiento integradas en el core que permiten al sistema
+expandirse con cada proyecto que construye:
+
+### /crear-skill — Creacion iterativa de skills
+
+Loop completo inspirado en anthropics/skills/skill-creator (Apache-2.0), adaptado con
+portabilidad a 7 IDEs:
+
+```
+1. Capturar intencion (entrevista + investigar skills existentes)
+2. Draft SKILL.md con frontmatter: name, description, category, triggers, compatible_with
+3. Crear 2-3 casos de prueba realistas
+4. Loop eval:
+   - Lanzar runs paralelos: with-skill vs baseline (sin skill)
+   - Mientras corren: redactar assertions verificables
+   - Grader: comparar outputs, calcular pass rate
+   - Feedback del usuario → reescribir skill → relanzar
+5. Optimizar description para triggering accuracy:
+   - Generar 20 queries (10 should-trigger + 10 should-not-trigger)
+   - Medir recall y precision — target >= 0.85 en ambos
+   - Iterar description hasta alcanzar umbral
+6. Portar a 7 IDEs: evol-adapt.sh all
+7. Registrar en catalogo + memoria.md
+```
+
+La skill vive en `skills/crear-skill/` y se invoca con `/crear-skill` o
+`/evol crear-skill`. Compatible con los 7 IDEs via evol-adapt.sh.
+
+Criterio de "skill bien creada":
+- Benchmark iter-1: with-skill supera baseline en >= 30pp en assertions objetivas
+- Description: recall >= 0.85, precision >= 0.85 sobre 20 trigger queries
+- 0 emojis en body, seccion `## Limites` presente, registry valida con validate-registry.py
+
+### crear-agente — Creacion guiada de agentes
+
+Skill que actua como factory interactivo para agentes Evol-DD. Se activa por description
+automaticamente (no requiere slash command explicito) cuando el usuario quiere crear un
+agente nuevo.
+
+Flujo:
+
+```
+1. Entrevistar: que hace, que NO hace, permanente o efimero, categoria, tono
+2. Verificar que no existe agente similar (grep en registry.json)
+3. Crear prompts/agents/<categoria>/<id>.md con:
+   - Frontmatter: name, description, vibe (para efimeros: +ephemeral, expires_after_days, created_for_task)
+   - Secciones obligatorias: ## Mision, ## Reglas criticas, ## Como trabajar, ## Limites
+   - Sin emojis en body, segunda persona, razonamiento detras de cada regla
+4. Registrar en registry.json con todos los campos del schema
+5. Validar: python3 scripts/validate-registry.py --strict
+6. Para efimeros: ciclo completo via evol-agent-lifecycle.py (create → invoke → retire → recall)
+```
+
+Vive en `skills/crear-agente/` con:
+- `references/categorias.md` — tabla de categorias con criterios de decision
+- `references/agent-template-spec.md` — spec del snapshot JSON para efimeros
+- `references/ejemplos.md` — patrones de agentes bien escritos con analisis
+- `scripts/validate_agent.py` — validador local (frontmatter, emojis, secciones, registry)
+- `evals/` — casos de prueba con assertions objetivas
+
+**Criterio formal core vs efimero** (integrado en la skill):
+Un agente es core si tiene responsabilidad sobre el estado del SISTEMA. Es efimero si
+su responsabilidad es sobre el dominio del PROYECTO activo. El factory aplica este
+criterio para decidir destino (`prompts/agents/core/` vs `prompts/agents/ephemeral/`).
+
+### Ciclo de crecimiento completo
+
+```
+Usuario detecta patron recurrente
+    ↓
+/evol research → evol-researcher propone skill candidata
+    ↓
+/crear-skill → loop iterativo → skill validada con evals
+    ↓
+evol-evolve approve → skill activada en el sistema
+    ↓
+evol-lessons add → leccion registrada con Fix aplicado
+    ↓
+Sistema aprende: instincts SQLite acumulan confidence
+    ↓
+evol-evolve run → propone nueva skill automatica desde instincts
+    ↓
+(ciclo se repite — el sistema crece con cada proyecto)
+```
+
+El modulo `growth-engine` en `install-modules.json` instala ambas skills. Incluirlo
+en los perfiles `core`, `developer`, `research` y `full`.
 
 ---
 
@@ -1127,9 +1220,10 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 16. Sistema de hooks (hooks.json + scripts/) incluyendo pre:commit:gitflow
 17. Scripts nuevos: `evol-agent-lifecycle.py` (con `gc` + `invalidate` + SHA-256), `evol-memory.py`, `evol-lessons.py`
 18. `evol-evolve.py` (con `invalidate` + `rollback`) y `evol-researcher.py` (con contrato de fallo)
-19. `evol-eval.py` + suites en `evals/`
-20. CI (GitHub Actions + pre-commit + pyproject.toml con todos los data dirs)
-21. Tests (tests/ con bats + pytest, incluyendo idempotencia y Modo Base sin MemPalace)
+19. **Growth engine (modulo `growth-engine`):** `skills/crear-skill/` + `skills/crear-agente/` con referencias, scripts de validacion y evals. Son las herramientas con las que el sistema se expande — deben existir antes de que se necesiten, no despues.
+20. `evol-eval.py` + suites en `evals/`
+21. CI (GitHub Actions + pre-commit + pyproject.toml con todos los data dirs)
+22. Tests (tests/ con bats + pytest, incluyendo idempotencia y Modo Base sin MemPalace)
 22. Documentacion del framework (docs/DOC_STANDARD.md, docs/modos.md, INSTALL.md, etc.)
 23. `src/evol_cli/__init__.py` — dispatcher pip con `_data_dir()` y todos los 12 entry-points
 
