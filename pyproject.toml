@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "evol-dd"
@@ -52,28 +52,23 @@ evol-profile = "evol_cli:profile"
 Homepage = "https://github.com/Cucholambr3ta/evol-system"
 Documentation = "https://github.com/Cucholambr3ta/evol-system#readme"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/evol_cli"]
 
-# Empaquetar TODOS los data dirs dentro del paquete instalado.
-# Sin esto, evol --version reporta "0.1.0-dev" (stale) y evol init --list-profiles
-# falla con "manifest no disponible" — bug identico al de X-DD pre-fix (ADR-0048).
-# Los scripts bash reciben EVOL_DATA_DIR inyectado por _run_shell() en evol_cli.
-[tool.setuptools.package-data]
-"*" = [
-    "*.md", "*.json", "*.yml", "*.yaml", "*.sh", "*.schema.json",
-    "*.py", "*.txt",
-]
-
-# MANIFEST.in para sdist — garantiza que los data dirs llegan al wheel
-# via SOURCES.txt. setuptools los copia a evol_cli/<dir> por la config abajo.
-[tool.setuptools.data-files]
-"evol_cli/scripts"   = ["scripts/*.py", "scripts/*.sh"]
-"evol_cli/manifests" = ["manifests/*.json"]
-"evol_cli/templates" = ["templates/*.md", "templates/*.yml", "templates/*.yaml", "templates/*.template"]
-"evol_cli/agent"     = [".agent/workflows/*.md", ".agent/hooks/hooks.json"]
-"evol_cli/docs"      = ["docs/*.md"]
-"evol_cli"           = ["VERSION"]
+# Empaquetar TODOS los data dirs dentro del wheel (anti-bug ADR-0048 de X-DD).
+# Sin force-include, evol --version reporta stale y evol init --list-profiles falla.
+# _data_dir() en evol_cli/__init__.py resuelve estos dirs en 3 niveles:
+#   1. EVOL_DATA_DIR env var
+#   2. instalacion editable: repo_root/
+#   3. wheel bundled: evol_cli/<dir>
+[tool.hatch.build.targets.wheel.force-include]
+"scripts"          = "evol_cli/scripts"
+"manifests"        = "evol_cli/manifests"
+"templates"        = "evol_cli/templates"
+"skills"           = "evol_cli/skills"
+".agent"           = "evol_cli/agent"
+"docs"             = "evol_cli/docs"
+"VERSION"          = "evol_cli/VERSION"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
