@@ -1,0 +1,5 @@
+{"id":"compact-001","description":"SKILL.md has frontmatter with name, description, category, trigger","assertions":[{"type":"structural","check":"frontmatter","path":"skills/evol-compact/SKILL.md","required":["name","description","category","trigger"]}]}
+{"id":"compact-002","description":"Defines compression levels","assertions":[{"type":"output_match","check":"levels","path":"skills/evol-compact/SKILL.md","pattern":"light.*medium.*aggressive"}]}
+{"id":"compact-003","description":"Has 5 strategies listed","assertions":[{"type":"behavioral","check":"strategy_count","command":"grep -c '^[0-9]\\.' skills/evol-compact/SKILL.md"}]}
+{"id":"compact-004","description":"References itself in Reference section","assertions":[{"type":"output_match","check":"reference","path":"skills/evol-compact/SKILL.md","pattern":"skills/evol-compact/SKILL.md"}]}
+{"id":"compact-005","description":"Has Commands section with /compact","assertions":[{"type":"structural","check":"section","path":"skills/evol-compact/SKILL.md","required":["Commands"]}]}

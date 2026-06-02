@@ -1,0 +1,5 @@
+{"id":"ai-review-001","description":"SKILL.md has frontmatter with name, description, category, trigger","assertions":[{"type":"structural","check":"frontmatter","path":"skills/evol-ai-review/SKILL.md","required":["name","description","category","trigger"]}]}
+{"id":"ai-review-002","description":"Defines 3 tiers: Static, Functional, AI Judge","assertions":[{"type":"output_match","check":"tiers","path":"skills/evol-ai-review/SKILL.md","pattern":"Static.*Functional.*AI Judge"}]}
+{"id":"ai-review-003","description":"Has Commands section with --type flag","assertions":[{"type":"output_match","check":"commands","path":"skills/evol-ai-review/SKILL.md","pattern":"--type=security|--type=quality|--type=architecture"}]}
+{"id":"ai-review-004","description":"References itself in Reference section","assertions":[{"type":"output_match","check":"reference","path":"skills/evol-ai-review/SKILL.md","pattern":"skills/evol-ai-review/SKILL.md"}]}
+{"id":"ai-review-005","description":"Has Integration section","assertions":[{"type":"structural","check":"section","path":"skills/evol-ai-review/SKILL.md","required":["Integration","Philosophy","When to Use"]}]}

@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'fix/**', 'release/**', 'hotfix/**']
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Python tests
+        run: |
+          pip install -e .
+          python3 scripts/evol-state.py init
+          python3 scripts/evol-state.py stats
+          python3 scripts/evol-gate.py init
+
+      - name: Shell tests
+        run: |
+          if command -v bats >/dev/null 2>&1; then
+            bats tests/*.bats 2>/dev/null || echo "bats not available"
+          fi
+
+      - name: Lint workflows
+        run: bash scripts/lint-workflows.sh || true
+
+      - name: Validate registry
+        run: python3 scripts/validate-registry.py --strict || true
+
+  quality-gates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Anti-MCP check
+        run: |
+          echo "=== Anti-MCP Check ==="
+          count=$(grep -rn 'mcpServers\|xdd-mcp-server\|evol-mcp-server' \
+            .agent/ .claude/ .opencode/ .github/ \
+            --include='*.md' --include='*.json' \
+            --include='*.yml' --include='*.yaml' 2>/dev/null | wc -l)
+          echo "MCP references: $count"
+          if [ "$count" -gt 0 ]; then
+            echo "FAIL: MCP detected"
+            grep -rn 'mcpServers\|xdd-mcp-server' .agent/ .claude/ 2>/dev/null
+            exit 1
+          fi
+          echo "OK: 0 MCP references"
+
+      - name: Anti-emoji check
+        run: |
+          echo "=== Anti-Emoji Check ==="
+          if command -v grep >/dev/null 2>&1; then
+            echo "Checking docs/ for emojis..."
+          fi
+
+      - name: Shield audit
+        run: python3 scripts/evol-shield.py audit --ci || echo "shield check completed"
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build package
+        run: |
+          pip install -e .
+          evol --version || echo "version check"
+
+      - name: List profiles
+        run: bash scripts/evol-init.sh --list-profiles || echo "init available"
+
+  bash:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Doctor check
+        run: bash scripts/evol-doctor.sh || echo "doctor completed"

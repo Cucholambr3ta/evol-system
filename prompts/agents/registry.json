@@ -1,0 +1,256 @@
+{
+  "$schema": "registry.schema.json",
+  "version": "1.0.0",
+  "generated": "2026-06-02T00:00:00Z",
+  "agents": [
+    {
+      "id": 1,
+      "name": "evol-architect",
+      "description": "System design, architectural decisions, ADRs",
+      "category": "core",
+      "file": "core/evol-architect.md",
+      "triggers": [
+        "/evol architect"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 2,
+      "name": "evol-builder",
+      "description": "Code implementation, TDD, feature construction",
+      "category": "core",
+      "file": "core/evol-builder.md",
+      "triggers": [
+        "/evol build",
+        "/evol builder"
+      ],
+      "skills": [
+        "skill-fractional-cto",
+        "skill-clean-code"
+      ],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 3,
+      "name": "evol-qa",
+      "description": "Quality, unit tests, integration, E2E, Gherkin/BDD cases",
+      "category": "core",
+      "file": "core/evol-qa.md",
+      "triggers": [
+        "/evol qa",
+        "/evol test"
+      ],
+      "skills": [
+        "skill-code-reviewer"
+      ],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 4,
+      "name": "evol-sec",
+      "description": "Security (SecDD, STRIDE threat modeling, auditing)",
+      "category": "core",
+      "file": "core/evol-sec.md",
+      "triggers": [
+        "/evol sec",
+        "/evol security"
+      ],
+      "skills": [
+        "skill-shannon-secops"
+      ],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 5,
+      "name": "evol-devops",
+      "description": "CI/CD, infrastructure, pipelines, automation",
+      "category": "core",
+      "file": "core/evol-devops.md",
+      "triggers": [
+        "/evol devops",
+        "/evol ci"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 6,
+      "name": "evol-domain",
+      "description": "DDD, domain modeling, entities, bounded contexts",
+      "category": "core",
+      "file": "core/evol-domain.md",
+      "triggers": [
+        "/evol domain",
+        "/evol ddd"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 7,
+      "name": "evol-doc",
+      "description": "Technical documentation (no emojis, Mermaid mandatory)",
+      "category": "core",
+      "file": "core/evol-doc.md",
+      "triggers": [
+        "/evol doc",
+        "/evol documentation"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 8,
+      "name": "evol-ux",
+      "description": "User discovery, product research, validation",
+      "category": "core",
+      "file": "core/evol-ux.md",
+      "triggers": [
+        "/evol ux",
+        "/evol user"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 9,
+      "name": "evol-data",
+      "description": "Data engineering, analytics, data pipelines",
+      "category": "core",
+      "file": "core/evol-data.md",
+      "triggers": [
+        "/evol data",
+        "/evol analytics"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 10,
+      "name": "evol-reviewer",
+      "description": "Code review, peer review, quality analysis",
+      "category": "core",
+      "file": "core/evol-reviewer.md",
+      "triggers": [
+        "/evol review",
+        "/evol reviewer"
+      ],
+      "skills": [
+        "skill-code-reviewer"
+      ],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 11,
+      "name": "evol-orchestrator",
+      "description": "Lead agent composition, coordination patterns",
+      "category": "core",
+      "file": "core/evol-orchestrator.md",
+      "triggers": [
+        "/evol orchestrate"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 12,
+      "name": "evol-pm",
+      "description": "Project management, tracking, sprints, metrics",
+      "category": "core",
+      "file": "core/evol-pm.md",
+      "triggers": [
+        "/evol pm",
+        "/evol project"
+      ],
+      "skills": [
+        "skill-product-prioritizer"
+      ],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 13,
+      "name": "evol-release",
+      "description": "Release management, CHANGELOG, semantic versioning",
+      "category": "core",
+      "file": "core/evol-release.md",
+      "triggers": [
+        "/evol release",
+        "/evol version"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 14,
+      "name": "evol-analyst",
+      "description": "Impact analysis, metrics, blast radius",
+      "category": "core",
+      "file": "core/evol-analyst.md",
+      "triggers": [
+        "/evol analyze",
+        "/evol analyst"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 15,
+      "name": "evol-agent-factory",
+      "description": "Creates ephemeral agents via guided interaction",
+      "category": "core",
+      "file": "core/evol-agent-factory.md",
+      "triggers": [
+        "/evol agent create",
+        "/evol factory"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 16,
+      "name": "evol-researcher",
+      "description": "Autonomous research (skills, methodologies, frameworks)",
+      "category": "core",
+      "file": "core/evol-researcher.md",
+      "triggers": [
+        "/evol research",
+        "/evol researcher"
+      ],
+      "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": "test-agent",
+      "name": "test-agent",
+      "category": "ephemeral",
+      "description": "Testing agent lifecycle",
+      "prompt_file": "prompts/agents/ephemeral/20260602052537-test-agent.md",
+      "ephemeral": true,
+      "created_for_task": "Testing agent lifecycle",
+      "expires_after_days": 7,
+      "created_at": "2026-06-02T05:25:14.714131",
+      "retired": false,
+      "sessions_used": 0,
+      "retired_at": "2026-06-02T05:25:31.300794",
+      "recalled": true,
+      "recalled_at": "2026-06-02T05:25:37.641918"
+    }
+  ]
+}

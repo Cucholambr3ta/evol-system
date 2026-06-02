@@ -1,0 +1,16 @@
+name: evol-skill-manager
+description: Eval suite for evol-skill-manager skill
+grader: structural
+threshold: 0.7
+
+cases:
+  - id: skill-manager-001
+    weight: 1
+  - id: skill-manager-002
+    weight: 1
+  - id: skill-manager-003
+    weight: 1
+  - id: skill-manager-004
+    weight: 1
+  - id: skill-manager-005
+    weight: 1
