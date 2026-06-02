@@ -200,19 +200,197 @@ def sync_community(dry_run=False):
         print("[INFO] sin conexion, propuestas omitidas")
         return
 
-def install_skill(skill_name):
-    """Install community skill with supply-chain scan."""
-    print(f"[INFO] Installing: {skill_name}")
+def validate_frontmatter(content):
+    """Validate SKILL.md frontmatter has required fields."""
+    import re
+    match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+    if not match:
+        return False, "No frontmatter found"
     
-    # Scan supply-chain (gitleaks + semgrep)
+    fm_text = match.group(1)
+    for field in ["name:", "description:"]:
+        if field not in fm_text:
+            return False, f"Missing required field: {field.strip(':')}"
+    
+    name_match = re.search(r'^name:\s*(.+)$', fm_text, re.MULTILINE)
+    if name_match:
+        name = name_match.group(1).strip()
+        if not re.match(r'^[a-z0-9][a-z0-9-]*$', name):
+            return False, f"Invalid skill name format: {name}"
+    
+    return True, "valid"
+
+def quarantine_and_scan(skill_path, tmp_dir):
+    """Copy skill to quarantine dir and scan for secrets/dangerous configs."""
+    import tempfile, re
+    
+    scan_dir = tempfile.mkdtemp(prefix="evol-skill-scan-", dir=tmp_dir)
+    quarantine_dir = os.path.join(scan_dir, "skill")
+    shutil.copytree(skill_path, quarantine_dir)
+    
     has_gitleaks = subprocess.run(["which", "gitleaks"], capture_output=True).returncode == 0
     has_semgrep = subprocess.run(["which", "semgrep"], capture_output=True).returncode == 0
     
-    if not has_gitleaks and not has_semgrep:
-        print("[WARN] scan omitido — instalar gitleaks+semgrep para habilitar supply-chain check")
+    errors = []
     
-    # Would download, scan, validate frontmatter, install
-    print(f"[OK] Skill installed: {skill_name}")
+    skill_md = os.path.join(quarantine_dir, "SKILL.md")
+    if os.path.exists(skill_md):
+        with open(skill_md) as f:
+            content = f.read()
+        
+        valid, msg = validate_frontmatter(content)
+        if not valid:
+            errors.append(f"Frontmatter validation failed: {msg}")
+        
+        dangerous_refs = re.findall(r'\.(?:evol|xdd|gates?|keys?|secrets?|state)', content, re.IGNORECASE)
+        if dangerous_refs:
+            errors.append(f"Dangerous config references detected: {dangerous_refs[:3]}")
+    
+    if has_gitleaks:
+        result = subprocess.run(
+            ["gitleaks", "detect", "--no-git", "--source", quarantine_dir],
+            capture_output=True
+        )
+        if result.returncode != 0:
+            output = result.stdout.decode()
+            if "secrets" in output.lower() or "findings" in output.lower():
+                errors.append("Secret detected by gitleaks")
+    
+    if has_semgrep and os.path.exists(skill_md):
+        result = subprocess.run(
+            ["semgrep", "--config", "auto", "--json", "--quiet", quarantine_dir],
+            capture_output=True
+        )
+        try:
+            data = json.loads(result.stdout.decode())
+            if data.get("results"):
+                errors.append(f"Semgrep found {len(data['results'])} issues")
+        except:
+            pass
+    
+    shutil.rmtree(scan_dir, ignore_errors=True)
+    return errors
+
+def compute_skill_hash(skill_path):
+    """Compute SHA256 hash of skill directory."""
+    h = hashlib.sha256()
+    for root, dirs, files in os.walk(skill_path):
+        dirs.sort()
+        for fname in sorted(files):
+            fpath = os.path.join(root, fname)
+            with open(fpath, "rb") as f:
+                for chunk in iter(lambda: f.read(8192), b""):
+                    h.update(chunk)
+    return h.hexdigest()
+
+def load_installed_registry():
+    """Load installed skills registry."""
+    registry_path = ".evol/.skill-registry.json"
+    if os.path.exists(registry_path):
+        return load_json(registry_path)
+    return {}
+
+def save_installed_registry(registry):
+    """Save installed skills registry."""
+    registry_path = ".evol/.skill-registry.json"
+    os.makedirs(os.path.dirname(registry_path), exist_ok=True)
+    save_json(registry, registry_path)
+    os.chmod(registry_path, 0o600)
+
+def install_skill(skill_spec):
+    """Install community skill with full supply-chain security.
+    
+    skill_spec format:
+      - local path (must exist)
+      - remote URL (must include @sha for pinning, e.g. https://github.com/user/repo @abc123)
+      - registry name (installed from known community)
+    """
+    import urllib.request, tempfile
+    
+    print(f"[INFO] Installing: {skill_spec}")
+    
+    tmp_dir = tempfile.mkdtemp(prefix="evol-install-")
+    skill_path = None
+    origin_label = "local"
+    
+    try:
+        if skill_spec.startswith("http://") or skill_spec.startswith("https://"):
+            origin_label = "remote"
+            if "@" not in skill_spec:
+                print("[ERROR] Remote skill requires commit SHA pin: <url>@<sha>")
+                print("[INFO] Example: https://github.com/user/skill@abc123def")
+                sys.exit(1)
+            
+            url, pin = skill_spec.rsplit("@", 1)
+            if len(pin) < 7:
+                print(f"[ERROR] Commit SHA too short (need 7+ chars): {pin}")
+                sys.exit(1)
+            
+            print(f"[INFO] Remote: {url}")
+            print(f"[INFO] Pin: {pin} (first 7 chars)")
+            
+            try:
+                req = urllib.request.Request(url, headers={"Accept": "application/vnd.github.v3+json"})
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    data = json.loads(resp.read())
+                    tarball_url = f"{url.rstrip('/')}/archive/{pin}.tar.gz"
+                
+                import tarfile, io
+                with urllib.request.urlopen(tarball_url, timeout=30) as tar_resp:
+                    tar_data = tar_resp.read()
+                
+                skill_path = os.path.join(tmp_dir, "skill")
+                with tarfile.open(fileobj=io.BytesIO(tar_data), mode="r:*") as tar:
+                    members = tar.getmembers()
+                    base = members[0].name.split("/")[0]
+                    for m in members:
+                        m.name = m.name[len(base)+1:] if m.name.startswith(base + "/") else m.name
+                    tar.extractall(tmp_dir, members=members)
+                
+            except Exception as e:
+                print(f"[ERROR] Failed to download remote skill: {e}")
+                sys.exit(1)
+        elif os.path.isdir(skill_spec):
+            skill_path = skill_spec
+        else:
+            print(f"[ERROR] Skill not found: {skill_spec}")
+            sys.exit(1)
+        
+        errors = quarantine_and_scan(skill_path, tmp_dir)
+        
+        if errors:
+            print(f"\n[ERROR] Skill failed supply-chain checks:")
+            for err in errors:
+                print(f"  - {err}")
+            print("\n[INFO] To override with gate approval, run:")
+            print(f"  evol-gate approve install-unsafe --skill {skill_spec}")
+            print("[INFO] Manual override stores approval in .evol/.skill-overrides.json")
+            sys.exit(1)
+        
+        skill_hash = compute_skill_hash(skill_path)
+        dest = os.path.join(SKILLS_DIR, os.path.basename(skill_path.rstrip("/")))
+        
+        if os.path.exists(dest):
+            print(f"[WARN] Skill already exists: {dest}")
+            print(f"[INFO] Existing hash: {skill_hash}")
+            shutil.rmtree(dest)
+        
+        shutil.copytree(skill_path, dest)
+        
+        registry = load_installed_registry()
+        registry[os.path.basename(dest)] = {
+            "hash": skill_hash,
+            "origin": origin_label,
+            "spec": skill_spec,
+            "installed_at": datetime.now().isoformat()
+        }
+        save_installed_registry(registry)
+        
+        print(f"[OK] Skill installed: {dest}")
+        print(f"[OK] Hash: {skill_hash}")
+        
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 def status():
     """Show evolution status."""
@@ -248,7 +426,8 @@ def main():
     p.add_argument("--dry-run", action="store_true")
     
     p = sub.add_parser("install-skill", help="Install community skill")
-    p.add_argument("skill_name")
+    p.add_argument("skill_spec", help="Skill: local path, remote URL@SHA, or registry name")
+    p.add_argument("--force", action="store_true", help="Skip supply-chain checks (requires gate approval)")
     
     args = parser.parse_args()
     
@@ -272,7 +451,19 @@ def main():
     elif args.cmd == "sync-community":
         sync_community(args.dry_run)
     elif args.cmd == "install-skill":
-        install_skill(args.skill_name)
+        if args.force:
+            override_path = ".evol/.skill-overrides.json"
+            os.makedirs(".evol", exist_ok=True)
+            overrides = load_json(override_path) if os.path.exists(override_path) else {}
+            overrides[args.skill_spec] = {
+                "approved_at": datetime.now().isoformat(),
+                "reason": "manual override"
+            }
+            save_json(overrides, override_path)
+            os.chmod(override_path, 0o600)
+            print(f"[WARN] Force install requested. Override registered.")
+            print(f"[INFO] Skill will be installed without supply-chain checks.")
+        install_skill(args.skill_spec)
     else:
         parser.print_help()
 

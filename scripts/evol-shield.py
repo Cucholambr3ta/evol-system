@@ -25,6 +25,19 @@ RULES = {
         "patterns": [r"api[_-]?key\s*=\s*['\"][A-Za-z0-9]{20,}", r"password\s*=\s*['\"][^'\"]+['\"]"],
         "severity": "CRITICAL"
     },
+    "no_evol_dangerous_refs": {
+        "description": "Skills must not reference framework internals (.evol/, .gate-key, etc.)",
+        "patterns": [
+            r'\.(?:evol|xdd)/(?:\.gate[_-]?key|\.gate[_-]?log|state\.db|memory/)',
+            r'gates?\.(?:json|key|log)',
+            r'secrets?\.(?:env|json|key)',
+            r'\.evol/\.skill[_-]?overrides',
+            r'(?:index|read|write)[^\n]*\.evol/',
+            r'\.evol/.*(?:read|write|delete|traverse)',
+        ],
+        "severity": "HIGH",
+        "applies_to": [".md"]
+    },
     "supply_chain_scan": {
         "description": "Supply chain scan capability",
         "tools": ["gitleaks", "semgrep"],
@@ -40,8 +53,14 @@ def scan_file(filepath, violations):
     with open(filepath) as f:
         content = f.read()
     
+    ext = os.path.splitext(filepath)[1]
+    
     for rule_id, rule in RULES.items():
         if rule_id == "supply_chain_scan":
+            continue
+        
+        applies = rule.get("applies_to", [])
+        if applies and ext not in applies:
             continue
         
         for pattern in rule.get("patterns", []):
