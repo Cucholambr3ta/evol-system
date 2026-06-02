@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Evol-DD Gate Keeper — HMAC-SHA256 chain-integrity approval system."""
-import os, sys, hmac, hashlib, json, argparse, base64, stat
+import os, sys, hmac, hashlib, json, argparse, base64
 from datetime import datetime, timezone
 from _evol_common import get_logger, get_data_dir
 
@@ -13,10 +13,6 @@ GATE_DIR = ".evol"
 PAYLOAD_KEYS = ["timestamp", "phase", "approver", "action", "nonce", "previous_hash"]
 GENESIS_HASH = "0" * 64
 
-def _secure_path(path, mode):
-    """Set file permissions securely."""
-    os.chmod(path, mode)
-
 def _get_gate_dir():
     base = get_data_dir()
     return os.path.join(base, GATE_DIR)
@@ -27,11 +23,11 @@ def get_gate_key():
     key_file = os.path.join(gate_dir, ".gate-key")
     if not os.path.exists(key_file):
         os.makedirs(gate_dir, exist_ok=True)
+        os.chmod(gate_dir, 0o700)
         key = os.urandom(32)
         with open(key_file, "wb") as f:
             f.write(key)
-        _secure_path(key_file, 0o600)
-        _secure_path(gate_dir, 0o700)
+        os.chmod(key_file, 0o600)
     with open(key_file, "rb") as f:
         return f.read()
 
@@ -135,11 +131,11 @@ def init_gate():
     """Initialize gate for project."""
     gate_dir = _get_gate_dir()
     os.makedirs(gate_dir, exist_ok=True)
-    _secure_path(gate_dir, 0o700)
+    os.chmod(gate_dir, 0o700)
     log_file = os.path.join(gate_dir, ".gate-log.jsonl")
     with open(log_file, "w") as f:
         f.write("")
-    _secure_path(log_file, 0o600)
+    os.chmod(log_file, 0o600)
     key = get_gate_key()
     logger.info("Gate initialized at %s", os.path.join(gate_dir, ".gate-key"))
 
