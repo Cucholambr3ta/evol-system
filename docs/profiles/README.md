@@ -20,22 +20,11 @@ Each profile extends from another profile (except `minimal` and `lean`) and adds
 ## Profile Management CLI
 
 ```bash
-# List all profiles
 evol profile list
-
-# Show current project's profile config
 evol profile show
-
-# Show modules for a specific profile
 evol profile explain developer
-
-# Initialize new project with profile
 evol profile init ./mi-proyecto developer
-
-# Upgrade current project to a profile (additive)
 evol profile upgrade full
-
-# Validate current profile against manifests
 evol profile validate
 ```
 
@@ -45,24 +34,19 @@ Agent workflow commands via `/evol-profile`:
 
 - `/evol-profile` — Guided selector
 - `/evol-profile list`
-- `/evol-profile show`
-- `/evol-profile explain developer`
-- `/evol-profile init ./mi-proyecto developer`
-- `/evol-profile upgrade full`
+- `/evol-profile explain <profile>`
+- `/evol-profile init <path> <profile>`
+- `/evol-profile upgrade <profile>`
 - `/evol-profile validate`
-- `/evol-profile downgrade <profile>` — Blocked unless `--force`
 
 ## Module Resolution
 
 Profiles resolve modules hierarchically via the `extends` field:
-
 1. Start from the base profile
 2. Recursively resolve parent modules
 3. Add current profile's modules
 
-Example: `full` resolves to all modules from `minimal` + `core` + `developer` + `full`'s own modules.
-
-## Manifets
+## Manifests
 
 - `manifests/install-profiles.json` — Profile definitions
 - `manifests/install-modules.json` — Module definitions
