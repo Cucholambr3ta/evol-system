@@ -301,7 +301,7 @@ grep -r "mcpServers" .claude/ .opencode/ .cursor/ 2>/dev/null | wc -l
 1. Actualizar `prompts/workflows/03_workflows_catalog.md` con la nueva skill.
 2. Si la skill fue auto-generada desde instincts: registrar en `evol-state.py`:
    ```bash
-   python3 scripts/evol-state.py --db ~/.xdd/state.db record-instinct \
+   python3 scripts/evol-state.py --db ~/.evol-dd/state.db record-instinct \
      --category HERRAMIENTAS \
      --pattern "skill <nombre> creada via /crear-skill" \
      --context "caso de uso: <descripcion>"
