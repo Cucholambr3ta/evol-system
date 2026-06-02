@@ -79,7 +79,9 @@ def save_json(path, data, indent=2):
 
 # === Data dirs ===
 def get_data_dir():
-    """Return absolute path to evol-dd data directory."""
+    """Return absolute path to evol-dd data directory. Supports EVOL_DATA_DIR override."""
+    if os.environ.get("EVOL_DATA_DIR"):
+        return os.environ["EVOL_DATA_DIR"]
     return os.path.dirname(os.path.abspath(__file__)) + "/.."
 
 # === Constants ===
