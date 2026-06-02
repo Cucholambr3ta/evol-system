@@ -1,3 +1,81 @@
 {
-  "profiles": []
+  "version": "1.0.0",
+  "profiles": [
+    {
+      "id": "minimal",
+      "description": "Core minimum with lessons and memory. For tiny projects or CI-only setups.",
+      "modules": [
+        "core",
+        "workflows-core",
+        "lessons-engine",
+        "continuous-memory",
+        "memory"
+      ]
+    },
+    {
+      "id": "core",
+      "description": "Standard for projects. Default profile. Includes agents, gate, CI and growth engine.",
+      "extends": "minimal",
+      "modules": [
+        "agents-core",
+        "gate-keeper",
+        "ci-runtime",
+        "growth-engine"
+      ]
+    },
+    {
+      "id": "developer",
+      "description": "Active development with ephemeral agents, hooks, lifecycle, evolution and eval.",
+      "extends": "core",
+      "modules": [
+        "hooks-runtime",
+        "lifecycle-agents",
+        "evolve-skills",
+        "researcher",
+        "eval-harness"
+      ]
+    },
+    {
+      "id": "security",
+      "description": "Security focus with SecDD, strict hooks, agent shield and eval.",
+      "extends": "core",
+      "modules": [
+        "security-suite",
+        "hooks-strict"
+      ]
+    },
+    {
+      "id": "research",
+      "description": "Research and continuous evolution with eval harness, observability and lifecycle.",
+      "extends": "core",
+      "modules": [
+        "eval-harness",
+        "evolve-skills",
+        "researcher",
+        "observability",
+        "lifecycle-agents"
+      ]
+    },
+    {
+      "id": "full",
+      "description": "Complete installation. All modules. For maximum capability.",
+      "extends": "developer",
+      "modules": [
+        "security-suite",
+        "hooks-strict",
+        "observability",
+        "platform-configs"
+      ]
+    },
+    {
+      "id": "lean",
+      "description": "Lightweight. Depends on global install. Minimal footprint.",
+      "modules": [
+        "core",
+        "workflows-core",
+        "memory",
+        "global-wrapper"
+      ]
+    }
+  ]
 }
