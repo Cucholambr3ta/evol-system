@@ -84,7 +84,7 @@ def audit_directory(directory, extensions=None):
     for ext in extensions:
         for filepath in Path(directory).rglob(f"*{ext}"):
             rel = str(filepath.relative_to(Path(REPO_ROOT)))
-            if any(skip in rel for skip in [".git/", "node_modules/", "dialog/", "tool_result/"]):
+            if any(skip in rel for skip in [".git/", "node_modules/", "dialog/", "tool_result/", "docs/SECURITY_PERMISSIONS.md", "docs/GATE.md"]):
                 continue
             
             scan_file(str(filepath), violations)

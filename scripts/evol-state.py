@@ -9,6 +9,7 @@ logger = get_logger("state")
 def get_db():
     db_path = get_state_db()
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    os.chmod(os.path.dirname(db_path), 0o700)
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn

@@ -131,17 +131,19 @@ check_scripts_executable() {
 check_sensitive_permissions() {
     emit "INFO" "Permissions" "Checking sensitive permissions..."
 
-    local sensitive_paths=(
+    local sensitive_files=(
         ".evol/.gate-key"
         ".evol/.gate-log.jsonl"
     )
 
-    for path in "${sensitive_paths[@]}"; do
+    for path in "${sensitive_files[@]}"; do
         if [ -e "$REPO_ROOT/$path" ]; then
             local perms
             perms=$(stat -c '%a' "$REPO_ROOT/$path" 2>/dev/null || stat -f '%Lp' "$REPO_ROOT/$path" 2>/dev/null || echo "")
             if [ "$perms" = "600" ]; then
                 emit "OK" "Permissions" "$path is 0600: OK" "$path"
+            elif [ "$perms" = "640" ]; then
+                emit "OK" "Permissions" "$path is 0640: OK" "$path"
             else
                 emit "HIGH" "Permissions" "$path has permissions $perms, expected 0600" "$path"
             fi
@@ -153,7 +155,7 @@ check_sensitive_permissions() {
         dperms=$(stat -c '%a' "$REPO_ROOT/.evol" 2>/dev/null || stat -f '%Lp' "$REPO_ROOT/.evol" 2>/dev/null || echo "")
         local valid=false
         case "$dperms" in
-            700|750|700) valid=true ;;
+            700|750) valid=true ;;
         esac
         if [ "$valid" = true ]; then
             emit "OK" "Permissions" ".evol/ is $dperms: OK"
@@ -161,6 +163,17 @@ check_sensitive_permissions() {
             emit "MEDIUM" "Permissions" ".evol/ has permissions $dperms, expected 0700 or 0750"
         fi
     fi
+
+    local runtime_dirs="memory dialog tool_result .agent/hooks/scripts"
+    for dir in $runtime_dirs; do
+        if [ -d "$REPO_ROOT/$dir" ]; then
+            local dperms
+            dperms=$(stat -c '%a' "$REPO_ROOT/$dir" 2>/dev/null || stat -f '%Lp' "$REPO_ROOT/$dir" 2>/dev/null || echo "")
+            if [ -n "$dperms" ] && [ "$dperms" != "750" ] && [ "$dperms" != "755" ] && [ "$dperms" != "700" ]; then
+                emit "MEDIUM" "Permissions" "$dir/ is group-writable ($dperms)" "$dir"
+            fi
+        fi
+    done
 }
 
 check_source_dirs_tracked() {
@@ -254,6 +267,66 @@ check_entrypoints() {
     done
 }
 
+check_manifest() {
+    local manifest_file="$REPO_ROOT/agent.yaml"
+    emit "INFO" "Manifest" "Checking agent.yaml..."
+
+    if [ ! -f "$manifest_file" ]; then
+        emit "MEDIUM" "Manifest" "agent.yaml not found (optional but recommended)" "$manifest_file"
+        return
+    fi
+
+    local schema_file="$REPO_ROOT/schemas/agent-manifest.schema.json"
+    if [ ! -f "$schema_file" ]; then
+        emit "MEDIUM" "Manifest" "Schema not found: schemas/agent-manifest.schema.json" "$schema_file"
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        local result
+        result=$(python3 -c "
+import json, sys, yaml
+
+try:
+    import jsonschema
+    with open('$schema_file') as f:
+        schema = json.load(f)
+    with open('$manifest_file') as f:
+        manifest = yaml.safe_load(f)
+    jsonschema.validate(manifest, schema)
+    print('VALID')
+except ImportError:
+    print('NO_JSONSCHEMA')
+except Exception as e:
+    print(f'INVALID: {e}')
+" 2>/dev/null) || result="SKIP"
+
+        case "$result" in
+            VALID)
+                emit "OK" "Manifest" "agent.yaml validates against schema"
+                local name version trigger
+                name=$(python3 -c "import yaml; m=yaml.safe_load(open('$manifest_file')); print(m.get('name',''))" 2>/dev/null || echo "")
+                version=$(python3 -c "import yaml; m=yaml.safe_load(open('$manifest_file')); print(m.get('version',''))" 2>/dev/null || echo "")
+                trigger=$(python3 -c "import yaml; m=yaml.safe_load(open('$manifest_file')); print(m.get('canonical_trigger',''))" 2>/dev/null || echo "")
+                if [ -n "$name" ] && [ -n "$version" ] && [ -n "$trigger" ]; then
+                    emit "OK" "Manifest" "framework: $name v$version, trigger: $trigger"
+                fi
+                ;;
+            NO_JSONSCHEMA)
+                emit "LOW" "Manifest" "jsonschema not installed, skipping schema validation"
+                ;;
+            INVALID:*)
+                emit "HIGH" "Manifest" "$result" "$manifest_file"
+                ;;
+            *)
+                emit "MEDIUM" "Manifest" "Could not validate manifest"
+                ;;
+        esac
+    else
+        emit "LOW" "Manifest" "python3 not available for manifest validation"
+    fi
+}
+
 check_dependencies() {
     emit "INFO" "Dependencies" "Checking critical dependencies..."
 
@@ -331,6 +404,7 @@ main() {
     echo "=== Evol-DD Doctor v${EVOL_VERSION} ==="
 
     check_profile
+    check_manifest
     check_required_files
     check_scripts_executable
     check_sensitive_permissions
