@@ -63,6 +63,7 @@ Every significant work session ends by updating `memoria.md` with:
 | `evol-flow` | Execute declarative flows |
 | `evol-adapt` | Generate IDE configs (claude-code, opencode, cursor, windsurf, vscode-copilot, antigravity, codex) |
 | `evol-brand` | Apply branding |
+| `evol-update` | Update mechanism: `status` / `check` / `apply`. Pip-mode: upgrades package + propagates workflows + regenerates IDE configs. Legacy-mode: copies scripts from EVOL_SOURCE_DIR + propagates. |
 
 ---
 

@@ -101,3 +101,34 @@ git checkout develop && git merge hotfix/<description> --no-ff
 git branch -d hotfix/<description>
 git push origin main develop v<patch>
 ```
+
+---
+
+## Como los consumidores del framework se actualizan
+
+Una vez publicada la nueva version en PyPI o disponible en el repo fuente, los
+proyectos que usan Evol-DD actualizan con un solo comando:
+
+```bash
+# Desde el directorio del proyecto consumidor
+evol update check     # verificar si hay nueva version
+evol update apply     # aplicar: upgrade paquete + propagar workflows + regenerar IDE
+```
+
+`evol update apply` hace en secuencia:
+
+1. Actualiza el paquete: `pipx upgrade evol-dd` (o `pip install --upgrade evol-dd`)
+2. Propaga workflows SSoT actualizados: copia `.agent/workflows/*.md` al proyecto
+3. Propaga templates actualizados: copia `templates/*.md` y `templates/*.yml`
+4. Regenera configs IDE: ejecuta `evol-adapt.sh all --dest=<proyecto>`
+
+Para modo legacy (sin pip):
+
+```bash
+export EVOL_SOURCE_DIR=/ruta/al/repo/evol-dd  # apuntar a la nueva version
+evol update apply --project /tu-proyecto
+```
+
+**Invariante post-release:** despues de publicar, verificar que `evol --version`
+en una instalacion limpia de pipx muestra la version correcta (no `0.1.0-dev`
+stale). Esto confirma que el empaquetado incluye el `VERSION` file correcto.

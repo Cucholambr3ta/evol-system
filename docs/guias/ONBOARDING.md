@@ -398,3 +398,22 @@ La memoria conversacional usa stdlib Python puro sin dependencias externas. Alma
 - `memory/YYYY-MM-DD.md` — journal diario de sesion
 - `dialog/` — mensajes en crudo (gitignored)
 - `tool_result/` — resultados de herramientas (gitignored, TTL 3 dias)
+
+---
+
+## Mantener el sistema actualizado
+
+```bash
+# Verificar si hay actualizacion disponible
+evol update check
+
+# Aplicar actualizacion (desde el directorio del proyecto)
+evol update apply
+
+# Ver version activa y modo de instalacion
+evol update status
+```
+
+`evol update apply` actualiza el paquete pip/pipx y propaga automáticamente los
+workflows SSoT, templates y configs IDE del proyecto activo. Ver
+`docs/operaciones/RUNBOOK.md` PROC-006 para el procedimiento completo y modo legacy.

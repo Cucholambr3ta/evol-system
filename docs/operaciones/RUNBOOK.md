@@ -177,37 +177,63 @@ python scripts/evol-state.py list
 
 ---
 
-### PROC-006: Re-sync skills y commands tras actualizar Evol-DD
+### PROC-006: Actualizar Evol-DD y propagar cambios al proyecto
 
-**Sintoma:** tras actualizar el framework Evol-DD (git pull en el repo del framework), los skills o commands del proyecto estan desactualizados o tienen conflictos.
+**Sintoma:** hay una nueva version de Evol-DD disponible, o tras instalar una actualizacion
+los workflows/skills/commands del proyecto estan desactualizados.
 
-**Causa probable:** actualizacion del framework que modifica skills base o commands del sistema.
+**Causa probable:** nueva version del framework publicada en PyPI, o actualizacion manual
+del repo fuente (legacy-mode).
 
-**Comandos:**
+**Comandos — Modo pip (recomendado):**
 
 ```bash
-# 1. Desde el directorio del framework Evol-DD actualizado
-cd /ruta/a/evol-dd
-git pull origin main
+# 1. Verificar si hay actualizacion disponible
+evol update check
+# → "Actualizacion disponible: 0.1.0-dev → 0.2.0" o "Sistema actualizado"
 
-# 2. Volver al proyecto y ejecutar re-sync de commands
-# Los commands en .claude/commands/ son copias reales (no symlinks)
-# El script de adapt los regenera desde el framework
-bash /ruta/a/evol-dd/scripts/evol-adapt.sh --target claude-code
+# 2. Aplicar actualizacion completa desde el directorio del proyecto
+cd /tu-proyecto
+evol update apply
+# Hace automaticamente:
+#   - pipx upgrade evol-dd (o pip install --upgrade)
+#   - Propaga .agent/workflows/*.md actualizados al proyecto
+#   - Propaga templates/ actualizados
+#   - Regenera configs IDE (evol-adapt.sh all)
 
-# 3. Verificar que los commands actualizados son validos
-bash /ruta/a/evol-dd/scripts/lint-workflows.sh
+# 3. Verificar estado post-actualizacion
+evol --version          # debe mostrar nueva version
+evol doctor             # debe reportar 0 errores criticos
+bash scripts/lint-workflows.sh    # 0 errores, 0 warnings
+python3 scripts/validate-registry.py --strict
+```
 
-# 4. Para skills del proyecto (no tocar los definidos por el usuario):
-# Solo re-sincronizar skills de sistema marcados como framework-owned
-python /ruta/a/evol-dd/scripts/install-skill.sh --sync-framework
+**Comandos — Modo legacy (scripts copiados localmente):**
 
-# 5. Regenerar registry si hubo cambios en agents base
-python /ruta/a/evol-dd/scripts/migrate-agents-to-registry.py
-python /ruta/a/evol-dd/scripts/validate-registry.py --strict
+```bash
+# 1. Apuntar al repo fuente con los cambios
+export EVOL_SOURCE_DIR=/ruta/al/repo/evol-dd
+# (hacer git pull en ese repo primero si aplica)
 
-# 6. Ejecutar doctor para confirmar consistencia
-bash /ruta/a/evol-dd/scripts/evol-doctor.sh
+# 2. Verificar diferencia de version
+evol update check
+
+# 3. Aplicar: copia scripts evol-*, propaga workflows, regenera IDE
+cd /tu-proyecto
+evol update apply --project .
+
+# 4. Verificar
+evol doctor
+bash scripts/lint-workflows.sh
+python3 scripts/validate-registry.py --strict
+```
+
+**Verificacion post-update:**
+
+```bash
+evol update status      # version actual + modo instalacion
+evol --version          # debe coincidir con VERSION del paquete
+evol doctor --json | python3 -c "import json,sys; d=json.load(sys.stdin); print('OK' if d.get('ok') else 'WARN')"
 ```
 
 **Verificacion:** `lint-workflows.sh` retorna exit 0. `validate-registry.py --strict` retorna exit 0. `evol-doctor.sh` sin errores.

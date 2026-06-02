@@ -23,6 +23,7 @@ Instalados automaticamente con `pip install evol-dd`. Disponibles en PATH despue
 | `evol-memory` | `evol_cli:memory` | Motor de memoria conversacional (stdlib puro). load, summarize, compact, search, gc. | `evol-memory load` |
 | `evol-lessons` | `evol_cli:lessons` | Motor de lecciones aprendidas. add, search, list, suggest-fix, apply-fix. | `evol-lessons search "jwt"` |
 | `evol-profile` | `evol_cli:profile` | Gestion de perfiles de instalacion. list, show, explain, init, upgrade, validate. | `evol-profile explain developer` |
+| `evol update` | `evol_cli:main` (subcomando) | Mecanismo de actualizacion. `status`: version + modo. `check`: compara vs PyPI o fuente. `apply`: actualiza paquete + propaga workflows + regenera IDE configs. | `evol update check` / `evol update apply` |
 
 ---
 
@@ -48,6 +49,7 @@ Scripts bash y python en `scripts/`. Ejecutables directamente sin `pip install`,
 | `scripts/lint-workflows.sh` | Lint de frontmatter YAML de workflows. | Sin flags adicionales |
 | `scripts/generate-equipo.sh` | Regenera `docs/equipo.md` desde `prompts/agents/registry.json`. | Sin flags adicionales |
 | `scripts/bump-version.py` | Actualiza VERSION, pyproject.toml y CHANGELOG.md. | `<nueva-version>` como argumento posicional |
+| `scripts/evol-update.py` | Mecanismo de actualizacion completo. `status`: version + modo instalacion. `check`: compara vs PyPI o EVOL_SOURCE_DIR. `apply`: actualiza paquete pip/pipx o copia desde fuente legacy, propaga workflows y regenera IDE. | `status`, `check`, `apply [--project PATH]` |
 
 ---
 
