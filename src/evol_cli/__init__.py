@@ -101,5 +101,8 @@ def memory():
 def lessons():
     _run_script(SCRIPTS["lessons"], sys.argv[2:])
 
+def profile():
+    _run_script(PROFILE_SCRIPT, sys.argv[2:])
+
 if __name__ == "__main__":
     main()

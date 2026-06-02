@@ -25,6 +25,7 @@ classifiers = [
 
 dependencies = [
     "jsonschema>=4.0.0",
+    "PyYAML>=6.0.0",
 ]
 
 [project.optional-dependencies]
@@ -45,6 +46,7 @@ evol-evolve = "evol_cli:evolve"
 evol-research = "evol_cli:research"
 evol-memory = "evol_cli:memory"
 evol-lessons = "evol_cli:lessons"
+evol-profile = "evol_cli:profile"
 
 [project.urls]
 Homepage = "https://github.com/Cucholambr3ta/evol-system"
