@@ -1,5 +1,7 @@
 ---
 description: Onboarding de developer nuevo. Tour del repo, setup verificado y primer PR meaningful en 5 días.
+name: onboard-dev
+trigger: /evol onboard-dev
 ---
 # /onboard-dev
 

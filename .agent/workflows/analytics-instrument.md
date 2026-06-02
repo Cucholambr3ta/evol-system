@@ -1,5 +1,7 @@
 ---
 description: Instrumenta product analytics. Define schema de eventos, valida en CI, conecta a CDP/proveedor.
+name: analytics-instrument
+trigger: /evol analytics-instrument
 ---
 # /analytics-instrument
 

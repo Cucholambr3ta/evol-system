@@ -1,5 +1,7 @@
 ---
 description: Auditoría de accesibilidad WCAG 2.1 AA. Automatizada en CI + revisión humana de flujos críticos.
+name: a11y-audit
+trigger: /evol a11y-audit
 ---
 # /a11y-audit
 

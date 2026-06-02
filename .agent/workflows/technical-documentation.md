@@ -1,5 +1,7 @@
 ---
 description: Ensure project documentation is always synchronized with the source code. Produce high-quality artifacts (Manuals, API Guides, Architecture) by prioritizing "Source Code as Truth" and enforcing a strictly textual, icon-free standard.
+name: technical-documentation
+trigger: /evol technical-documentation
 ---
 
 # /technical-documentation

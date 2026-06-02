@@ -1,5 +1,7 @@
 ---
 description: Crea un Architecture Decision Record numerado en docs/adr/. Formato Nygard.
+name: adr-new
+trigger: /evol adr-new
 ---
 # /adr-new
 

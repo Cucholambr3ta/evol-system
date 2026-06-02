@@ -1,5 +1,7 @@
 ---
 description: Automate the configuration of the CI/CD pipeline, establishing a continuous delivery environment that ensures code quality, security, and visual compliance. In version 2.2.0, it enforces "Deployment Interoperability" (Art. 6) to ensure cross-environment synchronization.
+name: ci-cd-setup
+trigger: /evol ci-cd-setup
 ---
 
 # /ci-cd-setup

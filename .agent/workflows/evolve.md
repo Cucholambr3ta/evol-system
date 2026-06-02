@@ -1,5 +1,7 @@
 ---
 description: Cluster instincts acumulados → propone skills/agents/commands nuevos. Humano aprueba (T6.1) antes de promover.
+name: evolve
+trigger: /evol evolve
 ---
 # /evolve
 

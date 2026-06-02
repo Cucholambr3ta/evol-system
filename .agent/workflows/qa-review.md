@@ -1,5 +1,7 @@
 ---
 description: Ejecución de revisión por pares concurrente y validación estratificada (Tiers 1-3) para garantizar la excelencia técnica y estética antes de la entrega.
+name: qa-review
+trigger: /evol qa-review
 ---
 
 # /qa-review

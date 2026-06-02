@@ -1,5 +1,7 @@
 ---
 description: Establece y verifica presupuestos de performance (CWV, bundle size, latencias) en CI.
+name: perf-budget
+trigger: /evol perf-budget
 ---
 # /perf-budget
 

@@ -1,5 +1,7 @@
 ---
 description: Corte de release con semver, CHANGELOG automático y release notes user-facing.
+name: release-cut
+trigger: /evol release-cut
 ---
 # /release-cut
 

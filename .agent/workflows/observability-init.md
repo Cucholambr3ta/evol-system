@@ -1,5 +1,7 @@
 ---
 description: Bootstrap de observabilidad. Define SLI/SLO, logs estructurados, métricas, tracing y dashboards.
+name: observability-init
+trigger: /evol observability-init
 ---
 # /observability-init
 

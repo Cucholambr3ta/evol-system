@@ -1,5 +1,7 @@
 ---
 description: Implement a template-driven documentation system (gstack pattern) to eliminate divergence between skill implementation (code) and documentation (SKILL.md).
+name: skill-template-generator
+trigger: /evol skill-template-generator
 ---
 
 # /skill-template-generator

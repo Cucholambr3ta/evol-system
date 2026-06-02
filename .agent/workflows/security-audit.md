@@ -1,5 +1,7 @@
 ---
 description: Perform an exhaustive security audit (SAST/DAST/SCA) simulating controlled attacks in an isolated sandbox to identify and mitigate vulnerabilities before exploitation.
+name: security-audit
+trigger: /evol security-audit
 ---
 
 # /security-audit

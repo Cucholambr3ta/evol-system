@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD
+name: refactor-area
+trigger: /evol refactor-area
 ---
 
 # /refactor-area

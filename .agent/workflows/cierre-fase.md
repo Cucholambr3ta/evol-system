@@ -1,5 +1,7 @@
 ---
 description: Ejecución del cierre formal de una fase de desarrollo y actualización de la Memoria Viva de X-DD.
+name: cierre-fase
+trigger: /evol cierre-fase
 ---
 # /cierre-fase
 

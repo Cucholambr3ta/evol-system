@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD - Generador de Flujos
+name: generar-flujo
+trigger: /evol generar-flujo
 ---
 
 # /generar-flujo

@@ -1,5 +1,7 @@
 ---
 description: Discovery pre-Fase 1. Valida problema, persona y JTBD antes de invertir en spec. Produce DISCOVERY.md.
+name: ux-discovery
+trigger: /evol ux-discovery
 ---
 # /ux-discovery
 

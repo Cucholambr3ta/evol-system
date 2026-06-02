@@ -1,5 +1,7 @@
 ---
 description: Garantizar el aislamiento físico y lógico de tareas de alto riesgo (Pentesting, Stress Testing, Malware Analysis) mediante el uso de contenedores Docker efímeros. Protege el host de X-DD y automatiza la destrucción de contextos post-ejecución (Art. 7.3 Const.).
+name: secure-isolation-ops
+trigger: /evol secure-isolation-ops
 ---
 
 # /secure-isolation-ops

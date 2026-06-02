@@ -1,5 +1,7 @@
 ---
 description: Transform raw or existing prompts into optimized, structured versions compliant with X-DD v2.0 standards. Version 2.2.0 integrates "Meta-Interoperability" (Art. 6) to ensure prompts can call other workflows seamlessly.
+name: mejorar-prompt
+trigger: /evol mejorar-prompt
 ---
 
 # /mejorar-prompt

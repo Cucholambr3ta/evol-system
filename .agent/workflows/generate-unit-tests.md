@@ -1,5 +1,7 @@
 ---
 description: Automatically generate unit tests with mocks for existing code modules, aiming for a minimum 80% coverage and strict adherence to architectural contracts.
+name: generate-unit-tests
+trigger: /evol generate-unit-tests
 ---
 
 # /generate-unit-tests

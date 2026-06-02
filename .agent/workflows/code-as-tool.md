@@ -11,6 +11,7 @@ outputs:
   - Script (Python/Bash/JS) que ejecuta los N calls + retorna summary structured
 inspired_by: "ai-boost: Code Execution with MCP (98.7% token reduction)"
 adr: docs/adr/0024-compaction-skill.md
+trigger: /evol code-as-tool
 ---
 
 # /code-as-tool — Reducir token overhead de N tool calls

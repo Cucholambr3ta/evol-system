@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD
+name: project-architecture-gsd
+trigger: /evol project-architecture-gsd
 ---
 
 # /project-architecture-gsd

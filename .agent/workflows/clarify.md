@@ -12,6 +12,7 @@ outputs:
   - Respuestas registradas en CLARIFICATIONS.md (append-only)
 inspired_by: Spec-Kit /clarify (MIT)
 adr: docs/adr/0014-sdd-parity-clarify-cross-validate-constitution.md
+trigger: /evol clarify
 ---
 
 # /clarify — Detectar ambigüedad y resolver

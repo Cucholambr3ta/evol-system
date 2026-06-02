@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD - design-system-builder
+name: design-system-builder
+trigger: /evol design-system-builder
 ---
 
 # /design-system-builder

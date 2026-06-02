@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD — Sincronización del Palacio de la Memoria
+name: mempalace-sync
+trigger: /evol mempalace-sync
 ---
 
 # /mempalace-sync

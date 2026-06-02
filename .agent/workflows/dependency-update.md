@@ -1,5 +1,7 @@
 ---
 description: Mantenimiento proactivo de dependencias y mitigación de vulnerabilidades en la cadena de suministro.
+name: dependency-update
+trigger: /evol dependency-update
 ---
 
 # /dependency-update

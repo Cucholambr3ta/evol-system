@@ -1,5 +1,7 @@
 ---
 description: Gestión de respuesta crítica a incidentes y hotfixes en producción.
+name: incidente-ID
+trigger: /evol incidente-ID
 ---
 
 # /incidente-ID

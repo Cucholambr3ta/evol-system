@@ -1,5 +1,7 @@
 ---
 description: Reversión segura y rápida a estados estables ante fallos críticos.
+name: rollback
+trigger: /evol rollback
 ---
 
 # /rollback

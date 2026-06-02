@@ -1,5 +1,7 @@
 ---
 description: Multi-agent orchestration runtime (/orchestrate). Ejecuta composition_patterns del registry (sequential/parallel/parallel_then_sync).
+name: orchestrate
+trigger: /evol orchestrate
 ---
 # /orchestrate
 

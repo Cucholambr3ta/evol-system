@@ -1,5 +1,7 @@
 ---
 description: Evaluación multidimensional (Código, Infra, Seguridad, UX) de cambios propuestos, garantizando la anticipación de regresiones y la clasificación de riesgo antes de la ejecución técnica.
+name: analisis-impacto
+trigger: /evol analisis-impacto
 ---
 
 # /analisis-impacto

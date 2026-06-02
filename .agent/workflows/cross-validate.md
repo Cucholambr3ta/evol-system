@@ -11,6 +11,7 @@ outputs:
   - REPORT.md de inconsistencias detectadas + sugerencias
 inspired_by: Spec-Kit /cross-validate (MIT)
 adr: docs/adr/0014-sdd-parity-clarify-cross-validate-constitution.md
+trigger: /evol cross-validate
 ---
 
 # /cross-validate — Consistencia entre artefactos

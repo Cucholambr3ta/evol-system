@@ -1,5 +1,7 @@
 ---
 description: Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity, VSCode Copilot o Codex.
+name: crear-skill
+trigger: /evol crear-skill
 ---
 
 # /crear-skill

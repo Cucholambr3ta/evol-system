@@ -1,5 +1,7 @@
 ---
 description: Release de app móvil (iOS/Android). Signing, store submission, beta tracks, rollout escalonado.
+name: mobile-release
+trigger: /evol mobile-release
 ---
 # /mobile-release
 

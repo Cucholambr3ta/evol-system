@@ -1,5 +1,7 @@
 ---
 description: Transformación del PRD en un plano de ejecución multioficio mediante la descomposición en fases lógicas, definición de contratos técnicos (SAD, OpenAPI) y generación de grafos de tareas (DAG) optimizados para el paralelismo.
+name: plan-fases
+trigger: /evol plan-fases
 ---
 
 # /plan-fases

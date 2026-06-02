@@ -1,5 +1,7 @@
 ---
 description: Establece presupuesto cloud, alertas, tagging y checklist mensual de rightsizing. Produce BUDGET.md.
+name: finops-baseline
+trigger: /evol finops-baseline
 ---
 # /finops-baseline
 

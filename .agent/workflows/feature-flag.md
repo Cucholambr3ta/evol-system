@@ -1,5 +1,7 @@
 ---
 description: Crea, gobierna y retira feature flags. Mantiene FLAGS.md como inventario único.
+name: feature-flag
+trigger: /evol feature-flag
 ---
 # /feature-flag
 

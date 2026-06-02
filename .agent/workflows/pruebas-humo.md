@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD
+name: pruebas-humo
+trigger: /evol pruebas-humo
 ---
 
 # /pruebas-humo

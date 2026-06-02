@@ -1,5 +1,7 @@
 ---
 description: Inventario de PII, bases legales y procedimientos GDPR/CCPA. Produce PRIVACY.md.
+name: privacy-review
+trigger: /evol privacy-review
 ---
 # /privacy-review
 

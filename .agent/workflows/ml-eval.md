@@ -1,5 +1,7 @@
 ---
 description: Evaluación sistemática de modelos ML/LLM. Datasets dorados, métricas, drift detection, A/B.
+name: ml-eval
+trigger: /evol ml-eval
 ---
 # /ml-eval
 

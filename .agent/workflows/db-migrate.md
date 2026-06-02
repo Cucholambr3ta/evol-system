@@ -1,5 +1,7 @@
 ---
 description: Gestión de migraciones de BD en Fase 4. Genera migración up/down, seed y verifica rollback.
+name: db-migrate
+trigger: /evol db-migrate
 ---
 # /db-migrate
 

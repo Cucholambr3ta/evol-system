@@ -1,5 +1,7 @@
 ---
 description: Tests de contrato consumer-driven (Pact) en Fase 5. Verifica compatibilidad entre servicios.
+name: contract-test
+trigger: /evol contract-test
 ---
 # /contract-test
 

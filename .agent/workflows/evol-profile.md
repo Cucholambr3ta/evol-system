@@ -1,3 +1,9 @@
+---
+name: evol-profile
+description: Workflow evol-profile
+trigger: /evol evol-profile
+---
+
 # Workflow: /evol-profile
 
 Profile management workflow for Evol-DD projects.

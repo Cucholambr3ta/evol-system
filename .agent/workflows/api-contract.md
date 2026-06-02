@@ -1,5 +1,7 @@
 ---
 description: Define el contrato API (OpenAPI/AsyncAPI/GraphQL SDL) en Fase 2. Genera openapi.yaml + stubs Pact.
+name: api-contract
+trigger: /evol api-contract
 ---
 # /api-contract
 

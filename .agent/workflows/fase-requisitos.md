@@ -1,5 +1,7 @@
 ---
 description: Operacionalización del Artículo 1 (Filtro de Ambigüedad) mediante elicitación de alta resolución, categorización técnica y validación de interoperabilidad para la generación de PRDs profundos.
+name: fase-requisitos
+trigger: /evol fase-requisitos
 ---
 
 # /fase-requisitos

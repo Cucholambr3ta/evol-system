@@ -1,5 +1,7 @@
 ---
 description: Workflow X-DD
+name: deploy-prod
+trigger: /evol deploy-prod
 ---
 
 # /deploy-prod

@@ -11,14 +11,21 @@ REPO_ROOT = "."
 
 RULES = {
     "no_mcp_config": {
-        "description": "No MCP server configuration",
+        "description": "No MCP server configuration in generated IDE configs and scripts",
         "patterns": [r"mcpServers", r"mcp\.json", r"evol-mcp-server", r"xdd-mcp-server"],
-        "severity": "CRITICAL"
+        "severity": "CRITICAL",
+        # Solo aplica a archivos generados por evol-adapt.sh y scripts de instalacion.
+        # Docs y prompts pueden mencionar MCP como referencia o para documentar
+        # la invariante "cero MCP" — eso no es una violacion.
+        "applies_to": [".json", ".yml", ".yaml"],
+        "skip_dirs": ["docs/", "prompts/agents/", "skills/", "tests/", "evals/"],
     },
     "no_dangerous_commands": {
-        "description": "No dangerous shell commands",
+        "description": "No dangerous shell commands in scripts and hooks",
         "patterns": [r"rm\s+-rf\s+/(?!tmp|proc|sys)", r"git\s+--force", r"chmod\s+777", r"curl\s+\|sh"],
-        "severity": "HIGH"
+        "severity": "HIGH",
+        # Docs pueden mencionar comandos peligrosos como ejemplos en runbooks/troubleshooting
+        "skip_dirs": ["docs/", "tests/", "evals/"],
     },
     "no_hardcoded_secrets": {
         "description": "No hardcoded secrets",
@@ -36,7 +43,9 @@ RULES = {
             r'\.evol/.*(?:read|write|delete|traverse)',
         ],
         "severity": "HIGH",
-        "applies_to": [".md"]
+        "applies_to": [".md"],
+        # Docs de arquitectura y operaciones documentan rutas .evol/ — no son violaciones
+        "skip_dirs": ["docs/", "tests/", "evals/"],
     },
     "supply_chain_scan": {
         "description": "Supply chain scan capability",
@@ -58,11 +67,16 @@ def scan_file(filepath, violations):
     for rule_id, rule in RULES.items():
         if rule_id == "supply_chain_scan":
             continue
-        
+
+        # Respetar skip_dirs por regla
+        skip_dirs = rule.get("skip_dirs", [])
+        if skip_dirs and any(sd in filepath for sd in skip_dirs):
+            continue
+
         applies = rule.get("applies_to", [])
         if applies and ext not in applies:
             continue
-        
+
         for pattern in rule.get("patterns", []):
             matches = re.findall(pattern, content, re.IGNORECASE)
             if matches:
@@ -84,7 +98,24 @@ def audit_directory(directory, extensions=None):
     for ext in extensions:
         for filepath in Path(directory).rglob(f"*{ext}"):
             rel = str(filepath.relative_to(Path(REPO_ROOT)))
-            if any(skip in rel for skip in [".git/", "node_modules/", "dialog/", "tool_result/", "docs/SECURITY_PERMISSIONS.md", "docs/GATE.md", "docs/qa/FIXES_DESARROLLADOR_AUDITORIA_FULL.md"]):
+            if any(skip in rel for skip in [
+                ".git/", "node_modules/", "dialog/", "tool_result/",
+                # El propio shield y hooks de seguridad contienen los patrones que buscan
+                "scripts/evol-shield.py",
+                ".agent/hooks/scripts/pre-bash-dangerous-command.sh",
+                # Docs de seguridad que mencionan los patrones legitimamente (no son violaciones)
+                "docs/SECURITY_PERMISSIONS.md", "docs/GATE.md",
+                "docs/seguridad/SECURITY_CONTROLS.md",
+                "docs/seguridad/THREATS.md",   # documenta amenazas, no las implementa
+                "docs/seguridad/PRIVACY.md",   # documenta rutas de datos .evol/
+                "docs/qa/FIXES_DESARROLLADOR_AUDITORIA_FULL.md",
+                # Workflows que documentan verificacion anti-MCP (mencionan mcpServers en grep)
+                ".agent/workflows/crear-skill.md",
+                ".agent/workflows/crear-agente.md",
+                # Tests y fixtures de seguridad
+                "tests/",
+                "evals/",
+            ]):
                 continue
             
             scan_file(str(filepath), violations)

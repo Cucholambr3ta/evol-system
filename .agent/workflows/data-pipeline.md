@@ -1,5 +1,7 @@
 ---
 description: Diseña pipeline de datos con contratos, SLAs, DLQ y data quality checks.
+name: data-pipeline
+trigger: /evol data-pipeline
 ---
 # /data-pipeline
 

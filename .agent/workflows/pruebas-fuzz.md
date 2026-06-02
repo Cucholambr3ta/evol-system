@@ -1,5 +1,7 @@
 ---
 description: Ejecución de pruebas destructivas mediante inyección de datos malformados en sandboxes aislados, garantizando la robustez y seguridad ante entradas inesperadas.
+name: pruebas-fuzz
+trigger: /evol pruebas-fuzz
 ---
 
 # /pruebas-fuzz

@@ -12,6 +12,7 @@ outputs:
   - BRAINSTORM_<timestamp>.md con ideas categorizadas
 inspired_by: BMAD /brainstorm (NOASSERT)
 adr: docs/adr/0017-web-bundles-distribution.md
+trigger: /evol brainstorm
 ---
 
 # /brainstorm — Exploración divergente

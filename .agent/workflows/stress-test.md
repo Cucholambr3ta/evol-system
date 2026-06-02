@@ -1,5 +1,7 @@
 ---
 description: Subject the system to extreme load conditions to determine its breaking point and validate non-functional requirements (SLA/SLOs) within an isolated sandbox.
+name: stress-test
+trigger: /evol stress-test
 ---
 
 # /stress-test

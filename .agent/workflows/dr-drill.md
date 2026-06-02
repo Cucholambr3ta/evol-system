@@ -1,5 +1,7 @@
 ---
 description: Define y prueba el plan de recuperación ante desastres. Produce DR_PLAN.md y log de drills.
+name: dr-drill
+trigger: /evol dr-drill
 ---
 # /dr-drill
 

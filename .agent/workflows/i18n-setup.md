@@ -1,5 +1,7 @@
 ---
 description: Configura internacionalización del proyecto. Extracción, locales, RTL, formato de fechas/números.
+name: i18n-setup
+trigger: /evol i18n-setup
 ---
 # /i18n-setup
 

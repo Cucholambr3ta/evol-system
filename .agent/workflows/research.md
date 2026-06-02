@@ -1,5 +1,7 @@
 ---
 description: Investigacion autonoma de mejoras. El agente Researcher descubre nuevas skills de Claude Code, metodologias y changelogs relevantes, y propone mejoras rankeadas en RESEARCH.md. Toda propuesta requiere aprobacion humana.
+name: research
+trigger: /evol research
 ---
 # /research
 
