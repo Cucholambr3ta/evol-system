@@ -1,0 +1,52 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+## [Unreleased]
+
+## [0.1.0] - 2026-06-02
+
+### Added
+- Framework core with CLI entrypoints (gate, eval, flow, provider, shield, orchestrate, agent, evolve, research, memory, lessons)
+- GitFlow branching strategy with develop/main/release process
+- HMAC-signed gate protocol for approval workflow
+- MemPalace memory integration for agent context persistence
+- Agent registry with 16 core agents and ephemeral agent lifecycle
+- Eval harness with structural, behavioral, output_match, pass_at_k graders
+- Security shield with secret detection and config auditing
+- Skills supply chain with quarantine, pinning, and secret scanning
+- Shell/Bash hooks for pre/post operations (edit, bash, write)
+- Security hooks: dangerous command blocking, config protection, auto-organize
+- Doctor diagnostic tool with JSON output and exit codes
+- Brand adapter for trigger-based IDE configuration generation
+- Agent lifecycle management (create, invoke, retire, recall)
+- Workflow orchestration (sequential, parallel, party patterns)
+- State management with SQLite and JSON-based gate log
+- Release checklist with real gates and commands
+- Tag strategy with semver and Conventional Commits enforcement
+
+### Changed
+- Security-hardened evol-brand.sh with YAML parsing and JSON serialization
+- Security-hardened evol-adapt.sh with strict trigger validation
+
+### Fixed
+- Source gitignore tracking scripts, prompts, skills, templates, evals, schemas, src, tests, .github
+- evol-init.sh with profile manifest system (minimal, core, developer, security, research, full, lean)
+- evol-naming strict mode with all xdd references migrated to evol
+- Gate HMAC chain with payload persistence and verify-on-read
+- MemPalace safe indexing with explicit allowlist (no `.evol/`, `.xdd/`, `.git/`, dialog/, tool_result/)
+- Security hooks with structured JSON input and real blocking for dangerous commands
+- CI as real gate without `|| true` masks, running pytest, shield, doctor, registry validation
+- Hermetic tests using EVOL_HOME, EVOL_STATE_DB, EVOL_PROJECT_DIR overrides with tmp_path fixtures
+- Eval harness with list, validate, run, report commands
+- Registry validation with strict schema checking (retired consistency, unique IDs, skill references)
+- Python dependencies in pyproject.toml with jsonschema as actual dependency
+- Doctor blocking mode with --json output and CRITICAL/HIGH exit codes
+- Security shield with --ci, --output, --no-write, --format flags and gitleaks/semgrep integration
+- Skills supply chain with quarantine, SHA pin enforcement, and secret scanning
+- evol-brand.sh sanitized with YAML parser and JSON serializer
+- evol-adapt.sh sanitized with TRIGGER regex `[A-Za-z0-9_-]+` and realpath validation
