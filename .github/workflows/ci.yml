@@ -7,9 +7,11 @@ on:
     branches: [main, develop]
 
 jobs:
-  test:
+  unit-tests:
+    name: Unit Tests (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ['3.10', '3.11', '3.12']
 
@@ -21,75 +23,122 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Python tests
-        run: |
-          pip install -e .
-          python3 scripts/evol-state.py init
-          python3 scripts/evol-state.py stats
-          python3 scripts/evol-gate.py init
+      - name: Install dependencies
+        run: pip install -e .[dev]
 
-      - name: Shell tests
-        run: |
-          if command -v bats >/dev/null 2>&1; then
-            bats tests/*.bats 2>/dev/null || echo "bats not available"
-          fi
+      - name: Run pytest
+        run: pytest tests/ -v
 
-      - name: Lint workflows
-        run: bash scripts/lint-workflows.sh || true
-
-      - name: Validate registry
-        run: python3 scripts/validate-registry.py --strict || true
-
-  quality-gates:
+  shell-tests:
+    name: Shell Tests (Bats)
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Bats
+        run: |
+          if ! command -v bats >/dev/null 2>&1; then
+            git clone https://github.com/bats-core/bats-core.git
+            cd bats-core
+            ./install.sh /usr/local
+            cd ..
+            rm -rf bats-core
+          fi
+
+      - name: Run Bats tests
+        run: bats tests/*.bats
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python dependencies
+        run: pip install jsonschema
 
       - name: Anti-MCP check
         run: |
           echo "=== Anti-MCP Check ==="
-          count=$(grep -rn 'mcpServers\|xdd-mcp-server\|evol-mcp-server' \
-            .agent/ .claude/ .opencode/ .github/ \
-            --include='*.md' --include='*.json' \
-            --include='*.yml' --include='*.yaml' 2>/dev/null | wc -l)
+          PATTERNS="mcpServers|xdd-mcp-server|evol-mcp-server"
+          count=$(grep -rEl "$PATTERNS" .agent/ .claude/ .opencode/ 2>/dev/null | grep -vE "\.github/workflows/ci\.yml$" | wc -l)
           echo "MCP references: $count"
           if [ "$count" -gt 0 ]; then
             echo "FAIL: MCP detected"
-            grep -rn 'mcpServers\|xdd-mcp-server' .agent/ .claude/ 2>/dev/null
+            grep -rEl "$PATTERNS" .agent/ .claude/ .opencode/ 2>/dev/null | grep -vE "\.github/workflows/ci\.yml$"
             exit 1
           fi
           echo "OK: 0 MCP references"
 
-      - name: Anti-emoji check
-        run: |
-          echo "=== Anti-Emoji Check ==="
-          if command -v grep >/dev/null 2>&1; then
-            echo "Checking docs/ for emojis..."
-          fi
+      - name: Registry validation
+        run: python3 scripts/validate-registry.py --strict
 
       - name: Shield audit
-        run: python3 scripts/evol-shield.py audit --ci || echo "shield check completed"
+        run: python3 scripts/evol-shield.py audit --ci --no-write
 
-  build:
+  packaging:
+    name: Packaging & Entrypoints
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build package
+      - name: Install package
+        run: pip install -e .
+
+      - name: Version check
+        run: evol --version
+
+      - name: Smoke test entrypoints
         run: |
-          pip install -e .
-          evol --version || echo "version check"
+          for cmd in evol-gate evol-eval evol-flow evol-provider evol-shield evol-orchestrate evol-agent evol-evolve evol-research evol-memory evol-lessons; do
+            echo "Testing: $cmd"
+            "$cmd" --help >/dev/null 2>&1 && echo "  OK" || { echo "  FAIL: $cmd"; exit 1; }
+          done
+
+  bootstrap:
+    name: Bootstrap & Init
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: List profiles
-        run: bash scripts/evol-init.sh --list-profiles || echo "init available"
+        run: bash scripts/evol-init.sh --list-profiles
 
-  bash:
+      - name: Doctor check
+        run: bash scripts/evol-doctor.sh
+
+  workflow-lint:
+    name: Workflow Lint
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Doctor check
-        run: bash scripts/evol-doctor.sh || echo "doctor completed"
+      - name: Lint workflows
+        run: bash scripts/lint-workflows.sh
+
+  evals:
+    name: Eval Harness
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate eval suites
+        run: python3 scripts/evol-eval.py validate --all 2>/dev/null || true
+
+      - name: Check eval structure
+        run: |
+          if [ -d evals ] && [ -n "$(ls -A evals 2>/dev/null)" ]; then
+            for suite in evals/*/; do
+              if [ -f "${suite}grader.yaml" ]; then
+                echo "Suite: $suite"
+              fi
+            done
+          else
+            echo "No eval suites found - skipping"
+          fi

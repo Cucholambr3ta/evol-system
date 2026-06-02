@@ -2,13 +2,14 @@
 """Evol-DD State Store — SQLite-based instincts and session tracking."""
 import sqlite3, os, sys, json, argparse
 from datetime import datetime, timedelta
-from _evol_common import EVOL_STATE_DB, get_data_dir, get_logger, save_json, load_json
+from _evol_common import get_state_db, get_data_dir, get_logger, save_json, load_json
 
 logger = get_logger("state")
 
 def get_db():
-    os.makedirs(os.path.dirname(EVOL_STATE_DB), exist_ok=True)
-    conn = sqlite3.connect(EVOL_STATE_DB)
+    db_path = get_state_db()
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -115,7 +116,7 @@ def init_db():
     
     conn.commit()
     conn.close()
-    logger.info("Database initialized at %s", EVOL_STATE_DB)
+    logger.info("Database initialized at %s", get_state_db())
 
 def record_instinct(pattern, context=None, confidence=0.5, source=None):
     """Record or update an instinct pattern."""
@@ -194,9 +195,8 @@ def main():
     p.add_argument("--min-confidence", type=float, default=0.0)
     p.add_argument("--include-invalidated", action="store_true")
     
-    sub.add_parser("evolve", help="Show evolution status")
-    sub.add_parser("prune", help="Prune old instincts")
-    p = sub.add_parser("prune")
+sub.add_parser("evolve", help="Show evolution status")
+    p = sub.add_parser("prune", help="Prune old instincts")
     p.add_argument("--days", type=int, default=90)
     
     args = parser.parse_args()

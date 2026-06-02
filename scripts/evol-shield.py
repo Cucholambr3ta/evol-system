@@ -107,7 +107,7 @@ def supply_chain_scan(directory):
     
     return results
 
-def audit(ci_mode=False):
+def audit(ci_mode=False, no_write=False):
     """Run full security audit."""
     print("=== Evol-DD AgentShield Audit ===")
     
@@ -139,21 +139,22 @@ def audit(ci_mode=False):
     print(f"gitleaks: {'available' if sc_results['gitleaks']['available'] else 'not installed'}")
     print(f"semgrep: {'available' if sc_results['semgrep']['available'] else 'not installed'}")
     
-    report_path = ".evol/qa/QA_REPORT.md"
-    os.makedirs(os.path.dirname(report_path), exist_ok=True)
-    
-    with open(report_path, "w") as f:
-        f.write("# Security Audit Report\n\n")
-        f.write(f"Date: {datetime.now().isoformat()}\n\n")
-        f.write(f"## Summary\n")
-        f.write(f"- Critical: {len(critical)}\n")
-        f.write(f"- High: {len(high)}\n")
-        f.write(f"- Total: {len(violations)}\n\n")
-        f.write(f"## Supply Chain\n")
-        f.write(f"- gitleaks: {'installed' if sc_results['gitleaks']['available'] else 'not installed'}\n")
-        f.write(f"- semgrep: {'installed' if sc_results['semgrep']['available'] else 'not installed'}\n")
-    
-    print(f"\n[OK] Report: {report_path}")
+    if not no_write:
+        report_path = ".evol/qa/QA_REPORT.md"
+        os.makedirs(os.path.dirname(report_path), exist_ok=True)
+        
+        with open(report_path, "w") as f:
+            f.write("# Security Audit Report\n\n")
+            f.write(f"Date: {datetime.now().isoformat()}\n\n")
+            f.write(f"## Summary\n")
+            f.write(f"- Critical: {len(critical)}\n")
+            f.write(f"- High: {len(high)}\n")
+            f.write(f"- Total: {len(violations)}\n\n")
+            f.write(f"## Supply Chain\n")
+            f.write(f"- gitleaks: {'installed' if sc_results['gitleaks']['available'] else 'not installed'}\n")
+            f.write(f"- semgrep: {'installed' if sc_results['semgrep']['available'] else 'not installed'}\n")
+        
+        print(f"\n[OK] Report: {report_path}")
     
     if ci_mode:
         if critical:
@@ -168,13 +169,14 @@ def main():
     
     p = sub.add_parser("audit", help="Run security audit")
     p.add_argument("--ci", action="store_true", help="CI mode (exit 1 on critical)")
+    p.add_argument("--no-write", action="store_true", help="Don't write report to disk")
     
     sub.add_parser("rules", help="List security rules")
     
     args = parser.parse_args()
     
     if args.cmd == "audit":
-        audit(ci_mode=args.ci)
+        audit(ci_mode=args.ci, no_write=args.no_write)
     elif args.cmd == "rules":
         print("=== Security Rules ===")
         for rule_id, rule in RULES.items():
