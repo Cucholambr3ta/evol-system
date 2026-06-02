@@ -306,7 +306,7 @@ graph LR
 | evol-init.sh | Bootstrap proyectos | manifests, templates |
 | evol-doctor.sh | Diagnostico entorno | git, python3, mempalace |
 | evol-start.sh | Iniciar sistema | mempalace, memoria.md |
-| evol-gate.py | Gate keeper HMAC | hmac, hashlib |
+| evol-gate.py | Gate keeper HMAC-SHA256 | hmac, hashlib |
 | evol-state.py | State store SQLite | sqlite3 |
 | evol-provider.py | LLM abstraction | MockProvider, AnthropicProvider |
 | evol-flow.py | Flow executor | concurrent.futures |
@@ -318,7 +318,15 @@ graph LR
 | evol-researcher.py | Investigacion autonoma | GitHub API |
 | evol-eval.py | Eval harness | pytest, grader types |
 | evol-shield.py | Security audit | gitleaks, semgrep |
-| evol-adapt.sh | IDE adapters (7 targets) | - |
+| evol-brand.sh | Branding customization | sed, python3 |
+| evol-adapt.sh | IDE adapters | - |
+| evol-global-install.sh | Global wrapper | - |
+| evol-update.py | Auto-update | stdlib |
+| validate-registry.py | Registry validation | jsonschema |
+| generate-equipo.sh | Generate docs/equipo.md | bash |
+| lint-workflows.sh | Workflow lint | bash |
+| _evol_common.py | Shared utilities | stdlib |
+| _generate_equipo.py | Equipo generation | stdlib |
 
 ### 9. Modos de Operacion
 
@@ -479,20 +487,12 @@ evol-dd/
 │   ├── core/                 # 16 agentes
 │   ├── ephemeral/            # Agentes dinamicos
 │   └── registry.json         # Registro unificado
-├── scripts/                  # 23 scripts
-├── skills/                   # 7 skills
+├── scripts/                  # 25 scripts (23 + 2 helpers)
+├── skills/                   # 9 skills
 ├── evals/                    # 7 eval suites
-├── templates/                # 4 templates
-├── schemas/                  # 5 JSON schemas
-├── docs/                     # Documentacion completa
-│   ├── arquitectura/
-│   ├── requisitos/
-│   ├── diagramas/
-│   ├── qa/
-│   ├── seguridad/
-│   ├── guias/
-│   ├── usuario/
-│   └── operaciones/
-├── manifests/                # 3 JSON manifests
-└── tests/                    # pytest + bats
+├── templates/                # 8 templates
+├── schemas/                  # 2 schemas (registry + hooks)
+├── docs/                     # Documentacion
+├── manifests/                # 3 JSON manifests (profiles, modules, components)
+└── tests/                    # pytest + bats (5 test files)
 ```

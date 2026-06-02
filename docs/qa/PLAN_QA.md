@@ -24,8 +24,8 @@ graph TB
 | Integracion | 60% | evol-qa | Cada PR |
 | E2E | 40% | evol-qa | Cada release |
 | Contrato | 50% | evol-qa | Cada PR |
-| Fuzz | TBD | evol-sec | Semanal |
-| Stress | TBD | evol-devops | Pre-release |
+| Fuzz | Roadmap | evol-sec | Semanal |
+| Stress | Roadmap | evol-devops | Pre-release |
 
 ### Mapa de Tipos de Prueba
 
@@ -522,8 +522,8 @@ graph LR
 
 | Metrica | Objetivo | Actual | Tendencia |
 |---------|----------|--------|-----------|
-| Coverage unit tests | 80% | TBD | - |
-| Coverage integration | 60% | TBD | - |
-| Defect density | < 5 por KLOC | TBD | - |
-| Mean time to recover | < 1h | TBD | - |
-| Security vulnerabilities | 0 CRITICAL | TBD | - |
+| Coverage unit tests | 80% | Roadmap | - |
+| Coverage integration | 60% | Roadmap | - |
+| Defect density | < 5 por KLOC | Roadmap | - |
+| Mean time to recover | < 1h | Roadmap | - |
+| Security vulnerabilities | 0 CRITICAL | Implementado (G8) | - |
