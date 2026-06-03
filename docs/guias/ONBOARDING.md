@@ -49,29 +49,20 @@ bash --version      # debe ser 5.x o superior
 
 ## Paso 2 — Instalacion
 
-Hay dos rutas de instalacion. La opcion A es la recomendada para consumo del framework. La opcion B es para contribuir al framework mismo.
-
-### Opcion A: pip install (uso estandar)
+### Instalacion estandar (recomendada)
 
 ```bash
-pip install evol-dd
+pipx install evol-dd && evol
 ```
 
-Esto instala los 13 entry-points de CLI en tu PATH:
+`pipx install evol-dd` instala el framework. `evol` detecta que es la primera
+ejecucion y configura automaticamente el trigger `/evol` en los 7 IDEs:
+Claude Code, OpenCode, Cursor, Windsurf, VSCode Copilot, Antigravity y Codex.
 
-```
-evol  evol-gate  evol-eval  evol-flow  evol-provider
-evol-shield  evol-orchestrate  evol-agent  evol-evolve
-evol-research  evol-memory  evol-lessons  evol-profile
-```
+Desde ese momento, abrir cualquier carpeta en cualquier IDE muestra `/evol`
+disponible — sin configuracion adicional por proyecto.
 
-Inicializa un proyecto nuevo con el perfil `core`:
-
-```bash
-evol profile init ./mi-proyecto core
-cd mi-proyecto
-evol doctor
-```
+### Instalacion para desarrollo del framework (Opcion B)
 
 ### Opcion B: clone + evol-init.sh (desarrollo del framework)
 
@@ -404,16 +395,13 @@ La memoria conversacional usa stdlib Python puro sin dependencias externas. Alma
 ## Mantener el sistema actualizado
 
 ```bash
-# Verificar si hay actualizacion disponible
-evol update check
-
-# Aplicar actualizacion (desde el directorio del proyecto)
-evol update apply
-
-# Ver version activa y modo de instalacion
-evol update status
+pipx upgrade evol-dd && evol
 ```
 
-`evol update apply` actualiza el paquete pip/pipx y propaga automáticamente los
-workflows SSoT, templates y configs IDE del proyecto activo. Ver
-`docs/operaciones/RUNBOOK.md` PROC-006 para el procedimiento completo y modo legacy.
+Al detectar una nueva version instalada, `evol` reinstala los triggers
+actualizados en todos los IDEs automaticamente.
+
+Para propagar actualizaciones a un proyecto especifico:
+```bash
+evol update apply   # actualiza paquete + propaga workflows al proyecto activo
+```

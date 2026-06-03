@@ -166,55 +166,47 @@ brew install python
 ## Instalacion
 
 ```bash
-# Opcion A — pipx (recomendado: instala en entorno aislado, sin conflictos)
-pipx install evol-dd
-
-# Opcion B — pip en entorno virtual
-python3 -m venv ~/.venvs/evol-dd
-source ~/.venvs/evol-dd/bin/activate   # Linux/macOS
-# ~/.venvs/evol-dd/Scripts/activate    # Windows
-pip install evol-dd
-
-# Verificar instalacion
-evol --version
-# → evol-dd 0.1.0
+pipx install evol-dd && evol
 ```
+
+Eso es todo. El segundo comando (`evol`) detecta que es la primera ejecucion y configura automaticamente el trigger `/evol` en los 7 IDEs soportados: Claude Code, OpenCode, Cursor, Windsurf, VSCode Copilot, Antigravity y Codex.
+
+Desde ese momento, abrir cualquier carpeta en cualquiera de esos IDEs muestra `/evol` disponible sin configuracion adicional.
+
+---
+
+## Actualizacion
+
+```bash
+pipx upgrade evol-dd && evol
+```
+
+Al detectar una nueva version, `evol` reinstala los triggers actualizados en todos los IDEs.
 
 ---
 
 ## Quick Start
 
 ```bash
-# 1. Verificar entorno
-evol doctor
+# 1. Instalar y activar en todos los IDEs
+pipx install evol-dd && evol
 
-# 2. Bootstrap tu proyecto (elige el perfil segun tu caso)
+# 2. Abrir tu proyecto en Claude Code, OpenCode, Windsurf, etc.
+#    /evol ya esta disponible — invocar en el chat
+
+# 3. Bootstrap del proyecto (opcional — para memoria, lecciones, gate)
 evol init /path/to/project --profile core
 
 # Perfiles disponibles:
 #   minimal    — solo nucleo + workflows + memoria
-#   core       — DEFAULT: + agentes + gate + CI (recomendado para empezar)
+#   core       — DEFAULT: + agentes + gate + CI
 #   developer  — + hooks + agentes efimeros + investigador
 #   security   — + SecDD + AgentShield
 #   research   — + eval harness + evolution engine
 #   full       — todo incluido
-#   lean       — <5MB, requiere instalacion global previa
 
-# 3. Generar configs para tu IDE
-evol adapt claude-code --dest=/path/to/project   # Claude Code
-evol adapt all --dest=/path/to/project           # todos los IDEs
-
-# 4. Activar en Claude Code: invocar /evol en el chat
-# 5. Primera sesion
-evol start
-```
-
-O clonar el repo directamente (modo legacy, sin pip):
-
-```bash
-git clone https://github.com/Cucholambr3ta/evol-system.git
-cd evol-system
-bash scripts/evol-init.sh /path/to/project --profile core
+# 4. Diagnostico del entorno
+evol doctor
 ```
 
 ---

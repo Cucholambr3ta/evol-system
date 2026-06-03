@@ -1,21 +1,46 @@
-# Instalación
+# Instalacion
 
 ## Requisitos
 
 - Python 3.10+
+- pipx (recomendado) o pip
 - Git
-- (Opcional) MemPalace CLI para Modo COMPLETO
 
-## Instalación global
+## Instalacion
 
 ```bash
-bash scripts/evol-global-install.sh
+pipx install evol-dd && evol
 ```
 
-## Bootstrap de proyecto
+El segundo comando (`evol`) detecta que es la primera ejecucion y configura
+automaticamente el trigger `/evol` en los 7 IDEs: Claude Code, OpenCode,
+Cursor, Windsurf, VSCode Copilot, Antigravity y Codex.
+
+Desde ese momento, abrir cualquier carpeta en cualquier IDE muestra `/evol`
+disponible sin configuracion adicional.
+
+### Si no tienes pipx
 
 ```bash
-bash scripts/evol-init.sh /path/to/project --profile=core
+# Ubuntu / Debian / Linux Mint
+sudo apt install pipx && pipx ensurepath && source ~/.bashrc
+
+# macOS
+brew install pipx && pipx ensurepath
+
+# Windows (PowerShell)
+python -m pip install --user pipx && python -m pipx ensurepath
+```
+
+Luego:
+```bash
+pipx install evol-dd && evol
+```
+
+## Bootstrap de proyecto (opcional)
+
+```bash
+evol init /path/to/project --profile core
 ```
 
 ## Perfiles
@@ -35,29 +60,23 @@ bash scripts/evol-init.sh /path/to/project --profile=core
 - **COMPLETO**: MemPalace activo, búsqueda semántica
 - **BASE**: Sin MemPalace, funciona completamente
 
-## Actualización
-
-Evol-DD tiene dos modos de actualización según cómo fue instalado.
-
-### Modo pip (recomendado)
+## Actualizacion
 
 ```bash
-# 1. Verificar si hay actualización disponible
-evol update check
-
-# 2. Aplicar la actualización (detecta pipx o pip automáticamente)
-evol update apply
-
-# 3. Para actualizar solo el paquete sin propagar al proyecto
-pipx upgrade evol-dd
-# o
-pip install --upgrade evol-dd
+pipx upgrade evol-dd && evol
 ```
 
-`evol update apply` hace tres cosas automáticamente:
-- Actualiza el paquete pip/pipx a la última versión
-- Propaga los workflows SSoT actualizados al proyecto activo (`.agent/workflows/`)
-- Regenera las configs IDE (`evol-adapt.sh all`)
+Al detectar una nueva version, `evol` reinstala los triggers actualizados
+en todos los IDEs automaticamente.
+
+### Modo avanzado (propagar a proyectos existentes)
+
+```bash
+# Verificar si hay actualizacion disponible
+evol update check
+
+# Actualizar paquete + propagar workflows al proyecto activo
+evol update apply
 
 ### Modo legacy (scripts copiados localmente)
 
