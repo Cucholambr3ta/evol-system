@@ -2,6 +2,7 @@
 
 > El framework de desarrollo agéntico que aprende con cada proyecto que construye.
 
+[![PyPI](https://img.shields.io/pypi/v/evol-dd)](https://pypi.org/project/evol-dd/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![GitFlow](https://img.shields.io/badge/branching-GitFlow-orange)](docs/constitucion.md)
@@ -113,24 +114,102 @@ bash scripts/evol-adapt.sh all --dest=. --trigger=evol
 
 ---
 
+## Prerequisitos
+
+Evol-DD requiere **Python 3.10+** y **pipx** (recomendado) o pip.
+
+### Verificar que tienes lo necesario
+
+```bash
+python3 --version   # debe ser 3.10 o superior
+pipx --version      # recomendado para instalar CLIs
+# o
+pip --version       # alternativa
+```
+
+### Instalar pipx si no lo tienes
+
+```bash
+# Ubuntu / Debian / Linux Mint
+sudo apt install pipx
+pipx ensurepath
+source ~/.bashrc    # recargar PATH
+
+# macOS (con Homebrew)
+brew install pipx
+pipx ensurepath
+
+# Windows (PowerShell)
+python -m pip install --user pipx
+python -m pipx ensurepath
+
+# Verificar
+pipx --version
+```
+
+### Instalar Python 3.10+ si no lo tienes
+
+```bash
+# Ubuntu / Debian
+sudo apt install python3 python3-pip python3-full
+
+# macOS
+brew install python
+
+# Windows
+# Descargar desde https://python.org/downloads
+# Marcar "Add Python to PATH" durante la instalacion
+```
+
+---
+
+## Instalacion
+
+```bash
+# Opcion A — pipx (recomendado: instala en entorno aislado, sin conflictos)
+pipx install evol-dd
+
+# Opcion B — pip en entorno virtual
+python3 -m venv ~/.venvs/evol-dd
+source ~/.venvs/evol-dd/bin/activate   # Linux/macOS
+# ~/.venvs/evol-dd/Scripts/activate    # Windows
+pip install evol-dd
+
+# Verificar instalacion
+evol --version
+# → evol-dd 0.1.0
+```
+
+---
+
 ## Quick Start
 
 ```bash
-# 1. Instalar
-pip install evol-dd
-
-# 2. Bootstrap tu proyecto
-evol init /path/to/project --profile core
-
-# 3. Diagnostico
+# 1. Verificar entorno
 evol doctor
 
-# 4. Activar en Claude Code: invocar /evol en chat
+# 2. Bootstrap tu proyecto (elige el perfil segun tu caso)
+evol init /path/to/project --profile core
+
+# Perfiles disponibles:
+#   minimal    — solo nucleo + workflows + memoria
+#   core       — DEFAULT: + agentes + gate + CI (recomendado para empezar)
+#   developer  — + hooks + agentes efimeros + investigador
+#   security   — + SecDD + AgentShield
+#   research   — + eval harness + evolution engine
+#   full       — todo incluido
+#   lean       — <5MB, requiere instalacion global previa
+
+# 3. Generar configs para tu IDE
+evol adapt claude-code --dest=/path/to/project   # Claude Code
+evol adapt all --dest=/path/to/project           # todos los IDEs
+
+# 4. Activar en Claude Code: invocar /evol en el chat
 # 5. Primera sesion
 evol start
 ```
 
-O desde el repo:
+O clonar el repo directamente (modo legacy, sin pip):
 
 ```bash
 git clone https://github.com/Cucholambr3ta/evol-system.git
