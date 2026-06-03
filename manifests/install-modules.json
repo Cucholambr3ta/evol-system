@@ -140,7 +140,14 @@
     "security-suite": {
       "description": "Security audit, secret scan, supply chain and anti-MCP enforcement.",
       "files": [
-        "scripts/evol-shield.py"
+        "scripts/evol-shield.py",
+        "scripts/evol-scan.py",
+        "scripts/evol-validate.py",
+        "scripts/evol-patch.py",
+        "scripts/evol-crash.py",
+        "docs/seguridad/analysis-guidance.md",
+        "docs/seguridad/exploit-guidance.md",
+        ".agent/hooks/scripts/pre-build-scan.sh"
       ]
     },
     "observability": {

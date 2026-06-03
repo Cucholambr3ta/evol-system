@@ -71,6 +71,14 @@
         "event": "Stop",
         "enabled": true,
         "script": "stop-pattern-extraction.sh"
+      },
+      {
+        "id": "pre:build:security-scan",
+        "event": "PreToolUse",
+        "enabled": true,
+        "script": "pre-build-scan.sh",
+        "trigger": "bash",
+        "description": "SAST scan antes del gate Build. Bloquea si CRITICAL."
       }
     ]
   },
