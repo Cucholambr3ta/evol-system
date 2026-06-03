@@ -1,8 +1,5 @@
 ---
-name: evol
 description: Orquestador Principal Evol-DD. Pipeline de desarrollo agéntico de 6 fases con gate HMAC-SHA256, agentes core permanentes y efímeros bajo demanda. Usar cuando el usuario invoque /evol, quiera iniciar un proyecto, ejecutar una fase del pipeline, crear un agente, o necesite coordinar trabajo de desarrollo.
-trigger: /evol
-category: orchestrator
 ---
 
 # /evol — Orquestador Principal Evol-DD

@@ -1,51 +1,53 @@
 ---
-description: Workflow X-DD — Sincronización del Palacio de la Memoria
-name: mempalace-sync
-trigger: /evol mempalace-sync
+description: Sincroniza el proyecto activo con MemPalace. Ejecutar al inicio de sesion para cargar contexto semantico, o al cierre para persistir cambios. Activa Modo COMPLETO — el agente recuerda el proyecto, lecciones y patrones previos sin que el usuario repita contexto. Usar cuando el usuario diga "sincroniza memoria", "indexa MemPalace", "/evol mem", o quiera activar continuidad semantica entre sesiones.
 ---
 
-# /mempalace-sync
+# /evol mem — Sincronizacion MemPalace
 
-> **Estandar de documentacion:** Todo artefacto que produzca este workflow cumple
-> [`docs/DOC_STANDARD.md`](../../docs/DOC_STANDARD.md): sin emojis, diagramas Mermaid
-> obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
-> minimas y trazabilidad bidireccional.
-**ID:** FLUJO-059 | **Versión:** 3.0.0 | **Nivel:** Operativo
-**Módulo Core:** `skill-mempalace-manager`
+Sincroniza el proyecto activo con MemPalace para activar Modo COMPLETO.
 
-## 0. PRE-FLIGHT: MEMORY SEAL (START)
-- Registro obligatorio de la fecha y hora en `memoria.md` (Art. 3 de la Constitución).
+## Cuándo usar
 
-## 1. MISIÓN DEL FLUJO
-Sincronizar de forma bidireccional el código fuente, la documentación Loci, las lecciones y las lecciones aprendidas del workspace con la base de datos de grafos local-first de **MemPalace**, asegurando que los agentes locales y el contenedor Nous-Hermes tengan un mapa mental exacto y actualizado en tiempo real.
+- Al **iniciar sesion**: cargar contexto de sesiones anteriores
+- Al **cerrar sesion**: persistir cambios del sprint
+- Cuando el agente no recuerda decisiones previas del proyecto
 
-## 2. DIRECTRICES INQUEBRANTABLES
-- **Actualización Activa:** Ejecutar este workflow antes de cerrar cualquier sesión de desarrollo importante.
-- **Validación Semántica:** Verificar que los perfiles Markdown no contengan wikilinks rotos o formatos de Obsidian obsoletos.
-- **Higiene de Grafos:** Asegurarse de que el comando de minado no indexe directorios basura (como `node_modules`, `.git`, `.venv`, etc.).
+## Comandos
 
-## 3. FLUJO OPERATIVO DETALLADO
-1. **Poda de Logs:** Opcionalmente limpiar archivos de log pesados utilizando `.agent/scripts/optimize_context.ps1`.
-2. **Minado de Loci (`mempalace mine`):** Ejecutar el comando para re-analizar el código y las notas semánticas:
-   ```bash
-   mempalace mine "$PWD"
-   ```
-3. **Validación de Relaciones:** Ejecutar una consulta RAG simple de prueba para verificar que el indexador responde correctamente.
-4. **Cierre de Vuelo:** Registrar el volumen de memoria semántica actualizado en `memoria.md`.
+```bash
+# Indexar proyecto actual (MemPalace 3.x)
+mempalace mine . --wing evol-dd --mode projects
 
-## 4. OBSERVABILIDAD (REGISTRO SEMÁNTICO)
-Cada sincronización exitosa debe loggear un evento con formato:
-```json
-{
-  "timestamp": "ISO-8601",
-  "event": "mempalace_sync_completed",
-  "data": {
-    "workspace": "x-dd-integration",
-    "loci_mined": "success"
-  }
-}
+# Buscar contexto relevante
+mempalace search "QUERY" --wing evol-dd
+
+# Ver estado del palace
+mempalace status
+
+# Buscar decisiones arquitectonicas previas
+mempalace search "arquitectura decision" --wing evol-dd
 ```
 
----
-**Versión:** 3.0.0 | **Fecha:** 2026-05-17
-X-DD System
+## Flujo de sincronizacion
+
+1. Correr `mempalace mine . --wing evol-dd` en el directorio del proyecto
+2. Verificar con `mempalace status` que el wing tiene drawers
+3. Buscar contexto relevante con `mempalace search "TEMA"`
+4. Registrar en `memoria.md` que la sincronizacion fue exitosa
+
+## Nota sobre LLM local
+
+MemPalace 3.x usa Ollama para indexado semantico completo. Sin Ollama activo,
+`mine` corre en modo heuristico — igualmente util. Para semantica completa:
+```bash
+ollama pull gemma4
+```
+
+## Cierre de sesion
+
+Al finalizar trabajo significativo:
+```bash
+mempalace mine . --wing evol-dd --mode projects
+```
+Esto persiste el estado del codigo y docs para que la proxima sesion
+arranque con contexto completo sin repetir briefing.
