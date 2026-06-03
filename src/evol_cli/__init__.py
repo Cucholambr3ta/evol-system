@@ -172,51 +172,109 @@ def lessons():     sys.argv = ["evol-lessons"] + sys.argv[2:]; _run(SCRIPTS["les
 
 
 def install_global() -> int:
-    """Instala /evol como trigger global en Claude Code y OpenCode.
+    """Instala /evol como trigger global en los 7 IDEs soportados.
 
-    El trigger queda disponible en CUALQUIER directorio del PC sin necesidad
-    de correr evol-adapt por proyecto — igual que /anmax funciona globalmente.
+    Copia workflows a los directorios globales de cada IDE. El trigger
+    queda disponible en CUALQUIER directorio del PC sin configuracion
+    por proyecto — igual que /anmax funciona globalmente.
+
+    IDEs cubiertos:
+      Claude Code   ~/.claude/commands/
+      OpenCode      ~/.config/opencode/command/
+      Cursor        ~/.cursor/rules/<trigger>.mdc
+      Windsurf      ~/.codeium/workflows/
+      VSCode Copilot ~/.config/Code/User/prompts/
+      Antigravity   ~/.gemini/skills/
+      Codex         ~/.codex/skills/<trigger>-orchestrator/
 
     Uso: evol-install-global
          evol install-global
     """
     import shutil
+    import subprocess
 
     data = _data_dir()
+    scripts = _scripts_dir()
     workflows_dir = data / ".agent" / "workflows"
+    skills_dir = data / "skills"
+    home = Path.home()
+    trigger = os.environ.get("EVOL_TRIGGER", "evol")
 
     if not workflows_dir.is_dir():
         print(f"[evol] workflows no encontrados en {workflows_dir}", file=sys.stderr)
         return 1
 
-    workflows = list(workflows_dir.glob("*.md"))
-    trigger = os.environ.get("EVOL_TRIGGER", "evol")
+    workflows = sorted(workflows_dir.glob("*.md"))
 
-    targets = [
-        # (directorio_global, extension)
-        (Path.home() / ".claude" / "commands",          "md"),
-        (Path.home() / ".config" / "opencode" / "command", "md"),
-    ]
-
-    for dest_dir, ext in targets:
-        dest_dir.mkdir(parents=True, exist_ok=True)
-        count = 0
+    def copy_workflows(dest: Path, ext: str = "md") -> int:
+        dest.mkdir(parents=True, exist_ok=True)
+        n = 0
         for wf in workflows:
-            shutil.copy2(wf, dest_dir / f"{wf.stem}.{ext}")
-            count += 1
-        print(f"[evol] {count} commands → {dest_dir}")
+            shutil.copy2(wf, dest / f"{wf.stem}.{ext}")
+            n += 1
+        return n
 
-    # Codex global via evol-adapt.sh
-    adapt = _scripts_dir() / "evol-adapt.sh"
+    # 1. Claude Code
+    n = copy_workflows(home / ".claude" / "commands")
+    print(f"[evol] Claude Code:    {n} commands → ~/.claude/commands/")
+
+    # 2. OpenCode
+    n = copy_workflows(home / ".config" / "opencode" / "command")
+    print(f"[evol] OpenCode:       {n} commands → ~/.config/opencode/command/")
+
+    # 3. Cursor — 1 archivo .mdc orquestador (Cursor no soporta N slash commands sin MCP)
+    cursor_dir = home / ".cursor" / "rules"
+    cursor_dir.mkdir(parents=True, exist_ok=True)
+    mdc_content = f"""---
+description: Orquestador Evol-DD. Pipeline 6 fases. Activar con @{trigger}.
+globs:
+alwaysApply: false
+---
+# /{trigger} — Orquestador Evol-DD
+
+Activar con @{trigger}. Workflows en `.agent/workflows/`.
+Lee `memoria.md` + `lecciones.md` + `CLAUDE.md` al iniciar (Constitucion Art. 3).
+"""
+    (cursor_dir / f"{trigger}.mdc").write_text(mdc_content, encoding="utf-8")
+    print(f"[evol] Cursor:         1 rule → ~/.cursor/rules/{trigger}.mdc")
+
+    # 4. Windsurf — workflows globales en ~/.codeium/workflows/
+    n = copy_workflows(home / ".codeium" / "workflows")
+    print(f"[evol] Windsurf:       {n} workflows → ~/.codeium/workflows/")
+
+    # 5. VSCode Copilot — prompts globales
+    n = copy_workflows(home / ".config" / "Code" / "User" / "prompts", ext="prompt.md")
+    print(f"[evol] VSCode Copilot: {n} prompts → ~/.config/Code/User/prompts/")
+
+    # 6. Antigravity — skills globales en ~/.gemini/skills/
+    gemini_skills = home / ".gemini" / "skills"
+    gemini_skills.mkdir(parents=True, exist_ok=True)
+    if skills_dir.is_dir():
+        n = 0
+        for skill_dir in skills_dir.iterdir():
+            if skill_dir.is_dir():
+                dst = gemini_skills / skill_dir.name
+                if dst.exists():
+                    shutil.rmtree(dst)
+                shutil.copytree(skill_dir, dst)
+                n += 1
+        print(f"[evol] Antigravity:    {n} skills → ~/.gemini/skills/")
+    else:
+        print(f"[evol] Antigravity:    skills/ no encontrado — skip")
+
+    # 7. Codex — orchestrator global en ~/.codex/skills/
+    adapt = scripts / "evol-adapt.sh"
     if adapt.exists():
         env = os.environ.copy()
         env["EVOL_DATA_DIR"] = str(data)
-        import subprocess
-        subprocess.run(["bash", str(adapt), "codex"], env=env, capture_output=True)
-        print(f"[evol] Codex orchestrator → ~/.codex/skills/{trigger}-orchestrator/")
+        subprocess.run(["bash", str(adapt), "codex"], env=env,
+                       capture_output=True)
+        print(f"[evol] Codex:          orchestrator → ~/.codex/skills/{trigger}-orchestrator/")
+    else:
+        print(f"[evol] Codex:          evol-adapt.sh no encontrado — skip")
 
-    print(f"\n[evol] Trigger /{trigger} disponible globalmente.")
-    print("[evol] Abrir cualquier carpeta en Claude Code u OpenCode — /evol aparece sin configuracion.")
+    print(f"\n[evol] /{trigger} instalado globalmente en 7 IDEs.")
+    print("[evol] Abrir cualquier carpeta — /evol disponible sin configuracion adicional.")
     return 0
 
 
