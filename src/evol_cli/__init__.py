@@ -188,6 +188,49 @@ def memory():      sys.argv = ["evol-memory"] + sys.argv[2:]; _run(SCRIPTS["memo
 def lessons():     sys.argv = ["evol-lessons"] + sys.argv[2:]; _run(SCRIPTS["lessons"])
 
 
+def _install_vscode_global_tasks(home: Path, trigger: str) -> None:
+    """Añade tasks Evol-DD a ~/.vscode/tasks.json (global VSCode).
+
+    VSCode Copilot no soporta slash commands globales fuera del workspace.
+    Las tasks son la alternativa: Ctrl+Shift+P → 'Run Task' → 'Evol-DD: ...'
+    Merge no destructivo — preserva tasks existentes.
+    """
+    import json as _json
+    tasks_path = home / ".vscode" / "tasks.json"
+    tasks_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if tasks_path.exists():
+        try:
+            data = _json.loads(tasks_path.read_text(encoding="utf-8"))
+        except Exception:
+            data = {"version": "2.0.0", "tasks": []}
+    else:
+        data = {"version": "2.0.0", "tasks": []}
+
+    evol_tasks = [
+        {"label": f"Evol-DD: /{trigger} (orquestador)",
+         "type": "shell", "command": trigger,
+         "problemMatcher": [], "presentation": {"reveal": "always", "panel": "dedicated"}},
+        {"label": "Evol-DD: doctor",
+         "type": "shell", "command": "evol doctor",
+         "problemMatcher": [], "presentation": {"reveal": "always", "panel": "dedicated"}},
+        {"label": "Evol-DD: gate status",
+         "type": "shell", "command": "evol gate status",
+         "problemMatcher": [], "presentation": {"reveal": "always", "panel": "dedicated"}},
+        {"label": "Evol-DD: research (investigador)",
+         "type": "shell", "command": "evol research",
+         "problemMatcher": [], "presentation": {"reveal": "always", "panel": "dedicated"}},
+        {"label": "Evol-DD: install-global (reinstalar triggers)",
+         "type": "shell", "command": "evol-install-global",
+         "problemMatcher": [], "presentation": {"reveal": "always", "panel": "dedicated"}},
+    ]
+
+    existing = {t["label"] for t in data.get("tasks", [])}
+    added = [t for t in evol_tasks if t["label"] not in existing]
+    data.setdefault("tasks", []).extend(added)
+    tasks_path.write_text(_json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def install_global() -> int:
     """Instala /evol como trigger global en los 7 IDEs soportados.
 
@@ -238,9 +281,10 @@ def install_global() -> int:
     n = copy_workflows(home / ".claude" / "commands")
     print(f"[evol] Claude Code:    {n} commands → ~/.claude/commands/")
 
-    # 2. OpenCode
+    # 2. OpenCode — lee de DOS dirs: ~/.config/opencode/command/ y ~/.opencode/command/
     n = copy_workflows(home / ".config" / "opencode" / "command")
-    print(f"[evol] OpenCode:       {n} commands → ~/.config/opencode/command/")
+    copy_workflows(home / ".opencode" / "command")  # segundo dir, mismos archivos
+    print(f"[evol] OpenCode:       {n} commands → ~/.config/opencode/command/ + ~/.opencode/command/")
 
     # 3. Cursor — 1 archivo .mdc orquestador (Cursor no soporta N slash commands sin MCP)
     cursor_dir = home / ".cursor" / "rules"
@@ -262,9 +306,12 @@ Lee `memoria.md` + `lecciones.md` + `CLAUDE.md` al iniciar (Constitucion Art. 3)
     n = copy_workflows(home / ".codeium" / "workflows")
     print(f"[evol] Windsurf:       {n} workflows → ~/.codeium/workflows/")
 
-    # 5. VSCode Copilot — prompts globales
-    n = copy_workflows(home / ".config" / "Code" / "User" / "prompts", ext="prompt.md")
-    print(f"[evol] VSCode Copilot: {n} prompts → ~/.config/Code/User/prompts/")
+    # 5. VSCode — Copilot no lee prompts globales como slash commands (limitacion del IDE).
+    # Solucion: tasks globales en ~/.vscode/tasks.json accesibles via Ctrl+Shift+P → Run Task.
+    # Los prompts se copian igual para proyectos que usen evol init.
+    copy_workflows(home / ".config" / "Code" / "User" / "prompts", ext="prompt.md")
+    _install_vscode_global_tasks(home, trigger)
+    print(f"[evol] VSCode:         tasks globales → ~/.vscode/tasks.json (Ctrl+Shift+P → Run Task)")
 
     # 6. Antigravity — skills globales en ~/.gemini/skills/
     gemini_skills = home / ".gemini" / "skills"

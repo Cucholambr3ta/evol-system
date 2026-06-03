@@ -169,9 +169,19 @@ brew install python
 pipx install evol-dd && evol
 ```
 
-Eso es todo. El segundo comando (`evol`) detecta que es la primera ejecucion y configura automaticamente el trigger `/evol` en los 7 IDEs soportados: Claude Code, OpenCode, Cursor, Windsurf, VSCode Copilot, Antigravity y Codex.
+Eso es todo. El segundo comando (`evol`) configura automaticamente `/evol` en los IDEs soportados.
 
-Desde ese momento, abrir cualquier carpeta en cualquiera de esos IDEs muestra `/evol` disponible sin configuracion adicional.
+| IDE | Como invocar | Disponibilidad |
+|-----|-------------|----------------|
+| Claude Code | `/evol` en el chat | Global — cualquier carpeta |
+| OpenCode | `/evol` en el chat | Global — cualquier carpeta |
+| Cursor | `@evol` mention | Global — cualquier carpeta |
+| Windsurf | `/evol` slash nativo | Global — cualquier carpeta |
+| Antigravity | `/evol` en skills | Global — cualquier carpeta |
+| Codex | `/evol` skill global | Global — cualquier carpeta |
+| **VSCode Copilot** | `Ctrl+Shift+P` → **Run Task** → **Evol-DD: /evol** | Global via tasks |
+
+**VSCode Copilot:** Copilot no soporta slash commands globales fuera del workspace activo (limitacion del IDE). La solucion instalada son **tasks globales** en `~/.vscode/tasks.json` — disponibles en cualquier proyecto via `Ctrl+Shift+P` → "Run Task". Para tener `/evol` como slash command dentro de Copilot Chat en un proyecto especifico, correr `evol init /proyecto` que copia los prompts al workspace.
 
 ---
 
