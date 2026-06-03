@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "evol-dd"
-version = "0.1.4"
+version = "0.1.6"
 description = "El framework que evoluciona."
 readme = "README.md"
 license = {text = "MIT"}
@@ -56,20 +56,20 @@ Documentation = "https://github.com/Cucholambr3ta/evol-system#readme"
 [tool.hatch.build.targets.wheel]
 packages = ["src/evol_cli"]
 
-# Empaquetar TODOS los data dirs dentro del wheel (anti-bug ADR-0048 de X-DD).
-# Sin force-include, evol --version reporta stale y evol init --list-profiles falla.
-# _data_dir() en evol_cli/__init__.py resuelve estos dirs en 3 niveles:
+# Data dirs viven dentro de src/evol_cli/ — incluidos automaticamente por hatchling.
+# _data_dir() en evol_cli/__init__.py los encuentra en 3 niveles:
 #   1. EVOL_DATA_DIR env var
-#   2. instalacion editable: repo_root/
-#   3. wheel bundled: evol_cli/<dir>
-[tool.hatch.build.targets.wheel.force-include]
-"scripts"          = "evol_cli/scripts"
-"manifests"        = "evol_cli/manifests"
-"templates"        = "evol_cli/templates"
-"skills"           = "evol_cli/skills"
-".agent"           = "evol_cli/agent"
-"docs"             = "evol_cli/docs"
-"VERSION"          = "evol_cli/VERSION"
+#   2. instalacion editable: repo_root/ (scripts/, manifests/, etc.)
+#   3. wheel instalado: <site-packages>/evol_cli/<dir>
+
+[tool.hatch.build.targets.wheel.shared-data]
+"src/evol_cli/scripts"   = "evol_cli/scripts"
+"src/evol_cli/manifests" = "evol_cli/manifests"
+"src/evol_cli/templates" = "evol_cli/templates"
+"src/evol_cli/skills"    = "evol_cli/skills"
+"src/evol_cli/agent"     = "evol_cli/agent"
+"src/evol_cli/docs"      = "evol_cli/docs"
+"src/evol_cli/VERSION"   = "evol_cli/VERSION"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

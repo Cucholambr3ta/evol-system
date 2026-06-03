@@ -1,0 +1,82 @@
+{
+  "skill_name": "crear-agente",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Necesito un agente que sea experto en contratos legales SaaS. Que revise terminos y condiciones, identifique clausulas de riesgo y sugiera cambios. Es para proyectos de software que necesitan validar contratos con clientes enterprise.",
+      "expected_output": "Archivo .md del agente en prompts/agents/specialized/ o prompts/agents/support/, con frontmatter completo (name, description, vibe), secciones ## Mision, ## Reglas criticas, ## Limites. Entry en registry.json con id, category, prompt_file. validate-registry.py --strict debe pasar.",
+      "assertions": [
+        {
+          "id": "a1-frontmatter",
+          "description": "El agente tiene frontmatter con name, description y vibe",
+          "check": "grep -E '^(name|description|vibe):' <agent_file> | wc -l",
+          "expected": "3",
+          "type": "exact"
+        },
+        {
+          "id": "a1-sections",
+          "description": "El agente tiene al menos 3 secciones H2",
+          "check": "grep -c '^## ' <agent_file>",
+          "expected_min": "3",
+          "type": "min"
+        },
+        {
+          "id": "a1-no-emojis",
+          "description": "Sin emojis en el body del agente",
+          "check": "python3 skills/crear-agente/scripts/validate_agent.py <agent_file>",
+          "expected_exit": "0",
+          "type": "exit_code"
+        },
+        {
+          "id": "a1-registry",
+          "description": "El agente aparece en registry.json y pasa validate-registry",
+          "check": "python3 scripts/validate-registry.py --strict",
+          "expected_contains": "agents OK",
+          "type": "contains"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quiero un agente efimero para auditar la accesibilidad WCAG 2.1 del proyecto actual. Solo lo necesito esta semana para revisar los componentes UI del sprint 3.",
+      "expected_output": "Agente efimero en prompts/agents/ephemeral/ con campos ephemeral:true, expires_after_days, created_for_task en registry. Mencionar explicitamente que se retirara despues de la tarea.",
+      "assertions": [
+        {
+          "id": "a2-ephemeral",
+          "description": "El agente es efimero — registry tiene ephemeral:true",
+          "check": "python3 -c \"import json; d=json.load(open('prompts/agents/registry.json')); agents=[a for a in d['agents'] if 'ephemeral' in a.get('id','').lower() or a.get('ephemeral')]; print('found' if agents else 'not_found')\"",
+          "expected_contains": "found",
+          "type": "contains"
+        },
+        {
+          "id": "a2-task",
+          "description": "El agente menciona la tarea especifica de accesibilidad en su descripcion",
+          "check": "grep -i 'accesibilidad\\|WCAG\\|accessibility' <agent_file>",
+          "expected_exit": "0",
+          "type": "exit_code"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "crea agente data engineer para nuestro proyecto de ecommerce. que sepa de spark, kafka y redshift",
+      "expected_output": "Agente en categoria engineering o product, con stack tecnologico declarado en la descripcion o en el body. Formato correcto, registry actualizado.",
+      "assertions": [
+        {
+          "id": "a3-stack",
+          "description": "El agente menciona las tecnologias del stack (spark, kafka, redshift o similares)",
+          "check": "grep -iE 'spark|kafka|redshift|data pipeline|data engineer' <agent_file>",
+          "expected_exit": "0",
+          "type": "exit_code"
+        },
+        {
+          "id": "a3-category",
+          "description": "El agente esta en categoria engineering, product, o specialized",
+          "check": "python3 -c \"import json; d=json.load(open('prompts/agents/registry.json')); found=[a for a in d['agents'] if any(t in a.get('description','').lower() for t in ['data','pipeline','spark','kafka'])]; print(found[-1]['category'] if found else 'none')\"",
+          "expected_in": ["engineering", "product", "specialized"],
+          "type": "in_set"
+        }
+      ]
+    }
+  ]
+}

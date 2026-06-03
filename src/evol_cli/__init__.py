@@ -212,7 +212,10 @@ def install_global() -> int:
 
     data = _data_dir()
     scripts = _scripts_dir()
-    workflows_dir = data / ".agent" / "workflows"
+    # En modo editable: .agent/workflows (con punto)
+    # En wheel instalado: agent/workflows (sin punto — hatchling quita el punto)
+    agent_dir = data / ".agent" if (data / ".agent").is_dir() else data / "agent"
+    workflows_dir = agent_dir / "workflows"
     skills_dir = data / "skills"
     home = Path.home()
     trigger = os.environ.get("EVOL_TRIGGER", "evol")
