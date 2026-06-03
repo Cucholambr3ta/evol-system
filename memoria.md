@@ -11,9 +11,11 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase X-DD activa:** 6-Retro (CIERRE FINAL)
-- **Último hito:** Fix 025 — Release cleanup + final docs review aplicado
-- **Próximo paso:** Merge fix/025 a develop, luego release v0.1.0
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.1.3 activa en produccion
+- **Ultimo hito:** evol-install-global — trigger /evol global en 7 IDEs con un comando
+- **Proximo paso:** Dogfooding en equipos externos, recolectar feedback v0.2.0
+- **PyPI:** https://pypi.org/project/evol-dd/
+- **Versiones publicadas:** 0.1.0 → 0.1.1 → 0.1.2 → 0.1.3
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -26,9 +28,25 @@
 - 2026-06-02: Fix 009 — CI sin masks (`|| true` eliminados), gates reales activos
 - 2026-06-02: Fix 011 — Eval harness con 4 grader types implementados
 - 2026-06-02: Fix 022 — Manifesto `agent.yaml` como SSoT de capacidades
+- 2026-06-02: Publicacion PyPI v0.1.0 — primer release publico
+- 2026-06-02: Fix empaquetado pipx — pyproject.toml migracion setuptools → hatchling + force-include data dirs
+- 2026-06-02: Fix evol-adapt.sh — soporte real --dest, 0 archivos generados en OpenCode corregido
+- 2026-06-02: evol-install-global — trigger /evol global en 7 IDEs (Claude Code, OpenCode, Cursor, Windsurf, VSCode Copilot, Antigravity, Codex)
+- 2026-06-02: Docs completas — 22 archivos vacios poblados con contenido real
+- 2026-06-02: Auditoria arquitectonica pre-implementacion — 8 ADRs, 15 casos borde, DOC_STANDARD
 
 ## Riesgos Activos
-- Ninguno — proyecto completo
+- Feedback externo pendiente: comportamiento en equipos sin todos los IDEs instalados
+- evol-update apply no testeado en produccion con pipx upgrade real
+- Antigravity ~/.gemini/skills/ path puede variar segun version del IDE
+
+## Historial de versiones PyPI
+| Version | Fecha | Que incluye |
+|---------|-------|-------------|
+| 0.1.0 | 2026-06-02 | Release inicial |
+| 0.1.1 | 2026-06-02 | Fix evol-adapt.sh --dest + OpenCode triggers |
+| 0.1.2 | 2026-06-02 | evol-install-global para Claude Code + OpenCode |
+| 0.1.3 | 2026-06-02 | evol-install-global cubre 7 IDEs simultaneamente |
 
 ---
 
@@ -122,4 +140,25 @@
   - Test ephemeral agents (test-agent) no tracked ni versionado
 - **Bloqueos:**
   - Ninguno
-- **Próxima sesión:** Merge a develop, crear release branch, tag v0.1.0
+- **Proxima sesion:** Merge a develop, crear release branch, tag v0.1.0
+
+### Sesion Release + Publicacion PyPI — 2026-06-02
+- **Meta:** Publicar Evol-DD en PyPI y dejar disponible globalmente en 7 IDEs
+- **Hitos:**
+  - Migracion setuptools → hatchling (pyproject.toml) + force-include data dirs en wheel
+  - evol_cli/__init__.py: _data_dir() con logica 3 niveles, EVOL_DATA_DIR inyectado a bash
+  - 22 archivos de documentacion vacios poblados con contenido real y especifico
+  - evol-update.py implementado (check/apply/status, pip-mode + legacy-mode)
+  - evol-adapt.sh reescrito: soporte real --dest, todos los IDEs reciben configs
+  - Gates pre-release: 15 tests verdes, lint 69 workflows OK, shield 0 CRITICAL
+  - Publicacion: v0.1.0 en PyPI, luego patches 0.1.1/0.1.2/0.1.3
+  - evol-install-global: copia /evol a ~/.claude/commands/, ~/.config/opencode/command/,
+    ~/.cursor/rules/, ~/.codeium/workflows/, ~/.config/Code/User/prompts/,
+    ~/.gemini/skills/, ~/.codex/skills/ — disponible globalmente en cualquier carpeta
+- **Bugs encontrados y corregidos:**
+  - evol-adapt.sh hardcodeaba REPO_ROOT → 0 archivos en proyectos externos
+  - pyproject.toml data-files iba a /usr/share/ no al wheel → fix con hatchling force-include
+  - evol-shield.py falsos positivos en docs de seguridad → skip_dirs por regla
+  - Workflows sin frontmatter name/trigger (53 de 69) → fix masivo
+  - evol-lessons.py ignoraba estructura ## CATEGORIA en lecciones.md → fix insert-by-section
+- **Version final:** 0.1.3 en PyPI
