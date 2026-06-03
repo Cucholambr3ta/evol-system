@@ -135,9 +135,57 @@ WRAPPER
     echo "[evol-install] Run: evol --version"
 }
 
+install_global_ide_triggers() {
+    # Instala /evol como trigger global en Claude Code y OpenCode.
+    # El trigger queda disponible en CUALQUIER directorio del PC,
+    # igual que /anmax esta disponible globalmente en agent_anmax.
+    local trigger="${EVOL_TRIGGER:-evol}"
+    local workflows_dir="$REPO_ROOT/.agent/workflows"
+    local count=0
+
+    # Claude Code global: ~/.claude/commands/
+    local claude_dir="$HOME/.claude/commands"
+    if mkdir -p "$claude_dir" 2>/dev/null; then
+        echo "[evol-install] Instalando triggers globales en Claude Code ($claude_dir)..."
+        for wf in "$workflows_dir"/*.md; do
+            [ -f "$wf" ] || continue
+            cp "$wf" "$claude_dir/$(basename "$wf")"
+            count=$((count+1))
+        done
+        echo "[evol-install]   $count commands → $claude_dir"
+    fi
+
+    # OpenCode global: ~/.config/opencode/command/
+    local opencode_dir="$HOME/.config/opencode/command"
+    if mkdir -p "$opencode_dir" 2>/dev/null; then
+        echo "[evol-install] Instalando triggers globales en OpenCode ($opencode_dir)..."
+        local oc_count=0
+        for wf in "$workflows_dir"/*.md; do
+            [ -f "$wf" ] || continue
+            cp "$wf" "$opencode_dir/$(basename "$wf")"
+            oc_count=$((oc_count+1))
+        done
+        echo "[evol-install]   $oc_count commands → $opencode_dir"
+    fi
+
+    # Codex global: ~/.codex/skills/ (ya lo hace evol-adapt codex)
+    if command -v bash >/dev/null 2>&1 && [ -f "$REPO_ROOT/scripts/evol-adapt.sh" ]; then
+        echo "[evol-install] Instalando Codex global orchestrator..."
+        bash "$REPO_ROOT/scripts/evol-adapt.sh" codex 2>/dev/null || true
+    fi
+
+    echo "[evol-install] Triggers globales instalados. Abrir cualquier carpeta en Claude Code u OpenCode — /${trigger} disponible."
+}
+
 if [ "${1:-}" = "--self-install" ]; then
     install_wrapper
+    install_global_ide_triggers
+elif [ "${1:-}" = "--install-triggers" ]; then
+    # Solo instalar triggers (util para actualizar sin reinstalar todo)
+    install_global_ide_triggers
 else
-    echo "Usage: bash scripts/evol-global-install.sh --self-install"
+    echo "Usage:"
+    echo "  bash scripts/evol-global-install.sh --self-install       # instala CLI + triggers globales"
+    echo "  bash scripts/evol-global-install.sh --install-triggers   # solo actualiza triggers IDE globales"
     exit 1
 fi

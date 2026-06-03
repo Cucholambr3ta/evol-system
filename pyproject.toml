@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "evol-dd"
-version = "0.1.1"
+version = "0.1.2"
 description = "El framework que evoluciona."
 readme = "README.md"
 license = {text = "MIT"}
@@ -47,6 +47,7 @@ evol-research = "evol_cli:research"
 evol-memory = "evol_cli:memory"
 evol-lessons = "evol_cli:lessons"
 evol-profile = "evol_cli:profile"
+evol-install-global = "evol_cli:install_global"
 
 [project.urls]
 Homepage = "https://github.com/Cucholambr3ta/evol-system"

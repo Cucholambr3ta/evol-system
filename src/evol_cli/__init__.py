@@ -145,6 +145,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"evol-dd {__version__}")
         return 0
     sub, rest = argv[0], argv[1:]
+    if sub == "install-global":
+        return install_global()
     if sub in SCRIPTS:
         sys.argv = [SCRIPTS[sub]] + rest
         return _run(SCRIPTS[sub])
@@ -167,6 +169,55 @@ def evolve():      sys.argv = ["evol-evolve"] + sys.argv[2:]; _run(SCRIPTS["evol
 def research():    sys.argv = ["evol-research"] + sys.argv[2:]; _run(SCRIPTS["research"])
 def memory():      sys.argv = ["evol-memory"] + sys.argv[2:]; _run(SCRIPTS["memory"])
 def lessons():     sys.argv = ["evol-lessons"] + sys.argv[2:]; _run(SCRIPTS["lessons"])
+
+
+def install_global() -> int:
+    """Instala /evol como trigger global en Claude Code y OpenCode.
+
+    El trigger queda disponible en CUALQUIER directorio del PC sin necesidad
+    de correr evol-adapt por proyecto — igual que /anmax funciona globalmente.
+
+    Uso: evol-install-global
+         evol install-global
+    """
+    import shutil
+
+    data = _data_dir()
+    workflows_dir = data / ".agent" / "workflows"
+
+    if not workflows_dir.is_dir():
+        print(f"[evol] workflows no encontrados en {workflows_dir}", file=sys.stderr)
+        return 1
+
+    workflows = list(workflows_dir.glob("*.md"))
+    trigger = os.environ.get("EVOL_TRIGGER", "evol")
+
+    targets = [
+        # (directorio_global, extension)
+        (Path.home() / ".claude" / "commands",          "md"),
+        (Path.home() / ".config" / "opencode" / "command", "md"),
+    ]
+
+    for dest_dir, ext in targets:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        count = 0
+        for wf in workflows:
+            shutil.copy2(wf, dest_dir / f"{wf.stem}.{ext}")
+            count += 1
+        print(f"[evol] {count} commands → {dest_dir}")
+
+    # Codex global via evol-adapt.sh
+    adapt = _scripts_dir() / "evol-adapt.sh"
+    if adapt.exists():
+        env = os.environ.copy()
+        env["EVOL_DATA_DIR"] = str(data)
+        import subprocess
+        subprocess.run(["bash", str(adapt), "codex"], env=env, capture_output=True)
+        print(f"[evol] Codex orchestrator → ~/.codex/skills/{trigger}-orchestrator/")
+
+    print(f"\n[evol] Trigger /{trigger} disponible globalmente.")
+    print("[evol] Abrir cualquier carpeta en Claude Code u OpenCode — /evol aparece sin configuracion.")
+    return 0
 
 
 if __name__ == "__main__":
