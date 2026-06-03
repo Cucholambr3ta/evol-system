@@ -136,9 +136,26 @@ def _usage() -> None:
     print("\nEj: evol gate status · evol init /mi-proyecto · evol doctor")
 
 
+def _first_run_check() -> None:
+    """Auto-instala triggers globales en la primera ejecucion post-pipx-install."""
+    marker = Path.home() / ".evol" / f".global-installed-{__version__}"
+    if marker.exists():
+        return
+    # Primera vez con esta version — instalar triggers globalmente
+    print(f"[evol] Primera ejecucion de evol-dd {__version__}. Configurando IDEs globalmente...")
+    try:
+        result = install_global()
+        if result == 0:
+            marker.parent.mkdir(parents=True, exist_ok=True)
+            marker.touch()
+    except Exception as e:
+        print(f"[evol] WARN: setup global parcial ({e}). Correr: evol-install-global", file=sys.stderr)
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if not argv or argv[0] in ("-h", "--help"):
+        _first_run_check()
         _usage()
         return 0
     if argv[0] in ("-v", "--version"):
