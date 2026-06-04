@@ -294,6 +294,28 @@ print(f'[evol-init] Profile $profile saved to evol.profile.yml')
 " 2>/dev/null || echo "[evol-init] evol.profile.yml updated (YAML write skipped)"
     fi
 
+    # Estructura /acuerdos (cero deuda tecnica — base del briefing arbol 16 dimensiones)
+    if [ ! -d ./acuerdos ]; then
+        mkdir -p acuerdos/idea acuerdos/research acuerdos/design \
+                 acuerdos/wireframes acuerdos/proyecto \
+                 acuerdos/memoria acuerdos/lecciones
+        printf "# Idea\n\nIdea original del proyecto. Ver idea.md (generado por /evol briefing).\n" \
+            > acuerdos/idea/README.md
+        printf "# Research\n\nInvestigacion por dominio tecnico (generada post-briefing).\n" \
+            > acuerdos/research/README.md
+        printf "# Design System\n\ntokens.md + components.md + assets.md (Dimension 15 del briefing).\n" \
+            > acuerdos/design/README.md
+        printf "# Wireframes\n\nHTML aprobado por pantalla (Dimension 16). Regla de diseno inmutable.\n" \
+            > acuerdos/wireframes/README.md
+        printf "# Proyecto\n\nN documentos granulares por dominio tecnico (generados post-briefing).\n" \
+            > acuerdos/proyecto/README.md
+        printf "# Memoria por Sprint\n\nArchivos separados por sprint.\n" \
+            > acuerdos/memoria/README.md
+        printf "# Lecciones por Sprint\n\nLecciones separadas por sprint.\n" \
+            > acuerdos/lecciones/README.md
+        echo "[evol-init] acuerdos/ creado (7 subcarpetas — base para /evol briefing)"
+    fi
+
     # Init git if not exists
     if [ ! -d .git ]; then
         git init
