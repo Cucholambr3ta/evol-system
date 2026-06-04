@@ -164,8 +164,77 @@ def stats():
 
     print("===================")
 
+def _sprint_num_str(sprint) -> str:
+    """Normaliza sprint a 2 dígitos: 1 → '01', '3' → '03', '12' → '12'."""
+    return f"{int(sprint):02d}"
+
+
+def _update_lecciones_index(index_path: Path, sprint: str, today: str) -> None:
+    entry = f"| sprint-{sprint} | [sprint-{sprint}.md](sprint-{sprint}.md) | {today} |"
+    header = (
+        "# INDEX — Lecciones por Sprint\n\n"
+        "> Indice de lecciones separadas por sprint. Categorias: ARQUITECTURA, SEGURIDAD, DOMINIO, TESTING, DEVOPS, PROCESO, HERRAMIENTAS.\n\n"
+        "| Sprint | Archivo | Fecha cierre |\n"
+        "|--------|---------|-------------|\n"
+    )
+    if not index_path.exists():
+        index_path.write_text(header + entry + "\n", encoding="utf-8")
+        return
+    content = index_path.read_text(encoding="utf-8")
+    marker = f"| sprint-{sprint} |"
+    if marker in content:
+        lines = [entry if l.startswith(marker) else l for l in content.splitlines()]
+        index_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    else:
+        index_path.write_text(content.rstrip("\n") + "\n" + entry + "\n", encoding="utf-8")
+
+
+def sprint_close(sprint, project=".", memoria_content=None, lecciones_content=None, force=False):
+    """Cierra sprint: crea acuerdos/memoria/sprint-NN.md + acuerdos/lecciones/sprint-NN.md."""
+    s = _sprint_num_str(sprint)
+    today = datetime.now().strftime("%Y-%m-%d")
+    acuerdos = Path(project) / "acuerdos"
+    mem_dir = acuerdos / "memoria"
+    les_dir = acuerdos / "lecciones"
+    mem_dir.mkdir(parents=True, exist_ok=True)
+    les_dir.mkdir(parents=True, exist_ok=True)
+
+    sprint_mem = mem_dir / f"sprint-{s}.md"
+    sprint_les = les_dir / f"sprint-{s}.md"
+
+    if sprint_mem.exists() and not force:
+        print(f"[evol-memory] acuerdos/memoria/sprint-{s}.md ya existe. Usar --force para sobreescribir.")
+    else:
+        content = memoria_content or f"# Memoria Sprint {s} — {today}\n\n## Hitos\n\n-\n\n## Bloqueos\n\n-\n\n## Proxima sesion\n\n-\n"
+        sprint_mem.write_text(content, encoding="utf-8")
+        print(f"[evol-memory] ✓ acuerdos/memoria/sprint-{s}.md creado.")
+
+    if sprint_les.exists() and not force:
+        print(f"[evol-memory] acuerdos/lecciones/sprint-{s}.md ya existe. Usar --force para sobreescribir.")
+    else:
+        content = lecciones_content or f"# Lecciones Sprint {s} — {today}\n\n> Formato: CATEGORIA / Contexto / Problema / Causa raiz / Leccion / Aplica a.\n\n"
+        sprint_les.write_text(content, encoding="utf-8")
+        print(f"[evol-memory] ✓ acuerdos/lecciones/sprint-{s}.md creado.")
+
+    _update_lecciones_index(les_dir / "INDEX.md", s, today)
+    print(f"[evol-memory] ✓ acuerdos/lecciones/INDEX.md actualizado.")
+
+    memory_md = mem_dir / "MEMORY.md"
+    if not memory_md.exists():
+        memory_md.write_text(
+            "# MEMORY.md — Hechos persistentes del proyecto\n\n"
+            "> Solo hechos duraderos, no log temporal.\n\n"
+            "## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n",
+            encoding="utf-8",
+        )
+        print("[evol-memory] ✓ acuerdos/memoria/MEMORY.md inicializado.")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Memory Engine")
+    # Arg global --project ANTES del subcomando
+    parser.add_argument("--project", default=".", help="Directorio del proyecto (default: $PWD)")
+    parser.add_argument("--json", action="store_true", help="Salida JSON")
     sub = parser.add_subparsers(dest="cmd")
 
     sub.add_parser("load", help="Load session context (SessionStart)")
@@ -184,6 +253,12 @@ def main():
     p = sub.add_parser("gc", help="Garbage collect expired tool results")
     p.add_argument("--days", type=int, default=TOOL_TTL_DAYS)
 
+    p = sub.add_parser("sprint-close", help="Cierra sprint: crea acuerdos/memoria/sprint-NN.md + lecciones")
+    p.add_argument("--sprint", required=True, help="Numero de sprint (1, '01', etc.)")
+    p.add_argument("--memoria", default=None, help="Contenido para memoria/sprint-NN.md")
+    p.add_argument("--lecciones", default=None, help="Contenido para lecciones/sprint-NN.md")
+    p.add_argument("--force", action="store_true", help="Sobreescribir si ya existe")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -198,6 +273,18 @@ def main():
         gc(args.days)
     elif args.cmd == "stats":
         stats()
+    elif args.cmd == "sprint-close":
+        sprint_close(
+            sprint=args.sprint,
+            project=args.project,
+            memoria_content=args.memoria,
+            lecciones_content=args.lecciones,
+            force=args.force,
+        )
+        if args.json:
+            import json as _json
+            s = _sprint_num_str(args.sprint)
+            print(_json.dumps({"ok": True, "sprint": s}))
     else:
         parser.print_help()
 

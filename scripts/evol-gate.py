@@ -105,9 +105,37 @@ def _enforce_grill_before_plan(phase):
         sys.exit(1)
 
 
+def _check_discipline(phase):
+    """Valida CONTENIDO de los artefactos segun disciplina -DD.
+    Activo con EVOL_DISCIPLINE=1. Escape: EVOL_SKIP_DISCIPLINE=1.
+    """
+    import os as _os, importlib.util as _ilu
+    from pathlib import Path as _P
+    if _os.environ.get("EVOL_DISCIPLINE") != "1":
+        return []
+    script = _P(__file__).parent / "evol-discipline-check.py"
+    if not script.exists():
+        return []
+    try:
+        spec = _ilu.spec_from_file_location("evol_discipline_check", script)
+        mod = _ilu.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.check_phase(_P("."), phase)
+    except Exception as e:
+        return [f"[discipline-check] error: {e}"]
+
+
 def approve(phase, approver="human", action="approved"):
     """Record approval in log with chain integrity."""
     _enforce_grill_before_plan(phase)
+    # Discipline checks (opt-in: EVOL_DISCIPLINE=1)
+    disc_errors = _check_discipline(phase)
+    if disc_errors:
+        logger.error(f"BLOQUEADO por discipline-check en fase '{phase}':")
+        for e in disc_errors:
+            logger.error(f"  - {e}")
+        import sys as _sys
+        _sys.exit(1)
     gate_dir = _get_gate_dir()
     os.makedirs(gate_dir, exist_ok=True)
     log_file = os.path.join(gate_dir, ".gate-log.jsonl")

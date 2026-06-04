@@ -198,3 +198,14 @@
 - **QA:** 14 tests gate verdes, lint 74 workflows OK, shield 0 CRITICAL (4 HIGH preexistentes)
 - **Version final:** 0.2.3 en PyPI
 - **Proxima sesion:** Construir evol-agent con /evol en otro equipo
+
+### Sesion 2026-06-04 — INC E5-E8: herencia X-DD Inc 5-9 a Evol-DD (feature/evol-inc5-9)
+- **Meta:** Portar los 5 incrementos completados en X-DD (sprint-close, historias, gitflow, sprint, discipline-check) a Evol-DD con namespace evol-.
+- **Hitos:**
+  - E5: evol-memory.py sprint-close + evol-init.sh MEMORY.md/INDEX.md + cierre-fase v1.4
+  - E6: evol-historias.md + evol-sprint.md (workflows portados)
+  - E7: evol-gitflow.sh (setup dev/collab, sprint-start/close, pre-push, 15 bats)
+  - E8: evol-discipline-check.py (8 disciplinas, 21 tests) + integrado en evol-gate.py
+- **QA:** 54 pytest + 15 bats = 69 tests verdes
+- **Version:** 0.2.7 publicada en PyPI (0.2.4 ya existia de sesion anterior)
+- **Proxima sesion:** Merge feature/evol-inc5-9 a develop; merge feature/sprint-memoria-lecciones en X-DD

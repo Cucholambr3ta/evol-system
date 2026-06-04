@@ -226,12 +226,15 @@ evol doctor
 | Capacidad | Detalle |
 |-----------|---------|
 | Sin MCP | CLI nativo. Sin servidor, sin configuracion de red. |
-| Memoria nativa | AGENT_MEMORY.md + journals. BM25 search sobre historial. |
-| Lecciones + ciclo de mejora | evol-lessons.py con suggest-fix via investigador. |
+| Memoria nativa | AGENT_MEMORY.md + journals + `acuerdos/memoria/sprint-NN.md` por sprint. BM25 search. |
+| Lecciones por sprint | `evol-memory sprint-close` crea `acuerdos/lecciones/sprint-NN.md` + INDEX.md idempotente. |
+| Historias de usuario | `/evol historias`: 4 artefactos por historia (propuesta, Gherkin, tecnico, checklist >=50 tareas). |
+| Ciclo de sprint | `/evol sprint`: equipo dinamico por componente, auditor permanente, eval pre-push, GitFlow. |
+| GitFlow automatizado | `evol-gitflow.sh setup/sprint-start/sprint-close/pre-push` con modo dev/collab. |
+| Gate de contenido | `evol-discipline-check.py`: valida SDD/FDD/DDD/BDD/TDD/STDD/SecDD. `EVOL_DISCIPLINE=1`. |
 | Agentes efimeros | create/retire/recall con SHA-256 de integridad. |
 | Growth engine | /crear-skill + /crear-agente con evals iterativos. |
 | 7 IDEs | claude-code, opencode, cursor, windsurf, vscode-copilot, antigravity, codex. |
-| GitFlow enforced | pre-commit hook bloquea branches sin convencion. |
 | Gate HMAC-SHA256 | "APROBADO" auditable y firmado por proyecto. |
 | Stdlib-first | Cero dependencias externas requeridas para el core. |
 
