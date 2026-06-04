@@ -294,6 +294,22 @@ print(f'[evol-init] Profile $profile saved to evol.profile.yml')
 " 2>/dev/null || echo "[evol-init] evol.profile.yml updated (YAML write skipped)"
     fi
 
+    # MEMORY.md + INDEX.md en acuerdos/ (si acuerdos ya existe pero faltan estos archivos)
+    if [ -d ./acuerdos ]; then
+        if [ ! -f acuerdos/memoria/MEMORY.md ]; then
+            mkdir -p acuerdos/memoria
+            printf "# MEMORY.md — Hechos persistentes del proyecto\n\n> Solo hechos duraderos, no log temporal.\n\n## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n" \
+                > acuerdos/memoria/MEMORY.md
+            echo "[evol-init] ✓ acuerdos/memoria/MEMORY.md creado."
+        fi
+        if [ ! -f acuerdos/lecciones/INDEX.md ]; then
+            mkdir -p acuerdos/lecciones
+            printf "# INDEX — Lecciones por Sprint\n\n> Indice de lecciones separadas por sprint.\n\n| Sprint | Archivo | Fecha cierre |\n|--------|---------|-------------|\n" \
+                > acuerdos/lecciones/INDEX.md
+            echo "[evol-init] ✓ acuerdos/lecciones/INDEX.md creado."
+        fi
+    fi
+
     # Init git if not exists
     if [ ! -d .git ]; then
         git init
