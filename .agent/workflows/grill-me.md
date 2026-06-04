@@ -141,3 +141,17 @@ Si el usuario lo solicita, generar `GRILL_REPORT.md`:
 ## POST-FLIGHT
 - Registra resultado (supuestos validados, riesgos) en `memoria.md`.
 - Si se generó GRILL_REPORT.md, indexar con MemPalace.
+- **Si se interrogó un PLAN.md (Fase 3):** ejecutar `evol-gate grill-done` para
+  registrar que el plan fue interrogado. Esto **libera el gate del plan** — sin este
+  marker, `evol-gate approve --phase plan` queda BLOQUEADO (enforced). El marker
+  guarda el SHA-256 del PLAN.md; si el plan se edita después, hay que re-interrogar.
+
+## Enforcement (gate del plan)
+
+El gate de Fase 3 es **enforced**: `evol-gate approve --phase plan` y cualquier
+`transition` que toque `plan` fallan (exit 1) si no existe `.evol/.grill-done-plan`
+con el SHA del PLAN.md actual. Un plan no interrogado NO se firma.
+
+- Liberar el gate: `evol-gate grill-done` (lo hace este workflow al completar).
+- Override explícito (no recomendado): `EVOL_SKIP_GRILL=1 evol-gate approve --phase plan`.
+- Si PLAN.md cambia tras el grill: el SHA deja de coincidir → re-correr `/evol grill-me`.

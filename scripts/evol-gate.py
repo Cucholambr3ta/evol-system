@@ -65,8 +65,49 @@ def _get_last_hash():
         return GENESIS_HASH
     return entries[-1]["payload_hash"]
 
+def _enforce_grill_before_plan(phase):
+    """Enforced pre-gate: el plan no se firma sin haber corrido /evol grill-me.
+
+    Verifica que exista .evol/.grill-done-plan y que su SHA coincida con PLAN.md
+    actual (interrogar un plan viejo no vale para un plan editado despues).
+
+    Escape hatch documentado: EVOL_SKIP_GRILL=1 omite el check (registra warning).
+    El check solo aplica a fases que firman/transicionan hacia/desde 'plan'.
+    """
+    phase_l = str(phase).lower()
+    if "plan" not in phase_l:
+        return  # solo aplica al gate del plan
+    if os.environ.get("EVOL_SKIP_GRILL") == "1":
+        logger.warning("EVOL_SKIP_GRILL=1 — gate del plan firmado SIN grill-me (override explicito)")
+        return
+
+    project = get_data_dir()
+    plan_path = os.path.join(project, "PLAN.md")
+    marker = os.path.join(project, ".evol", ".grill-done-plan")
+
+    if not os.path.exists(plan_path):
+        return  # sin PLAN.md no hay nada que interrogar (fase aun no produjo artefacto)
+
+    if not os.path.exists(marker):
+        print("BLOQUEADO: el gate del plan requiere /evol grill-me antes de firmar.", file=sys.stderr)
+        print("  PLAN.md no ha sido interrogado. Correr: /evol grill-me", file=sys.stderr)
+        print("  Override explicito (no recomendado): EVOL_SKIP_GRILL=1", file=sys.stderr)
+        sys.exit(1)
+
+    # Verificar que el grill corresponde al PLAN.md actual (no a una version vieja)
+    with open(plan_path, "rb") as f:
+        plan_sha = hashlib.sha256(f.read()).hexdigest()
+    marker_sha = open(marker).read().strip()
+    if marker_sha != plan_sha:
+        print("BLOQUEADO: PLAN.md cambio despues del ultimo grill-me.", file=sys.stderr)
+        print(f"  Interrogado: {marker_sha[:16]}... | Actual: {plan_sha[:16]}...", file=sys.stderr)
+        print("  Re-interrogar el plan actualizado: /evol grill-me", file=sys.stderr)
+        sys.exit(1)
+
+
 def approve(phase, approver="human", action="approved"):
     """Record approval in log with chain integrity."""
+    _enforce_grill_before_plan(phase)
     gate_dir = _get_gate_dir()
     os.makedirs(gate_dir, exist_ok=True)
     log_file = os.path.join(gate_dir, ".gate-log.jsonl")
@@ -202,6 +243,28 @@ def transition(from_phase, to_phase, approver="system"):
     print(f"Transition: {phase}")
     return entry
 
+def grill_done():
+    """Marca que /evol grill-me interrogo el PLAN.md actual (libera el gate del plan).
+
+    Escribe .evol/.grill-done-plan con el SHA-256 del PLAN.md. El gate del plan
+    verifica este marker. Invocado por el workflow grill-me al completar el
+    interrogatorio del plan.
+    """
+    project = get_data_dir()
+    plan_path = os.path.join(project, "PLAN.md")
+    if not os.path.exists(plan_path):
+        print("ERROR: no existe PLAN.md para marcar como interrogado", file=sys.stderr)
+        sys.exit(1)
+    gate_dir = _get_gate_dir()
+    os.makedirs(gate_dir, exist_ok=True)
+    with open(plan_path, "rb") as f:
+        plan_sha = hashlib.sha256(f.read()).hexdigest()
+    marker = os.path.join(gate_dir, ".grill-done-plan")
+    with open(marker, "w") as f:
+        f.write(plan_sha)
+    os.chmod(marker, 0o600)
+    print(f"grill-me registrado para PLAN.md ({plan_sha[:16]}...). Gate del plan liberado.")
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Gate Keeper")
     sub = parser.add_subparsers(dest="cmd")
@@ -223,6 +286,8 @@ def main():
     p.add_argument("--to", dest="to_phase", required=True)
     p.add_argument("--approver", default="system", help="Approver name")
 
+    sub.add_parser("grill-done", help="Marca PLAN.md como interrogado por grill-me (libera gate del plan)")
+
     args = parser.parse_args()
 
     if args.cmd == "init":
@@ -237,6 +302,8 @@ def main():
         validate(strict=getattr(args, "strict", True))
     elif args.cmd == "transition":
         entry = transition(args.from_phase, args.to_phase, getattr(args, "approver", "system"))
+    elif args.cmd == "grill-done":
+        grill_done()
     else:
         parser.print_help()
 

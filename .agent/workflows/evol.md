@@ -86,6 +86,9 @@ las dispara sin que el usuario las pida explicitamente cuando se cumple el gatil
 2. **grill-me** — En la transicion Fase 3 → gate, ANTES de pedir `"APROBADO"` del
    plan, el orquestador corre `/evol grill-me` sobre PLAN.md. Solo tras resolver los
    supuestos en riesgo se ofrece firmar el gate HMAC. Un plan no interrogado no se firma.
+   **ENFORCED:** `evol-gate approve --phase plan` falla (exit 1) sin el marker
+   `.evol/.grill-done-plan` (SHA del PLAN.md). No es solo guia — el gate lo bloquea
+   criptograficamente. Override explicito: `EVOL_SKIP_GRILL=1`. Ver workflow grill-me.
 
 3. **fact-check** — Durante Spec/QA, si un agente detecta un claim externo (benchmark,
    "X es mas rapido que Y", CVE, advisory), el orquestador dispara `/evol fact-check`
