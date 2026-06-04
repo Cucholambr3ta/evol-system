@@ -32,9 +32,10 @@ def test_plan_blocked_without_grill(project):
 
 
 def test_plan_passes_after_grill_done(project):
+    # EVOL_SKIP_CHAIN aisla el test de grill de la cadena de fases (Inc 2)
     (project / "PLAN.md").write_text("# Plan\n")
     _run(["grill-done"], project)
-    r = _run(["approve", "--phase", "plan"], project)
+    r = _run(["approve", "--phase", "plan"], project, {"EVOL_SKIP_CHAIN": "1"})
     assert r.returncode == 0
     assert "APROBADO" in r.stdout
 
@@ -50,11 +51,14 @@ def test_plan_blocked_after_edit(project):
 
 def test_override_skip_grill(project):
     (project / "PLAN.md").write_text("# Plan\n")
-    r = _run(["approve", "--phase", "plan"], project, {"EVOL_SKIP_GRILL": "1"})
+    r = _run(["approve", "--phase", "plan"], project,
+             {"EVOL_SKIP_GRILL": "1", "EVOL_SKIP_CHAIN": "1"})
     assert r.returncode == 0
 
 
 def test_non_plan_phase_unaffected(project):
+    # spec ahora requiere briefing por cadena; aprobar briefing primero
+    _run(["approve", "--phase", "briefing", "--approver", "human"], project)
     r = _run(["approve", "--phase", "spec"], project)
     assert r.returncode == 0
 

@@ -105,9 +105,90 @@ def _enforce_grill_before_plan(phase):
         sys.exit(1)
 
 
+# Orden inmutable de fases del pipeline (Constitucion Art. 9).
+PHASE_ORDER = ["briefing", "spec", "plan", "build", "qa", "retro"]
+
+
+def _approved_phases():
+    """Devuelve el set de fases con accion 'approved' en el log (cadena valida)."""
+    log_file = os.path.join(get_data_dir(), GATE_LOG_PATH)
+    approved = set()
+    if not os.path.exists(log_file):
+        return approved
+    with open(log_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            p = entry.get("payload", {})
+            if p.get("action") == "approved":
+                approved.add(str(p.get("phase", "")).lower())
+    return approved
+
+
+def _enforce_phase_chain(phase):
+    """FSM: una fase no se firma sin que TODAS las previas esten 'approved' en el log.
+
+    Solo aplica a fases del PHASE_ORDER. Escape hatch: EVOL_SKIP_CHAIN=1.
+    """
+    phase_l = str(phase).lower()
+    if phase_l not in PHASE_ORDER:
+        return  # fase libre (transiciones u otras), no se encadena
+    if os.environ.get("EVOL_SKIP_CHAIN") == "1":
+        logger.warning("EVOL_SKIP_CHAIN=1 — cadena de fases previas OMITIDA (override)")
+        return
+    idx = PHASE_ORDER.index(phase_l)
+    approved = _approved_phases()
+    missing = [p for p in PHASE_ORDER[:idx] if p not in approved]
+    if missing:
+        print(f"BLOQUEADO: no se puede firmar '{phase_l}' — fases previas sin aprobar:",
+              file=sys.stderr)
+        for m in missing:
+            print(f"  - {m}", file=sys.stderr)
+        print("  Override explicito: EVOL_SKIP_CHAIN=1", file=sys.stderr)
+        sys.exit(1)
+
+
+def _enforce_segregation(phase, approver):
+    """Separacion autor != aprobador. Si existe .evol/.author-<phase> y == approver, bloquea.
+
+    Escape hatch: EVOL_SKIP_SEGREGATION=1.
+    """
+    author_file = os.path.join(get_data_dir(), ".evol", f".author-{phase}")
+    if not os.path.exists(author_file):
+        return  # sin autor registrado, no se compara
+    author = open(author_file).read().strip()
+    if author and author == approver:
+        if os.environ.get("EVOL_SKIP_SEGREGATION") == "1":
+            logger.warning(f"EVOL_SKIP_SEGREGATION=1 — autor==aprobador ({approver}) permitido (override)")
+            return
+        print(f"BLOQUEADO: aprobador '{approver}' es el autor del artefacto de '{phase}'.",
+              file=sys.stderr)
+        print("  Separacion de privilegios: el aprobador no puede ser el autor.", file=sys.stderr)
+        print("  Override explicito: EVOL_SKIP_SEGREGATION=1", file=sys.stderr)
+        sys.exit(1)
+
+
+def set_author(phase, author):
+    """Registra el autor del artefacto de una fase (.evol/.author-<phase>)."""
+    gate_dir = _get_gate_dir()
+    os.makedirs(gate_dir, exist_ok=True)
+    author_file = os.path.join(get_data_dir(), ".evol", f".author-{phase}")
+    with open(author_file, "w") as f:
+        f.write(author)
+    os.chmod(author_file, 0o600)
+    print(f"[gate] autor de {phase}: {author}")
+
+
 def approve(phase, approver="human", action="approved"):
     """Record approval in log with chain integrity."""
     _enforce_grill_before_plan(phase)
+    _enforce_phase_chain(phase)
+    _enforce_segregation(phase, approver)
     gate_dir = _get_gate_dir()
     os.makedirs(gate_dir, exist_ok=True)
     log_file = os.path.join(gate_dir, ".gate-log.jsonl")
@@ -288,6 +369,10 @@ def main():
 
     sub.add_parser("grill-done", help="Marca PLAN.md como interrogado por grill-me (libera gate del plan)")
 
+    p = sub.add_parser("set-author", help="Registra el autor del artefacto de una fase")
+    p.add_argument("--phase", required=True, help="Phase name")
+    p.add_argument("--author", required=True, help="Author name")
+
     args = parser.parse_args()
 
     if args.cmd == "init":
@@ -304,6 +389,8 @@ def main():
         entry = transition(args.from_phase, args.to_phase, getattr(args, "approver", "system"))
     elif args.cmd == "grill-done":
         grill_done()
+    elif args.cmd == "set-author":
+        set_author(args.phase, args.author)
     else:
         parser.print_help()
 
