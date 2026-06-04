@@ -1,0 +1,43 @@
+Evol-DD — Evolutionary-Driven Development System
+Copyright (c) 2026 Alejandro Placencia
+
+Licensed under the MIT License (see LICENSE).
+
+This product includes inspiration and architectural patterns from:
+
+1. ReMe (agentscope-ai/ReMe)
+   Source: https://github.com/agentscope-ai/ReMe
+   License: Apache-2.0
+   Used for: native conversational memory engine architecture
+             (AGENT_MEMORY.md + journal + dialog + tool_result, BM25 search).
+             Reimplemented natively in stdlib Python, no runtime dependency.
+
+2. RAPTOR (gadievron/raptor)
+   Source: https://github.com/gadievron/raptor
+   License: MIT
+   Used for: native security capability patterns (scan/validate/patch/crash,
+             adversarial RECON-ANALYZE-EXPLOIT-PATCH reasoning).
+             Reimplemented natively, no runtime dependency.
+
+Community skills ported natively (re-implemented, no runtime dependency):
+
+3. grill-me  →  evol-grill-me skill + /evol grill-me workflow
+   Source: https://github.com/mattpocock/skills
+   License: MIT
+   Used for: systematic plan/design interrogation, branch-by-branch.
+
+4. fact-check  →  evol-fact-check skill + /evol fact-check workflow
+   Source: https://github.com/petar-nauka/fact-check-skill
+   Used for: 11-step claim verification pipeline (SIFT + CRAAP + MFS scoring).
+
+5. idea-refine  →  evol-idea-refine skill + /evol idea-refine workflow
+   Source: https://github.com/addyosmani/agent-skills
+   License: MIT
+   Used for: divergent-to-convergent idea refinement pipeline.
+
+6. prompt-master  →  evol-prompt-master skill + /evol prompt-master workflow
+   Source: nidhinjs/prompt-master
+   Used for: tool-specific prompt optimization for 30+ AI tools.
+
+All ported skills were reimplemented with Evol-DD identity and integrated into
+the Evol-DD 6-phase pipeline. Original authors retain credit per their licenses.

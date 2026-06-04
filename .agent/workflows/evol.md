@@ -1,4 +1,6 @@
 ---
+name: evol
+trigger: /evol
 description: Orquestador Principal Evol-DD. Pipeline de desarrollo agéntico de 6 fases con gate HMAC-SHA256, agentes core permanentes y efímeros bajo demanda. Usar cuando el usuario invoque /evol, quiera iniciar un proyecto, ejecutar una fase del pipeline, crear un agente, o necesite coordinar trabajo de desarrollo.
 ---
 
@@ -58,6 +60,45 @@ Cada fase requiere `"APROBADO"` explicito del usuario antes de avanzar (Art. 2).
 | `evol-researcher` | Investigacion autonoma | Mejoras del ecosistema |
 
 Para crear un agente especializado que no existe: `/evol crear-agente`
+
+---
+
+## Skills de razonamiento — integracion automatica en el pipeline
+
+Estas skills no son fases; son herramientas de razonamiento que el orquestador
+**invoca automaticamente** en el punto del pipeline donde aportan valor. El agente
+las dispara sin que el usuario las pida explicitamente cuando se cumple el gatillo.
+
+| Skill | Punto de inserción automatico | Gatillo |
+|-------|-------------------------------|---------|
+| `/evol idea-refine` | **Antes de Fase 1 (Briefing)** | Usuario llega con idea bruta/vaga → converger a one-pager accionable antes de abrir briefing |
+| `/evol grill-me` | **Antes del gate de Fase 3 (Plan)** | Antes de firmar HMAC del PLAN.md → interrogar supuestos y dependencias del plan |
+| `/evol fact-check` | **Fase 2 (Spec) y Fase 5 (QA)** | Cuando SPEC.md cita un benchmark/claim externo, o QA evalua un advisory/CVE → verificar antes de aceptar como verdad |
+| `/evol prompt-master` | **Transversal (Fase 4 Build)** | Al construir prompts de agentes/skills o integrar tools de IA externas → optimizar por tool |
+
+**Regla de invocacion automatica (orquestador):**
+
+1. **idea-refine** — Si en el Protocolo de inicio el usuario describe una idea sin
+   alcance claro (no hay BRIEFING.md y la peticion es vaga), el orquestador propone
+   correr `/evol idea-refine` ANTES de `/evol briefing`. El one-pager resultante
+   alimenta el Briefing.
+
+2. **grill-me** — En la transicion Fase 3 → gate, ANTES de pedir `"APROBADO"` del
+   plan, el orquestador corre `/evol grill-me` sobre PLAN.md. Solo tras resolver los
+   supuestos en riesgo se ofrece firmar el gate HMAC. Un plan no interrogado no se firma.
+
+3. **fact-check** — Durante Spec/QA, si un agente detecta un claim externo (benchmark,
+   "X es mas rapido que Y", CVE, advisory), el orquestador dispara `/evol fact-check`
+   sobre ese claim antes de incorporarlo. Veredicto FALSO/ENGAÑOSO → bloquea el uso
+   del claim y registra en `lecciones.md` la fuente no confiable.
+
+4. **prompt-master** — En Build, cuando se construyen prompts para agentes/skills del
+   producto o se integra una herramienta de IA externa, el orquestador invoca
+   `/evol prompt-master` para optimizar el prompt segun las convenciones de la tool.
+
+Estas reglas hacen el pipeline **autodefensivo**: converge ideas antes de specificar
+(idea-refine), no firma planes sin interrogar (grill-me), no acepta claims sin
+verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 
 ---
 

@@ -168,6 +168,20 @@
         "scripts/evol-global-install.sh",
         "scripts/evol-start.sh"
       ]
+    },
+    "community-skills": {
+      "description": "Skills de comunidad portadas nativas (atribución en NOTICE): grill-me (interrogatorio de planes), fact-check (verificación de claims SIFT+CRAAP+MFS), idea-refine (refinamiento divergente→convergente), prompt-master (prompts optimizados 30+ tools).",
+      "files": [
+        "skills/evol-grill-me/SKILL.md",
+        "skills/evol-fact-check/SKILL.md",
+        "skills/evol-idea-refine/SKILL.md",
+        "skills/evol-prompt-master/SKILL.md",
+        ".agent/workflows/grill-me.md",
+        ".agent/workflows/fact-check.md",
+        ".agent/workflows/idea-refine.md",
+        ".agent/workflows/prompt-master.md"
+      ],
+      "available_from": "0.2.2"
     }
   }
 }

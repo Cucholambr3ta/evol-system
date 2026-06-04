@@ -1,4 +1,6 @@
 ---
+name: mempalace-sync
+trigger: /evol mem
 description: Sincroniza el proyecto activo con MemPalace. Ejecutar al inicio de sesion para cargar contexto semantico, o al cierre para persistir cambios. Activa Modo COMPLETO — el agente recuerda el proyecto, lecciones y patrones previos sin que el usuario repita contexto. Usar cuando el usuario diga "sincroniza memoria", "indexa MemPalace", "/evol mem", o quiera activar continuidad semantica entre sesiones.
 ---
 
