@@ -75,6 +75,14 @@ Comandos rapidos:
 **Aplica a:** evol-shield.py y cualquier herramienta SAST propia. Regla: siempre skipear scripts/evol-shield.py, docs/seguridad/, tests/
 **Fix aplicado:** Añadido skip_dirs por regla a no_mcp_config, no_dangerous_commands, no_evol_dangerous_refs. Excluido el propio shield y docs de seguridad
 
+### [SEGURIDAD] Gate enforcement = marker con SHA del artefacto, no solo existencia — 2026-06-03
+**Contexto:** Hacer grill-me enforced: el gate del plan debe bloquear si no se interrogo el PLAN.md
+**Problema:** Un marker de mera existencia se quedaria stale: interrogas plan v1, editas a v2, el gate sigue pasando con la validacion vieja
+**Causa raiz:** Existencia != validez. El artefacto cambia despues de la validacion
+**Leccion:** El marker debe guardar el SHA-256 del artefacto validado. El gate compara SHA(marker) == SHA(artefacto actual). Mismatch → bloquea, re-validar. Patron identico al gate de fases (valida contenido no existencia). Escape hatch explicito via env var documentado (EVOL_SKIP_GRILL=1) con warning
+**Aplica a:** Cualquier gate que dependa de un paso previo sobre un artefacto mutable
+**Fix aplicado:** _enforce_grill_before_plan() en evol-gate.py + comando grill-done que escribe SHA. 7 tests
+
 ## DOMINIO
 
 _(vacio)_
@@ -142,6 +150,22 @@ _(vacio)_
 **Aplica a:** Todo framework Python con data dirs (scripts/, manifests/, templates/) que necesite funcionar en instalacion pipx/wheel sin repo local
 **Fix aplicado:** Migrado setuptools → hatchling. force-include: scripts→evol_cli/scripts, manifests→evol_cli/manifests, templates→evol_cli/templates, VERSION→evol_cli/VERSION. _data_dir() con logica 3 niveles.
 
+### [DEVOPS] pip no tiene post-install hooks; usar first-run check con marker versionado — 2026-06-03
+**Contexto:** Queria que pipx install evol-dd configurara los IDEs automaticamente sin comando extra
+**Problema:** hatchling finalize() corre en entorno de BUILD no en el del usuario. pip no expone post-install hook real
+**Causa raiz:** Limitacion conocida de pip/PEP 517. El wheel se instala sin ejecutar codigo del paquete
+**Leccion:** Patron first-run: en el entry-point principal, chequear marker ~/.evol/.global-installed-<version>. Si falta, correr setup y crear marker. Version en el nombre del marker → pipx upgrade re-dispara setup automaticamente. Patron usado por rustup, mise
+**Aplica a:** Cualquier CLI Python que necesite setup post-install
+**Fix aplicado:** _first_run_check() en main() de evol_cli. Comando canonico: pipx install evol-dd && evol
+
+### [DEVOPS] force-include de hatchling falla en sdist de PyPI; copiar data dirs dentro de src/ — 2026-06-03
+**Contexto:** Empaquetar scripts/agent/manifests en el wheel para que evol-scan/gate funcionen tras pipx
+**Problema:** force-include incluia data en wheel LOCAL pero PyPI construye sdist en entorno aislado sin acceso a archivos de la raiz. Paquete instalado sin scripts
+**Causa raiz:** force-include referencia paths de la raiz del repo que no estan en el sdist
+**Leccion:** Copiar los data dirs DENTRO de src/<package>/ (hatchling los empaqueta auto como parte del paquete Python). Quitar force-include. _data_dir() resuelve 3 niveles: env var > editable repo_root > wheel <site-packages>/<pkg>/. Verificar con zipfile que el wheel contiene los dirs ANTES de publicar
+**Aplica a:** Empaquetado de frameworks Python con data dirs para PyPI
+**Fix aplicado:** src/evol_cli/{scripts,agent,manifests,skills,docs,templates}/ + shared-data en pyproject
+
 ## PROCESO
 
 ### [PROCESO] Docs deben reflejar implementacion real, no aspiración — 2026-06-02
@@ -190,4 +214,20 @@ _(vacio)_
 **Leccion:** Para que un trigger sea global (disponible en CUALQUIER carpeta), debe copiarse a los dirs globales de cada IDE: ~/.claude/commands/, ~/.config/opencode/command/, ~/.cursor/rules/, ~/.codeium/workflows/, ~/.config/Code/User/prompts/, ~/.gemini/skills/, ~/.codex/skills/. Un solo comando post-instalacion debe hacer todo esto
 **Aplica a:** Todo framework distribuible via pip que quiera que su trigger sea global. El flujo correcto es: pip install → un comando de setup global → listo en todos los IDEs
 **Fix aplicado:** evol-install-global (entry-point pip): copia /evol a dirs globales de 7 IDEs en un solo comando
+
+### [HERRAMIENTAS] Trigger global requiere copia a dirs globales de CADA IDE, no per-proyecto — 2026-06-03
+**Contexto:** Usuario esperaba que tras pipx install el trigger /evol apareciera en cualquier carpeta de cualquier IDE, como /anmax
+**Problema:** evol adapt genera configs per-proyecto. Sin bootstrap, ningun IDE veia /evol. Ademas cada IDE tiene su dir global propio y formato distinto
+**Causa raiz:** Arquitectura per-proyecto correcta para artefactos, erronea para triggers globales. 7 IDEs = 7 paths + 3 formatos (md/mdc/prompt.md/skills)
+**Leccion:** Para trigger global: copiar a ~/.claude/commands, ~/.config/opencode/command, ~/.opencode/command, ~/.cursor/rules (.mdc), ~/.codeium/workflows, ~/.config/Code/User/prompts (.prompt.md), ~/.gemini/skills, ~/.codex/skills. VSCode Copilot NO soporta slash global → usar tasks.json. install_global() en un comando + first-run auto-trigger via marker ~/.evol/.global-installed-VERSION
+**Aplica a:** Cualquier framework distribuible que quiera trigger global multi-IDE
+**Fix aplicado:** install_global() cubre 7 IDEs + _first_run_check() auto-ejecuta en primera corrida de evol post pipx
+
+### [HERRAMIENTAS] OpenCode lee de DOS dirs y frontmatter solo acepta description — 2026-06-03
+**Contexto:** Trigger /evol no aparecia en OpenCode aunque el archivo estaba copiado
+**Problema:** OpenCode lee ~/.config/opencode/command/ Y ~/.opencode/command/. Ademas frontmatter con name/trigger/category extra confundia el parser
+**Causa raiz:** Asumi un solo dir y frontmatter rico. OpenCode espera frontmatter minimal
+**Leccion:** OpenCode: copiar a ambos dirs. Frontmatter de workflows portables a OpenCode/Claude Code debe ser minimal (description suficiente; name/trigger opcionales pero limpios). Verificar contra un trigger que YA funciona (anmax) antes de asumir formato
+**Aplica a:** Adapters de workflows para OpenCode y verificacion cross-IDE
+**Fix aplicado:** install_global copia a los 2 dirs de OpenCode + frontmatter limpio en evol.md
 

@@ -11,11 +11,11 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.1.3 activa en produccion
-- **Ultimo hito:** evol-install-global — trigger /evol global en 7 IDEs con un comando
-- **Proximo paso:** Dogfooding en equipos externos, recolectar feedback v0.2.0
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
+- **Ultimo hito:** grill-me enforced en gate del plan (bloqueo criptografico Fase 3)
+- **Proximo paso:** Construir evol-agent en otro PC con /evol (spec enriquecida lista)
 - **PyPI:** https://pypi.org/project/evol-dd/
-- **Versiones publicadas:** 0.1.0 → 0.1.1 → 0.1.2 → 0.1.3
+- **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (MemPalace 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -47,6 +47,15 @@
 | 0.1.1 | 2026-06-02 | Fix evol-adapt.sh --dest + OpenCode triggers |
 | 0.1.2 | 2026-06-02 | evol-install-global para Claude Code + OpenCode |
 | 0.1.3 | 2026-06-02 | evol-install-global cubre 7 IDEs simultaneamente |
+| 0.1.4 | 2026-06-03 | Auto-install global en primera ejecucion (first-run marker) |
+| 0.1.6 | 2026-06-03 | Fix packaging: data dirs en src/evol_cli/ (force-include fallaba en PyPI) |
+| 0.1.7 | 2026-06-03 | Workflow evol.md orquestador principal (trigger /evol) |
+| 0.1.8 | 2026-06-03 | VSCode tasks.json global (Copilot sin slash global) + OpenCode 2 dirs |
+| 0.1.9 | 2026-06-03 | evol-start.sh compatible MemPalace 3.x (mine API) |
+| 0.2.0 | 2026-06-03 | evol.md + mempalace-sync (/evol mem) frontmatter limpio |
+| 0.2.1 | 2026-06-03 | Security nativa: evol-scan/validate/patch/crash |
+| 0.2.2 | 2026-06-03 | 4 community skills (grill/fact-check/idea-refine/prompt-master) |
+| 0.2.3 | 2026-06-03 | grill-me ENFORCED en gate del plan (marker SHA + 7 tests) |
 
 ---
 
@@ -162,3 +171,30 @@
   - Workflows sin frontmatter name/trigger (53 de 69) → fix masivo
   - evol-lessons.py ignoraba estructura ## CATEGORIA en lecciones.md → fix insert-by-section
 - **Version final:** 0.1.3 en PyPI
+
+### Sesion Megasprint — 2026-06-03 (install global + security + skills + enforcement)
+- **Meta:** Trigger global real en 7 IDEs, security nativa, community skills, enforcement de gate
+- **Hitos (0.1.3 → 0.2.3):**
+  - install_global() cubre los 7 IDEs en un comando + _first_run_check() auto-trigger
+    post `pipx install evol-dd && evol` (marker versionado ~/.evol/.global-installed-VERSION)
+  - Fix empaquetado definitivo: data dirs DENTRO de src/evol_cli/ (force-include fallaba
+    en sdist de PyPI). Verificado con zipfile antes de publicar
+  - VSCode Copilot: tasks.json global (no soporta slash commands globales) — limitacion del IDE
+  - MemPalace 3.x: evol-start.sh usa `mine <dir> --wing` (API cambio de `index`)
+  - Security nativa portada desde X-DD: evol-scan/validate/patch/crash (sin deps externas,
+    inspirado en RAPTOR MIT). Agente offsec + guidance tiers + hook pre-build
+  - 4 community skills nativas: grill-me, fact-check, idea-refine, prompt-master
+    (atribucion en NOTICE). Integradas al pipeline 6 fases en evol.md
+  - grill-me ENFORCED: gate del plan bloquea (exit 1) sin marker SHA del PLAN.md.
+    7 tests. Escape hatch EVOL_SKIP_GRILL=1
+- **Entregable paralelo:** evol-agent-specification.md enriquecida (2355→2615 lineas):
+  Seccion 0 guia construccion con Evol-DD, mapeo 5 graders, L0-L5 MVP, Nexus MVP,
+  event types, seccion de Riesgos y Falencias. Modelo hibrido: Evol-DD construye,
+  producto autoref. Listo para /evol en otro PC
+- **Bugs corregidos:** symlinks conflictivos pipx editable, OpenCode lee 2 dirs +
+  frontmatter minimal, falta workflow evol.md orquestador principal
+- **Lecciones nuevas:** 5 (trigger global multi-IDE, first-run sin post-install hook,
+  force-include sdist, gate enforcement con SHA, OpenCode 2 dirs)
+- **QA:** 14 tests gate verdes, lint 74 workflows OK, shield 0 CRITICAL (4 HIGH preexistentes)
+- **Version final:** 0.2.3 en PyPI
+- **Proxima sesion:** Construir evol-agent con /evol en otro equipo
