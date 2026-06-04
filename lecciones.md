@@ -231,3 +231,17 @@ _(vacio)_
 **Aplica a:** Adapters de workflows para OpenCode y verificacion cross-IDE
 **Fix aplicado:** install_global copia a los 2 dirs de OpenCode + frontmatter limpio en evol.md
 
+
+### [DEVOPS] Versiones PyPI inmutables — verificar antes de publicar — 2026-06-04
+**Contexto:** INC E5-E8 herencia de X-DD. Intento publicar 0.2.4 → rechazado por PyPI.
+**Problema:** 0.2.4 ya existia de sesion anterior. PyPI es inmutable — version publicada no se puede sobreescribir.
+**Causa raiz:** Version no trackeada en MEMORY.md del proyecto.
+**Leccion:** Antes de publicar: `pip index versions evol-dd`. Guardar ultima version publicada en MEMORY.md.
+**Aplica a:** Todo ciclo PyPI en evol-dd.
+
+### [ARQUITECTURA] Herencia X-DD → Evol-DD: adaptar namespace completo — 2026-06-04
+**Contexto:** Port de discipline-check y gitflow de X-DD a Evol-DD.
+**Problema:** Paths .xdd/, env vars XDD_, scripts xdd-* no funcionan en Evol-DD.
+**Causa raiz:** Namespaces distintos por diseño.
+**Leccion:** Al portar: (1) buscar en .evol/ primero + fallback; (2) EVOL_ prefix en env vars; (3) scripts llaman evol-*. Lista de diferencias en MEMORY.md del proyecto.
+**Aplica a:** Cualquier port futuro X-DD → Evol-DD.
