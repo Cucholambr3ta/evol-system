@@ -51,6 +51,14 @@ Comandos rapidos:
 **Leccion:** Usar allowlist explícita para indexing. Excluir siempre: `.evol/`, `.xdd/`, `.git/`, `dialog/`, `tool_result/`, `memory/raw/`, `*.key`, `*.pem`, `.env*`. Secret scan antes de indexar.
 **Aplica a:** Memory systems, agent indexers
 
+### [ARQUITECTURA] Gate JSONL append-only usa _approved_phases() en lugar de dirs por fase — 2026-06-04
+**Contexto:** Heredar el enforcement FSM de cadena de fases (xdd-gate dirs/.status) a evol-gate (log JSONL append-only)
+**Problema:** X-DD tiene .xdd/<fase>/.status que es trivial de verificar. Evol-DD no tiene dirs por fase — la 'aprobacion' esta dispersa en entradas del log JSONL
+**Causa raiz:** Dos modelos distintos de persistencia del gate: X-DD es filesystem por fase, Evol-DD es append-only log. La logica de cadena no se puede portar 1:1
+**Leccion:** Para verificar fases previas en log JSONL: leer todas las entradas y filtrar action=='approved' → set de fases aprobadas. Comparar contra PHASE_ORDER[:idx]. Es O(n) pero el log es pequeno. Patron: _approved_phases() como helper reutilizable. Tests de grill que aprobaban plan/spec directamente deben usar EVOL_SKIP_CHAIN=1 para aislar la feature que prueban
+**Aplica a:** evol-gate.py y cualquier gate basado en log append-only. Patron reusable para otros sistemas con el mismo modelo de persistencia
+**Fix aplicado:** PHASE_ORDER + _approved_phases() + _enforce_phase_chain + _enforce_segregation + set_author en evol-gate.py. 9 tests test_gate_fsm.py. test_gate_grill_enforce.py ajustado con EVOL_SKIP_CHAIN=1
+
 ## SEGURIDAD
 
 ### [SEGURIDAD] Hooks warning-only no bloquean operaciones peligrosas — 2026-06-02

@@ -11,9 +11,9 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
-- **Ultimo hito:** grill-me enforced en gate del plan (bloqueo criptografico Fase 3)
-- **Proximo paso:** Construir evol-agent en otro PC con /evol (spec enriquecida lista)
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.4 activa en produccion
+- **Ultimo hito:** Gate FSM enforcement heredado de X-DD (Inc 2) — pipeline bloqueante en ambos sistemas
+- **Proximo paso:** Inc 3 — /acuerdos + briefing arbol 16 dimensiones + wireframes en X-DD y Evol-DD
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (MemPalace 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
 
@@ -56,6 +56,7 @@
 | 0.2.1 | 2026-06-03 | Security nativa: evol-scan/validate/patch/crash |
 | 0.2.2 | 2026-06-03 | 4 community skills (grill/fact-check/idea-refine/prompt-master) |
 | 0.2.3 | 2026-06-03 | grill-me ENFORCED en gate del plan (marker SHA + 7 tests) |
+| 0.2.4 | 2026-06-04 | Gate FSM: cadena de fases + autor≠aprobador + set-author (Inc 2) |
 
 ---
 
@@ -150,6 +151,22 @@
 - **Bloqueos:**
   - Ninguno
 - **Proxima sesion:** Merge a develop, crear release branch, tag v0.1.0
+
+### Sesion Gate FSM Incremento 2 — 2026-06-04
+- **Meta:** Heredar enforcement FSM de X-DD a Evol-DD. Pipeline bloqueante en ambos sistemas.
+- **Hitos:**
+  - PHASE_ORDER + _approved_phases() + _enforce_phase_chain (cadena de fases via log JSONL)
+  - _enforce_segregation + set_author (patron worker→auditor a nivel de fase)
+  - 9 tests nuevos test_gate_fsm.py + fix test_gate_grill_enforce.py (EVOL_SKIP_CHAIN)
+  - 31 tests totales verdes, lint 74 workflows OK, shield 0 CRITICAL
+  - Publicado v0.2.4 en PyPI
+- **Aprendizaje del sistema del amigo (capturado en plan):**
+  - Briefing = arbol de 16 dimensiones bloqueante, NO cierra sin todo respondido
+  - Design system (colores/tipografias/assets) ANTES de wireframes
+  - Wireframes HTML con tokens reales, parte del briefing (no fase separada)
+  - Docs granulares: N segun proyecto, automaticos post-briefing, sin evaluacion
+  - Principio: cero deuda = cero asunciones = cero evaluacion de "si merece doc"
+- **Proxima sesion:** Inc 3 — /acuerdos + briefing arbol 16 dimensiones + wireframes
 
 ### Sesion Release + Publicacion PyPI — 2026-06-02
 - **Meta:** Publicar Evol-DD en PyPI y dejar disponible globalmente en 7 IDEs
