@@ -8,6 +8,24 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-06-04
+
+### Added
+- `evol-memory sprint-close --sprint=NN`: crea `acuerdos/memoria/sprint-NN.md` + `acuerdos/lecciones/sprint-NN.md` + `INDEX.md` idempotente (INC E5)
+- `evol-init.sh`: genera `acuerdos/memoria/MEMORY.md` (hechos persistentes) + `acuerdos/lecciones/INDEX.md` en bootstrap (INC E5)
+- Workflow `evol-historias.md` (`/evol historias`): historias con 4 artefactos cada una via pipeline worker-auditor; checklist >=50 tareas; genera `acuerdos/sprint.md` (INC E6)
+- Workflow `evol-sprint.md` (`/evol sprint`): ciclo completo de sprint — equipo dinamico por componente tecnico, auditor permanente, eval pre-push, GitFlow (INC E6)
+- `evol-gitflow.sh`: GitFlow automatizado — `setup --mode=dev|collab`, `sprint-start`, `sprint-close`, `pre-push` (gitignore + gitleaks), `status` (INC E7)
+- `evol-discipline-check.py`: valida CONTENIDO por disciplina (SDD/FDD/DDD/Threat-Driven/BDD/TDD/STDD/SecDD). Activar con `EVOL_DISCIPLINE=1` (INC E8)
+- `evol-gate.py approve()`: llama `_check_discipline()` cuando `EVOL_DISCIPLINE=1` (INC E8)
+
+### Changed
+- `cierre-fase.md` v1.4: usa `evol-memory sprint-close` en lugar de append monolitico (INC E5)
+- `evol-memory.py`: `--project` va ANTES del subcomando (argparse global)
+
+### Fixed
+- `acuerdos/memoria/` y `acuerdos/lecciones/` incluyen `MEMORY.md` + `INDEX.md` desde bootstrap
+
 ## [0.1.0] - 2026-06-02
 
 ### Added

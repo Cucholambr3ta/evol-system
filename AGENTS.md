@@ -62,7 +62,9 @@ Run `scripts/generate-equipo.sh` to regenerate it after any registry change.
 | `evol-agent-lifecycle.py` | Ephemeral agent create/retire/recall |
 | `evol-evolve.py` | Auto-generate skills, sync community |
 | `evol-researcher.py` | Autonomous research proposals |
-| `evol-memory.py` | Conversational memory engine |
+| `evol-memory.py` | Conversational memory engine + `sprint-close --sprint=NN` (acuerdos/memoria + lecciones por sprint) |
+| `evol-gitflow.sh` | GitFlow automatizado: `setup --mode=dev\|collab`, `sprint-start`, `sprint-close`, `pre-push` |
+| `evol-discipline-check.py` | Valida CONTENIDO por disciplina (SDD/FDD/DDD/BDD/TDD/STDD/SecDD). Activar: `EVOL_DISCIPLINE=1` |
 | `evol-lessons.py` | Lessons learned + improvement cycle |
 | `evol-eval.py` | Eval harness |
 | `evol-shield.py` | Security audit of the framework |

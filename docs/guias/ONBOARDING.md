@@ -279,6 +279,34 @@ Descompone la spec en features FDD con casos Gherkin verificables.
 
 Salida: `PLAN.md`, `docs/qa/CASOS_GHERKIN.md`.
 
+### Historias de usuario (post-Plan)
+
+Genera historias completas a partir de la documentacion granular y los wireframes.
+
+```
+/evol historias
+```
+
+Salida por historia: `acuerdos/historia-usuario-N/propuesta.md`, `requisitos-escenarios.md` (Gherkin), `escenario-tecnico.md` (Mermaid), `checklist-tareas.md` (>=50 tareas atomicas via pipeline worker-auditor).
+
+Artefacto global: `acuerdos/sprint.md` con plan de sprints, estimaciones y DoD.
+
+### Sprint (ciclo completo)
+
+Ejecuta un sprint completo: equipo dinamico por componentes tecnicos, TDD estricto, auditor permanente, evaluacion pre-push y GitFlow.
+
+```
+/evol sprint --sprint=NN
+```
+
+Flujo: `sprint-start` → checklist atomico (worker+auditor) → Gherkin verde → eval pre-push → `sprint-close` → PR a develop → leer lecciones.
+
+```bash
+bash scripts/evol-gitflow.sh sprint-start --sprint=01 --title=auth
+# ... implementar ...
+bash scripts/evol-gitflow.sh sprint-close --sprint=01
+```
+
 ### Build
 
 Implementa el codigo guiado por TDD. Los tests deben ser verdes antes de cerrar la fase.

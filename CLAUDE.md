@@ -56,7 +56,9 @@ Every significant work session ends by updating `memoria.md` with:
 | `evol-agent` | Create / invoke / retire / recall ephemeral agents |
 | `evol-evolve` | Auto-generate skills, sync community |
 | `evol-research` | Autonomous research proposals |
-| `evol-memory` | Load / summarize / compact / search / gc |
+| `evol-memory` | Load / summarize / compact / search / gc / `sprint-close --sprint=NN` (crea acuerdos/memoria + lecciones por sprint) |
+| `evol-gitflow` | GitFlow automatizado: `setup --mode=dev\|collab`, `sprint-start`, `sprint-close`, `pre-push`, `status` |
+| `evol-discipline-check` | Valida CONTENIDO por disciplina SDD/FDD/DDD/BDD/TDD/STDD/SecDD. Activar: `EVOL_DISCIPLINE=1` |
 | `evol-lessons` | Add / search / suggest-fix / apply-fix |
 | `evol-eval` | Run eval harness |
 | `evol-shield` | Security audit |
