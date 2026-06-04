@@ -217,6 +217,82 @@ def check_secdd(root: Path) -> list[str]:
     return errors
 
 
+# ── Atomicidad — 1 doc = 1 dominio tecnico ────────────────────────────────────
+
+_DOMAIN_KEYWORDS: dict[str, list[str]] = {
+    "auth":         ["autenticacion", "authentication", "oauth", "jwt", "session", "login"],
+    "db":           ["base de datos", "database", "schema", "migracion", "migration", "sql"],
+    "api":          ["endpoint", "rest", "graphql", "openapi", "contrato de api"],
+    "ui":           ["componente", "component", "wireframe", "frontend", "css", "html"],
+    "security":     ["stride", "amenaza", "threat", "sast", "dast", "pentest"],
+    "observability":["logging", "metrics", "alertas", "tracing", "slo", "sli"],
+    "cicd":         ["pipeline", "deploy", "ci/cd", "github actions", "docker"],
+    "testing":      ["test unitario", "unit test", "gherkin", "bdd", "coverage"],
+    "domain_model": ["bounded context", "aggregate", "domain event", "ubiquitous language"],
+}
+
+_ALLOWED_MULTI_DOMAIN = {
+    "INDEX.md", "README.md", "ONBOARDING.md", "RETROFIT_GUIDE.md",
+    "X-DD_Integration_Guide.md",
+}
+
+_LINE_THRESHOLDS: dict[str, int] = {
+    "ARQUITECTURA.md": 300,
+    "DOMAIN.md":       250,
+    "THREATS.md":      200,
+    "GATE.md":         150,
+    "constitucion.md": 200,
+    "PLAN_QA.md":      200,
+    "ONBOARDING.md":   200,
+    "SPEC.md":         150,
+    "FEATURES.md":     100,
+}
+_DEFAULT_MIN_LINES = 80
+
+
+def check_atomicity(doc_path: Path) -> list[str]:
+    """1 doc = 1 dominio tecnico. Doc con 4+ dominios en headings viola atomicidad."""
+    if doc_path.name in _ALLOWED_MULTI_DOMAIN:
+        return []
+    content = _content(doc_path).lower()
+    if not content:
+        return []
+    heading_text = " ".join(
+        line.lstrip("#").strip()
+        for line in content.splitlines()
+        if line.startswith("#")
+    )
+    domains_present = [
+        domain for domain, kwds in _DOMAIN_KEYWORDS.items()
+        if any(kw in heading_text for kw in kwds)
+    ]
+    if len(domains_present) >= 4:
+        return [
+            f"ATOMICIDAD: {doc_path.name} menciona {len(domains_present)} dominios en headings "
+            f"({', '.join(domains_present)}) — dividir en documentos separados (1 doc = 1 dominio)"
+        ]
+    return []
+
+
+def check_min_lines(doc_path: Path) -> list[str]:
+    """Umbral minimo de lineas segun DOC_STANDARD v2.0 seccion 1.5."""
+    threshold = _LINE_THRESHOLDS.get(doc_path.name, _DEFAULT_MIN_LINES)
+    if not doc_path.exists():
+        return []
+    lines = len(_content(doc_path).splitlines())
+    if lines < threshold:
+        return [
+            f"PROFUNDIDAD: {doc_path.name} tiene {lines} lineas "
+            f"(minimo {threshold} segun DOC_STANDARD v2.0)"
+        ]
+    return []
+
+
+def check_doc_quality(root: Path, doc_path: Path) -> list[str]:
+    """Atomicidad + umbral de lineas para un documento especifico."""
+    return check_atomicity(doc_path) + check_min_lines(doc_path)
+
+
 # ── Dispatcher ────────────────────────────────────────────────────────────────
 
 PHASE_CHECKS: dict[str, list] = {
@@ -231,7 +307,7 @@ PHASE_CHECKS: dict[str, list] = {
 
 def check_phase(root: Path, phase: str) -> list[str]:
     if os.environ.get("EVOL_SKIP_DISCIPLINE") == "1":
-        print(f"[evol-discipline] EVOL_SKIP_DISCIPLINE=1 — checks omitidos.", file=sys.stderr)
+        print("[evol-discipline] EVOL_SKIP_DISCIPLINE=1 — checks omitidos.", file=sys.stderr)
         return []
     errors: list[str] = []
     for checker in PHASE_CHECKS.get(phase, []):
@@ -242,22 +318,43 @@ def check_phase(root: Path, phase: str) -> list[str]:
 def main(argv=None) -> int:
     import argparse
     p = argparse.ArgumentParser(prog="evol-discipline-check", description=__doc__)
-    p.add_argument("phase", choices=list(PHASE_CHECKS.keys()))
+    p.add_argument("phase", choices=list(PHASE_CHECKS.keys()) + ["doc"],
+                   help="Fase a validar, o 'doc' para validar un documento especifico")
     p.add_argument("--root", default=".", help="Raiz del proyecto")
+    p.add_argument("--doc", default=None, help="Path al documento (con phase=doc)")
     p.add_argument("--json", action="store_true")
     args = p.parse_args(argv)
     root = Path(args.root).resolve()
+
+    if args.phase == "doc" or args.doc:
+        doc_path = Path(args.doc).resolve() if args.doc else None
+        if doc_path is None:
+            print("[evol-discipline] --doc requerido con phase=doc", file=sys.stderr)
+            return 2
+        errors = check_doc_quality(root, doc_path)
+        if args.json:
+            import json
+            print(json.dumps({"doc": str(doc_path), "ok": not errors, "errors": errors}))
+            return 0 if not errors else 1
+        if errors:
+            print(f"[evol-discipline] FALLO {doc_path.name}:")
+            for e in errors:
+                print(f"  - {e}")
+            return 1
+        print(f"[evol-discipline] OK {doc_path.name}: atomico y suficiente.")
+        return 0
+
     errors = check_phase(root, args.phase)
     if args.json:
         import json
         print(json.dumps({"phase": args.phase, "ok": not errors, "errors": errors}))
         return 0 if not errors else 1
     if errors:
-        print(f"[evol-discipline] ✗ {args.phase}: {len(errors)} violation(es):")
+        print(f"[evol-discipline] FALLO {args.phase}: {len(errors)} violation(es):")
         for e in errors:
             print(f"  - {e}")
         return 1
-    print(f"[evol-discipline] ✓ {args.phase}: contenido valido.")
+    print(f"[evol-discipline] OK {args.phase}: contenido valido.")
     return 0
 
 

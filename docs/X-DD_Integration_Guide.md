@@ -119,3 +119,24 @@ graph TD
 
     XDD -. "inspiracion de patrones\n(no fork, no copia de codigo)" .-> EVOLDD
 ```
+
+---
+
+## Disciplinas implementadas
+
+Las 9 disciplinas -Driven Development estan documentadas de forma atomica en `docs/disciplinas/`.
+Cada archivo cubre exactamente 1 disciplina (1 doc = 1 dominio tecnico).
+
+| Disciplina | Archivo | Fase de entrada |
+|---|---|---|
+| SDD — Spec-Driven | [docs/disciplinas/SDD.md](disciplinas/SDD.md) | Briefing → Spec |
+| FDD — Feature-Driven | [docs/disciplinas/FDD.md](disciplinas/FDD.md) | Spec → Plan |
+| DDD — Domain-Driven | [docs/disciplinas/DDD.md](disciplinas/DDD.md) | Spec |
+| BDD — Behavior-Driven | [docs/disciplinas/BDD.md](disciplinas/BDD.md) | Plan → Build |
+| ATDD — Acceptance TDD | [docs/disciplinas/ATDD.md](disciplinas/ATDD.md) | Plan → Build |
+| TDD — Test-Driven | [docs/disciplinas/TDD.md](disciplinas/TDD.md) | Build |
+| STDD — Security-Test-Driven | [docs/disciplinas/STDD.md](disciplinas/STDD.md) | Build → QA |
+| SecDD — Security-Driven | [docs/disciplinas/SecDD.md](disciplinas/SecDD.md) | Build → QA |
+| Threat-Driven | [docs/disciplinas/THREAT-DRIVEN.md](disciplinas/THREAT-DRIVEN.md) | Spec + QA |
+
+Indice maestro con flujos y dependencias: [docs/disciplinas/INDEX.md](disciplinas/INDEX.md)

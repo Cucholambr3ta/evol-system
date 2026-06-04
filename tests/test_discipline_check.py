@@ -234,3 +234,60 @@ def test_check_phase_briefing_corre_sdd_y_fdd(tmp_path):
 
 def test_check_phase_retro_sin_checks(tmp_path):
     assert evol_dc.check_phase(tmp_path, "retro") == []
+
+
+# ── Atomicidad ────────────────────────────────────────────────────────────────
+
+def test_atomicidad_doc_un_dominio_pasa(tmp_path):
+    doc = tmp_path / "AUTH.md"
+    doc.write_text(
+        "# Autenticacion\n\n## OAuth\n\nFlujo OAuth 2.0.\n\n"
+        "## JWT\n\nTokens de sesion.\n\n## Login\n\nEndpoint de autenticacion.\n"
+    )
+    assert evol_dc.check_atomicity(doc) == []
+
+
+def test_atomicidad_multi_dominio_falla(tmp_path):
+    doc = tmp_path / "GUIDE.md"
+    doc.write_text(
+        "# Guia\n\n## Autenticacion y OAuth\n\n## Base de datos y migracion\n\n"
+        "## Pipeline CI/CD y deploy\n\n## STRIDE y threat modeling\n\n"
+        "## Logging y metrics\n\n## Componentes frontend\n"
+    )
+    errors = evol_dc.check_atomicity(doc)
+    assert errors
+    assert "ATOMICIDAD" in errors[0]
+
+
+def test_atomicidad_index_exento(tmp_path):
+    doc = tmp_path / "INDEX.md"
+    doc.write_text(
+        "# INDEX\n\n## Autenticacion\n\n## Base de datos\n\n"
+        "## CI/CD\n\n## Threats\n\n## Logging\n\n## Frontend\n"
+    )
+    assert evol_dc.check_atomicity(doc) == []
+
+
+# ── Umbral de lineas ──────────────────────────────────────────────────────────
+
+def test_min_lines_sobre_umbral_pasa(tmp_path):
+    doc = tmp_path / "SPEC.md"
+    doc.write_text("\n".join(f"linea {i}" for i in range(200)))
+    assert evol_dc.check_min_lines(doc) == []
+
+
+def test_min_lines_bajo_umbral_falla(tmp_path):
+    doc = tmp_path / "SPEC.md"
+    doc.write_text("\n".join(f"linea {i}" for i in range(50)))
+    errors = evol_dc.check_min_lines(doc)
+    assert errors
+    assert "PROFUNDIDAD" in errors[0]
+
+
+def test_doc_quality_ok(tmp_path):
+    doc = tmp_path / "AUTH.md"
+    doc.write_text(
+        "# Autenticacion\n\n## Login\n\n"
+        + "\n".join(f"Contenido linea {i}" for i in range(100))
+    )
+    assert evol_dc.check_doc_quality(tmp_path, doc) == []
