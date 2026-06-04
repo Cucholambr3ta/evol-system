@@ -294,20 +294,40 @@ print(f'[evol-init] Profile $profile saved to evol.profile.yml')
 " 2>/dev/null || echo "[evol-init] evol.profile.yml updated (YAML write skipped)"
     fi
 
-    # MEMORY.md + INDEX.md en acuerdos/ (si acuerdos ya existe pero faltan estos archivos)
-    if [ -d ./acuerdos ]; then
-        if [ ! -f acuerdos/memoria/MEMORY.md ]; then
-            mkdir -p acuerdos/memoria
-            printf "# MEMORY.md — Hechos persistentes del proyecto\n\n> Solo hechos duraderos, no log temporal.\n\n## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n" \
-                > acuerdos/memoria/MEMORY.md
-            echo "[evol-init] ✓ acuerdos/memoria/MEMORY.md creado."
-        fi
-        if [ ! -f acuerdos/lecciones/INDEX.md ]; then
-            mkdir -p acuerdos/lecciones
-            printf "# INDEX — Lecciones por Sprint\n\n> Indice de lecciones separadas por sprint.\n\n| Sprint | Archivo | Fecha cierre |\n|--------|---------|-------------|\n" \
-                > acuerdos/lecciones/INDEX.md
-            echo "[evol-init] ✓ acuerdos/lecciones/INDEX.md creado."
-        fi
+    # Estructura /acuerdos (cero deuda tecnica — base del briefing arbol 16 dimensiones)
+    if [ ! -d ./acuerdos ]; then
+        mkdir -p acuerdos/idea acuerdos/research acuerdos/design \
+                 acuerdos/wireframes acuerdos/proyecto \
+                 acuerdos/memoria acuerdos/lecciones
+        printf "# Idea\n\nIdea original del proyecto. Ver idea.md (generado por /evol briefing).\n" \
+            > acuerdos/idea/README.md
+        printf "# Research\n\nInvestigacion por dominio tecnico (generada post-briefing).\n" \
+            > acuerdos/research/README.md
+        printf "# Design System\n\ntokens.md + components.md + assets.md (Dimension 15 del briefing).\n" \
+            > acuerdos/design/README.md
+        printf "# Wireframes\n\nHTML aprobado por pantalla (Dimension 16). Regla de diseno inmutable.\n" \
+            > acuerdos/wireframes/README.md
+        printf "# Proyecto\n\nN documentos granulares por dominio tecnico (generados post-briefing).\n" \
+            > acuerdos/proyecto/README.md
+        printf "# Memoria por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" \
+            > acuerdos/memoria/README.md
+        printf "# Lecciones por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" \
+            > acuerdos/lecciones/README.md
+        echo "[evol-init] acuerdos/ creado (7 subcarpetas — base para /evol briefing)."
+    fi
+
+    # MEMORY.md + INDEX.md en acuerdos/ (idempotente — crea si faltan)
+    if [ ! -f acuerdos/memoria/MEMORY.md ]; then
+        mkdir -p acuerdos/memoria
+        printf "# MEMORY.md — Hechos persistentes del proyecto\n\n> Solo hechos duraderos, no log temporal.\n\n## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n" \
+            > acuerdos/memoria/MEMORY.md
+        echo "[evol-init] ✓ acuerdos/memoria/MEMORY.md creado."
+    fi
+    if [ ! -f acuerdos/lecciones/INDEX.md ]; then
+        mkdir -p acuerdos/lecciones
+        printf "# INDEX — Lecciones por Sprint\n\n> Indice de lecciones separadas por sprint.\n\n| Sprint | Archivo | Fecha cierre |\n|--------|---------|-------------|\n" \
+            > acuerdos/lecciones/INDEX.md
+        echo "[evol-init] ✓ acuerdos/lecciones/INDEX.md creado."
     fi
 
     # Init git if not exists

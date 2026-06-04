@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "profiles": [
     {
       "id": "minimal",
@@ -9,35 +9,44 @@
         "workflows-core",
         "lessons-engine",
         "continuous-memory",
-        "memory"
+        "memory",
+        "diagnostics"
       ]
     },
     {
       "id": "core",
-      "description": "Standard for projects. Default profile. Includes agents, gate, CI and growth engine.",
+      "description": "Standard for projects. Default profile. Includes agents, gate, CI, growth engine and sprint workflow.",
       "extends": "minimal",
       "modules": [
         "agents-core",
         "gate-keeper",
         "ci-runtime",
-        "growth-engine"
+        "growth-engine",
+        "gitflow-sprint",
+        "discipline-check",
+        "sprint-workflows",
+        "community-skills"
       ]
     },
     {
       "id": "developer",
-      "description": "Active development with ephemeral agents, hooks, lifecycle, evolution and eval.",
+      "description": "Active development with ephemeral agents, hooks, lifecycle, orchestration, provider and eval.",
       "extends": "core",
       "modules": [
         "hooks-runtime",
         "lifecycle-agents",
         "evolve-skills",
         "researcher",
-        "eval-harness"
+        "eval-harness",
+        "orchestration",
+        "provider",
+        "state-store",
+        "flow-gate"
       ]
     },
     {
       "id": "security",
-      "description": "Security focus with SecDD, strict hooks, agent shield and eval.",
+      "description": "Security focus with SecDD, strict hooks, agent shield, discipline-check and eval.",
       "extends": "core",
       "modules": [
         "security-suite",
@@ -64,7 +73,8 @@
         "security-suite",
         "hooks-strict",
         "observability",
-        "platform-configs"
+        "platform-configs",
+        "branding"
       ]
     },
     {
@@ -74,7 +84,8 @@
         "core",
         "workflows-core",
         "memory",
-        "global-wrapper"
+        "global-wrapper",
+        "diagnostics"
       ]
     }
   ]
