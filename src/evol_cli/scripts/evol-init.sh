@@ -296,12 +296,18 @@ print(f'[evol-init] Profile $profile saved to evol.profile.yml')
 
     # Estructura /acuerdos (cero deuda tecnica — base del briefing arbol 16 dimensiones)
     if [ ! -d ./acuerdos ]; then
-        mkdir -p acuerdos/idea acuerdos/research acuerdos/design \
+        mkdir -p acuerdos/idea acuerdos/discovery acuerdos/research acuerdos/design \
                  acuerdos/wireframes acuerdos/proyecto \
                  acuerdos/memoria acuerdos/lecciones
-        printf "# Idea\n\nIdea original del proyecto. Ver idea.md (generado por /evol briefing).\n" \
+        printf "# Idea\n\nIdea decantada en atomos (por /evol idea). 1 atomo por tema/proyecto/link.\n" \
             > acuerdos/idea/README.md
-        printf "# Research\n\nInvestigacion por dominio tecnico (generada post-briefing).\n" \
+        printf "# Discovery\n\nResearch PRE-briefing: investigacion por tema para ENTENDER la idea\n(por /evol discovery). Distinto de research/ (post-briefing, como construir).\n" \
+            > acuerdos/discovery/README.md
+        printf "# INDEX — Idea decantada\n\n> Solicitud del usuario decantada en atomos. Cada uno dispara discovery.\n\n| Atomo | Tema | Fuente | Artefacto discovery |\n|-------|------|--------|---------------------|\n" \
+            > acuerdos/idea/INDEX.md
+        printf "# INDEX — Discovery\n\n> Que entendio el agente de la idea, tras investigar cada tema.\n\n| Tema | Que es | Que aporta | Decision sugerida |\n|------|--------|-----------|-------------------|\n" \
+            > acuerdos/discovery/INDEX.md
+        printf "# Research\n\nInvestigacion por dominio tecnico POST-briefing: como construir cada dominio\n(en doc-granular). Distinto de discovery/ (pre-briefing, entender la idea).\n" \
             > acuerdos/research/README.md
         printf "# Design System\n\ntokens.md + components.md + assets.md (Dimension 15 del briefing).\n" \
             > acuerdos/design/README.md
