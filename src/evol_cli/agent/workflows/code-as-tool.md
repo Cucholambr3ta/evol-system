@@ -91,5 +91,5 @@ Script ejecutable + `STDOUT JSON` con summary. Agent puede pedir scripts adicion
 
 ## Referencias
 - [ADR-0023 Context budget policy](../../docs/adr/0023-context-budget-policy.md)
-- [skills/xdd-fs-context](../../skills/xdd-fs-context/SKILL.md)
+- [skills/evol-fs-context](../../skills/evol-fs-context/SKILL.md)
 - Code Execution with MCP pattern: ai-boost/awesome-harness-engineering

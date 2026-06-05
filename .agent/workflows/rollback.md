@@ -27,7 +27,7 @@ trigger: /evol rollback
 * **Validación Final:** No se cierra el incidente sin pruebas de humo (Smoke Tests) exitosas.
 * **Transparencia NDJSON:** Cada paso del proceso debe ser registrado para auditoría post-mortem.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Recovery Integrity Gate
 * Certifies the system state after a critical failure or failed deployment.
@@ -114,7 +114,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 ---
 
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

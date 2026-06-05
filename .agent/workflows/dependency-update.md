@@ -12,7 +12,7 @@ trigger: /evol dependency-update
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-026 | **Versión:** 2.3.0 | **Nivel:** Táctico
 **Misión:** Mantenimiento proactivo de dependencias y mitigación de vulnerabilidades en la cadena de suministro.
-**Agentes Asignados:** X-DD Orchestrator (00), Swarm de Ejecución (03), 12_Dependency_Manager
+**Agentes Asignados:** Evol-DD Orchestrator (00), Swarm de Ejecución (03), 12_Dependency_Manager
 **Skills Requeridas:** `skill-software-composition-analysis`, `skill-dependency-update-details`, `skill-patch-management`
 **Cultura:** Mantenimiento Proactivo · Seguridad · Zero Vulnerabilidades Conocidas
 
@@ -27,7 +27,7 @@ trigger: /evol dependency-update
 * **Evidencia Técnica:** Cada actualización debe estar respaldada por un reporte de validación en formato NDJSON.
 * **Zero Context Rot:** El entorno de trabajo debe ser saneado tras la fusión exitosa del Pull Request.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Supply Chain Integrity Gate
 * Certifies that third-party code additions do not introduce backdoors or license conflicts.
@@ -111,7 +111,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 ---
 
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

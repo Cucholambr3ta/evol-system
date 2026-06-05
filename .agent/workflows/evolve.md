@@ -15,17 +15,17 @@ trigger: /evol evolve
 ## 0. Pre-condición (gate)
 
 ```bash
-test -f scripts/xdd-state.py || { echo "Sprint 9 requerido"; exit 1; }
-python3 scripts/xdd-state.py stats
+test -f scripts/evol-state.py || { echo "Sprint 9 requerido"; exit 1; }
+python3 scripts/evol-state.py stats
 ```
 
 ## 1. Detectar clusters candidatos
 
 ```bash
-python3 scripts/xdd-state.py evolve \
+python3 scripts/evol-state.py evolve \
   --min-confidence 0.5 \
   --min-cluster-size 3 \
-  --json | tee /tmp/xdd-evolve-proposals.json
+  --json | tee /tmp/evol-evolve-proposals.json
 ```
 
 Output: lista de clusters con `proposed_type` (skill/agent/command), `proposed_name`, `rationale`.
@@ -59,7 +59,7 @@ Según `proposed_type`:
 ## 4. Marcar instincts como promovidos
 
 ```bash
-# (vía xdd-state.py — Sprint 10 puede agregar comando `promote`)
+# (vía evol-state.py — Sprint 10 puede agregar comando `promote`)
 # Por ahora: UPDATE manual o script propio
 ```
 
@@ -79,9 +79,9 @@ Según `proposed_type`:
 ## Post-condición
 
 ```bash
-python3 scripts/xdd-state.py stats
+python3 scripts/evol-state.py stats
 # evolutions count debe haber crecido o el rejected count
 ```
 
 ---
-*Driven by X-DD Continuous Learning (Sprint 9)*
+*Driven by Evol-DD Continuous Learning (Sprint 9)*

@@ -61,3 +61,21 @@ SLA estándar: 30 días.
 - Versionar `PRIVACY.md`.
 - Anotar próxima revisión (6 meses o cambio sustancial).
 - Si se detecta brecha, escalar inmediatamente.
+
+---
+
+## Extension: disciplina Compliance-Driven (COMPLIANCE)
+
+> Activacion por profile: `compliance` en `methodologies:`. Ficha:
+> [`docs/disciplinas/COMPLIANCE.md`](../../docs/disciplinas/COMPLIANCE.md).
+
+Privacy-review cubre PII (disciplina [PrivacyDD](../../docs/disciplinas/PrivacyDD.md), mapeo directo).
+Cuando el profile activa ademas `compliance`, este workflow se extiende a marcos regulatorios completos
+(GDPR/HIPAA/PCI-DSS/SOC 2):
+
+- **Entrada adicional:** perfil regulatorio aplicable + `privacy/pii_inventory.json`.
+- **Salida adicional:** `compliance/control_mappings.json` (control regulatorio -> implementacion ->
+  prueba) + `compliance/audit_logs_spec.json`.
+- **Criterio:** cada control aplicable tiene una prueba automatizada; el pipeline falla si un control
+  critico no se cumple.
+- **Fuentes:** los textos regulatorios y controles se citan con su URL oficial (DOC_STANDARD).

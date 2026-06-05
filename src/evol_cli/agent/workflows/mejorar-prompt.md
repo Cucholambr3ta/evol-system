@@ -1,5 +1,5 @@
 ---
-description: Transform raw or existing prompts into optimized, structured versions compliant with X-DD v2.0 standards. Version 2.2.0 integrates "Meta-Interoperability" (Art. 6) to ensure prompts can call other workflows seamlessly.
+description: Transform raw or existing prompts into optimized, structured versions compliant with Evol-DD standards. Version 2.2.0 integrates "Meta-Interoperability" (Art. 6) to ensure prompts can call other workflows seamlessly.
 name: mejorar-prompt
 trigger: /evol mejorar-prompt
 ---
@@ -11,7 +11,7 @@ trigger: /evol mejorar-prompt
 > obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-000 | **Versión:** 2.3.0
-**Mission:** Transform raw or existing prompts into optimized, structured versions compliant with X-DD v2.0 standards. Version 2.2.0 integrates "Meta-Interoperability" (Art. 6) to ensure prompts can call other workflows seamlessly.
+**Mission:** Transform raw or existing prompts into optimized, structured versions compliant with Evol-DD standards. Version 2.2.0 integrates "Meta-Interoperability" (Art. 6) to ensure prompts can call other workflows seamlessly.
 
 
 ## 0. PRE-FLIGHT: MEMORY SEAL (START)
@@ -30,7 +30,7 @@ Workflow Command: `/mejorar-prompt`
 - **Zero Context Rot:** Destroy the prompt-engineer agent after task completion; persist only the optimized artifact.
 - **Tiered Validation:** Every optimization must pass a Tier 3 (LLM-as-judge) quality assessment.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Quality Gate (Governance)
 - Identifies the prompt type (Agent, Workflow, Skill) and selects the appropriate template.

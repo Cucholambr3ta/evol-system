@@ -13,7 +13,7 @@ trigger: /evol ux-discovery
 **Misión:** Asegurar que existe un problema real con persona y JTBD claros antes de gastar tokens en `/fase-requisitos`.
 
 ## 0. Pre-flight
-- Lee `memoria.md`, `lecciones.md`, y `xdd.profile.yml` si existe.
+- Lee `memoria.md`, `lecciones.md`, y `evol.profile.yml` si existe.
 - Si ya hay `DISCOVERY.md`, ofrece **actualizar** vs **crear nuevo**.
 
 ## 1. Entrada

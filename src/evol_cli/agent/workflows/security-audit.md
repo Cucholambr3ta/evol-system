@@ -29,12 +29,12 @@ Workflow Command: `/security-audit`
 * **NDJSON Veracity:** Atomic recording of every vulnerability trace is mandatory.
 * **Zero Trust Validation:** Semantic validation (Tier 3) of complex attack vectors (Logic Flaws, Prompt Injection).
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Security & Compliance Gate
 
 * Certifies that the system is free of "Critical" and "High" vulnerabilities.
-* Validates adherence to X-DD Secure Coding Standards and OWASP Top 10.
+* Validates adherence to Evol-DD Secure Coding Standards and OWASP Top 10.
 
 ### 2.2 Delegation (Operations)
 
@@ -54,7 +54,7 @@ Workflow Command: `/security-audit`
 | **I. Sandbox Prep** | Subagente 04 | Deployment of sterile Docker environment and PII masking. | `skill-security-audit-details` |
 | **II. Static Analysis** | Subagente 04 | SAST, SCA, and Secret Scanning execution. | Secure Coding Tier 1 |
 | **III. Dynamic Analysis** | Subagente 04 | DAST (OWASP ZAP) and fuzzing in active environment. | Hacking Ethics Tier 2 |
-| **IV. Red Teaming** | X-DD | Semantic validation of complex vulnerabilities and logic flaws. Link to `FLUJO_062_advanced-agentic-pentesting` using **Shannon AI (Gemini)** for automated POC. | `skill-autonomous-exploitation` |
+| **IV. Red Teaming** | Evol-DD | Semantic validation of complex vulnerabilities and logic flaws. Link to `FLUJO_062_advanced-agentic-pentesting` using **Shannon AI (Gemini)** for automated POC. | `skill-autonomous-exploitation` |
 | **V. Reporting** | Subagente 05 | Severity classification and confidential report archival. | Asset Protocol |
 
 ## 5. RECOVERY & ERRORS (NDJSON)

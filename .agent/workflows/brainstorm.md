@@ -41,7 +41,7 @@ Generar **muchas ideas sin filtrar** sobre un problema abierto. Optimizado para 
 
 2. **Invocar party mode** del orchestrator (Sprint 17, ADR-0016):
    ```bash
-   python3 scripts/xdd-orchestrate.py run --pattern=brainstorm_party --exec
+   python3 scripts/evol-orchestrate.py run --pattern=brainstorm_party --exec
    ```
 
 3. **Capturar ideas** sin filtrar en `BRAINSTORM_<ts>.md`:

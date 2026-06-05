@@ -91,4 +91,4 @@ Identificar términos vagos, supuestos no declarados, criterios de aceptación f
 ## Referencias
 - ADR-0014 SDD parity
 - Spec-Kit /clarify inspiración
-- Constitución X-DD Art. 7 (Ambigüedad Cero)
+- Constitución Evol-DD Art. 7 (Ambigüedad Cero)

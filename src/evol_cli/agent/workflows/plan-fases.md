@@ -68,7 +68,7 @@ Los activos y entregables deben gestionarse según el estándar en `skill-workfl
 
 ---
 **Versión:** 3.0.0 | **Fecha:** 2026-04-02
-Desarrollado por X-DD System
+Desarrollado por Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

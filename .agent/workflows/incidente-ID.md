@@ -31,7 +31,7 @@ Este workflow gestiona la respuesta a **incidentes críticos en producción** qu
 *   **Sincronización Dual:** Obligatorio merge a `main` (con tag) y a `develop`.
 *   **Protocolo NDJSON:** Todo evento de resolución debe quedar registrado en tiempo real.
 
-## 3. X-DD CORE CONTROL DOMAINS
+## 3. Evol-DD CORE CONTROL DOMAINS
 
 ### 3.1 Crisis Integrity Gate
 
@@ -121,7 +121,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 ---
 
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

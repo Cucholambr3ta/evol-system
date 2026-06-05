@@ -13,7 +13,7 @@ trigger: /evol perf-budget
 **Misión:** Performance como contrato. Regresiones bloquean merge, no se discuten.
 
 ## 0. Pre-flight
-- Identifica tipo de proyecto (web, mobile, backend) en `xdd.profile.yml`.
+- Identifica tipo de proyecto (web, mobile, backend) en `evol.profile.yml`.
 
 ## 1. Presupuestos por dominio
 

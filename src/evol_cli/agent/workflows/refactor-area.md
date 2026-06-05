@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD
+description: Refactoriza un área de código con gate: análisis de deuda técnica, plan iterativo, tests verdes.
 name: refactor-area
 trigger: /evol refactor-area
 ---
@@ -11,7 +11,7 @@ trigger: /evol refactor-area
 > obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-012 | **Versión:** 2.3.0 | **Nivel:** Táctico
-**Orquestador:** X-DD Orchestrator (00)
+**Orquestador:** Evol-DD Orchestrator (00)
 **Subagentes:** Swarm de Ejecución (03), Swarm de QA (04), Swarm de Consolidación (05)
 
 
@@ -24,11 +24,11 @@ trigger: /evol refactor-area
 * **Métricas de Valor**: Todo refactor debe demostrar mejora cuantitativa (complejidad, cobertura o rendimiento).
 * **Source Integrity**: Mantener la paridad de funcionalidad y contratos de API.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 | Dominio | Responsabilidad | Control de Calidad |
 | :--- | :--- | :--- |
-| **Arquitectura** | Orchestrator (00) | Validación de alineación con SAD y patrones X-DD. |
+| **Arquitectura** | Orchestrator (00) | Validación de alineación con SAD y patrones Evol-DD. |
 | **Ejecución** | Swarm 03 | Implementación atómica y pruebas de caracterización. |
 | **Validación** | Swarm 04 | Testing Tiered (1-3) y validación de métricas delta. |
 | **Consolidación** | Swarm 05 | Registro en memoria institucional y actualización de docs. |
@@ -73,7 +73,7 @@ El registro de activos se rige por el estándar: `skill-workflow-asset-protocol.
 
 ---
 **Versión:** 2.3.0 | **Estado:** Operativo
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

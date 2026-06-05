@@ -13,7 +13,7 @@ trigger: /evol i18n-setup
 **Misión:** Habilitar el producto para múltiples idiomas y regiones sin retrabajos.
 
 ## 0. Pre-flight
-- Verifica si el perfil declara `capabilities.i18n: true` en `xdd.profile.yml`.
+- Verifica si el perfil declara `capabilities.i18n: true` en `evol.profile.yml`.
 - Si no, pregunta si activar.
 
 ## 1. Alcance

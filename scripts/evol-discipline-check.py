@@ -42,7 +42,6 @@ def check_sdd(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "briefing" / "SPEC.md",
         root / "briefing" / "SPEC.md",
-        root / ".xdd" / "briefing" / "SPEC.md",
     ]
     spec = next((p for p in candidates if p.exists()), None)
     if spec is None:
@@ -70,7 +69,6 @@ def check_fdd(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "briefing" / "FEATURES.md",
         root / "briefing" / "FEATURES.md",
-        root / ".xdd" / "briefing" / "FEATURES.md",
     ]
     feat = next((p for p in candidates if p.exists()), None)
     if feat is None:
@@ -92,7 +90,6 @@ def check_ddd(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "spec" / "DOMAIN.md",
         root / "spec" / "DOMAIN.md",
-        root / ".xdd" / "spec" / "DOMAIN.md",
     ]
     domain = next((p for p in candidates if p.exists()), None)
     if domain is None:
@@ -118,7 +115,6 @@ def check_threat_driven(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "spec" / "THREATS.md",
         root / "spec" / "THREATS.md",
-        root / ".xdd" / "spec" / "THREATS.md",
     ]
     threats = next((p for p in candidates if p.exists()), None)
     if threats is None:
@@ -174,7 +170,6 @@ def check_stdd(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "spec" / "THREATS.md",
         root / "spec" / "THREATS.md",
-        root / ".xdd" / "spec" / "THREATS.md",
     ]
     threats = next((p for p in candidates if p.exists()), None)
     if threats is None:
@@ -200,7 +195,6 @@ def check_secdd(root: Path) -> list[str]:
     candidates = [
         root / ".evol" / "qa" / "QA_REPORT.md",
         root / "qa" / "QA_REPORT.md",
-        root / ".xdd" / "qa" / "QA_REPORT.md",
     ]
     report = next((p for p in candidates if p.exists()), None)
     if report is None:

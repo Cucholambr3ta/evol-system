@@ -13,7 +13,7 @@ trigger: /evol data-pipeline
 **Misión:** Datos confiables, trazables y con calidad medida — no "logs convertidos en tablas".
 
 ## 0. Pre-flight
-- Aplica si `xdd.profile.yml > capabilities.data_pipeline: true` o si el dominio tiene ETL/streaming.
+- Aplica si `evol.profile.yml > capabilities.data_pipeline: true` o si el dominio tiene ETL/streaming.
 
 ## 1. Contratos de datos
 - Schema versionado (Avro, Protobuf, JSON Schema) por dataset.

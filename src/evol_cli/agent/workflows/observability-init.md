@@ -13,7 +13,7 @@ trigger: /evol observability-init
 **Misión:** Que el sistema sea diagnosticable en producción sin acceder al código.
 
 ## 0. Pre-flight
-- Detecta stack en `xdd.profile.yml > stacks.observability`.
+- Detecta stack en `evol.profile.yml > stacks.observability`.
 - Requiere `FEATURES.md` y servicios críticos identificados.
 
 <!-- CONFIGURAR: Stack de observabilidad. Opciones:                            -->

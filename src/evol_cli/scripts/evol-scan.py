@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""evol-scan — SAST nativo para X-DD.
+"""evol-scan — SAST nativo para Evol-DD.
 
 Escanea codigo fuente buscando vulnerabilidades sin dependencias externas.
 Degrada elegantemente: usa semgrep/gitleaks si disponibles, modo heuristico si no.
@@ -118,7 +118,7 @@ def _scan_file_with_patterns(filepath: Path, patterns: list, lang: str) -> list[
                     "description": desc,
                     "remediation": remediation,
                     "cvss_estimate": _cvss_estimate(severity),
-                    "scanner": "xdd-heuristic",
+                    "scanner": "evol-heuristic",
                     "lang": lang,
                 })
     return findings
@@ -171,10 +171,10 @@ def _try_gitleaks(directory: str) -> list[dict] | None:
         return None
     try:
         r = subprocess.run(
-            ["gitleaks", "detect", "--no-git", "--source", directory, "--report-format", "json", "--report-path", "/tmp/xdd-gitleaks.json"],
+            ["gitleaks", "detect", "--no-git", "--source", directory, "--report-format", "json", "--report-path", "/tmp/evol-gitleaks.json"],
             capture_output=True, text=True, timeout=60,
         )
-        report = Path("/tmp/xdd-gitleaks.json")
+        report = Path("/tmp/evol-gitleaks.json")
         if not report.exists():
             return []
         data = json.loads(report.read_text())
@@ -271,7 +271,7 @@ def cmd_secrets(args) -> int:
                             "description": desc,
                             "remediation": "Remove secret from source. Rotate credential. Use environment variables or a secrets manager (e.g., HashiCorp Vault, AWS Secrets Manager).",
                             "cvss_estimate": _cvss_estimate(severity),
-                            "scanner": "xdd-heuristic",
+                            "scanner": "evol-heuristic",
                         })
 
 
@@ -299,7 +299,7 @@ def cmd_secrets(args) -> int:
                             "code_snippet": snippet[:120],
                             "description": desc,
                             "remediation": "Remove secret from source. Rotate credential. Use environment variables or a secrets manager.",
-                            "cvss_estimate": _cvss_estimate(severity), "scanner": "xdd-heuristic",
+                            "cvss_estimate": _cvss_estimate(severity), "scanner": "evol-heuristic",
                         })
 
     return _output(findings, args.output, "secrets")
@@ -340,7 +340,7 @@ def cmd_deps(args) -> int:
                         "description": desc,
                         "remediation": f"Upgrade {pkg} to a patched version. Check https://pypi.org/project/{pkg}/ for latest.",
                         "cvss_estimate": _cvss_estimate(severity),
-                        "scanner": "xdd-sca",
+                        "scanner": "evol-sca",
                     })
 
     return _output(findings, args.output, "deps")

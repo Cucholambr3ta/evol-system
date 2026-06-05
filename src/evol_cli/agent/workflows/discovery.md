@@ -52,6 +52,11 @@ Output: `acuerdos/discovery/<tema>/investigacion-validada.md`
 Redactar `acuerdos/discovery/<tema>/investigacion.md` final con DOC_STANDARD (Mermaid si
 hay arquitectura, tablas, 0 emojis). Generar `.json` sidecar con evol-doc-sync.
 
+> **Regla de fuentes (DOC_STANDARD 1.7) — OBLIGATORIA:** todo claim producto de investigacion
+> web lleva el link de su fuente, inline `[texto](https://url)` o en seccion **Fuentes** al pie.
+> El sidecar captura las URLs en `fuentes[]`. El auditor RECHAZA un `investigacion.md` con
+> claims sin fuente. Fuente con veredicto FALSO/ENGANOSO de `/evol fact-check` no se incorpora.
+
 ## 2. SINTESIS — entender la idea completa
 
 Una vez investigados TODOS los atomos, generar `acuerdos/discovery/INDEX.md`:

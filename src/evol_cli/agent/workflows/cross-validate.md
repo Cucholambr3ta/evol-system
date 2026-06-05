@@ -78,4 +78,4 @@ Detectar drift, contradicciones y omisiones entre artefactos relacionados que de
 ## Referencias
 - ADR-0014 SDD parity
 - Spec-Kit /cross-validate inspiración
-- Constitución X-DD Art. 6 (Trazabilidad bidireccional)
+- Constitución Evol-DD Art. 6 (Trazabilidad bidireccional)

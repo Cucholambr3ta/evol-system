@@ -14,13 +14,13 @@ trigger: /evol orchestrate
 
 ## 0. Pre-condición
 ```bash
-test -f scripts/xdd-orchestrate.py
+test -f scripts/evol-orchestrate.py
 test -f prompts/agents/registry.json
 ```
 
 ## 1. Listar patterns disponibles
 ```bash
-python3 scripts/xdd-orchestrate.py list
+python3 scripts/evol-orchestrate.py list
 ```
 
 Patterns v0.1.0 (definidos en registry.json):
@@ -30,13 +30,13 @@ Patterns v0.1.0 (definidos en registry.json):
 
 ## 2. Dry-run
 ```bash
-python3 scripts/xdd-orchestrate.py run --pattern=security_review --json
+python3 scripts/evol-orchestrate.py run --pattern=security_review --json
 ```
 Muestra qué agents se invocarían y en qué orden. No ejecuta nada.
 
 ## 3. Execute (cuando hay confianza)
 ```bash
-python3 scripts/xdd-orchestrate.py run --pattern=security_review --exec --json
+python3 scripts/evol-orchestrate.py run --pattern=security_review --exec --json
 ```
 Modo execute valida que los prompts existan. Las invocaciones LLM reales las
 hace tu orquestador (Claude Code/OpenCode) cuando recibe la tool call vía

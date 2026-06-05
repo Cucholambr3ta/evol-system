@@ -14,7 +14,7 @@ trigger: /evol finops-baseline
 
 ## 0. Pre-flight
 - Copia `templates/budget.template.md` a `BUDGET.md`.
-- Detecta proveedor cloud en `xdd.profile.yml > stacks.cloud`.
+- Detecta proveedor cloud en `evol.profile.yml > stacks.cloud`.
 
 ## 1. Categorías y cap
 Define cap mensual por categoría: compute, storage, egress, observabilidad, IA/LLMs, terceros.

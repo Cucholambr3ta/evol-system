@@ -35,6 +35,20 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
   (EDA + CDCDD), privacy-review (Compliance), dependency-update (DeprecationDD).
 - discovery/doc-granular/research: regla de fuentes OBLIGATORIA en el paso de escritura.
 
+### Fixed
+- **Rebrand x-dd → evol-dd** (namespace cleanup completo):
+  - `evol-scan.py`: scanner names `xdd-heuristic`/`xdd-sca` → `evol-heuristic`/`evol-sca`;
+    temp path `/tmp/xdd-gitleaks.json` → `/tmp/evol-gitleaks.json`.
+  - `evol-discipline-check.py`: removidos 6 fallback paths `.xdd/` de cada bloque `candidates`.
+  - 45 workflows en `.agent/workflows/` + mirrors `src/evol_cli/agent/workflows/`: sustituidos
+    `xdd.profile.yml`, `xdd-orchestrate.py`, `xdd-state.py`, `xdd-gate.py`, `xdd-researcher`,
+    `X-DD CORE CONTROL DOMAINS`, `X-DD System`, `X-DD Orchestrator`, `Constitución X-DD`,
+    `/x-dd`, `/xdd-build`, footers `*X-DD — disciplina`, link muerto `skills/xdd-fs-context`.
+  - 9 frontmatter descriptions reemplazadas de `"Workflow X-DD"` por descripciones reales.
+  - `skills/crear-skill/SKILL.md`: `origin: x-dd` → `origin: evol-dd`.
+- `.gitignore`: fix negacion para `.github/prompts/` (la negacion `!.github/` en L73 la
+  re-incluia); agregados `.vscode/` y `dudas.md`.
+
 ## [0.3.0] - 2026-06-05
 
 ### Added

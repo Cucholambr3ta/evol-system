@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD
+description: Pipeline completo de deploy a producción con gates, rollback y notificaciones.
 name: deploy-prod
 trigger: /evol deploy-prod
 ---
@@ -11,7 +11,7 @@ trigger: /evol deploy-prod
 > obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-018 | **Versión:** 2.3.0 (Art. 6 Interoperabilidad) | **Nivel:** Táctico
-**Orquestador:** X-DD Orchestrator (00)
+**Orquestador:** Evol-DD Orchestrator (00)
 **Skills Requeridas:** `skill-gitflow-management.md`, `skill-deployment-details.md`, `skill-workflow-asset-protocol.md`
 
 **Entorno:** Producción / Main Branch
@@ -26,7 +26,7 @@ trigger: /evol deploy-prod
 *   **Inmutabilidad**: Prohibición de cambios manuales en `prod`. Todo cambio debe provenir de Git.
 *   **Veredicto NDJSON**: Registro atómico obligatorio en `logs/deploy/${runId}.ndjson`.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Production Integrity Gate
 *   Certifies security, performance, and stability before production release.
@@ -93,7 +93,7 @@ Delegado a `skill-deployment-details.md > Sección 1.5`.
 
 ---
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

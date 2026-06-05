@@ -26,8 +26,8 @@ El workflow acepta:
 ## 2. Día 1: setup
 Guiar al dev:
 ```bash
-bash ./scripts/xdd-doctor.sh
-bash ./scripts/xdd-start.sh
+bash ./scripts/evol-doctor.sh
+bash ./scripts/evol-start.sh
 ```
 Verificar lectura de: `CLAUDE.md`, `memoria.md`, `lecciones.md`, `docs/X-DD_Integration_Guide.md`.
 
@@ -51,7 +51,7 @@ Sugerir un cambio acotado (typo en docs, refactor de bajo riesgo, test faltante)
 
 ## 6. Checklist hitos
 - [ ] Día 1: entorno arriba, primer PR trivial.
-- [ ] Semana 1: bug fix con pipeline `/xdd-build`.
+- [ ] Semana 1: bug fix con pipeline `/evol build`.
 - [ ] Mes 1: feature completa end-to-end.
 - [ ] Mes 2: contribuye a `lecciones.md`.
 

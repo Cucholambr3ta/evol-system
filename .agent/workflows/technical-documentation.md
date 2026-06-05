@@ -35,7 +35,7 @@ Workflow Command: `/technical-documentation`
 - **Pure Text Standard:** Enforce a 0% emoji density. Any non-ASCII symbols must be validated as purely technical or mathematical notation.
 - **NDJSON Quality Traces:** Documentation quality scores and generation logs must be recorded with a unique `runId`.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Quality Gate (Governance)
 

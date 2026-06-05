@@ -1,5 +1,5 @@
 ---
-description: Garantizar el aislamiento físico y lógico de tareas de alto riesgo (Pentesting, Stress Testing, Malware Analysis) mediante el uso de contenedores Docker efímeros. Protege el host de X-DD y automatiza la destrucción de contextos post-ejecución (Art. 7.3 Const.).
+description: Garantizar el aislamiento físico y lógico de tareas de alto riesgo (Pentesting, Stress Testing, Malware Analysis) mediante el uso de contenedores Docker efímeros. Protege el host de Evol-DD y automatiza la destrucción de contextos post-ejecución (Art. 7.3 Const.).
 name: secure-isolation-ops
 trigger: /evol secure-isolation-ops
 ---
@@ -11,7 +11,7 @@ trigger: /evol secure-isolation-ops
 > obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-000 | **Versión:** 2.3.0
-**Mission:** Garantizar el aislamiento físico y lógico de tareas de alto riesgo (Pentesting, Stress Testing, Malware Analysis) mediante el uso de contenedores Docker efímeros. Protege el host de X-DD y automatiza la destrucción de contextos post-ejecución (Art. 7.3 Const.).
+**Mission:** Garantizar el aislamiento físico y lógico de tareas de alto riesgo (Pentesting, Stress Testing, Malware Analysis) mediante el uso de contenedores Docker efímeros. Protege el host de Evol-DD y automatiza la destrucción de contextos post-ejecución (Art. 7.3 Const.).
 
 
 ## 0. PRE-FLIGHT: MEMORY SEAL (START)
@@ -29,7 +29,7 @@ Workflow Command: `/isolate`
 - **Network Isolation:** Las tareas de ciberseguridad deben ejecutarse en redes virtuales aisladas para evitar escaneos accidentales en la red local.
 - **Zero Context Rot:** Ninguna credencial o dato sensible debe persistir dentro de la imagen del contenedor.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Firewall de Comandos (Governance)
 
@@ -55,7 +55,7 @@ Workflow Command: `/isolate`
 | **I. Provisioning** | Pull de la imagen segura y creación de red aislada. | `skill-docker-orchestrator` | Security Mode |
 | **II. Mounting** | Montaje de solo lectura de los archivos de prueba. | Subagente 06 | Min. Privilege |
 | **III. Attack/Test** | Ejecución del comando de hacking o prueba de carga. | Subagente Especializado | Isolated |
-| **IV. Extraction** | Exportación de los resultados al host de X-DD. | Orchestrator | Integrity |
+| **IV. Extraction** | Exportación de los resultados al host de Evol-DD. | Orchestrator | Integrity |
 | **V. Destruction** | Eliminación de contenedor y red temporal. | `skill-docker-orchestrator` | Art. 7.3 (Const.) |
 
 ## 5. RECOVERY & ERRORS

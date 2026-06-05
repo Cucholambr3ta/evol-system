@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD
+description: Genera arquitectura física del proyecto tras gate spec. Scaffolding, ADRs y estructura técnica.
 name: project-architecture-gsd
 trigger: /evol project-architecture-gsd
 ---
@@ -22,7 +22,7 @@ trigger: /evol project-architecture-gsd
 
 > Lección retroactiva: en proyecto piloto multi-IDE, post-SPEC se generó solo SPEC.md sin la estructura física. Resultado: PLAN quedó sin terreno donde aterrizar.
 
-Tras validar SPEC.md (gate `spec` APROBADO vía `xdd-gate.py`), generar la estructura física **antes** de transicionar a PLAN:
+Tras validar SPEC.md (gate `spec` APROBADO vía `evol-gate.py`), generar la estructura física **antes** de transicionar a PLAN:
 
 ```
 proyecto/
@@ -40,7 +40,7 @@ Pasos enforcement:
 2. Crea `.gitkeep` en dirs vacíos.
 3. Crea `README.md` placeholder en cada dir con 1 línea de propósito.
 4. Mueve `SPEC.md` raíz → `docs/SPEC.md` si aún en root.
-5. Si stack declarado en `xdd.profile.yml` → genera scaffolding stack-específico (ej. `Cargo.toml` placeholder para Rust, `package.json` para Node, `pyproject.toml` para Python).
+5. Si stack declarado en `evol.profile.yml` → genera scaffolding stack-específico (ej. `Cargo.toml` placeholder para Rust, `package.json` para Node, `pyproject.toml` para Python).
 6. Genera `conductor.json` (manifest de scripts del proyecto) si NO existe.
 7. **NO transicionar a PLAN si scaffolding incompleto**.
 
@@ -53,7 +53,7 @@ Garantizar la integridad estructural de los proyectos bajo el estándar `PROJ-*`
 - **Estructura Semántica:** Los directorios deben seguir estrictamente el patrón `/proyecto/{idea,docs,api,design,assets,src,tests}`.
 - **Inmutabilidad de Rama Main:** Todo desarrollo ocurre en ramas de característica (`feat/*`) o desarrollo (`develop`).
 
-## 3. DOMINIOS DE CONTROL X-DD
+## 3. DOMINIOS DE CONTROL Evol-DD
 - **Orquestación de Entorno**: Configura el directorio de trabajo y las variables de entorno necesarias.
 - **Audit Estructural**: Verifica la presencia de archivos obligatorios (`SAD.md`, `PRD.md`, `memoria.md`).
 
@@ -86,7 +86,7 @@ La arquitectura del proyecto es la base para la ejecución coordinada:
 
 ---
 **Versión:** 2.2.0 | **Fecha:** 2026-03-20
-Desarrollado por la X-DD System
+Desarrollado por Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

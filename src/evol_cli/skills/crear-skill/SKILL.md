@@ -1,7 +1,7 @@
 ---
 name: crear-skill
 description: >
-  Crea nuevas skills para X-DD desde cero con loop iterativo de eval.
+  Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval.
   Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor
   triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7
   IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva,
@@ -9,7 +9,7 @@ description: >
   disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity,
   VSCode Copilot o Codex. Sinonimos: /crear-skill, crear skill, nueva skill,
   quiero una skill para, hazme una skill.
-origin: x-dd
+origin: evol-dd
 category: growth
 when_to_use:
   - Usuario quiere crear una skill nueva
@@ -77,7 +77,7 @@ skills/<nombre>/
 ---
 name: nombre-kebab-case
 description: > Descripcion que determina triggering
-origin: x-dd
+origin: evol-dd
 category: context-engineering | quality-gate | security | compression | research | lifecycle | growth
 when_to_use:
   - caso de uso 1

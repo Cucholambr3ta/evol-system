@@ -14,7 +14,7 @@ trigger: /evol analytics-instrument
 
 ## 0. Pre-flight
 - Copia `templates/events.schema.template.json` a `events.schema.json` si no existe.
-- Verifica stack en `xdd.profile.yml > stacks.analytics`.
+- Verifica stack en `evol.profile.yml > stacks.analytics`.
 
 <!-- CONFIGURAR: Stack analytics. Opciones:                                  -->
 <!--  - PostHog (OSS, autohospedable o cloud)                                 -->

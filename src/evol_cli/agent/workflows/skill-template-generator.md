@@ -30,7 +30,7 @@ Workflow Command: `/skill-template-generator`
 - **Fail-Fast Resolution:** Generation must abort if placeholders cannot be resolved from `metadata.json`.
 - **Zero Drift:** Maintain 100% alignment between command signatures and documentation.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Quality Gate (Governance)
 - Validates that all new skills provide a valid `SKILL.md.tmpl` and `metadata.json`.

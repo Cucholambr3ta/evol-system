@@ -12,7 +12,7 @@ trigger: /evol pruebas-fuzz
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-033 | **Versión:** 2.3.0 | **Nivel:** Operativo
 **Mission:** Ejecución de pruebas destructivas mediante inyección de datos malformados en sandboxes aislados, garantizando la robustez y seguridad ante entradas inesperadas.
-**Orquestador:** X-DD Orchestrator (00)
+**Orquestador:** Evol-DD Orchestrator (00)
 **Asistentes Operativos (Swarm):** Swarm de QA (04 Clones)
 **Skills Requeridas:** `skill-fuzz-test-details.md`, `skill-fuzzing.md`, `skill-containerization-docker.md`, `skill-advanced-evaluation.md`
 **Entorno:** Sandbox Docker Aislado
@@ -29,7 +29,7 @@ trigger: /evol pruebas-fuzz
 *   **Validación Multi-Tier:** Basada en Tiers 1-3 con juicio de IA para explotabilidad.
 *   **Observabilidad NDJSON:** Cada crash detectado debe generar un evento atómico con traza completa.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Robustness Assurance Gate
 *   Ensures the system can handle malformed inputs without critical failure or security breach.
@@ -110,7 +110,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 
 ---
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-Desarrollado por el X-DD SecOps
+Desarrollado por el Evol-DD SecOps
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

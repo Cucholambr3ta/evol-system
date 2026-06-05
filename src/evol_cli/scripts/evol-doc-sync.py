@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """evol-doc-sync — Genera sidecar JSON compacto desde documentos Markdown.
 
-Motor del ahorro de tokens del pipeline atomico X-DD. El MD es la fuente de verdad
+Motor del ahorro de tokens del pipeline atomico Evol-DD. El MD es la fuente de verdad
 (calidad completa). El JSON es la estructura maxima de ahorro: un agente lee el JSON
 (~300 tokens) para mapear que existe y donde, y solo carga el MD completo (~2500 tokens)
 del subdominio que va a implementar. Ahorro ~95% en navegacion.

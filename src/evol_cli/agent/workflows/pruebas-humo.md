@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD
+description: Smoke tests post-deploy para paths críticos. Detecta regresiones en menos de 5 minutos.
 name: pruebas-humo
 trigger: /evol pruebas-humo
 ---
@@ -11,7 +11,7 @@ trigger: /evol pruebas-humo
 > obligatorios, tablas para datos estructurados, Gherkin donde aplique, secciones
 > minimas y trazabilidad bidireccional.
 **ID:** FLUJO-037 | **Versión:** 2.3.0 (NDJSON & Tiered Testing) | **Nivel:** Operativo
-**Orquestador:** X-DD Orchestrator (00)
+**Orquestador:** Evol-DD Orchestrator (00)
 **Asistentes Operativos (Swarm):** Swarm de QA (04 Clones)
 **Skills Requeridas:** `skill-smoke-test-details.md`, `skill-browser-automation.md`, `skill-containerization-docker.md`
 **Entorno:** Sandbox Docker aislado (o entorno de staging)
@@ -28,7 +28,7 @@ trigger: /evol pruebas-humo
 * **Automatización Total:** Ejecución sin intervención humana en entornos aislados.
 * **Evidencia NDJSON:** Cada paso de la prueba de humo debe ser observable y trazable mediante registros asíncronos.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Stability Assurance Gate
 * Ensures post-deployment integrity before broader exposure.
@@ -104,7 +104,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 ---
 
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

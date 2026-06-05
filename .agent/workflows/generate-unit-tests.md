@@ -31,7 +31,7 @@ Workflow Command: `/generate-unit-tests`
 - **Zero Context Rot:** Temporary generator agents are destroyed post-execution.
 - **Human Gate:** Plan approval is mandatory before mass generation.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Quality Gate (Governance)
 - Approves the test generation plan.

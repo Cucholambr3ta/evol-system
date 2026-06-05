@@ -88,7 +88,7 @@ El detalle técnico y operativo se encuentra en `skill-requirements-phase-detail
 
 ### 3.1 Fase 1: Elicitación de Alta Resolución (Questionnaire GSD)
 
-X-DD-Core inicia el cuestionario iterativo basado en GSD 1.0. Se generan preguntas hasta que el modelo mental del usuario sea < 5% ambiguo. Se investigan áreas críticas: Frontend, Backend, Seguridad e Infraestructura.
+Evol-DD Core inicia el cuestionario iterativo basado en GSD 1.0. Se generan preguntas hasta que el modelo mental del usuario sea < 5% ambiguo. Se investigan áreas críticas: Frontend, Backend, Seguridad e Infraestructura.
 
 ### 3.2 Fase 2: Auditoría y Sincronización
 
@@ -96,7 +96,7 @@ Validación de requisitos contra `Memoria/gsd/PROJECT.md`. Sincronización de co
 
 ### 3.3 Fase 3: Generación de PRD y REQUIREMENTS.md
 
-Estructuración del PRD oficial y el archivo `Memoria/gsd/REQUIREMENTS.md`. X-DD-Core audita la trazabilidad y deposita los activos en `Memoria/`.
+Estructuración del PRD oficial y el archivo `Memoria/gsd/REQUIREMENTS.md`. Evol-DD Core audita la trazabilidad y deposita los activos en `Memoria/`.
 
 ## 4. PROTOCOLO DE ACTIVOS
 
@@ -112,13 +112,13 @@ Los activos y entregables deben gestionarse según el estándar en `skill-workfl
 
 ## 6. CONEXIONES DE INTEROPERABILIDAD (ART. 6)
 
-- **Predecesores:** `/x-dd` (Init Meta).
+- **Predecesores:** `/evol` (Init Meta).
 - **Sucesores:** `/plan-fases` (Roadmapping).
 - **Skills Vinculadas:** `skill-requirements-elicitation`, `skill-prd-writing`, `skill-bdi-mental-states`.
 
 ---
 **Versión:** 3.0.0 | **Fecha:** 2026-04-02
-Desarrollado por X-DD System
+Desarrollado por Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

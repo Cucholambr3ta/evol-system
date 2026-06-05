@@ -13,7 +13,7 @@ trigger: /evol mobile-release
 **Misión:** Publicar a App Store y Play Store sin sustos. Beta, rollout escalonado, kill switches listos.
 
 ## 0. Pre-flight
-- Verifica `xdd.profile.yml > profile: mobile` (o `capabilities.mobile_release: true`).
+- Verifica `evol.profile.yml > profile: mobile` (o `capabilities.mobile_release: true`).
 - Requiere `/qa-review` aprobado y release candidate identificado.
 
 ## 1. Versionado

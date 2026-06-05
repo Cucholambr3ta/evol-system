@@ -13,7 +13,7 @@ trigger: /evol analisis-impacto
 **ID:** FLUJO-038 | **Versión:** 2.3.0 | **Nivel:** Diseño Técnico
 **Mission:** Evaluación multidimensional (Código, Infra, Seguridad, UX) de cambios propuestos, garantizando la anticipación de regresiones y la clasificación de riesgo antes de la ejecución técnica.
 
-**Orquestador:** X-DD Orchestrator (00)
+**Orquestador:** Evol-DD Orchestrator (00)
 **Asistentes Operativos (Swarm):** Swarm de Diseño (02 Clones)
 **Skills Requeridas:** `skill-impacto-details.md`, `skill-dependency-analysis.md`, `skill-code-audit.md`, `skill-risk-assessment.md`
 **Cultura:** Cirugía de Precisión · Anticipación · Zero Sorpresas
@@ -29,7 +29,7 @@ trigger: /evol analisis-impacto
 * **Trazabilidad de la Evaluación:** Registrar cada hallazgo del análisis en el log NDJSON para auditoría de diseño técnico.
 * **Basado en Evidencia:** Usar análisis estático y revisión de la arquitectura (`SAD.md`) para sustentar las conclusiones.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Impact Governance & Risk Gate
 * Approves design changes based on risk assessment results.
@@ -110,7 +110,7 @@ Referencia: `skill-workflow-asset-protocol.md`.
 
 ---
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-X-DD System
+Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

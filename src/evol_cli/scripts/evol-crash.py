@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""evol-crash — Crash root-cause analysis nativo para X-DD.
+"""evol-crash — Crash root-cause analysis nativo para Evol-DD.
 
 Analiza crash logs y core dumps para determinar causa raiz.
 Degrada elegantemente: usa gdb si disponible, heuristico si no.

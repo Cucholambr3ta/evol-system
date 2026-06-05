@@ -14,7 +14,7 @@ trigger: /evol feature-flag
 
 ## 0. Pre-flight
 - Crea `FLAGS.md` desde `templates/flags.template.md` si no existe.
-- Verifica stack elegido en `xdd.profile.yml > stacks.feature_flags`.
+- Verifica stack elegido en `evol.profile.yml > stacks.feature_flags`.
 
 <!-- CONFIGURAR: Stack de feature flags. Opciones:                          -->
 <!--  - LaunchDarkly: SaaS, mejor DX, pago por seat                          -->

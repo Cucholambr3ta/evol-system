@@ -29,7 +29,7 @@ Workflow Command: `/stress-test`
 * **Zero Regression Policy:** Stress testing must not corrupt data integrity or persistent state.
 * **NDJSON Accountability:** All performance metrics must be logged with high-resolution traceability.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Performance & Reliability Gate
 

@@ -72,6 +72,7 @@ Thumbs.db
 !tests/
 !.github/
 !.github/workflows/
+.github/prompts/
 !.agent/
 !.agent/hooks/
 !.agent/hooks/scripts/
@@ -84,3 +85,9 @@ Thumbs.db
 !CLAUDE.md
 !AGENTS.md
 agent.yaml
+
+# IDE config local
+.vscode/
+
+# Notas de trabajo sueltas
+dudas.md

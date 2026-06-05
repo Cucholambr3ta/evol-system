@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD - Generador de Flujos
+description: Genera workflows Evol-DD personalizados con frontmatter, pasos, agentes y criterios de salida.
 name: generar-flujo
 trigger: /evol generar-flujo
 ---
@@ -31,7 +31,7 @@ trigger: /evol generar-flujo
 - **Estructura Densa .gemini**: Todo archivo generado debe incluir el bloque completo de metadatos (Mission, Orquestador, etc.).
 - **Privacidad S_**: Los flujos `S_` están excluidos de las actualizaciones públicas por el Artículo 10.3.
 
-## 2. X-DD CORE CONTROL DOMAINS
+## 2. Evol-DD CORE CONTROL DOMAINS
 
 ### 2.1 Governance & Taxonomy
 - Orchestrator aprueba la asignación de IDs de sistema `S-` para evitar colisiones con el índice global.
@@ -72,13 +72,13 @@ Referencia: \`skill-workflow-asset-protocol.md\`.
 
 ## 8. CONEXIONES DE INTEROPERABILIDAD (ART. 6)
 
-- **Predecesores:** [/xdd]
+- **Predecesores:** [/evol]
 - **Sucesores:** [Workflow Creado], [/quality_validation]
 - **Skills Vinculadas:** \`skill-identity-context\`, \`skill-project-architect\`
 
 ---
 **Versión:** 2.3.0 | **Fecha:** 2026-03-20
-Desarrollado por X-DD System
+Desarrollado por Evol-DD System
 
 
 ## POST-FLIGHT: MEMORY SEAL (END)

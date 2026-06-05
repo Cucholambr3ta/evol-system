@@ -1,5 +1,5 @@
 ---
-description: Workflow X-DD - design-system-builder
+description: Construye o audita un design system: tokens, componentes atómicos, Storybook y accesibilidad.
 name: design-system-builder
 trigger: /evol design-system-builder
 ---
@@ -26,7 +26,7 @@ Constituir la librería oficial de tokens y componentes (`design/design_system.m
 - **Aislamiento DRY**: Todo token de diseño debe ir centralizado. Nada de estilos en línea o divergentes.
 - **Consistencia Visual**: Se debe testear que los tokens repliquen las propuestas aprobadas en `/elite-designer-generator`.
 
-## 3. DOMINIOS DE CONTROL X-DD
+## 3. DOMINIOS DE CONTROL Evol-DD
 Auditoría y formalización matemática del diseño (escalas tipográficas, espaciados, colores semánticos, breakpoints).
 
 ## 4. CONEXIONES DE INTEROPERABILIDAD (ART. 6)
@@ -36,7 +36,7 @@ Auditoría y formalización matemática del diseño (escalas tipográficas, espa
 
 ---
 **Versión:** 2.7.2
-X-DD System
+Evol-DD System
 
 ## POST-FLIGHT: MEMORY SEAL (END)
 - Cierre de sesión y persistencia final en `memoria.md`.
