@@ -25,9 +25,9 @@
     "https://owasp.org/www-project-devsecops-guideline/",
     "https://owasp.org/www-project-application-security-verification-standard/"
   ],
-  "tokens_md": 2391,
+  "tokens_md": 2396,
   "lineas": 269,
-  "checksum_md": "9077867e157c0b4d",
-  "actualizado": "2026-06-05T08:14:06.472679+00:00",
+  "checksum_md": "9a22f70186de4ae1",
+  "actualizado": "2026-06-05T15:23:04.294049+00:00",
   "tokens_json": 131
 }

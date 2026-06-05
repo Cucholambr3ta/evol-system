@@ -74,15 +74,15 @@ Fase 3 reorganiza el PLAN.md alrededor de ese catalogo.
 
 ```mermaid
 flowchart TD
-    B["Fase 1 — Briefing"] --> FC["Construir FEATURES.md\ncon RICE + MoSCoW"]
-    FC --> FE["Generar skeleton .feature\npor epica (BDD)"]
+    B["Fase 1 — Briefing"] --> FC["Construir FEATURES.md<br/>con RICE + MoSCoW"]
+    FC --> FE["Generar skeleton .feature<br/>por epica (BDD)"]
     FE --> G1{Gate 1}
-    G1 -->|"FEATURES.md + 1 .feature\npor epica aprobados"| S["Fase 2 — Spec"]
+    G1 -->|"FEATURES.md + 1 .feature<br/>por epica aprobados"| S["Fase 2 — Spec"]
     S --> G2{Gate 2}
-    G2 -->|"SPEC.md + DOMAIN.md\naprobados"| P["Fase 3 — Plan"]
-    P --> FO["Reorganizar PLAN.md\npor features verticales\nordenados por RICE"]
+    G2 -->|"SPEC.md + DOMAIN.md<br/>aprobados"| P["Fase 3 — Plan"]
+    P --> FO["Reorganizar PLAN.md<br/>por features verticales<br/>ordenados por RICE"]
     FO --> G3{Gate 3}
-    G3 -->|"PLAN.md aprobado"| BUILD["Fase 4 — Build\nentrega feature a feature"]
+    G3 -->|"PLAN.md aprobado"| BUILD["Fase 4 — Build<br/>entrega feature a feature"]
 
     style G1 fill:#f0a500,color:#000
     style G2 fill:#f0a500,color:#000

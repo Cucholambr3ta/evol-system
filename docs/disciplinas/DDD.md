@@ -60,12 +60,12 @@ drift semantico y se reporta en lecciones.md.
 
 ```mermaid
 flowchart LR
-    UL["Ubiquitous Language\n(DOMAIN.md)"] -->|"vocabulario obligatorio"| CODE["Codigo fuente\n(variables, funciones, clases)"]
-    UL -->|"vocabulario obligatorio"| API["Contratos API\n(endpoints, esquemas)"]
-    UL -->|"vocabulario obligatorio"| FEAT[".feature files\n(Gherkin)"]
-    UL -->|"vocabulario obligatorio"| SPEC["SPEC.md\n(requisitos)"]
+    UL["Ubiquitous Language<br/>(DOMAIN.md)"] -->|"vocabulario obligatorio"| CODE["Codigo fuente<br/>(variables, funciones, clases)"]
+    UL -->|"vocabulario obligatorio"| API["Contratos API<br/>(endpoints, esquemas)"]
+    UL -->|"vocabulario obligatorio"| FEAT[".feature files<br/>(Gherkin)"]
+    UL -->|"vocabulario obligatorio"| SPEC["SPEC.md<br/>(requisitos)"]
     CODE -->|"Tier 3 QA detecta drift"| DRIFT{Drift semantico?}
-    DRIFT -->|"SI"| REPORT["Reportado en\nlecciones.md"]
+    DRIFT -->|"SI"| REPORT["Reportado en<br/>lecciones.md"]
     DRIFT -->|"NO"| OK["Coherencia confirmada"]
 ```
 
@@ -96,13 +96,13 @@ Para identificar los bounded contexts de un sistema:
 ```mermaid
 flowchart TD
     subgraph BC_AUTH["Bounded Context: Autenticacion"]
-        U1["Usuario\n(credenciales, sesion)"]
+        U1["Usuario<br/>(credenciales, sesion)"]
     end
     subgraph BC_BILLING["Bounded Context: Facturacion"]
-        C1["Cliente\n(plan, saldo, historial)"]
+        C1["Cliente<br/>(plan, saldo, historial)"]
     end
     subgraph BC_NOTIF["Bounded Context: Notificaciones"]
-        D1["Destinatario\n(canal, preferencias)"]
+        D1["Destinatario<br/>(canal, preferencias)"]
     end
     BC_AUTH -->|"ACL: traduce Usuario → Cliente"| BC_BILLING
     BC_BILLING -->|"Domain Event: PagoRealizado"| BC_NOTIF
@@ -259,17 +259,17 @@ siguientes a traves del vocabulario y las reglas de dominio que establece.
 
 ```mermaid
 flowchart TD
-    F1["Fase 1 — Briefing\nFEATURES.md + requisitos"] --> F2["Fase 2 — Spec"]
+    F1["Fase 1 — Briefing<br/>FEATURES.md + requisitos"] --> F2["Fase 2 — Spec"]
     F2 --> D1["Architect ejecuta /domain-model"]
-    D1 --> D2["Identificar Bounded Contexts\ny Ubiquitous Language"]
-    D2 --> D3["Modelar Core Aggregates\ny Domain Events"]
+    D1 --> D2["Identificar Bounded Contexts<br/>y Ubiquitous Language"]
+    D2 --> D3["Modelar Core Aggregates<br/>y Domain Events"]
     D3 --> D4["DOMAIN.md borrador"]
     D4 --> D5{Revisor aprueba?}
     D5 -->|"NO — gaps"| D2
-    D5 -->|"SI"| D6["Gate aprueba DOMAIN.md\n(HMAC-SHA256)"]
-    D6 --> F3["Fase 3 — Plan\nPLAN.md usa terminos del dominio"]
-    F3 --> F4["Fase 4 — Build\nCodigo usa vocabulario del dominio"]
-    F4 --> F5["Fase 5 — QA\nTier 3 verifica coherencia semantica\ncon DOMAIN.md"]
+    D5 -->|"SI"| D6["Gate aprueba DOMAIN.md<br/>(HMAC-SHA256)"]
+    D6 --> F3["Fase 3 — Plan<br/>PLAN.md usa terminos del dominio"]
+    F3 --> F4["Fase 4 — Build<br/>Codigo usa vocabulario del dominio"]
+    F4 --> F5["Fase 5 — QA<br/>Tier 3 verifica coherencia semantica<br/>con DOMAIN.md"]
 ```
 
 ### Regla de drift semantico

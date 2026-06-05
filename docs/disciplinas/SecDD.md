@@ -173,29 +173,29 @@ en todos los proyectos X-DD.
 
 ```mermaid
 flowchart TD
-    F4["Fase 4 — Build\nSTDD + TDD completados"] --> F5["Fase 5 — QA"]
+    F4["Fase 4 — Build<br/>STDD + TDD completados"] --> F5["Fase 5 — QA"]
     F5 --> T1["Tier 1 — Analisis estatico"]
-    T1 --> SAST["Semgrep\nnpx semgrep --config=auto src/"]
-    T1 --> SEC["Gitleaks\ngitleaks detect --source=."]
-    T1 --> SCA["npm audit\nnpm audit --audit-level=high"]
-    SAST --> RESULT1{Hallazgos\ncriticos/altos?}
-    SEC --> RESULT2{Secretos\ndetectados?}
-    SCA --> RESULT3{CVEs\ncriticos/altos?}
-    RESULT1 -->|"SI"| BLOCK["Merge BLOQUEADO\nCorregir antes de avanzar"]
+    T1 --> SAST["Semgrep<br/>npx semgrep --config=auto src/"]
+    T1 --> SEC["Gitleaks<br/>gitleaks detect --source=."]
+    T1 --> SCA["npm audit<br/>npm audit --audit-level=high"]
+    SAST --> RESULT1{Hallazgos<br/>criticos/altos?}
+    SEC --> RESULT2{Secretos<br/>detectados?}
+    SCA --> RESULT3{CVEs<br/>criticos/altos?}
+    RESULT1 -->|"SI"| BLOCK["Merge BLOQUEADO<br/>Corregir antes de avanzar"]
     RESULT2 -->|"SI"| BLOCK
     RESULT3 -->|"SI"| BLOCK
-    RESULT1 -->|"NO"| T2["Tier 2 — Analisis dinamico\n(solo en staging)"]
+    RESULT1 -->|"NO"| T2["Tier 2 — Analisis dinamico<br/>(solo en staging)"]
     RESULT2 -->|"NO"| T2
     RESULT3 -->|"NO"| T2
-    T2 --> ZAP["OWASP ZAP\nzap-baseline.py -t $STAGING_URL"]
-    T2 --> NUC["Nuclei\nnuclei -u $STAGING_URL -t cves/"]
-    ZAP --> RESULT4{Hallazgos\ncriticos/altos?}
+    T2 --> ZAP["OWASP ZAP<br/>zap-baseline.py -t $STAGING_URL"]
+    T2 --> NUC["Nuclei<br/>nuclei -u $STAGING_URL -t cves/"]
+    ZAP --> RESULT4{Hallazgos<br/>criticos/altos?}
     NUC --> RESULT4
     RESULT4 -->|"SI"| BLOCK
     RESULT4 -->|"NO"| REPORT["Generar QA_REPORT.md"]
-    BLOCK --> FIX["Equipo corrige\nhallazgos"]
+    BLOCK --> FIX["Equipo corrige<br/>hallazgos"]
     FIX --> T1
-    REPORT --> GATE5{Gate Fase 5\naprobado?}
+    REPORT --> GATE5{Gate Fase 5<br/>aprobado?}
     GATE5 -->|"SI"| RELEASE["Release a produccion"]
     GATE5 -->|"NO"| BLOCK
 ```

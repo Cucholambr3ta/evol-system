@@ -60,11 +60,11 @@ doble verificacion: semantica (Gherkin) y programatica (TypeScript).
 
 ```mermaid
 flowchart LR
-    CRIT["Criterio de aceptacion\n(prosa en FEATURES.md)"] --> BDD_FILE["BDD: .feature\n(Gherkin legible)"]
-    CRIT --> ATDD_FILE["ATDD: .acceptance.test.ts\n(TypeScript ejecutable)"]
-    BDD_FILE --> TIER2["Tier 2 QA\nPlaywright-BDD"]
+    CRIT["Criterio de aceptacion<br/>(prosa en FEATURES.md)"] --> BDD_FILE["BDD: .feature<br/>(Gherkin legible)"]
+    CRIT --> ATDD_FILE["ATDD: .acceptance.test.ts<br/>(TypeScript ejecutable)"]
+    BDD_FILE --> TIER2["Tier 2 QA<br/>Playwright-BDD"]
     ATDD_FILE --> TIER2
-    TIER2 --> GATE["Gate Fase 5\n(ambos deben pasar)"]
+    TIER2 --> GATE["Gate Fase 5<br/>(ambos deben pasar)"]
 ```
 
 ---
@@ -138,20 +138,20 @@ Documenta que el fallo es esperado, no un bug del test.
 
 ```mermaid
 flowchart TD
-    F1["Fase 1 — Briefing"] --> CA["Criterios de aceptacion\nen FEATURES.md"]
-    CA --> STUB["QA-Reviewer escribe\nstubs .acceptance.test.ts"]
+    F1["Fase 1 — Briefing"] --> CA["Criterios de aceptacion<br/>en FEATURES.md"]
+    CA --> STUB["QA-Reviewer escribe<br/>stubs .acceptance.test.ts"]
     STUB --> FAIL{Stubs fallan?}
     FAIL -->|"NO — error en el stub"| FIX["Corregir stub"]
     FIX --> FAIL
     FAIL -->|"SI — correcto"| G1{Gate 1}
-    G1 -->|"Stubs fallan + estan\nen tests/acceptance/"| F2["Fase 2 — Spec\nDOMAIN.md + THREATS.md"]
+    G1 -->|"Stubs fallan + estan<br/>en tests/acceptance/"| F2["Fase 2 — Spec<br/>DOMAIN.md + THREATS.md"]
     F2 --> F3["Fase 3 — Plan"]
     F3 --> F4["Fase 4 — Build"]
-    F4 --> IMPL["Builder implementa feature\nverificando que stubs pasen"]
+    F4 --> IMPL["Builder implementa feature<br/>verificando que stubs pasen"]
     IMPL --> PASS{Tests pasan?}
     PASS -->|"NO"| IMPL
     PASS -->|"SI"| G4{Gate 4}
-    G4 --> F5["Fase 5 — QA\nTier 2 ejecuta acceptance tests"]
+    G4 --> F5["Fase 5 — QA<br/>Tier 2 ejecuta acceptance tests"]
     F5 --> TIER2{100% passing?}
     TIER2 -->|"NO"| BLOCK["Merge bloqueado"]
     TIER2 -->|"SI"| OK["Feature ENTREGADO"]

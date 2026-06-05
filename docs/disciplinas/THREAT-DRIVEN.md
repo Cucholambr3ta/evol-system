@@ -64,16 +64,16 @@ THREATS.md aprobado.
 
 ```mermaid
 flowchart TD
-    START["Inicio: DOMAIN.md aprobado"] --> S1["1. Identificar activos\ny actores adversariales"]
-    S1 --> S2["2. Construir DFD\n(Data Flow Diagram)\ncon fronteras de confianza"]
-    S2 --> S3["3. Por cada aggregate y endpoint:\naplicar STRIDE"]
-    S3 --> S4["4. Por cada amenaza:\nclasificar probabilidad,\nimpacto y riesgo"]
-    S4 --> S5["5. Por cada amenaza CRITICA:\ndefinir control obligatorio\n+ generar SEC-REQ-NNN"]
-    S5 --> S6["6. Copiar SEC-REQ-NNN\nal SPEC.md"]
-    S6 --> S7["7. Generar stubs STDD\nen tests/security/\npor cada amenaza con\n'security test requerido'"]
-    S7 --> REVIEW{SecOps + Architect\nrevisan THREATS.md}
+    START["Inicio: DOMAIN.md aprobado"] --> S1["1. Identificar activos<br/>y actores adversariales"]
+    S1 --> S2["2. Construir DFD<br/>(Data Flow Diagram)<br/>con fronteras de confianza"]
+    S2 --> S3["3. Por cada aggregate y endpoint:<br/>aplicar STRIDE"]
+    S3 --> S4["4. Por cada amenaza:<br/>clasificar probabilidad,<br/>impacto y riesgo"]
+    S4 --> S5["5. Por cada amenaza CRITICA:<br/>definir control obligatorio<br/>+ generar SEC-REQ-NNN"]
+    S5 --> S6["6. Copiar SEC-REQ-NNN<br/>al SPEC.md"]
+    S6 --> S7["7. Generar stubs STDD<br/>en tests/security/<br/>por cada amenaza con<br/>'security test requerido'"]
+    S7 --> REVIEW{SecOps + Architect<br/>revisan THREATS.md}
     REVIEW -->|"gaps"| S3
-    REVIEW -->|"aprobado"| GATE["Gate Fase 2\nTHREATS.md firmado"]
+    REVIEW -->|"aprobado"| GATE["Gate Fase 2<br/>THREATS.md firmado"]
 ```
 
 ### Reglas del proceso
@@ -148,23 +148,23 @@ Diagram) muestra el flujo de datos con las fronteras de confianza.
 ```mermaid
 flowchart TD
     subgraph INTERNET["Zona: Internet (no confiable)"]
-        USER["Usuario\n(browser/app)"]
-        ATTACKER["Atacante\n(bot, malicioso)"]
+        USER["Usuario<br/>(browser/app)"]
+        ATTACKER["Atacante<br/>(bot, malicioso)"]
     end
 
     subgraph DMZ["Zona: DMZ (semi-confiable)"]
-        API["API Gateway\n+ Rate Limiter\n+ WAF"]
+        API["API Gateway<br/>+ Rate Limiter<br/>+ WAF"]
     end
 
     subgraph APP["Zona: Aplicacion (confiable)"]
-        AUTH["Servicio Auth\n(Autenticacion+JWT)"]
+        AUTH["Servicio Auth<br/>(Autenticacion+JWT)"]
         BILLING["Servicio Facturacion"]
         NOTIF["Servicio Notificaciones"]
     end
 
     subgraph DATA["Zona: Datos (alta confianza)"]
-        DB[("Base de datos\n(PII + financiero)")]
-        LOGS[("Audit Logs\n(inmutables)")]
+        DB[("Base de datos<br/>(PII + financiero)")]
+        LOGS[("Audit Logs<br/>(inmutables)")]
     end
 
     USER -->|"HTTPS"| API
@@ -228,13 +228,13 @@ a todas las fases siguientes a traves de los controles obligatorios y los SEC-RE
 
 ```mermaid
 flowchart LR
-    DDD["Fase 2 — DDD\nDOMAIN.md aprobado"] --> TD["Threat-Driven\n/threat-model"]
-    TD --> THREATS["THREATS.md\nTHR-NNN catalogado"]
-    THREATS --> SEC_REQ["SEC-REQ-NNN\ncopiados a SPEC.md"]
-    SEC_REQ --> PLAN["Fase 3 — Plan\nControles en PLAN.md"]
-    THREATS --> STUBS["Stubs STDD\ntests/security/"]
-    STUBS --> BUILD["Fase 4 — Build\nSTDD + controles implementados"]
-    BUILD --> QA["Fase 5 — QA\nSecDD verifica controles en runtime"]
+    DDD["Fase 2 — DDD<br/>DOMAIN.md aprobado"] --> TD["Threat-Driven<br/>/threat-model"]
+    TD --> THREATS["THREATS.md<br/>THR-NNN catalogado"]
+    THREATS --> SEC_REQ["SEC-REQ-NNN<br/>copiados a SPEC.md"]
+    SEC_REQ --> PLAN["Fase 3 — Plan<br/>Controles en PLAN.md"]
+    THREATS --> STUBS["Stubs STDD<br/>tests/security/"]
+    STUBS --> BUILD["Fase 4 — Build<br/>STDD + controles implementados"]
+    BUILD --> QA["Fase 5 — QA<br/>SecDD verifica controles en runtime"]
 ```
 
 ### Impacto del Threat Modeling por fase

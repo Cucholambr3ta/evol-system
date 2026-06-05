@@ -45,13 +45,13 @@ El ciclo STDD agrega dos pasos al ciclo TDD estandar:
 
 ```mermaid
 flowchart TD
-    START["Funcion/endpoint en THREATS.md\ncon 'security test requerido'"] --> R1["1. ROJO — TDD\nTest funcional falla\n(funcion no existe)"]
-    R1 --> R2["2. ROJO-SEC — STDD\nSecurity test falla\n(funcion no existe y no protege)"]
-    R2 --> G1["3. VERDE\nImplementacion minima\nambos tests pasan\n(funcional + seguro)"]
-    G1 --> REF["4. REFACTOR + HARDENING\nMejorar calidad del codigo\nReforzar controles de seguridad\nAmbos tests siguen en verde"]
+    START["Funcion/endpoint en THREATS.md<br/>con 'security test requerido'"] --> R1["1. ROJO — TDD<br/>Test funcional falla<br/>(funcion no existe)"]
+    R1 --> R2["2. ROJO-SEC — STDD<br/>Security test falla<br/>(funcion no existe y no protege)"]
+    R2 --> G1["3. VERDE<br/>Implementacion minima<br/>ambos tests pasan<br/>(funcional + seguro)"]
+    G1 --> REF["4. REFACTOR + HARDENING<br/>Mejorar calidad del codigo<br/>Reforzar controles de seguridad<br/>Ambos tests siguen en verde"]
     REF --> NEXT{Siguiente funcion?}
     NEXT -->|"SI"| START
-    NEXT -->|"NO"| DONE["Feature completo\ncon propiedades de seguridad verificadas"]
+    NEXT -->|"NO"| DONE["Feature completo<br/>con propiedades de seguridad verificadas"]
 
     style R1 fill:#cc0000,color:#fff
     style R2 fill:#8b0000,color:#fff
@@ -162,16 +162,16 @@ requerido = SI", entonces STDD es obligatorio.
 
 ```mermaid
 flowchart TD
-    THREATS["THREATS.md\n(amenazas con security test requerido)"] --> STUBS["Security-Engineer\ngenera stubs STDD en Fase 4"]
+    THREATS["THREATS.md<br/>(amenazas con security test requerido)"] --> STUBS["Security-Engineer<br/>genera stubs STDD en Fase 4"]
     STUBS --> FAIL{Stubs fallan?}
-    FAIL -->|"NO"| FIX["Corregir stub\n(no detecta la amenaza)"]
+    FAIL -->|"NO"| FIX["Corregir stub<br/>(no detecta la amenaza)"]
     FIX --> FAIL
-    FAIL -->|"SI — correcto"| CYCLE["Builder ejecuta ciclo STDD\nRojo-TDD + Rojo-SEC\n+ Verde + Refactor+Hardening"]
-    CYCLE --> ALL_PASS{Todos los tests\npasan?}
+    FAIL -->|"SI — correcto"| CYCLE["Builder ejecuta ciclo STDD<br/>Rojo-TDD + Rojo-SEC<br/>+ Verde + Refactor+Hardening"]
+    CYCLE --> ALL_PASS{Todos los tests<br/>pasan?}
     ALL_PASS -->|"NO"| CYCLE
-    ALL_PASS -->|"SI"| TIER2["Fase 5 — QA Tier 2\nnpx vitest run tests/security/"]
-    TIER2 --> BLOCK{Algun test\nfalla?}
-    BLOCK -->|"SI"| MERGE_BLOCKED["Merge bloqueado\nhasta corregir"]
+    ALL_PASS -->|"SI"| TIER2["Fase 5 — QA Tier 2<br/>npx vitest run tests/security/"]
+    TIER2 --> BLOCK{Algun test<br/>falla?}
+    BLOCK -->|"SI"| MERGE_BLOCKED["Merge bloqueado<br/>hasta corregir"]
     BLOCK -->|"NO"| OK["Feature aprobado"]
 ```
 

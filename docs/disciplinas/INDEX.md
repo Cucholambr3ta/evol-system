@@ -83,47 +83,47 @@ fases ni cambian el numero de gates.
 flowchart TD
     subgraph F1["Fase 1 — Briefing"]
         direction TB
-        F1A["FDD: construir FEATURES.md\n+ priorizar RICE/MoSCoW"]
-        F1B["BDD: generar .feature skeleton\npor epica"]
-        F1C["ATDD: escribir stubs acceptance\ntests que fallan"]
+        F1A["FDD: construir FEATURES.md<br/>+ priorizar RICE/MoSCoW"]
+        F1B["BDD: generar .feature skeleton<br/>por epica"]
+        F1C["ATDD: escribir stubs acceptance<br/>tests que fallan"]
     end
 
     subgraph F2["Fase 2 — Spec"]
         direction TB
-        F2A["SDD: refinar SPEC.md\ncon REQ-NNN formales"]
-        F2B["DDD: producir DOMAIN.md\nUbiquitous Language + Aggregates"]
-        F2C["Threat-Driven: producir THREATS.md\nSTRIDE sobre DOMAIN.md"]
+        F2A["SDD: refinar SPEC.md<br/>con REQ-NNN formales"]
+        F2B["DDD: producir DOMAIN.md<br/>Ubiquitous Language + Aggregates"]
+        F2C["Threat-Driven: producir THREATS.md<br/>STRIDE sobre DOMAIN.md"]
     end
 
     subgraph F3["Fase 3 — Plan"]
         direction TB
-        F3A["FDD: reorganizar PLAN.md\npor features verticales"]
-        F3B["SDD: trazabilidad REQ-NNN\na tareas del plan"]
+        F3A["FDD: reorganizar PLAN.md<br/>por features verticales"]
+        F3B["SDD: trazabilidad REQ-NNN<br/>a tareas del plan"]
     end
 
     subgraph F4["Fase 4 — Build"]
         direction TB
-        F4A["TDD: ciclo Rojo-Verde-Refactor\npor cada logica de negocio"]
-        F4B["STDD: ciclo STDD\npor cada funcion en THREATS.md"]
+        F4A["TDD: ciclo Rojo-Verde-Refactor<br/>por cada logica de negocio"]
+        F4B["STDD: ciclo STDD<br/>por cada funcion en THREATS.md"]
     end
 
     subgraph F5["Fase 5 — QA"]
         direction TB
-        F5A["BDD: ejecutar suite .feature\n(Tier 2 — 100% passing)"]
-        F5B["ATDD: ejecutar acceptance tests\n(Tier 2 — 100% passing)"]
-        F5C["SecDD: SAST+DAST+Secrets\n+ generar QA_REPORT.md"]
+        F5A["BDD: ejecutar suite .feature<br/>(Tier 2 — 100% passing)"]
+        F5B["ATDD: ejecutar acceptance tests<br/>(Tier 2 — 100% passing)"]
+        F5C["SecDD: SAST+DAST+Secrets<br/>+ generar QA_REPORT.md"]
     end
 
     subgraph F6["Fase 6 — Retro"]
         direction TB
-        F6A["Todas: registrar\ndrift, lecciones y mejoras"]
+        F6A["Todas: registrar<br/>drift, lecciones y mejoras"]
     end
 
-    F1 -->|"Gate 1\nFEATURES.md + 1 .feature/epica"| F2
-    F2 -->|"Gate 2\nSPEC + DOMAIN + THREATS aprobados"| F3
-    F3 -->|"Gate 3\nPLAN.md aprobado"| F4
-    F4 -->|"Gate 4\nTDD verde + STDD verde"| F5
-    F5 -->|"Gate 5\nQA_REPORT APROBADO"| F6
+    F1 -->|"Gate 1<br/>FEATURES.md + 1 .feature/epica"| F2
+    F2 -->|"Gate 2<br/>SPEC + DOMAIN + THREATS aprobados"| F3
+    F3 -->|"Gate 3<br/>PLAN.md aprobado"| F4
+    F4 -->|"Gate 4<br/>TDD verde + STDD verde"| F5
+    F5 -->|"Gate 5<br/>QA_REPORT APROBADO"| F6
     F6 --> RELEASE["Release"]
 ```
 
