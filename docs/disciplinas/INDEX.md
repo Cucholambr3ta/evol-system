@@ -169,8 +169,9 @@ flowchart LR
 
 ## Seleccion de disciplinas por perfil de proyecto
 
-No todos los proyectos requieren las 9 disciplinas. Esta tabla sirve como guia rapida.
-Para la logica completa de seleccion, ver la seccion 6 de `../X-DD_Integration_Guide.md`.
+No todos los proyectos requieren las 9 disciplinas base. Esta tabla (solo las 9 base) sirve
+como guia rapida; las 22 extendidas se eligen en la subseccion siguiente. Para la logica
+completa de seleccion, ver la seccion 6 de `../X-DD_Integration_Guide.md`.
 
 | Perfil | FDD | DDD | SDD | ATDD | BDD | TDD | Threat | STDD | SecDD |
 |--------|:---:|:---:|:---:|:----:|:---:|:---:|:------:|:----:|:-----:|

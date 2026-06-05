@@ -124,8 +124,10 @@ graph TD
 
 ## Disciplinas implementadas
 
-Las 9 disciplinas -Driven Development estan documentadas de forma atomica en `docs/disciplinas/`.
-Cada archivo cubre exactamente 1 disciplina (1 doc = 1 dominio tecnico).
+Las 31 disciplinas -Driven Development (9 base + 22 extendidas activables por profile) estan
+documentadas de forma atomica en `docs/disciplinas/`. Cada archivo cubre exactamente 1 disciplina
+(1 doc = 1 dominio tecnico). El registro canonico con fase, ejecutor y fuentes esta en
+[`docs/disciplinas/INDEX.md`](./disciplinas/INDEX.md).
 
 | Disciplina | Archivo | Fase de entrada |
 |---|---|---|
