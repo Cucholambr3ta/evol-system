@@ -101,3 +101,31 @@ def test_sprint_close_arg_project_funciona(tmp_path):
     """El arg --project debe pasarse ANTES del subcomando en CLI (argparse global)."""
     evol_memory.sprint_close(sprint=2, project=str(tmp_path))
     assert (tmp_path / "acuerdos" / "memoria" / "sprint-02.md").exists()
+
+
+# ── MEMORY.md atomico (herencia atomicidad) ───────────────────────────────────
+
+def test_sprint_close_crea_3_atomos(tmp_path):
+    run_sprint_close(tmp_path, sprint=1)
+    mem = tmp_path / "acuerdos" / "memoria"
+    assert (mem / "decisiones.md").exists()
+    assert (mem / "convenciones.md").exists()
+    assert (mem / "riesgos.md").exists()
+
+
+def test_memory_aggregate_banner(tmp_path):
+    run_sprint_close(tmp_path, sprint=1)
+    content = (tmp_path / "acuerdos" / "memoria" / "MEMORY.md").read_text()
+    assert "GENERADO automaticamente" in content
+
+
+def test_memory_split_migra_legacy(tmp_path):
+    mem = tmp_path / "acuerdos" / "memoria"
+    mem.mkdir(parents=True)
+    (mem / "MEMORY.md").write_text(
+        "# MEMORY.md\n\n## Decisiones clave\n- Usar Redis.\n\n"
+        "## Convenciones\n- TDD.\n\n## Riesgos activos\n- Lock-in.\n"
+    )
+    evol_memory.memory_split(project=str(tmp_path))
+    assert "Usar Redis" in (mem / "decisiones.md").read_text()
+    assert "GENERADO automaticamente" in (mem / "MEMORY.md").read_text()

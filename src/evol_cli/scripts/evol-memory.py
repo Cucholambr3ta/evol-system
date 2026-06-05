@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Evol-DD Memory Engine — Conversational memory, stdlib only."""
-import os, sys, json, time, argparse
+import os, sys, json, time, argparse, re
 from datetime import datetime, timedelta
 from pathlib import Path
 from _evol_common import get_logger, get_provider
@@ -219,15 +219,70 @@ def sprint_close(sprint, project=".", memoria_content=None, lecciones_content=No
     _update_lecciones_index(les_dir / "INDEX.md", s, today)
     print(f"[evol-memory] ✓ acuerdos/lecciones/INDEX.md actualizado.")
 
+    # MEMORY.md atomico: 3 atomos + agregado generado (ADR atomicidad)
+    _ensure_memory_atoms(mem_dir)
+    _regen_memory_aggregate(mem_dir)
+    print("[evol-memory] ✓ acuerdos/memoria/ atomos (decisiones/convenciones/riesgos) + MEMORY.md regenerado.")
+
+
+# ── MEMORY.md atomico ──────────────────────────────────────────────────────────
+
+_MEMORY_ATOMS = {
+    "decisiones.md": ("Decisiones clave", "Decisiones de arquitectura y producto persistentes."),
+    "convenciones.md": ("Convenciones", "Estandares de codigo y patrones del proyecto."),
+    "riesgos.md": ("Riesgos activos", "Riesgos vigentes y mitigaciones."),
+}
+
+
+def _ensure_memory_atoms(mem_dir):
+    mem_dir.mkdir(parents=True, exist_ok=True)
+    for fname, (titulo, desc) in _MEMORY_ATOMS.items():
+        atom = mem_dir / fname
+        if not atom.exists():
+            atom.write_text(f"# {titulo}\n\n> Atomo de MEMORY. {desc}\n\n-\n", encoding="utf-8")
+
+
+def _regen_memory_aggregate(mem_dir):
+    parts = [
+        "# MEMORY.md — Hechos persistentes del proyecto",
+        "",
+        "> GENERADO automaticamente desde los atomos (decisiones/convenciones/riesgos).",
+        "> NO editar este archivo: editar el atomo correspondiente y regenerar via",
+        "> `evol-memory sprint-close` o `evol-memory memory-split`.",
+        "",
+    ]
+    for fname in _MEMORY_ATOMS:
+        atom = mem_dir / fname
+        if atom.exists():
+            parts.append(atom.read_text(encoding="utf-8").rstrip())
+            parts.append("")
+    (mem_dir / "MEMORY.md").write_text("\n".join(parts) + "\n", encoding="utf-8")
+
+
+def memory_split(project="."):
+    """Migra MEMORY.md monolitico legacy a 3 atomos (idempotente)."""
+    mem_dir = Path(project) / "acuerdos" / "memoria"
     memory_md = mem_dir / "MEMORY.md"
-    if not memory_md.exists():
-        memory_md.write_text(
-            "# MEMORY.md — Hechos persistentes del proyecto\n\n"
-            "> Solo hechos duraderos, no log temporal.\n\n"
-            "## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n",
-            encoding="utf-8",
-        )
-        print("[evol-memory] ✓ acuerdos/memoria/MEMORY.md inicializado.")
+    _ensure_memory_atoms(mem_dir)
+    if memory_md.exists():
+        content = memory_md.read_text(encoding="utf-8")
+        section_map = {
+            "decisiones.md": r"(?is)##\s*decisiones[^\n]*\n(.*?)(?=^##\s|\Z)",
+            "convenciones.md": r"(?is)##\s*convenciones[^\n]*\n(.*?)(?=^##\s|\Z)",
+            "riesgos.md": r"(?is)##\s*riesgos[^\n]*\n(.*?)(?=^##\s|\Z)",
+        }
+        if "GENERADO automaticamente" not in content:
+            for fname, pattern in section_map.items():
+                m = re.search(pattern, content, re.MULTILINE)
+                if m and m.group(1).strip() and m.group(1).strip() != "-":
+                    titulo, desc = _MEMORY_ATOMS[fname]
+                    (mem_dir / fname).write_text(
+                        f"# {titulo}\n\n> Atomo de MEMORY. {desc}\n\n{m.group(1).strip()}\n",
+                        encoding="utf-8",
+                    )
+                    print(f"[evol-memory] migrado seccion -> {fname}")
+    _regen_memory_aggregate(mem_dir)
+    print("[evol-memory] ✓ MEMORY.md migrado a 3 atomos + agregado regenerado.")
 
 
 def main():
@@ -259,6 +314,8 @@ def main():
     p.add_argument("--lecciones", default=None, help="Contenido para lecciones/sprint-NN.md")
     p.add_argument("--force", action="store_true", help="Sobreescribir si ya existe")
 
+    sub.add_parser("memory-split", help="Migra MEMORY.md monolitico a 3 atomos")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -285,6 +342,8 @@ def main():
             import json as _json
             s = _sprint_num_str(args.sprint)
             print(_json.dumps({"ok": True, "sprint": s}))
+    elif args.cmd == "memory-split":
+        memory_split(project=args.project)
     else:
         parser.print_help()
 

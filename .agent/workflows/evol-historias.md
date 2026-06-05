@@ -1,7 +1,7 @@
 ---
 name: evol-historias
 trigger: /evol historias
-description: Genera historias de usuario completas post-doc-granular. Lee acuerdos/proyecto/ + acuerdos/wireframes/ e identifica TODAS las historias (HU/HT/HS). Por cada una crea 4 artefactos via pipeline worker-auditor. Genera acuerdos/sprint.md con plan de sprints. Sin evaluacion — si es una historia identificable, se documenta completa.
+description: Genera historias de usuario completas post-doc-granular. Lee acuerdos/proyecto/ + acuerdos/wireframes/ e identifica TODAS las historias (HU/HT/HS). Por cada una crea 4 artefactos via pipeline worker-auditor. Genera acuerdos/sprints/ (1 doc por sprint) con plan atomico. Sin evaluacion — si es una historia identificable, se documenta completa.
 phase: plan
 category: planning
 ---
@@ -33,7 +33,7 @@ El agente lee TODOS los artefactos de `acuerdos/proyecto/` + `acuerdos/wireframe
 - `HT` — Historia tecnica (infraestructura, setup, configuracion)
 - `HS` — Historia de seguridad (controles STDD, amenazas STRIDE)
 
-Producir borrador en `acuerdos/sprint.md` con listado inicial (numeradas, tipo, titulo, estimacion).
+Producir borrador en `acuerdos/sprints/INDEX.md` con listado inicial (numeradas, tipo, titulo, estimacion).
 
 ---
 
@@ -142,7 +142,7 @@ python3 scripts/evol-gate.py approve --phase plan --approver "engineering-code-r
 
 ---
 
-## 3. PLAN DE SPRINTS — `acuerdos/sprint.md`
+## 3. PLAN DE SPRINTS — `acuerdos/sprints/` (atomico)
 
 Una vez que TODAS las historias estan aprobadas, generar:
 
@@ -179,7 +179,7 @@ Criterios de organizacion:
 ## 4. GATE DE CIERRE
 
 ```
-[ ] acuerdos/sprint.md con todos los sprints definidos
+[ ] acuerdos/sprints/ con INDEX + 1 doc por sprint + sidecars JSON
 [ ] Cada acuerdos/historia-usuario-N/ tiene 4 artefactos completos
 [ ] Cada historia: firma auditor != writer
 [ ] checklist-tareas.md >= 50 tareas

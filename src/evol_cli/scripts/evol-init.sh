@@ -316,19 +316,30 @@ print(f'[evol-init] Profile $profile saved to evol.profile.yml')
         echo "[evol-init] acuerdos/ creado (7 subcarpetas — base para /evol briefing)."
     fi
 
-    # MEMORY.md + INDEX.md en acuerdos/ (idempotente — crea si faltan)
-    if [ ! -f acuerdos/memoria/MEMORY.md ]; then
-        mkdir -p acuerdos/memoria
-        printf "# MEMORY.md — Hechos persistentes del proyecto\n\n> Solo hechos duraderos, no log temporal.\n\n## Decisiones clave\n\n-\n\n## Convenciones\n\n-\n\n## Riesgos activos\n\n-\n" \
-            > acuerdos/memoria/MEMORY.md
-        echo "[evol-init] ✓ acuerdos/memoria/MEMORY.md creado."
-    fi
+    # MEMORY.md atomico: 3 atomos + agregado (idempotente)
+    mkdir -p acuerdos/memoria acuerdos/lecciones
+    [ -f acuerdos/memoria/decisiones.md ] || printf "# Decisiones clave\n\n> Atomo de MEMORY. Decisiones de arquitectura y producto persistentes.\n\n-\n" > acuerdos/memoria/decisiones.md
+    [ -f acuerdos/memoria/convenciones.md ] || printf "# Convenciones\n\n> Atomo de MEMORY. Estandares de codigo y patrones.\n\n-\n" > acuerdos/memoria/convenciones.md
+    [ -f acuerdos/memoria/riesgos.md ] || printf "# Riesgos activos\n\n> Atomo de MEMORY. Riesgos vigentes y mitigaciones.\n\n-\n" > acuerdos/memoria/riesgos.md
     if [ ! -f acuerdos/lecciones/INDEX.md ]; then
-        mkdir -p acuerdos/lecciones
         printf "# INDEX — Lecciones por Sprint\n\n> Indice de lecciones separadas por sprint.\n\n| Sprint | Archivo | Fecha cierre |\n|--------|---------|-------------|\n" \
             > acuerdos/lecciones/INDEX.md
-        echo "[evol-init] ✓ acuerdos/lecciones/INDEX.md creado."
     fi
+
+    # Esqueleto de carpetas atomicas (ADR atomicidad — idempotente)
+    _seed_atomic_index() {
+        local dir="$1" titulo="$2"
+        mkdir -p "$dir"
+        [ -f "$dir/INDEX.md" ] || printf "# INDEX — %s\n\n> Indice atomico. 1 doc = 1 concepto.\n\n| Documento | Resumen | Trazabilidad |\n|-----------|---------|-------------|\n" "$titulo" > "$dir/INDEX.md"
+        [ -f "$dir/INDEX.json" ] || printf '{\n  "dominio": "%s",\n  "docs": [],\n  "total_docs": 0,\n  "total_tokens_md": 0\n}\n' "$(basename "$dir")" > "$dir/INDEX.json"
+    }
+    _seed_atomic_index "acuerdos/sprints"       "Plan de Sprints"
+    _seed_atomic_index "docs/features"          "Catalogo de Features (FDD)"
+    _seed_atomic_index "docs/domain"            "Modelo de Dominio (DDD)"
+    _seed_atomic_index "docs/privacy"           "Inventario de Privacidad (PII)"
+    _seed_atomic_index "api/openapi/fragments"  "Fragmentos OpenAPI por recurso"
+    [ -f docs/domain/UBIQUITOUS_LANGUAGE.md ] || printf "# Ubiquitous Language\n\n> Glosario del dominio. Vocabulario obligatorio.\n\n| Termino | Definicion | Sinonimos prohibidos |\n|---------|------------|---------------------|\n" > docs/domain/UBIQUITOUS_LANGUAGE.md
+    echo "[evol-init] ✓ esqueleto atomico creado (sprints/, features/, domain/, privacy/, openapi/ + 3 atomos MEMORY)."
 
     # Init git if not exists
     if [ ! -d .git ]; then

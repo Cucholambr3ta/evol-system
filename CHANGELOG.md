@@ -8,6 +8,23 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.2.9] - 2026-06-04
+
+### Added
+- `evol-doc-sync.py`: motor JSON/MD de ahorro de tokens. Genera sidecar .json compacto
+  desde cada .md (fuente de verdad). INDEX.json por carpeta + maestro. Ahorro ~95% navegando.
+- `evol-openapi-merge.py`: mergea fragments OpenAPI por recurso en raiz valida (stdlib+pyyaml).
+- `evol-discipline-check.py`: check_json_sidecar + check_atomic_folder + 8 wrappers + CLI `folder`.
+- `evol-memory.py`: MEMORY.md -> 3 atomos (decisiones/convenciones/riesgos) + agregado generado
+  + subcomando `memory-split` para migrar monolitico legacy.
+- `evol-init.sh`: esqueleto atomico idempotente (sprints/, features/, domain/, privacy/,
+  openapi/fragments/ + 3 atomos MEMORY + UBIQUITOUS_LANGUAGE.md).
+- DOC_STANDARD seccion 7: contrato JSON/MD + regla de consumo obligatoria.
+
+### Changed
+- Workflows evol-historias/evol-sprint/cierre-fase: sprint.md -> acuerdos/sprints/,
+  MEMORY.md -> atomos. Lectura via INDEX.json (ahorro tokens).
+
 ## [0.2.7] - 2026-06-04
 
 ### Added

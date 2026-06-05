@@ -291,3 +291,55 @@ def test_doc_quality_ok(tmp_path):
         + "\n".join(f"Contenido linea {i}" for i in range(100))
     )
     assert evol_dc.check_doc_quality(tmp_path, doc) == []
+
+
+# ── JSON sidecar + atomic folder (herencia atomicidad) ────────────────────────
+
+import importlib.util as _ilu
+
+_ds = _ilu.spec_from_file_location(
+    "evol_doc_sync", Path(__file__).parent.parent / "scripts" / "evol-doc-sync.py"
+)
+_doc_sync = _ilu.module_from_spec(_ds); _ds.loader.exec_module(_doc_sync)
+
+
+def _atom(folder, name, lines=40):
+    folder.mkdir(parents=True, exist_ok=True)
+    doc = folder / f"{name}.md"
+    body = "\n".join(f"Linea {i} sobre autenticacion." for i in range(lines))
+    doc.write_text(f"# {name}\n\n> Cubre {name}.\n\n## Detalle\n\n{body}\n")
+    return doc
+
+
+def _make_index(folder):
+    (folder / "INDEX.md").write_text("# INDEX\n\n| Doc | Resumen |\n|-----|--------|\n| a | x |\n")
+
+
+def test_json_sidecar_falta(tmp_path):
+    doc = _atom(tmp_path, "esquemas")
+    errors = evol_dc.check_json_sidecar(doc)
+    assert errors and "JSON-SIDECAR" in errors[0]
+
+
+def test_json_sidecar_ok(tmp_path):
+    doc = _atom(tmp_path, "esquemas")
+    _doc_sync.sync_doc(doc)
+    assert evol_dc.check_json_sidecar(doc) == []
+
+
+def test_atomic_folder_ok(tmp_path):
+    folder = tmp_path / "sprints"
+    folder.mkdir(parents=True)
+    a = _atom(folder, "sprint-01")
+    _doc_sync.sync_doc(a)
+    _make_index(folder)
+    _doc_sync.sync_folder(folder)
+    assert evol_dc.check_atomic_folder(folder) == []
+
+
+def test_atomic_folder_falla_sin_index(tmp_path):
+    folder = tmp_path / "sprints"
+    a = _atom(folder, "sprint-01")
+    _doc_sync.sync_doc(a)
+    errors = evol_dc.check_atomic_folder(folder)
+    assert any("INDEX" in e for e in errors)

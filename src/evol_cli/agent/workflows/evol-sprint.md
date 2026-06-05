@@ -14,7 +14,7 @@ category: execution
 
 ## 0. Pre-flight
 
-1. Verificar que `acuerdos/sprint.md` existe (generado por `/evol historias`).
+1. Verificar que `acuerdos/sprints/INDEX.json` existe (fallback: acuerdos/sprint.md) (generado por `/evol historias`).
 2. Si `--sprint=NN` no se pasa: tomar el primer sprint sin branch en git.
 3. Verificar que sprint anterior esta mergeado en develop:
    ```bash
@@ -147,7 +147,7 @@ python3 scripts/evol-gate.py approve --phase build
 
 ```mermaid
 flowchart TD
-    A[Leer acuerdos/sprint.md] --> B[Identificar historias del sprint]
+    A[Leer acuerdos/sprints/INDEX.json] --> B[Identificar historias del sprint]
     B --> C[Componer equipo dinamico]
     C --> D[sprint-start via evol-gitflow.sh]
     D --> E{Por cada historia}

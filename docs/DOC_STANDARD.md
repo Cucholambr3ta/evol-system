@@ -265,3 +265,60 @@ Reglas del auditor:
 - Si el documento no supera el umbral de lineas: rechaza sin leer el contenido.
 - Si faltan Mermaid obligatorios: rechaza sin leer el contenido.
 - Si hay emojis: rechaza sin leer el contenido.
+## 7. Par JSON/MD para ahorro de tokens
+
+Todo documento atomico tiene un sidecar `.json` derivado, generado por `evol-doc-sync.py`.
+
+### Contrato
+
+- El `.md` es la **fuente de verdad** — calidad completa, todas las secciones, sin recortes.
+- El `.json` es la **estructura maxima de ahorro de tokens** — indice compacto que un
+  agente lee para mapear que existe y donde, sin cargar el MD completo.
+- El JSON se genera automaticamente desde el MD (nunca se escribe a mano).
+- Si el MD cambia, el JSON se regenera (deteccion de drift via checksum).
+
+### Estructura del sidecar
+
+```json
+{
+  "doc": "esquemas.md",
+  "dominio": "db",
+  "subdominio": "esquemas",
+  "resumen": "Una linea: que cubre y que NO cubre",
+  "secciones": ["vision-general", "schemas", "trazabilidad"],
+  "entidades": ["usuarios", "proyectos"],
+  "trazabilidad": {"origen": ["stack.md"], "relacionados": ["db/relaciones.md"]},
+  "tokens_md": 2480,
+  "tokens_json": 290,
+  "lineas": 180,
+  "checksum_md": "a1b2c3d4",
+  "actualizado": "ISO-8601"
+}
+```
+
+Por carpeta, un `INDEX.json` agrega los sidecars. Por raiz de proyecto, un `INDEX.json`
+maestro agrega los dominios.
+
+### Regla de consumo (OBLIGATORIA para agentes)
+
+Antes de cargar documentos MD, el agente DEBE leer el `INDEX.json` correspondiente para
+decidir que MDs necesita. Cargar todos los MD "por si acaso" viola el estandar.
+
+Flujo:
+1. Leer `acuerdos/proyecto/INDEX.json` (maestro, ~3-5k tokens) → mapa de dominios.
+2. Leer `<dominio>/INDEX.json` del dominio relevante → lista de subdominios.
+3. Cargar SOLO los `.md` de los subdominios que se van a implementar.
+
+Ahorro tipico: ~95% en navegacion (cargar INDEX vs todos los docs).
+
+### Comandos
+
+```bash
+evol-doc-sync.py sync --doc <path.md>      # genera/actualiza un sidecar
+evol-doc-sync.py sync-folder <carpeta>     # carpeta + INDEX.json
+evol-doc-sync.py sync-all <raiz>           # arbol completo + INDEX maestro
+evol-doc-sync.py verify <carpeta>          # detecta drift (MD sin re-sync)
+```
+
+El verificador `evol-discipline-check.py check_json_sidecar` rechaza docs sin sidecar
+o con drift como parte del gate de atomicidad.
