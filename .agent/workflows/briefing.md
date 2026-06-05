@@ -18,16 +18,33 @@ category: planning
 
 Antes de comenzar:
 
-0. **Setup del repositorio (paso 0 — lo PRIMERO).** Ejecutar `/evol setup-repo` si no se
-   hizo aun: pregunta ubicacion (existente / crear en nube / solo local) y modo (dev /
-   colaborativo), configura GitFlow main-develop. Ver `setup-repo.md` y ADR-0003.
-1. Leer `memoria.md` + `lecciones.md` (Art. 3).
-2. Crear estructura de trabajo:
+El briefing NO es el primer paso. La secuencia de entrada es:
+
+```
+0. /evol setup-repo   → repo + GitFlow
+0.5 /evol idea        → decanta la idea en atomos (acuerdos/idea/)
+0.7 /evol discovery   → RESEARCH pre-briefing: entender la idea (acuerdos/discovery/)
+1. /evol briefing     → preguntar las 16 dimensiones CON contexto ya investigado
+```
+
+0. **Setup del repositorio.** Ejecutar `/evol setup-repo` si no se hizo aun. Ver
+   `setup-repo.md` y ADR-0003.
+1. **Verificar que discovery cerro.** `acuerdos/discovery/INDEX.md` debe existir. Si NO:
+   ABORT — ejecutar `/evol idea` + `/evol discovery` primero. El briefing no arranca sin
+   la idea decantada (`/evol idea`) ni entendida (`/evol discovery`).
+2. Leer `memoria.md` + `lecciones.md` (Art. 3).
+3. **Leer la sintesis de discovery** (`acuerdos/discovery/INDEX.md`): que es la idea, que
+   decisiones tecnicas sugiere el material, que preguntas quedan abiertas. El briefing
+   pregunta las 16 dimensiones CON ese contexto — preguntas mas precisas, usuario decide
+   informado.
+
+Estructura de trabajo (creada por `evol-init.sh`):
 
 ```
 acuerdos/
-  idea/              ← archivo original del usuario + idea.md
-  research/          ← investigacion por dominio (post-briefing)
+  idea/              ← atomos de la idea (por /evol idea)
+  discovery/         ← research pre-briefing: entender la idea (por /evol discovery)
+  research/          ← investigacion por dominio (post-briefing, en doc-granular)
   design/            ← tokens aprobados (colores, tipografias, assets)
   wireframes/        ← <pantalla>.html aprobados
   proyecto/          ← N docs granulares (generados post-briefing)
@@ -35,27 +52,8 @@ acuerdos/
   lecciones/         ← lecciones por sprint
 ```
 
-3. **Generar `acuerdos/idea/idea.md` — el puntapie del pipeline.** Es el contrato de
-   entrada de toda la fase de investigacion. Contiene DOS secciones:
-
-   Seccion 1 — Solicitud original (verbatim). Citar textual lo que el usuario pidio. El
-   archivo entregado (si lo hubo) se guarda junto en `acuerdos/idea/`.
-
-   Seccion 2 — Prompt de investigacion. Por cada tema, libreria, proyecto o mejora
-   mencionada, una fila:
-
-   ```markdown
-   ## Prompt de investigacion
-
-   | Tema/Link a investigar | Por que importa | Preguntas a responder | Artefacto esperado |
-   |------------------------|-----------------|----------------------|--------------------|
-   | <tema o URL> | <relevancia> | <que debe quedar claro> | acuerdos/research/<tema>/investigacion.md |
-   ```
-
-   Si la solicitud cita repos/proyectos externos como referencia, cada uno es una fila
-   con su URL y las preguntas que el research debe responder. Este prompt es lo que el
-   `specialized-researcher` lee en doc-granular PASO 1 — sin el, el research no tiene
-   direccion.
+> El briefing ya NO genera idea.md ni prompt de investigacion. La idea se decanta en
+> atomos en `/evol idea` y se investiga en `/evol discovery`, ambos ANTES del briefing.
 
 4. Registrar inicio en `memoria.md`.
 

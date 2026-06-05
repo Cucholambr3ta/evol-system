@@ -142,17 +142,27 @@ Proyectos simples: 5-8 dominios, 15-25 docs. Complejos: 15+ dominios, 60-120 doc
 
 Por cada documento identificado, ejecutar en paralelo (evol-orchestrate parallel_then_sync):
 
-### PASO 1 — INVESTIGA (worker: specialized-researcher)
+### PASO 1 — INVESTIGA (worker: specialized-researcher) — RESEARCH post-briefing
+
+Este es el SEGUNDO research del pipeline (research, no discovery). Discovery (pre-briefing)
+ya entendio QUE es la idea; este research investiga COMO construir cada dominio tecnico.
 
 ```
-Tarea: investigar el subdominio "<carpeta>/<nombre>.md" para el proyecto
-Contexto: leer acuerdos/idea/<artefactos-relevantes>.md
+Tarea: investigar COMO construir el subdominio "<carpeta>/<nombre>.md"
+Contexto:
+  - acuerdos/discovery/INDEX.md (la idea ya entendida — que es, decisiones sugeridas)
+  - acuerdos/discovery/<tema>/ (investigacion pre-briefing relevante)
+  - acuerdos/idea/<atomos-relevantes>.md + dimensiones del briefing
 Output: acuerdos/research/<carpeta>/<nombre>/investigacion.md
+  - Como implementar este subdominio con el stack decidido
   - Mejores practicas especificas del subdominio
   - Patrones recomendados para el stack del proyecto
   - Riesgos conocidos y mitigaciones
   - Referencias (RFCs, docs oficiales, ejemplos reales)
 ```
+
+> Discovery (acuerdos/discovery/) = entender la idea, pre-briefing.
+> Research (acuerdos/research/) = como construir cada dominio, post-briefing. Distintos.
 
 ### PASO 2 — VALIDA CLAIMS (worker: fact-check)
 
