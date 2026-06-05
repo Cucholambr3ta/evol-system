@@ -11,11 +11,11 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
-- **Ultimo hito:** grill-me enforced en gate del plan (bloqueo criptografico Fase 3)
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.3.2 activa en produccion
+- **Ultimo hito:** Rebrand x-dd→evol-dd completo + release v0.3.2 + rama main creada
 - **Proximo paso:** Construir evol-agent en otro PC con /evol (spec enriquecida lista)
 - **PyPI:** https://pypi.org/project/evol-dd/
-- **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (MemPalace 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
+- **Versiones publicadas:** 0.1.0 → 0.1.4 → 0.1.6 → 0.1.9 → 0.2.0 → 0.2.1 → 0.2.2 → 0.2.3 (grill enforced) → 0.2.7 (E5-E8) → 0.3.0 → 0.3.2 (rebrand + 31 disciplinas)
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -56,10 +56,32 @@
 | 0.2.1 | 2026-06-03 | Security nativa: evol-scan/validate/patch/crash |
 | 0.2.2 | 2026-06-03 | 4 community skills (grill/fact-check/idea-refine/prompt-master) |
 | 0.2.3 | 2026-06-03 | grill-me ENFORCED en gate del plan (marker SHA + 7 tests) |
+| 0.2.7 | 2026-06-04 | E5-E8: sprint-close, historias, gitflow, discipline-check (69 tests) |
+| 0.3.0 | 2026-06-05 | setup-repo, security-inventory, briefing idea.md, sprint eval |
+| 0.3.2 | 2026-06-05 | 31 disciplinas, rebrand x-dd→evol-dd, .gitignore limpio |
 
 ---
 
 ## Bitácora de Sesiones
+
+### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
+
+- **Meta:** Limpieza completa de namespace x-dd en todo el codebase, corrección de gaps en .gitignore, y release v0.3.2 en PyPI.
+- **Hitos:**
+  - Rebrand funcional: `evol-scan.py` scanner names `xdd-heuristic/xdd-sca` → `evol-heuristic/evol-sca`; temp path `/tmp/xdd-gitleaks.json` → `/tmp/evol-gitleaks.json`.
+  - `evol-discipline-check.py`: removidos 6 fallback `.xdd/` de los bloques candidates.
+  - 45 workflows (SSoT + mirrors): `xdd.profile.yml`, `xdd-orchestrate.py`, `xdd-state.py`, `xdd-gate.py`, `xdd-researcher`, `X-DD CORE CONTROL DOMAINS`, `X-DD System`, `X-DD Orchestrator`, `Constitución X-DD`, `/x-dd`, `/xdd-build`, footers disciplinas, link muerto `xdd-fs-context → evol-fs-context`.
+  - 9 frontmatter descriptions `"Workflow X-DD"` → descripciones reales.
+  - `skills/crear-skill/SKILL.md`: `origin: x-dd` → `origin: evol-dd` (ambas copias).
+  - `.gitignore`: fix negación `.github/prompts/` (era anulada por `!.github/`); agregados `.vscode/` y `dudas.md`.
+  - VERSION + pyproject.toml: `0.3.1` → `0.3.2`.
+  - Commit `971c91c`: 110 archivos, 723 inserciones.
+  - Push develop → origin; rama `main` creada y pusheada.
+  - Tag `v0.3.2` en main; build wheel (scripts=68, agent=206, manifests=6, skills=64); publicado en PyPI.
+  - `/evol` reinstalado globalmente en 7 IDEs con `evol-install-global`.
+- **QA:** 104 pytest OK. 7/7 verificaciones OK. Mirrors idénticos.
+- **Estado:** Branch main = v0.3.2, develop = main. PyPI activo.
+- **Próxima sesión:** Construir evol-agent en otro PC con /evol.
 
 ### Sesión 2026-06-05 — Herencia upgrade 31 metodologías (Lote F, v0.3.2) + merge develop + fix Mermaid
 - **Meta:** Heredar el upgrade X-DD (22 metodologías → registro de disciplinas 9→31) a Evol-DD con branding evol, mergear a develop, arreglar render Mermaid.
