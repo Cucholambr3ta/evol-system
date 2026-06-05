@@ -245,3 +245,10 @@ _(vacio)_
 **Causa raiz:** Namespaces distintos por diseño.
 **Leccion:** Al portar: (1) buscar en .evol/ primero + fallback; (2) EVOL_ prefix en env vars; (3) scripts llaman evol-*. Lista de diferencias en MEMORY.md del proyecto.
 **Aplica a:** Cualquier port futuro X-DD → Evol-DD.
+
+### [HERRAMIENTAS] Labels Mermaid: \n, comillas simples y parentesis sin comillas rompen el render — 2026-06-05
+**Contexto:** Render de diagramas del registro de disciplinas (heredado de X-DD, Lote F) en preview VSCode (bundle Mermaid 11.12).
+**Problema:** "No diagram type detected" — 3 causas encadenadas: (1) `\n` literal en labels; (2) comillas simples embebidas en `["...'x'..."]`; (3) `subgraph X[...]` con `()` o `—` sin comillas.
+**Causa raiz:** El bundle browser de Mermaid es mas estricto que `mmdc` CLI, que tolera (1)(2) y despista. `\n` no es salto valido; caracteres especiales sin comillas desincronizan el lexer.
+**Leccion:** Salto = `<br/>` (nunca `\n`); label con `() / — ' "` va entre comillas dobles, incluido `subgraph ID["..."]`. Verificar con el engine del consumidor, no solo CLI. Barrido: extraer cada bloque ```mermaid``` y renderizar 1 a 1; el que no produce SVG es el culpable.
+**Aplica a:** Todo doc Mermaid en Evol-DD y proyectos generados.

@@ -61,6 +61,19 @@
 
 ## Bitácora de Sesiones
 
+### Sesión 2026-06-05 — Herencia upgrade 31 metodologías (Lote F, v0.3.2) + merge develop + fix Mermaid
+- **Meta:** Heredar el upgrade X-DD (22 metodologías → registro de disciplinas 9→31) a Evol-DD con branding evol, mergear a develop, arreglar render Mermaid.
+- **Hitos (commit feature `42c50f1`, merge `fe27101`):**
+  - `docs/disciplinas/` 9→31 fichas con branding evol (9 base in-situ + 22 copiadas con rebrand). Sección Fuentes + sidecars `fuentes[]` (116 URLs). `evol-doc-sync.py` con `_extract_sources()`.
+  - 6 skills `/evol` (ux-driven, event-sourcing, api-versioning, iac-driven, debt-budget, use-case-driven).
+  - 4 workflows extendidos (dr-drill, data-pipeline, privacy-review, dependency-update); `evol.profile.yml` `methodologies:`; `evol.md` inyección por profile + DAG; DOC_STANDARD 1.7; `validate-disciplinas.py`.
+  - CHANGELOG v0.3.2.
+- **Fix Mermaid (2 commits develop):** `b611b05` (\n→<br/> 7 fichas base + INDEX), `22b8eb4` (comillas simples en labels). Mismo bug que X-DD; las fichas evol lo heredaron.
+- **QA:** validate-disciplinas 31/31 strict; lint 87 OK; sin drift post-resync.
+- **Agentes permanentes:** 0 nuevos — sigue en 16 + efímeros (evol-agent-factory).
+- **Estado:** develop con 5+ commits sin pushear. Lección Mermaid en lecciones.md root + acuerdos/lecciones/sprint-27.md.
+- **Próxima sesión:** push develop; release v0.3.2; revisar dev-docs por mismo patrón Mermaid.
+
 ### Sesión Fixes — 2026-06-02 (post-auditoría)
 - **Meta:** Aplicar 21 fixes de auditoría full, estabilizar proyecto para release
 - **Archivos modificados:**

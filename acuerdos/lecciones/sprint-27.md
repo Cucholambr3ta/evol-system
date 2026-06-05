@@ -15,3 +15,10 @@
 **Causa raiz:** X-DD y Evol-DD tienen namespaces distintos por diseño (evol- vs xdd-). La herencia no es copia directa.
 **Leccion:** Al portar de X-DD a Evol-DD: (1) buscar artefactos en .evol/ primero, luego fallback a paths alternativos; (2) todas las env vars usan EVOL_ prefix; (3) scripts llaman evol-* no xdd-*. Mantener lista de diferencias en MEMORY.md del proyecto evol-dd.
 **Aplica a:** Cualquier port futuro X-DD → Evol-DD.
+
+### [HERRAMIENTAS] Labels Mermaid rompen render: \n, comillas, parentesis sin comillas — 2026-06-05
+**Contexto:** Diagramas del registro de disciplinas (Lote F) no renderizaban en VSCode preview.
+**Problema:** "No diagram type detected". El bundle browser de Mermaid es mas estricto que mmdc CLI.
+**Causa raiz:** `\n` en labels (invalido), comillas simples embebidas, y `subgraph X[label con () o —]` sin comillas dobles.
+**Leccion:** Salto `<br/>` no `\n`; todo label con caracteres especiales va entre comillas dobles `["..."]`, incluido subgraph. Verificar con el mismo engine del consumidor.
+**Aplica a:** Todo doc Mermaid en Evol-DD.
