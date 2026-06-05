@@ -45,7 +45,7 @@ El ciclo STDD agrega dos pasos al ciclo TDD estandar:
 
 ```mermaid
 flowchart TD
-    START["Funcion/endpoint en THREATS.md<br/>con 'security test requerido'"] --> R1["1. ROJO — TDD<br/>Test funcional falla<br/>(funcion no existe)"]
+    START["Funcion/endpoint en THREATS.md<br/>con security test requerido"] --> R1["1. ROJO — TDD<br/>Test funcional falla<br/>(funcion no existe)"]
     R1 --> R2["2. ROJO-SEC — STDD<br/>Security test falla<br/>(funcion no existe y no protege)"]
     R2 --> G1["3. VERDE<br/>Implementacion minima<br/>ambos tests pasan<br/>(funcional + seguro)"]
     G1 --> REF["4. REFACTOR + HARDENING<br/>Mejorar calidad del codigo<br/>Reforzar controles de seguridad<br/>Ambos tests siguen en verde"]
