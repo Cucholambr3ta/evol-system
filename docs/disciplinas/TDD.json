@@ -1,0 +1,33 @@
+{
+  "doc": "TDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "TDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-tdd-en-x-dd",
+    "el-ciclo-rojo-verde-refactor",
+    "cuando-aplica-tdd-y-cuando-no",
+    "tdd-en-el-pipeline",
+    "mandato-constitucional-art-8",
+    "estructura-de-tests-unitarios",
+    "definition-of-done-tdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://www.oreilly.com/library/view/test-driven-development/0321146530/",
+    "https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html",
+    "https://martinfowler.com/bliki/TestDrivenDevelopment.html"
+  ],
+  "tokens_md": 2550,
+  "lineas": 297,
+  "checksum_md": "4fe484a1f5e7b128",
+  "actualizado": "2026-06-05T08:14:06.473579+00:00",
+  "tokens_json": 134
+}

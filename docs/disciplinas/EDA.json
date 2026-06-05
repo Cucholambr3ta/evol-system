@@ -1,0 +1,34 @@
+{
+  "doc": "EDA.md",
+  "dominio": "disciplinas",
+  "subdominio": "EDA",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-eda-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "eda-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-eda",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://aws.amazon.com/event-driven-architecture/",
+    "https://www.enterpriseintegrationpatterns.com/",
+    "https://tyk.io/blog/tools-and-best-practices-for-building-event-driven-architectures/",
+    "https://github.com/boyney123/navigating-complexity-in-eda-with-ddd"
+  ],
+  "tokens_md": 1341,
+  "lineas": 154,
+  "checksum_md": "427321f285714dc7",
+  "actualizado": "2026-06-05T08:14:06.463817+00:00",
+  "tokens_json": 139
+}

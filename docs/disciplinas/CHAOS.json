@@ -1,0 +1,34 @@
+{
+  "doc": "CHAOS.md",
+  "dominio": "disciplinas",
+  "subdominio": "CHAOS",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-chaos-driven-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "chaos-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-chaos",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://principlesofchaos.org/",
+    "https://learn.microsoft.com/en-us/azure/chaos-studio/chaos-engineering-overview",
+    "https://bpbonline.com/products/chaos-engineering-with-python",
+    "https://github.com/chaos-mesh/chaos-mesh"
+  ],
+  "tokens_md": 1283,
+  "lineas": 147,
+  "checksum_md": "08df2603d31dbd7a",
+  "actualizado": "2026-06-05T08:14:06.460279+00:00",
+  "tokens_json": 136
+}

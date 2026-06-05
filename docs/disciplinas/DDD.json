@@ -1,0 +1,40 @@
+{
+  "doc": "DDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "DDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-ddd-en-x-dd",
+    "ubiquitous-language",
+    "bounded-contexts",
+    "context-map",
+    "core-aggregates",
+    "domain-events",
+    "artefacto-domainmd",
+    "ubiquitous-language",
+    "bounded-contexts",
+    "context-map",
+    "core-aggregates",
+    "domain-events",
+    "glosario-de-errores-de-dominio",
+    "ddd-en-el-pipeline",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://www.domainlanguage.com/ddd/",
+    "https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf",
+    "https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/"
+  ],
+  "tokens_md": 2750,
+  "lineas": 308,
+  "checksum_md": "4075cfbd4868fd32",
+  "actualizado": "2026-06-05T08:14:06.461733+00:00",
+  "tokens_json": 150
+}

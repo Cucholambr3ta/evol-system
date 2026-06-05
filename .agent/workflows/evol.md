@@ -63,6 +63,30 @@ Para crear un agente especializado que no existe: `/evol crear-agente`
 
 ---
 
+## Inyeccion de disciplinas por profile
+
+El sistema integra **31 disciplinas *-Driven** (9 base + 22 extendidas). Registro:
+[`docs/disciplinas/INDEX.md`](../../docs/disciplinas/INDEX.md) — cada ficha declara su fase y su
+`executor` (workflow que la ejecuta).
+
+Al iniciar una fase, el orquestador:
+
+1. Lee `evol.profile.yml` -> bloque `methodologies:` (las disciplinas activas del proyecto).
+2. Por cada disciplina cuya **fase** coincide con la fase actual, inyecta su capa: invoca su
+   `executor` (workflow mapeado, skill nueva, o aplica la regla declarativa), genera sus artefactos
+   I/O y aplica sus criterios de exito como **sub-gate** de la fase.
+3. Resuelve el **DAG de dependencias** entre disciplinas antes de inyectar (ej. `chaos` exige
+   `odd_obs`+`threat_driven`; `slodriven` exige `odd_obs`+`pdd`).
+4. NO inyecta disciplinas que el profile no declara — activacion estricta por caso de uso.
+
+Las 6 disciplinas sin cobertura previa tienen skill propia: `/evol ux-driven`, `/evol event-sourcing`,
+`/evol api-versioning`, `/evol iac-driven`, `/evol debt-budget`, `/evol use-case-driven`.
+
+> **Regla de fuentes (DOC_STANDARD 1.7):** todo documento producto de investigacion web cita el
+> link de su fuente. El validador `validate-disciplinas.py` bloquea fichas sin `fuentes[]`.
+
+---
+
 ## Skills de razonamiento — integracion automatica en el pipeline
 
 Estas skills no son fases; son herramientas de razonamiento que el orquestador

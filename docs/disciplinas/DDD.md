@@ -293,6 +293,16 @@ documentada, se reporta como drift semantico y bloquea el merge.
 
 ---
 
+## 10. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen canonico | [Domain-Driven Design — Eric Evans (2003)](https://www.domainlanguage.com/ddd/) | Libro fundacional ("Blue Book") que define Ubiquitous Language, Bounded Context, Aggregates |
+| Referencia | [DDD Reference — Eric Evans (PDF)](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf) | Compendio oficial de definiciones y patrones DDD |
+| Patrones tacticos | [Implementing Domain-Driven Design — Vaughn Vernon](https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/) | Aplicacion practica de aggregates, repositories y domain events |
+
 > **Mantenido por:** Architect + Domain-Expert
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [INDEX.md](./INDEX.md)

@@ -1,0 +1,34 @@
+{
+  "doc": "CCDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "CCDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-ccdd-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "ccdd-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-ccdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://martinfowler.com/articles/consumerDrivenContracts.html",
+    "https://docs.pact.io/consumer",
+    "https://docs.pact.io/ci_cd",
+    "https://github.com/pact-foundation"
+  ],
+  "tokens_md": 1222,
+  "lineas": 145,
+  "checksum_md": "2b94f2dbe61784d0",
+  "actualizado": "2026-06-05T08:14:06.459201+00:00",
+  "tokens_json": 128
+}

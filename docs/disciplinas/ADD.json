@@ -1,0 +1,34 @@
+{
+  "doc": "ADD.md",
+  "dominio": "disciplinas",
+  "subdominio": "ADD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-add-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "add-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-add",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
+    "https://martinfowler.com/bliki/ArchitectureDecisionRecord.html",
+    "https://aws.amazon.com/blogs/architecture/master-architecture-decision-records-adrs-best-practices-for-effective-decision-making/",
+    "https://github.com/npryce/adr-tools"
+  ],
+  "tokens_md": 1365,
+  "lineas": 152,
+  "checksum_md": "720fa12dc9cc7dc7",
+  "actualizado": "2026-06-05T08:14:06.456334+00:00",
+  "tokens_json": 145
+}

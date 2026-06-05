@@ -8,7 +8,11 @@ del subdominio que va a implementar. Ahorro ~95% en navegacion.
 
 Contrato del JSON sidecar (<nombre>.json junto a <nombre>.md):
   doc, dominio, subdominio, resumen, secciones, entidades, trazabilidad,
-  tokens_md, tokens_json, lineas, checksum_md, actualizado
+  fuentes, tokens_md, tokens_json, lineas, checksum_md, actualizado
+
+El campo `fuentes` captura las URLs citadas en la seccion "Fuentes" del MD. Regla Evol-DD:
+todo documento producto de investigacion web debe citar la URL de la fuente (DOC_STANDARD).
+`fuentes` permite al validador exigir respaldo no-vacio en docs de disciplina/investigacion.
 
 Comandos:
   sync --doc <path.md>        Genera/actualiza el .json de un documento
@@ -138,6 +142,26 @@ def _extract_traceability(content: str) -> dict:
     return trace
 
 
+def _extract_sources(content: str) -> list[str]:
+    """URLs citadas en la seccion 'Fuentes'. Regla DOC_STANDARD: investigacion web cita su link.
+
+    Devuelve la lista de URLs (http/https) que aparecen bajo un encabezado 'Fuentes'.
+    Documento de investigacion sin fuentes => lista vacia => el validador lo marca INCOMPLETO.
+    """
+    m = re.search(
+        r"(?is)^#{1,4}\s*\d*\.?\s*fuentes.*?$(.*?)(?=^#{1,4}\s|\Z)", content, re.MULTILINE
+    )
+    if not m:
+        return []
+    block = m.group(1)
+    urls: list[str] = []
+    for url in re.findall(r"https?://[^\s\)\]\}<>\"']+", block):
+        url = url.rstrip(".,;")
+        if url not in urls:
+            urls.append(url)
+    return urls
+
+
 def _domain_subdomain(doc_path: Path, root: Path | None = None) -> tuple[str, str]:
     """Deriva dominio (carpeta padre) y subdominio (nombre archivo sin ext)."""
     subdominio = doc_path.stem
@@ -155,6 +179,7 @@ def build_sidecar(doc_path: Path) -> dict:
     summary = _extract_summary(content)
     entities = _extract_entities(content)
     trace = _extract_traceability(content)
+    fuentes = _extract_sources(content)
     tokens_md = _estimate_tokens(content)
     lineas = len(content.splitlines())
 
@@ -166,6 +191,7 @@ def build_sidecar(doc_path: Path) -> dict:
         "secciones": sections,
         "entidades": entities,
         "trazabilidad": trace,
+        "fuentes": fuentes,
         "tokens_md": tokens_md,
         "lineas": lineas,
         "checksum_md": _checksum(content),

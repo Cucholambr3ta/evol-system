@@ -1,0 +1,33 @@
+{
+  "doc": "ATDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "ATDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-atdd-en-x-dd",
+    "diferencia-entre-atdd-y-bdd",
+    "stubs-de-acceptance-tests-que-fallan-por-diseno",
+    "atdd-en-el-pipeline",
+    "bloqueo-de-ci-y-criterio-de-merge",
+    "artefactos-atdd",
+    "definition-of-done-atdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://en.wikipedia.org/wiki/Acceptance_test%E2%80%93driven_development",
+    "https://www.oreilly.com/library/view/atdd-by-example/9780132542883/",
+    "https://gojko.net/books/specification-by-example/"
+  ],
+  "tokens_md": 2401,
+  "lineas": 266,
+  "checksum_md": "aa2dff25767ee74d",
+  "actualizado": "2026-06-05T08:14:06.457701+00:00",
+  "tokens_json": 134
+}

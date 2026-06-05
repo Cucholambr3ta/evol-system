@@ -274,6 +274,17 @@ Los escenarios pueden etiquetarse para ejecucion selectiva:
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen canonico | [Introducing BDD — Dan North (2006)](https://dannorth.net/introducing-bdd/) | Articulo fundacional donde Dan North acuna el termino BDD a partir de su experiencia con TDD |
+| Lenguaje | [Gherkin Reference — Cucumber](https://cucumber.io/docs/gherkin/reference/) | Especificacion oficial del lenguaje Gherkin (Given-When-Then, Scenario Outline, tags) |
+| Herramienta | [Cucumber Documentation](https://cucumber.io/docs/) | Framework de referencia para ejecutar especificaciones BDD como tests |
+| Practica | [BDD — Agile Alliance Glossary](https://www.agilealliance.org/glossary/bdd/) | Definicion consensuada de la practica en la comunidad agile |
+
 > **Mantenido por:** Rapid-Prototyper + QA-Reviewer
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2
 > **Ver tambien:** [ATDD.md](./ATDD.md) | [FDD.md](./FDD.md) | [INDEX.md](./INDEX.md)

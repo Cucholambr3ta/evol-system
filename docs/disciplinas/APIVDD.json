@@ -1,0 +1,34 @@
+{
+  "doc": "APIVDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "APIVDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-apivdd-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "apivdd-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-apivdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://semver.org/",
+    "https://api7.ai/blog/api-versioning-strategies",
+    "https://www.rfc-editor.org/rfc/rfc8594",
+    "https://www.xano.com/blog/modern-api-design-best-practices"
+  ],
+  "tokens_md": 1282,
+  "lineas": 149,
+  "checksum_md": "612392a034331fe8",
+  "actualizado": "2026-06-05T08:14:06.456876+00:00",
+  "tokens_json": 130
+}

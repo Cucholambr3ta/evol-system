@@ -56,3 +56,25 @@ Tests por dataset: not null en columnas clave, unicidad, rangos, joins consisten
 - Documentar pipeline en `docs/data/<dataset>.md`.
 - Lineage publicado.
 - Lecciones a [[lecciones]].
+
+---
+
+## Extension: disciplinas EDA y CDCDD
+
+> Activacion por profile: `eda` y/o `cdcdd` en `methodologies:`. Fichas:
+> [`docs/disciplinas/EDA.md`](../../docs/disciplinas/EDA.md) y
+> [`docs/disciplinas/CDCDD.md`](../../docs/disciplinas/CDCDD.md).
+
+Cuando el profile activa estas disciplinas, este workflow se extiende:
+
+### EDA — Event-Driven Architecture
+- **Salida adicional:** `eda/schemas/*.avsc` (Avro/Protobuf versionados), `eda/topics/*.json`,
+  `eda/producers/*.json` (mapeo productor -> evento -> consumidores).
+- **Criterio:** todo evento con schema evolutivo + politica de compatibilidad declarada.
+
+### CDCDD — Change Data Capture
+- **Entrada adicional:** `migrations/*/up.sql` (esquema fuente) + `events/*.json`.
+- **Salida adicional:** `cdc/sources/*.json`, `cdc/transformations/*.sql`, `cdc/targets/*.json`.
+- **Criterio:** latencia de replicacion dentro del SLO; captura log-based donde la BD lo soporte.
+
+**Fuentes:** toda decision de schema/replicacion basada en investigacion web cita su URL (DOC_STANDARD).

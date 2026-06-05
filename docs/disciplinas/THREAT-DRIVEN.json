@@ -1,0 +1,34 @@
+{
+  "doc": "THREAT-DRIVEN.md",
+  "dominio": "disciplinas",
+  "subdominio": "THREAT-DRIVEN",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-threat-driven-development-en-x-dd",
+    "metodologia-stride",
+    "el-proceso-de-threat-modeling",
+    "formato-thr-nnn",
+    "activos-y-actores-adversariales",
+    "analisis-por-aggregate",
+    "documentacion-de-controles",
+    "threat-driven-en-el-pipeline",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats",
+    "https://owasp.org/www-community/Threat_Modeling",
+    "https://www.threatmodelingmanifesto.org/"
+  ],
+  "tokens_md": 2828,
+  "lineas": 277,
+  "checksum_md": "35de4f9b692317f0",
+  "actualizado": "2026-06-05T08:14:06.474519+00:00",
+  "tokens_json": 139
+}

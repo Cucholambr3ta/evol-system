@@ -1,0 +1,34 @@
+{
+  "doc": "ODD_OBS.md",
+  "dominio": "disciplinas",
+  "subdominio": "ODD_OBS",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-odd-obs-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "odd-obs-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-odd-obs",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://opentelemetry.io/docs/",
+    "https://www.dynatrace.com/resources/ebooks/the-developers-guide-to-observability/",
+    "https://www.pulumi.com/blog/observability-as-a-developer-superpower/",
+    "https://github.com/open-telemetry/opentelemetry-demo"
+  ],
+  "tokens_md": 1262,
+  "lineas": 151,
+  "checksum_md": "ebafd271178ed8f6",
+  "actualizado": "2026-06-05T08:14:06.467486+00:00",
+  "tokens_json": 139
+}

@@ -8,6 +8,33 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-06-05
+
+### Added
+- Registro de disciplinas extendido de **9 a 31 metodologias** en `docs/disciplinas/` (herencia
+  del upgrade X-DD `ultimate-update.md`). 22 fichas nuevas con paridad de profundidad (proposito,
+  cuando aplicar, artefactos I/O, pipeline Mermaid, integracion, criterios, DoD, agentes, Fuentes):
+  ODD_API, UXDD, A11yDD, RDD, PDD, Chaos, MDD, CDCDD, ESDD, CCDD, APIVDD, ODD_Obs, SLO/SLA, IODD,
+  Pipeline-Driven, Compliance, PrivacyDD, DebtBudgetDD, DeprecationDD, ADD, EDA, UDD.
+- Seccion **Fuentes** en las 9 fichas base con respaldo canonico verificable (Dan North/BDD,
+  Kent Beck/TDD, Eric Evans/DDD, STRIDE/Microsoft, OWASP, etc.). Sidecars con `fuentes[]` (116 URLs).
+- 6 skills nuevas para disciplinas sin cobertura: `/evol ux-driven`, `/evol event-sourcing`,
+  `/evol api-versioning`, `/evol iac-driven`, `/evol debt-budget`, `/evol use-case-driven`.
+- `scripts/validate-disciplinas.py`: valida que cada ficha tenga `fuentes[]` no-vacio (regla
+  DOC_STANDARD 1.7); `--strict` valida drift de sidecar.
+- `evol.profile.yml`: bloque `methodologies:` (31 disciplinas, activacion por caso de uso).
+- `evol.md`: seccion "Inyeccion de disciplinas por profile" (lee methodologies, inyecta por fase,
+  resuelve DAG de dependencias).
+
+### Changed
+- `evol-doc-sync.py`: nuevo extractor `_extract_sources()` captura URLs de la seccion Fuentes en
+  el sidecar `fuentes[]`.
+- DOC_STANDARD: nueva regla **1.7 Citacion de fuentes de investigacion web** (claim sin link =
+  INCOMPLETO) + campo `fuentes[]` en el contrato del sidecar.
+- 4 workflows extendidos con disciplinas (activacion por profile): dr-drill (Chaos), data-pipeline
+  (EDA + CDCDD), privacy-review (Compliance), dependency-update (DeprecationDD).
+- discovery/doc-granular/research: regla de fuentes OBLIGATORIA en el paso de escritura.
+
 ## [0.3.0] - 2026-06-05
 
 ### Added
