@@ -243,6 +243,16 @@ Ejemplo: `authz-rbac-exportar-reporte.security.test.ts`
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Guia de testing | [OWASP Web Security Testing Guide (WSTG)](https://owasp.org/www-project-web-security-testing-guide/) | Catalogo canonico de pruebas de seguridad que alimentan los stubs STDD |
+| Verificacion | [OWASP Application Security Verification Standard (ASVS)](https://owasp.org/www-project-application-security-verification-standard/) | Requisitos verificables que se convierten en security tests |
+| Riesgos | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | Vectores de riesgo prioritarios para derivar casos de prueba de seguridad |
+
 > **Mantenido por:** Security-Engineer + SecOps
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 8
 > **Ver tambien:** [SecDD.md](./SecDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [TDD.md](./TDD.md) | [INDEX.md](./INDEX.md)

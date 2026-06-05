@@ -1,0 +1,34 @@
+{
+  "doc": "MDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "MDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-mdd-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "mdd-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-mdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://martinfowler.com/articles/evodb.html",
+    "https://atlasgo.io/blog/2023/06/12/declarative-vs-versioned-migrations/",
+    "https://www.cloudbees.com/blog/database-migration-what-it-is-and-how-to-do-it",
+    "https://github.com/flyway/flyway"
+  ],
+  "tokens_md": 1250,
+  "lineas": 149,
+  "checksum_md": "d360673ec699cba5",
+  "actualizado": "2026-06-05T08:14:06.466322+00:00",
+  "tokens_json": 136
+}

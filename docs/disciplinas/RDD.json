@@ -1,0 +1,34 @@
+{
+  "doc": "RDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "RDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-rdd-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "rdd-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-rdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://refactoring.com/",
+    "https://learn.madetech.com/software-craftsmanship/red-green-refactor/",
+    "https://www.techtarget.com/searchsoftwarequality/tip/10-refactoring-best-practices-when-and-how-to-refactor-code",
+    "https://refactoring.com/catalog/"
+  ],
+  "tokens_md": 1229,
+  "lineas": 147,
+  "checksum_md": "963b85d78fc9f168",
+  "actualizado": "2026-06-05T08:14:06.469644+00:00",
+  "tokens_json": 138
+}

@@ -116,3 +116,22 @@ X-DD System
 
 ## POST-FLIGHT: MEMORY SEAL (END)
 - Cierre de sesión y persistencia final en `memoria.md`.
+
+---
+
+## Extension: disciplina Deprecation-Driven (DeprecationDD)
+
+> Activacion por profile: `deprecationdd` en `methodologies:`. Ficha:
+> [`docs/disciplinas/DeprecationDD.md`](../../docs/disciplinas/DeprecationDD.md).
+
+Dependency-update gestiona la actualizacion de dependencias. Cuando el profile activa `deprecationdd`,
+se extiende a la **politica de sunset del codigo propio deprecado**:
+
+- **Entrada adicional:** `api_versions/deprecation_schedule.json` (desde [APIVDD](../../docs/disciplinas/APIVDD.md)).
+- **Salida adicional:** `deprecations/*/sunset_policy.json` (fecha tope + reemplazo) +
+  `deprecations/logs/usage_metrics.json` (uso del codigo deprecado).
+- **Criterio:** no hay llamadas a codigo obsoleto despues de su fecha de sunset; cerca del sunset se
+  generan PRs automaticos de eliminacion.
+- **Integracion:** el codigo deprecado vivo se contabiliza como deuda en
+  [DebtBudgetDD](../../docs/disciplinas/DebtBudgetDD.md).
+- **Fuentes:** las politicas basadas en estandares (RFC 8594, etc.) citan su URL (DOC_STANDARD).

@@ -56,6 +56,10 @@ xdd-researcher apply rp_<id> --by <usuario>
 `RESEARCH.md` en la raiz del proyecto, cumpliendo `docs/DOC_STANDARD.md`:
 tabla de propuestas rankeadas + detalle por propuesta + siguientes pasos.
 
+> **Regla de fuentes (DOC_STANDARD 1.7) — OBLIGATORIA:** cada propuesta producto de investigacion
+> web (skill, changelog, metodologia, paper) cita el link de su fuente. Una propuesta sin URL de
+> respaldo no se rankea. Las fuentes pasan por el filtro de confiabilidad de `/evol fact-check`.
+
 ## 6. Conexiones de interoperabilidad (Art. 6)
 - **Predecesores:** `/cierre-fase` (retro detecta necesidad de investigar)
 - **Sucesores:** `/evolve` (skills auto-generadas), `/adr-new` (decision sobre adopcion)

@@ -228,6 +228,17 @@ Un proyecto cumple con FDD cuando:
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina. El origen y la mecanica de FDD se sustentan en las
+siguientes fuentes (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen canonico | [Feature-Driven Development — Wikipedia](https://en.wikipedia.org/wiki/Feature-driven_development) | FDD creado por Jeff De Luca y Peter Coad (1997) en un proyecto bancario en Singapur; las 5 actividades del proceso |
+| Libro fundacional | [A Practical Guide to Feature-Driven Development — Palmer & Felsing (2002)](https://www.oreilly.com/library/view/a-practical-guide/9780130676153/) | Referencia canonica que sistematiza el metodo FDD |
+| Priorizacion | [RICE Scoring Model — Intercom](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/) | Modelo RICE usado para priorizar el catalogo de features |
+
 > **Mantenido por:** Product-Manager + Project-Manager
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [BDD.md](./BDD.md) | [INDEX.md](./INDEX.md)

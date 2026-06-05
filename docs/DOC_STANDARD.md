@@ -109,6 +109,31 @@ Referencia que no resuelve en ambas direcciones = INCOMPLETO.
 
 ---
 
+### 1.7 Citacion de fuentes de investigacion web
+
+Todo claim, dato, benchmark o afirmacion que provenga de investigacion en internet lleva el
+**link de la fuente**. Sin excepcion. La fuente se cita inline en formato markdown
+`[texto](https://url)` junto al claim, o se lista en una seccion **Fuentes** al pie del documento.
+
+Aplica a todo documento producido por workflows de investigacion ([discovery](../.agent/workflows/discovery.md),
+[doc-granular](../.agent/workflows/doc-granular.md), [research](../.agent/workflows/research.md)),
+a las fichas de [docs/disciplinas/](./disciplinas/), y a cualquier artefacto que incorpore material
+externo.
+
+Reglas:
+
+- Cada fuente citada debe tener una URL resoluble (http/https), no solo el nombre del recurso.
+- Las fuentes con veredicto FALSO o ENGANOSO de [`/evol fact-check`](../.agent/workflows/fact-check.md)
+  NO se incorporan; se descartan y se registra la fuente no confiable en `lecciones.md`.
+- El sidecar `.json` (seccion 7) captura las URLs en el campo `fuentes[]` automaticamente
+  (extraccion via `evol-doc-sync` de la seccion Fuentes).
+
+**Criterio de rechazo:** documento producto de investigacion web sin link de fuente = INCOMPLETO
+(mismo nivel que referencia que no resuelve bidireccional). El validador `validate-disciplinas.py`
+falla si una ficha de disciplina tiene `fuentes[]` vacio.
+
+---
+
 ## 2. Secciones minimas por artefacto
 
 Un artefacto con menos secciones se considera incompleto y no pasa el gate de QA.

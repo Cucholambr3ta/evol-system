@@ -254,6 +254,16 @@ Pregunta 1: El proyecto maneja datos de usuarios, pagos o infraestructura critic
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Modelo de madurez | [OWASP SAMM — Software Assurance Maturity Model](https://owaspsamm.org/) | Marco para integrar practicas de seguridad a lo largo del SDLC |
+| DevSecOps | [OWASP DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/) | Como embeber SAST/DAST/SCA en el pipeline de CI/CD |
+| Verificacion | [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) | Estandar de verificacion que define el "APROBADO" del QA_REPORT |
+
 > **Mantenido por:** SecOps + QA-Reviewer
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2
 > **Ver tambien:** [STDD.md](./STDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [INDEX.md](./INDEX.md)

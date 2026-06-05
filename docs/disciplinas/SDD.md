@@ -213,6 +213,17 @@ capas de detalle que enriquecen o se derivan de SPEC.md.
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina. El enfoque spec-first se sustenta en las siguientes fuentes
+(verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen / herramienta | [GitHub Spec Kit](https://github.com/github/spec-kit) | Toolkit de Spec-Driven Development: la especificacion como artefacto ejecutable que guia el desarrollo |
+| Practica | [Spec-Driven Development with AI — GitHub Blog](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/) | Articulo de referencia sobre SDD con agentes de IA |
+| Estandar relacionado | [IEEE 830 — Software Requirements Specifications](https://standards.ieee.org/ieee/830/1222/) | Estandar clasico de especificacion de requisitos que fundamenta la trazabilidad REQ-NNN |
+
 > **Mantenido por:** Architect + Orchestrator
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2 (Flujo Gated Pipeline)
 > **Ver tambien:** [FDD.md](./FDD.md) | [DDD.md](./DDD.md) | [INDEX.md](./INDEX.md)

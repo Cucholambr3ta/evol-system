@@ -282,6 +282,16 @@ describe('calcularTotalPeriodo', () => {
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen canonico | [Test-Driven Development: By Example — Kent Beck (2002)](https://www.oreilly.com/library/view/test-driven-development/0321146530/) | Libro fundacional donde Kent Beck formaliza el ciclo TDD |
+| Ciclo | [The Cycles of TDD — Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html) | Explicacion del ciclo Rojo-Verde-Refactor y sus tres leyes |
+| Referencia | [Test-Driven Development — Martin Fowler](https://martinfowler.com/bliki/TestDrivenDevelopment.html) | Definicion concisa y discusion de la practica |
+
 > **Mantenido por:** Builder + Reviewer
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 8
 > **Ver tambien:** [STDD.md](./STDD.md) | [ATDD.md](./ATDD.md) | [INDEX.md](./INDEX.md)

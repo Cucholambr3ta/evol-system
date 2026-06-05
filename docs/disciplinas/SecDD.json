@@ -1,0 +1,33 @@
+{
+  "doc": "SecDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "SecDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-secdd-en-x-dd",
+    "herramientas-sast-dast-y-secrets-scanning",
+    "requisitos-del-qa-reportmd",
+    "controles-de-seguridad-obligatorios",
+    "secdd-en-el-pipeline",
+    "arbol-de-decision-de-seguridad",
+    "definition-of-done-secdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://owaspsamm.org/",
+    "https://owasp.org/www-project-devsecops-guideline/",
+    "https://owasp.org/www-project-application-security-verification-standard/"
+  ],
+  "tokens_md": 2391,
+  "lineas": 269,
+  "checksum_md": "9077867e157c0b4d",
+  "actualizado": "2026-06-05T08:14:06.472679+00:00",
+  "tokens_json": 131
+}

@@ -55,3 +55,21 @@ Para cada drill:
 ## 8. Cierre
 - Drill log en `DR_PLAN.md` (fecha, escenario, RTO/RPO reales, hallazgos).
 - Mejoras pendientes a `lecciones.md` y backlog.
+
+---
+
+## Extension: disciplina Chaos / Resiliency-Driven (CHAOS)
+
+> Activacion por profile: `evol.profile.yml` con `chaos` en `methodologies:`. Ficha:
+> [`docs/disciplinas/CHAOS.md`](../../docs/disciplinas/CHAOS.md).
+
+Cuando el profile activa `chaos`, este workflow se extiende del DR pasivo (backups/restore) a la
+**inyeccion controlada de fallos** para validar recuperacion automatica:
+
+- **Entrada adicional:** `docs/specs/THREATS.md` — amenazas STRIDE de tipo DoS alimentan los experimentos.
+- **Salida adicional:** `chaos/hypothesis/*.md` (estado estable -> fallo -> recuperacion esperada) +
+  `chaos/experiments/*/fault_injection.json`.
+- **Ejecucion en sandbox aislado** ([evol-sandbox](../../skills/evol-sandbox)) — nunca en produccion sin control.
+- **Criterio de exito:** recuperacion sin intervencion manual, dentro del SLO de recuperacion
+  (compara con [`SLODRIVEN.md`](../../docs/disciplinas/SLODRIVEN.md)).
+- **Fuentes:** todo experimento basado en investigacion web incluye su URL (DOC_STANDARD).

@@ -158,8 +158,14 @@ Output: acuerdos/research/<carpeta>/<nombre>/investigacion.md
   - Mejores practicas especificas del subdominio
   - Patrones recomendados para el stack del proyecto
   - Riesgos conocidos y mitigaciones
-  - Referencias (RFCs, docs oficiales, ejemplos reales)
+  - Referencias (RFCs, docs oficiales, ejemplos reales) — CON URL de cada fuente
 ```
+
+> **Regla de fuentes (DOC_STANDARD 1.7) — OBLIGATORIA:** todo claim producto de investigacion
+> web lleva el link de su fuente (inline o en seccion **Fuentes**). El sidecar captura las URLs
+> en `fuentes[]`. El auditor RECHAZA un doc con material investigado sin fuente citada.
+
+---
 
 > Discovery (acuerdos/discovery/) = entender la idea, pre-briefing.
 > Research (acuerdos/research/) = como construir cada dominio, post-briefing. Distintos.

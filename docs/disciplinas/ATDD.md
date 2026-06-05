@@ -251,6 +251,16 @@ temporalmente. El uso de `@wip` en mas del 10% de los tests se reporta como deud
 
 ---
 
+## 9. Fuentes
+
+Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
+
+| Tipo | Fuente | Aporte |
+|------|--------|--------|
+| Origen canonico | [Acceptance Test-Driven Development — Wikipedia](https://en.wikipedia.org/wiki/Acceptance_test%E2%80%93driven_development) | Definicion del ciclo: criterios de aceptacion como tests antes de implementar |
+| Libro de referencia | [ATDD by Example — Markus Gartner (2012)](https://www.oreilly.com/library/view/atdd-by-example/9780132542883/) | Guia practica de ATDD con ejemplos ejecutables |
+| Patron | [Specification by Example — Gojko Adzic](https://gojko.net/books/specification-by-example/) | Tecnica afin: ejemplos concretos como especificacion ejecutable |
+
 > **Mantenido por:** QA-Reviewer + Architect
 > **Gobernado por:** Constitucion X-DD v1.5, Art. 2 y Art. 8
 > **Ver tambien:** [BDD.md](./BDD.md) | [TDD.md](./TDD.md) | [INDEX.md](./INDEX.md)

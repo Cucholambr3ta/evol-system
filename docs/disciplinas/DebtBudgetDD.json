@@ -1,0 +1,34 @@
+{
+  "doc": "DebtBudgetDD.md",
+  "dominio": "disciplinas",
+  "subdominio": "DebtBudgetDD",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "secciones": [
+    "indice",
+    "que-es-debtbudgetdd-en-x-dd",
+    "cuando-aplicar",
+    "artefactos-de-entrada-y-salida",
+    "debtbudgetdd-en-el-pipeline",
+    "integracion-con-otras-disciplinas",
+    "criterios-de-exito",
+    "definition-of-done-debtbudgetdd",
+    "agentes-involucrados",
+    "fuentes"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://martinfowler.com/bliki/TechnicalDebt.html",
+    "https://www.profit.co/blog/task-management/how-to-pay-off-technical-debt-strategies-and-best-practices/",
+    "https://www.techtarget.com/searchcio/tip/The-CIOs-playbook-for-reducing-tech-debt",
+    "https://github.com/agoda-com/code-compass-js"
+  ],
+  "tokens_md": 1289,
+  "lineas": 149,
+  "checksum_md": "b3c68403f974a80e",
+  "actualizado": "2026-06-05T08:14:06.462577+00:00",
+  "tokens_json": 148
+}
