@@ -140,7 +140,7 @@ Proyectos simples: 5-8 dominios, 15-25 docs. Complejos: 15+ dominios, 60-120 doc
 
 ## 2. PIPELINE WORKER → AUDITOR POR DOCUMENTO
 
-Por cada documento identificado, ejecutar en paralelo (xdd-orchestrate parallel_then_sync):
+Por cada documento identificado, ejecutar en paralelo (evol-orchestrate parallel_then_sync):
 
 ### PASO 1 — INVESTIGA (worker: specialized-researcher)
 

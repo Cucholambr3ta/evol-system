@@ -58,16 +58,46 @@ current_branch() { git rev-parse --abbrev-ref HEAD; }
 
 # ── setup ─────────────────────────────────────────────────────────────────────
 
+EVOL_DIR_REMOTE_STATE="$(pwd)/.evol/gitflow.remote"
+
+_save_remote_mode() {
+  mkdir -p "$(dirname "$EVOL_DIR_REMOTE_STATE")"
+  echo "$1" > "$EVOL_DIR_REMOTE_STATE"
+  chmod 600 "$EVOL_DIR_REMOTE_STATE"
+}
+
+_get_remote_mode() {
+  [ -f "$EVOL_DIR_REMOTE_STATE" ] && cat "$EVOL_DIR_REMOTE_STATE" || echo "remote"
+}
+
+_create_remote_repo() {
+  local name="$1" visibility="$2"
+  command -v gh >/dev/null 2>&1 || err "gh CLI no instalado. Instalar: https://cli.github.com/ o usar --remote=URL"
+  gh auth status >/dev/null 2>&1 || err "gh no autenticado. Correr: gh auth login"
+  [ -z "$name" ] && name="$(basename "$(pwd)")"
+  log "Creando repo GitHub: $name ($visibility)..."
+  if gh repo create "$name" --"$visibility" --source=. --remote=origin 2>/dev/null; then
+    log "Repo creado y origin configurado: $(git remote get-url origin 2>/dev/null || echo '?')"
+  else
+    err "gh repo create fallo. Verificar que '$name' no exista ya."
+  fi
+}
+
 cmd_setup() {
-  local mode="dev" remote=""
+  local mode="dev" remote="" create=0 local_only=0 repo_name="" visibility="private"
   while [ $# -gt 0 ]; do
     case "$1" in
       --mode=*) mode="${1#*=}"; shift ;;
       --remote=*) remote="${1#*=}"; shift ;;
+      --create) create=1; shift ;;
+      --local) local_only=1; shift ;;
+      --name=*) repo_name="${1#*=}"; shift ;;
+      --visibility=*) visibility="${1#*=}"; shift ;;
       *) err "Argumento desconocido: $1" ;;
     esac
   done
   [ "$mode" = "dev" ] || [ "$mode" = "collab" ] || err "Modo invalido: $mode. Usar dev o collab."
+  [ "$visibility" = "private" ] || [ "$visibility" = "public" ] || err "Visibility invalida: private o public."
   ensure_git
 
   log "Configurando GitFlow modo=$mode"
@@ -87,13 +117,20 @@ cmd_setup() {
     log "Branch develop creada."
   fi
 
-  if [ -n "$remote" ]; then
+  if [ "$local_only" = "1" ]; then
+    _save_remote_mode "local"
+    log "Modo local-only: sin remoto. No se hara push."
+  elif [ "$create" = "1" ]; then
+    _create_remote_repo "$repo_name" "$visibility"
+    _save_remote_mode "remote"
+  elif [ -n "$remote" ]; then
     if git remote get-url origin >/dev/null 2>&1; then
       git remote set-url origin "$remote"
     else
       git remote add origin "$remote"
     fi
     log "Remote origin: $remote"
+    _save_remote_mode "remote"
   fi
 
   save_mode "$mode"

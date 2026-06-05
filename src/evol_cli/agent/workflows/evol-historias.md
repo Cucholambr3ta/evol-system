@@ -101,7 +101,19 @@ Incluye: stack involucrado, componentes, diagrama Mermaid, esquemas de datos, pa
 ## Tests BDD
 - [ ] Implementar escenario Gherkin: <scenario>
 
-## Tests de seguridad (STDD)
+## Tests de seguridad (STDD) — arsenal por componente (GENERADO)
+El writer lee los componentes del escenario-tecnico.md de ESTA historia (auth, api, db,
+parser, ui, binary, deps) e invoca el inventory:
+
+```bash
+python3 scripts/evol-security-inventory.py checklist --components=<los detectados> --format=md
+```
+
+Embeber su salida. Incluye nativas (evol-scan/shield/crash/fuzz — sin instalar) + externas
+instaladas (semgrep/gitleaks/trivy/nuclei/zap si doctor las detecta) + skip si faltan. Si
+toca auth/api, incluye pentest agentico + exploit verify MANUAL (Evol-DD no usa Shannon).
+
+Ademas, por cada amenaza STRIDE de THREATS.md relacionada:
 - [ ] Escribir test de seguridad para amenaza <STRIDE-REF>
 
 ## Observabilidad

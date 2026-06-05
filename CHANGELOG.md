@@ -8,6 +8,24 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-06-05
+
+### Added
+- `/evol setup-repo`: paso 0 antes del briefing. Pregunta ubicacion (existente/crear nube/local)
+  + modo (dev/collab). `evol-gitflow.sh setup --create` (gh repo create autonomo, private default),
+  `--local` (solo local). ADR-0003.
+- `evol-security-inventory.py`: arsenal seguridad por componente. Nativas (scan/shield/crash/
+  patch/validate/STRIDE/fuzz, sin instalar) + externas auto-discovery (semgrep/gitleaks/trivy/
+  nuclei/zap). SIN Shannon (AGPL) — exploit-verify manual. `--readme` documenta todo antes de instalar.
+- `.agent/workflows/briefing.md`: idea.md como puntapie con prompt de investigacion (tabla de
+  links/temas a investigar que alimenta la fase research).
+- evol-sprint.md seccion 5.5: evalua desempeno de subagentes ANTES del gitflow (evol-eval.py),
+  bloquea si score bajo. Suite evals/subagent-performance/.
+
+### Changed
+- evol-historias.md: checklist STDD por componente (invoca security-inventory).
+- doc-granular.md: clarifica grupo 4-roles por documento en paralelo.
+
 ## [0.2.9] - 2026-06-04
 
 ### Added

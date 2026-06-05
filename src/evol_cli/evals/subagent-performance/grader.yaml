@@ -1,0 +1,10 @@
+name: subagent-performance
+description: Verifica que evol-sprint incluye evaluacion de desempeno de subagentes pre-gitflow
+grader: structural
+threshold: 0.7
+
+cases:
+  - id: subagent-perf-001
+    weight: 1
+  - id: subagent-perf-002
+    weight: 1

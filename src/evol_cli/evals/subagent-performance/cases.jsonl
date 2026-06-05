@@ -1,0 +1,2 @@
+{"id":"subagent-perf-001","description":"evol-sprint.md tiene seccion 5.5 evaluacion de desempeno","assertions":[{"type":"output_match","path":".agent/workflows/evol-sprint.md","pattern":"Evaluacion de desempeno de subagentes"}]}
+{"id":"subagent-perf-002","description":"evol-sprint.md evalua antes del gitflow con gate de bloqueo","assertions":[{"type":"output_match","path":".agent/workflows/evol-sprint.md","pattern":"audit pass-rate"}]}

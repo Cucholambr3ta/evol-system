@@ -113,9 +113,25 @@ Reporte en `acuerdos/memoria/sprint-NN.md`:
 | Timestamp | YYYY-MM-DD HH:MM UTC |
 ```
 
+### 5.5 Evaluacion de desempeno de subagentes (ANTES del gitflow)
+
+Antes de cerrar con GitFlow, evaluar el DESEMPENO de cada subagente del sprint. Detecta
+trabajo incompleto, alucinaciones no capturadas, entregables de baja calidad. BLOQUEA el
+gitflow si el score es bajo.
+
+```bash
+python3 scripts/evol-eval.py run subagent-performance
+```
+
+Rubrica por subagente (tareas completadas, audit pass-rate, iteraciones de rework desde
+acuerdos/lecciones/sprint-NN.md). Escribir tabla en acuerdos/memoria/sprint-NN.md.
+
+GATE: si score bajo umbral, o audit pass-rate < 70%, o tareas sin completar -> BLOQUEAR
+gitflow. El sprint NO cierra hasta desempeno aceptable.
+
 ---
 
-## 6. GITFLOW — CIERRE DEL SPRINT
+## 6. GITFLOW — CIERRE DEL SPRINT (solo si 5.5 paso)
 
 ```bash
 bash scripts/evol-gitflow.sh sprint-close --sprint=NN
