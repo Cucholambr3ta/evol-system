@@ -194,6 +194,15 @@ cmd_sprint_close() {
     local script_dir
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     python3 "${script_dir}/evol-memory.py" --project="$(pwd)" sprint-close --sprint="$sprint" 2>/dev/null || true
+
+    log "Sincronizando sidecars JSON de documentacion..."
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
+
+    if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "registry\.json"; then
+      log "Cambios detectados en registry.json. Regenerando equipo.md..."
+      bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
+    fi
   fi
 
   git push -u origin "$current" 2>/dev/null || warn "No se pudo hacer push a origin."
@@ -237,7 +246,16 @@ cmd_release_close() {
     python3 "${script_dir}/evol-memory.py" --project="$(pwd)" \
       memory-split 2>/dev/null || true
 
-    log "Memoria actualizada: acuerdos/memoria/ + MEMORY.md sincronizados."
+    # 3. Sincronizar sidecars JSON de documentacion
+    log "Sincronizando sidecars JSON de documentacion..."
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
+
+    # 4. Regenerar equipo.md
+    log "Regenerando equipo.md..."
+    bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
+
+    log "Memoria y documentacion actualizadas: acuerdos/memoria/, MEMORY.md y sidecars sincronizados."
   else
     warn "python3 no disponible. Actualizar memoria manualmente con /update-memory."
   fi

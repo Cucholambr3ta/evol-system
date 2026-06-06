@@ -9,6 +9,63 @@ REPO_ROOT="$(pwd)"
 echo "=== Evol-DD v${VERSION} ==="
 echo "[evol-start] Proyecto: $REPO_ROOT"
 
+# === Dynamic Profile Resolution ===
+if [ -f "$EVOL_DATA/manifests/workflow-profiles.json" ] && [ -f "$REPO_ROOT/evol.profile.yml" ]; then
+    REQUIRED_INSTALL_PROFILE=$(python3 -c "
+import json, sys, yaml
+
+try:
+    with open('$EVOL_DATA/manifests/workflow-profiles.json') as f:
+        manifest = json.load(f)
+    with open('$REPO_ROOT/evol.profile.yml') as f:
+        current_profile = yaml.safe_load(f).get('profile', 'minimal')
+except Exception as e:
+    sys.exit(0)
+
+args = sys.argv[1:]
+trigger = next((arg for arg in args if not arg.startswith('-')), None)
+
+target_install = 'minimal'
+target_hook = 'standard'
+
+if trigger:
+    for m in manifest.get('mappings', []):
+        if m['trigger'] == trigger:
+            target_install = m['install_profile']
+            target_hook = m['hook_profile']
+            break
+
+hierarchy = ['minimal', 'core', 'developer', 'security', 'research', 'full']
+try:
+    current_idx = hierarchy.index(current_profile)
+except ValueError:
+    current_idx = 0
+
+try:
+    target_idx = hierarchy.index(target_install)
+except ValueError:
+    target_idx = 0
+
+if target_idx > current_idx:
+    print(f'{target_install}:{target_hook}')
+else:
+    print(f'OK:{target_hook}')
+" "$@" 2>/dev/null)
+
+    if [ -n "$REQUIRED_INSTALL_PROFILE" ] && [ "$REQUIRED_INSTALL_PROFILE" != "OK" ]; then
+        INSTALL_P=$(echo "$REQUIRED_INSTALL_PROFILE" | cut -d: -f1)
+        HOOK_P=$(echo "$REQUIRED_INSTALL_PROFILE" | cut -d: -f2)
+        
+        if [ "$INSTALL_P" != "OK" ] && [ "$INSTALL_P" != "minimal" ]; then
+            echo "[evol-start] Auto-provisioning: Escalating to installation profile '$INSTALL_P' (current profile is lower)..."
+            bash "$EVOL_DATA/scripts/evol-init.sh" "$REPO_ROOT" --profile="$INSTALL_P" --upgrade
+        fi
+        
+        echo "[evol-start] Hook profile configured: EVOL_HOOK_PROFILE=$HOOK_P"
+        export EVOL_HOOK_PROFILE="$HOOK_P"
+    fi
+fi
+
 # Detectar Memoria Persistente (3.x usa 'mine', versiones anteriores usaban 'index')
 if command -v Memoria Persistente >/dev/null 2>&1; then
     MP_VERSION=$(Memoria Persistente --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+' | head -1 || echo "0.0")

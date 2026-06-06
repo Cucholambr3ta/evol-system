@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "skills": [
+    {
+      "name": "agent-eval",
+      "category": "quality-gate",
+      "trigger": "/eval",
+      "description": "Eval-harness para skills/agents/workflows de Evol-DD. Soporta 4 tipos de grader.",
+      "file": "skills/agent-eval/SKILL.md"
+    },
+    {
+      "name": "crear-agente",
+      "category": "growth",
+      "trigger": "/crear-agente",
+      "description": "Crea nuevos agentes permanentes o efimeros desde cero y los registra en el sistema.",
+      "file": "skills/crear-agente/SKILL.md"
+    },
+    {
+      "name": "crear-skill",
+      "category": "growth",
+      "trigger": "/crear-skill",
+      "description": "Crea nuevas skills desde cero con loop iterativo de evaluacion y portabilidad a 7 IDEs.",
+      "file": "skills/crear-skill/SKILL.md"
+    },
+    {
+      "name": "evol-ai-review",
+      "category": "quality-gate",
+      "trigger": "/ai-review",
+      "description": "Calidad de codigo y evaluacion matizada mediante IA como juez.",
+      "file": "skills/evol-ai-review/SKILL.md"
+    },
+    {
+      "name": "evol-compact",
+      "category": "context-engineering",
+      "trigger": "/compact",
+      "description": "Compresion de contexto independiente del proveedor de LLM para ahorrar tokens.",
+      "file": "skills/evol-compact/SKILL.md"
+    },
+    {
+      "name": "evol-fact-check",
+      "category": "research",
+      "trigger": "fact-check",
+      "description": "Pipeline de 11 pasos (SIFT + CRAAP + MFS scoring) para verificar claims externos.",
+      "file": "skills/evol-fact-check/SKILL.md"
+    },
+    {
+      "name": "evol-fs-context",
+      "category": "context-engineering",
+      "trigger": "/fs-context",
+      "description": "Paradigma de sistema de archivos para manejar grandes volumenes de datos sin saturar contexto.",
+      "file": "skills/evol-fs-context/SKILL.md"
+    },
+    {
+      "name": "evol-grill-me",
+      "category": "research",
+      "trigger": "grill me",
+      "description": "Interrogatorio tecnico exhaustivo para stress-test de planes y decisiones tecnicas.",
+      "file": "skills/evol-grill-me/SKILL.md"
+    },
+    {
+      "name": "evol-idea-refine",
+      "category": "research",
+      "trigger": "refina esta idea",
+      "description": "Refinamiento divergente-convergente para convertir ideas en propuestas accionables.",
+      "file": "skills/evol-idea-refine/SKILL.md"
+    },
+    {
+      "name": "evol-prompt-master",
+      "category": "productivity",
+      "trigger": "escribe un prompt para",
+      "description": "Generacion y optimizacion de prompts para mas de 30 herramientas de IA externas.",
+      "file": "skills/evol-prompt-master/SKILL.md"
+    },
+    {
+      "name": "evol-sandbox",
+      "category": "security",
+      "trigger": "/sandbox",
+      "description": "Entornos de ejecucion aislados y seguros con soporte para multiples backends.",
+      "file": "skills/evol-sandbox/SKILL.md"
+    },
+    {
+      "name": "evol-skill-manager",
+      "category": "lifecycle",
+      "trigger": "/skill",
+      "description": "Gestion del ciclo de vida de las skills (instalacion, actualizacion, rollback, validacion).",
+      "file": "skills/evol-skill-manager/SKILL.md"
+    },
+    {
+      "name": "evol-talk-compact",
+      "category": "compression",
+      "trigger": "/compact-talk",
+      "description": "Compresion de output enviado a traves de logs y chats del orquestador central.",
+      "file": "skills/evol-talk-compact/SKILL.md"
+    },
+    {
+      "name": "readme-master",
+      "category": "documentation",
+      "trigger": "/evol readme-master",
+      "description": "Auditoria, estructuracion y actualizacion de READMEs siguiendo estandares de diseño Top 100.",
+      "file": "skills/readme-master/SKILL.md"
+    }
+  ]
+}

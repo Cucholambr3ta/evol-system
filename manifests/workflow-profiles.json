@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "default": {
+    "install_profile": "minimal",
+    "hook_profile": "standard"
+  },
+  "mappings": [
+    {
+      "trigger": "build",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "sprint",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "pm",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "agent",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "factory",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "crear-skill",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "crear-agente",
+      "install_profile": "developer",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "qa",
+      "install_profile": "security",
+      "hook_profile": "strict"
+    },
+    {
+      "trigger": "test",
+      "install_profile": "security",
+      "hook_profile": "strict"
+    },
+    {
+      "trigger": "sec",
+      "install_profile": "security",
+      "hook_profile": "strict"
+    },
+    {
+      "trigger": "security",
+      "install_profile": "security",
+      "hook_profile": "strict"
+    },
+    {
+      "trigger": "shield",
+      "install_profile": "security",
+      "hook_profile": "strict"
+    },
+    {
+      "trigger": "research",
+      "install_profile": "research",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "evolve",
+      "install_profile": "research",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "update-project",
+      "install_profile": "core",
+      "hook_profile": "standard"
+    },
+    {
+      "trigger": "release",
+      "install_profile": "core",
+      "hook_profile": "standard"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ name: evol-reviewer
 description: Code review, peer review, quality analysis
 category: core
 triggers: ["/evol review", "/evol reviewer"]
-skills: ["skill-code-reviewer"]
+skills: ["evol-ai-review"]
 ---
 
 # Evol-Reviewer

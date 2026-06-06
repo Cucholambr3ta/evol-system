@@ -106,18 +106,18 @@ Un agente es core si tiene responsabilidad sobre el estado del sistema (gobernan
 
 | ID | Nombre | Mission | Skills |
 |----|--------|---------|--------|
-| 1 | evol-architect | Diseno sistemas, ADRs | skill-backend-architect |
-| 2 | evol-builder | Implementacion, TDD, features | skill-fractional-cto, skill-clean-code |
-| 3 | evol-qa | Tests, Gherkin/BDD | skill-code-reviewer |
-| 4 | evol-sec | SecDD, STRIDE, auditoria | skill-shannon-secops |
+| 1 | evol-architect | Diseno sistemas, ADRs | - |
+| 2 | evol-builder | Implementacion, TDD, features | crear-skill, readme-master |
+| 3 | evol-qa | Tests, Gherkin/BDD | agent-eval, evol-ai-review |
+| 4 | evol-sec | SecDD, STRIDE, auditoria | evol-sandbox |
 | 5 | evol-devops | CI/CD, infra, pipelines | - |
 | 6 | evol-domain | DDD, modelado dominio | - |
 | 7 | evol-doc | Documentacion granular | DOC_STANDARD.md |
 | 8 | evol-ux | User research, validacion | - |
 | 9 | evol-data | Data engineering, pipelines | - |
-| 10 | evol-reviewer | Code review, peer review | skill-code-reviewer |
+| 10 | evol-reviewer | Code review, peer review | evol-ai-review |
 | 11 | evol-orchestrator | Composicion agentes | - |
-| 12 | evol-pm | Gestion proyecto, sprints | skill-product-prioritizer |
+| 12 | evol-pm | Gestion proyecto, sprints | evol-grill-me |
 | 13 | evol-release | Release, CHANGELOG, semver | - |
 | 14 | evol-analyst | Impacto, metricas, blast radius | - |
 | 15 | evol-agent-factory | Crear agentes efimeros | - |
@@ -348,6 +348,13 @@ bash scripts/evol-doctor.sh --json  # "memoria_persistente_mode": "complete"|"ba
 | research | + eval-harness, observability | Investigacion | Evolucion continua |
 | full | todo | Completo | Todo habilitado |
 | lean | solo core + wrapper global | Ligthweight | Requiere global install |
+
+#### Aprovisionamiento Dinamico (Just-in-Time)
+
+A partir de la version 0.5.0, el framework implementa resolucion dinamica de perfiles durante la ejecucion de comandos a traves de `evol-start.sh`:
+1. El orquestador intercepta el comando o trigger solicitado y consulta el archivo de mapeo `manifests/workflow-profiles.json`.
+2. Si el perfil instalado en `evol.profile.yml` es inferior al requerido por la tarea (por ejemplo, ejecutar `/evol build` requiere `developer` pero el proyecto esta en `minimal`), se invoca de forma transparente `evol-init.sh --profile=<perfil> --upgrade` para aprovisionar los modulos faltantes en caliente.
+3. El perfil de hooks (variable de entorno `EVOL_HOOK_PROFILE`) se reconfigura automaticamente (ej. `strict` para tareas de seguridad/QA, `standard` para tareas generales de construccion).
 
 **Modulos instalables:**
 

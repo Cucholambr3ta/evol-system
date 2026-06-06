@@ -3,7 +3,7 @@ name: evol-pm
 description: Project management, tracking, sprints, metrics
 category: core
 triggers: ["/evol pm", "/evol project"]
-skills: ["skill-product-prioritizer"]
+skills: ["evol-grill-me"]
 ---
 
 # Evol-PM

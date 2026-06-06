@@ -48,6 +48,8 @@ El auditor verifica estos items en CUALQUIER flujo antes de los checks especific
 | D1 | No hay tareas repetitivas sin skill asociada | `[ ]` | SKILL_MISSING si aplica |
 | D2 | Skills nuevas tienen eval en `evals/` | `[ ]` | |
 | D3 | Skills nuevas sincronizadas a `src/evol_cli/skills/` | `[ ]` | |
+| D4 | Workflows declaran skills usadas en frontmatter | `[ ]` | Campo 'skills' en metadatos YAML |
+| D5 | Se menciona y enlaza CATALOG.md en instrucciones | `[ ]` | Referencia explicita al catalogo de skills |
 
 ### E. GitFlow y Versionamiento
 

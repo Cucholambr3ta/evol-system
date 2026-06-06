@@ -3,7 +3,7 @@ name: evol-sec
 description: Security (SecDD, STRIDE threat modeling, auditing)
 category: core
 triggers: ["/evol sec", "/evol security"]
-skills: ["skill-shannon-secops"]
+skills: ["evol-sandbox"]
 ---
 
 # Evol-Sec

@@ -4,6 +4,10 @@ trigger: /evol sprint
 description: Orquestador del ciclo completo de un sprint en Evol-DD. Lee la historia asignada, crea equipo dinamico de subagentes segun componentes tecnicos, ejecuta el checklist atomico con auditor anti-alucinacion, evalua pre-push, cierra con GitFlow. Invocar con --sprint=NN o el agente determina el proximo sprint pendiente.
 phase: build
 category: execution
+skills:
+  - readme-master
+  - agent-eval
+  - evol-ai-review
 ---
 
 # /evol sprint — Ciclo completo de sprint
@@ -21,6 +25,7 @@ category: execution
    bash scripts/evol-gitflow.sh sprint-start --sprint=NN --title=<titulo>
    ```
 4. Leer `acuerdos/memoria/MEMORY.md` + `acuerdos/memoria/sprint-NN.md` anterior.
+5. Consultar el [Catalogo de Skills](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/CATALOG.md) para identificar las capacidades reutilizables necesarias para las tareas de este sprint.
 
 ---
 

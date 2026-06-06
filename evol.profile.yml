@@ -1,46 +1,68 @@
-profile: custom
-version: 1
-trigger: evol
 brand:
-  name: "Evol-DD"
-  color: "#7C3AED"
-  tagline: "El framework que evoluciona."
+  color: '#7C3AED'
+  name: Evol-DD
+  tagline: El framework que evoluciona.
 capabilities: []
 methodologies:
-  # Disciplinas *-Driven activas. El orquestador inyecta la capa de cada una en su fase
-  # del pipeline (ver docs/disciplinas/INDEX.md columna executor). Los proyectos cliente
-  # declaran SOLO el subconjunto que aplica; este repo (framework) las lista todas.
-  # Base (nucleo, siempre recomendadas):
-  - sdd
-  - fdd
-  - bdd
-  - atdd
-  - ddd
-  - tdd
-  - stdd
-  - secdd
-  - threat_driven
-  # Extendidas (activacion por caso de uso):
-  - odd_api          # OpenAPI-Driven        -> api-contract
-  - uxdd             # UX-Driven             -> ux-driven (skill nueva)
-  - a11ydd           # Accessibility-Driven  -> a11y-audit
-  - rdd              # Refactoring-Driven    -> refactor-area
-  - pdd              # Performance-Driven    -> perf-budget + tags @performance
-  - chaos            # Chaos/Resiliency      -> dr-drill (ext) + sandbox
-  - mdd              # Migration-Driven      -> db-migrate
-  - cdcdd            # Change Data Capture   -> data-pipeline (ext)
-  - esdd             # Event Sourcing        -> event-sourcing (skill nueva)
-  - ccdd             # Consumer-Driven Contract -> contract-test
-  - apivdd           # API Versioning        -> api-versioning (skill nueva)
-  - odd_obs          # Observability-Driven  -> observability-init
-  - slodriven        # SLO/SLA-Driven        -> capa declarativa (sub-gate error budget)
-  - iodd             # Infrastructure-as-Code -> iac-driven (skill nueva)
-  - pipelinedriven   # Pipeline-Driven       -> deploy-prod + rollback
-  - compliance       # Compliance-Driven     -> privacy-review (ext)
-  - privacydd        # Privacy by Design     -> privacy-review
-  - debtbudgetdd     # Tech Debt Budgeting   -> debt-budget (skill nueva)
-  - deprecationdd    # Deprecation-Driven    -> dependency-update (ext)
-  - add              # Architecture-Driven   -> adr-new
-  - eda              # Event-Driven Arch     -> data-pipeline (ext)
-  - udd              # Use-Case-Driven       -> use-case-driven (skill nueva)
+- sdd
+- fdd
+- bdd
+- atdd
+- ddd
+- tdd
+- stdd
+- secdd
+- threat_driven
+- odd_api
+- uxdd
+- a11ydd
+- rdd
+- pdd
+- chaos
+- mdd
+- cdcdd
+- esdd
+- ccdd
+- apivdd
+- odd_obs
+- slodriven
+- iodd
+- pipelinedriven
+- compliance
+- privacydd
+- debtbudgetdd
+- deprecationdd
+- add
+- eda
+- udd
+modules:
+- hooks-strict
+- memory
+- lifecycle-agents
+- orchestration
+- provider
+- diagnostics
+- core
+- lessons-engine
+- mcp-manager
+- eval-harness
+- sprint-workflows
+- state-store
+- discipline-check
+- researcher
+- continuous-memory
+- gitflow-sprint
+- evolve-skills
+- flow-gate
+- workflows-core
+- security-suite
+- gate-keeper
+- growth-engine
+- agents-core
+- hooks-runtime
+- ci-runtime
+- community-skills
+profile: custom
 stacks: []
+trigger: evol
+version: 1
