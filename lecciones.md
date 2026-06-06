@@ -44,7 +44,7 @@ Comandos rapidos:
 **Leccion:** Opción A: convertir scripts a módulos Python importables. Opción B (elegida): despachar vía `subprocess.run` a scripts instalados. Nunca mezclar las dos sin contrato claro.
 **Aplica a:** CLI packaging, entrypoints
 
-### [ARQUITECTURA] Runtime state no debe indexarse en MemPalace — 2026-06-02
+### [ARQUITECTURA] Runtime state no debe indexarse en Memoria Persistente — 2026-06-02
 **Contexto:** Indexing de `.evol/`, `dialog/`, `tool_result/` podía exponer secrets
 **Problema:** `.evol/.gate-key` entraba a indices semánticos
 **Causa raiz:** Indexing con path amplio sin allowlist

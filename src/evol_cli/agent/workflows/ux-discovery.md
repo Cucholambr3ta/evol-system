@@ -48,5 +48,5 @@ Solicita `"APROBADO"` para uno de:
 
 ## 5. Cierre
 - Escribe `DISCOVERY.md`.
-- Indexa con MemPalace (PostToolUse hook lo hará).
+- Indexa con Memoria Persistente (PostToolUse hook lo hará).
 - Anota decisión y riesgo en `memoria.md`.

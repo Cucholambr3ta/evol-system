@@ -167,7 +167,7 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 
 ## Invariantes (nunca violar)
 
-- Sin MCP en ningun adapter IDE
+- Integración MCP en los adapters IDE
 - `"APROBADO"` requerido antes de cada transicion de fase
 - `memoria.md` se actualiza al final de cada sesion significativa
 - Lecciones se consultan ANTES de proponer arquitectura

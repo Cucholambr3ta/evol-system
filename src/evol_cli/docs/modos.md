@@ -2,7 +2,7 @@
 
 ## Modo COMPLETO
 
-MemPalace instalado y activo (CLI only).
+Memoria Persistente instalado y activo (CLI only).
 
 Aporta:
 - Indexación semántica del codebase
@@ -12,7 +12,7 @@ Aporta:
 
 ## Modo BASE
 
-Sin MemPalace. Pipeline completo funcional.
+Sin Memoria Persistente. Pipeline completo funcional.
 
 Lo que se pierde:
 - Continuidad semántica (suplir con memoria.md)
@@ -31,10 +31,6 @@ Estructura:
 - memory/YYYY-MM-DD.md (journal diario)
 - dialog/ (gitignored)
 - tool_result/ (gitignored, TTL 3 días)
-
-## Modo GitNexus (opt-in)
-
-`EVOL_GITNEXUS=1`. Solo proyectos no-comerciales.
 
 ## Detección
 

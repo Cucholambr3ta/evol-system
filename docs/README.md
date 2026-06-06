@@ -14,7 +14,7 @@ Indice del directorio `docs/`. Cada subdirectorio cubre un area especifica del s
 | `IDE_SETUP.md` | Setup de los 7 IDEs soportados por evol-adapt.sh. |
 
 | `RETROFIT_GUIDE.md` | Migracion desde Evol-DD: tabla de equivalencias xdd-* vs evol-*. |
-| `X-DD_Integration_Guide.md` | Relacion Evol-DD / Evol-DD: diferencias clave. |
+| `evol-dd_Integration_Guide.md` | Relacion Evol-DD / Evol-DD: diferencias clave. |
 | `equipo.md` | Directorio de agentes auto-generado desde registry.json. |
 | `arquitectura/` | ARQUITECTURA.md (C4), DOMINIO.md (DDD), DECISIONES.md (ADRs). |
 | `requisitos/` | FUNCIONALES.md, NO_FUNCIONALES.md, RESTRICCIONES.md, GLOSARIO.md. |

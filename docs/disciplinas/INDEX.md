@@ -10,7 +10,7 @@ Este indice centraliza las **31 disciplinas** de desarrollo que Evol-DD integra 
 pipeline gated de 6 fases: las **9 base** (declaradas en la Constitucion) y las **22
 extendidas** (catalogo `ultimate-update.md`). Cada disciplina ocupa un documento atomico en
 este directorio con su sidecar `.json` (que incluye `fuentes[]` — las URLs de respaldo). La
-Guia de Integracion (`../X-DD_Integration_Guide.md`) proporciona el contexto de composicion y
+Guia de Integracion (`../evol-dd_Integration_Guide.md`) proporciona el contexto de composicion y
 los arboles de decision para seleccionar que disciplinas aplican en cada proyecto.
 
 El principio de atomicidad: un documento cubre exactamente un dominio tecnico. La
@@ -171,7 +171,7 @@ flowchart LR
 
 No todos los proyectos requieren las 9 disciplinas base. Esta tabla (solo las 9 base) sirve
 como guia rapida; las 22 extendidas se eligen en la subseccion siguiente. Para la logica
-completa de seleccion, ver la seccion 6 de `../X-DD_Integration_Guide.md`.
+completa de seleccion, ver la seccion 6 de `../evol-dd_Integration_Guide.md`.
 
 | Perfil | FDD | DDD | SDD | ATDD | BDD | TDD | Threat | STDD | SecDD |
 |--------|:---:|:---:|:---:|:----:|:---:|:---:|:------:|:----:|:-----:|
@@ -235,7 +235,7 @@ Las 22 extendidas se activan en `evol.profile.yml` (`methodologies:`) segun el p
 | [ADD.md](./ADD.md) | Architecture-Driven — ADRs + PoC |
 | [EDA.md](./EDA.md) | Event-Driven Architecture — schemas de eventos |
 | [UDD.md](./UDD.md) | Use-Case-Driven — casos de uso como unidad de diseno |
-| [../X-DD_Integration_Guide.md](../X-DD_Integration_Guide.md) | Guia de integracion — composicion, arboles de decision |
+| [../evol-dd_Integration_Guide.md](../evol-dd_Integration_Guide.md) | Guia de integracion — composicion, arboles de decision |
 | [../DOC_STANDARD.md](../DOC_STANDARD.md) | Estandar de documentacion Evol-DD v2.0 |
 
 ---

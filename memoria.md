@@ -13,9 +13,9 @@
 ## Estado Actual
 - **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
 - **Ultimo hito:** Implementados workflows agenticos para `/evol-update` y resolución de upgrade gaps (rama feature/upgrade-gaps)
-- **Proximo paso:** Resolver advertencia de MemPalace [HIGH], testear el apply en producción y cortar nuevo release (v0.3.3)
+- **Proximo paso:** Resolver advertencia de Memoria Persistente [HIGH], testear el apply en producción y cortar nuevo release (v0.3.3)
 - **PyPI:** https://pypi.org/project/evol-dd/
-- **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (MemPalace 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
+- **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (Memoria Persistente 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -51,8 +51,8 @@
 | 0.1.6 | 2026-06-03 | Fix packaging: data dirs en src/evol_cli/ (force-include fallaba en PyPI) |
 | 0.1.7 | 2026-06-03 | Workflow evol.md orquestador principal (trigger /evol) |
 | 0.1.8 | 2026-06-03 | VSCode tasks.json global (Copilot sin slash global) + OpenCode 2 dirs |
-| 0.1.9 | 2026-06-03 | evol-start.sh compatible MemPalace 3.x (mine API) |
-| 0.2.0 | 2026-06-03 | evol.md + mempalace-sync (/evol mem) frontmatter limpio |
+| 0.1.9 | 2026-06-03 | evol-start.sh compatible Memoria Persistente 3.x (mine API) |
+| 0.2.0 | 2026-06-03 | evol.md + memoria_persistente-sync (/evol mem) frontmatter limpio |
 | 0.2.1 | 2026-06-03 | Security nativa: evol-scan/validate/patch/crash |
 | 0.2.2 | 2026-06-03 | 4 community skills (grill/fact-check/idea-refine/prompt-master) |
 | 0.2.3 | 2026-06-03 | grill-me ENFORCED en gate del plan (marker SHA + 7 tests) |
@@ -66,11 +66,11 @@
 - **Meta:** Limpiar menciones residuales de X-DD y xdd que quedaron tras el rebrand principal, específicamente en la documentación (`docs/`).
 - **Hitos:**
   - Sustituciones aplicadas a 40+ archivos (`docs/disciplinas/`, `docs/qa/`, `docs/diagramas/`, etc.).
-  - Se excluyeron y preservaron los documentos históricos y guías de migración que intencionalmente contrastan ambos sistemas (`X-DD_Integration_Guide.md`, `RETROFIT_GUIDE.md`, `DECISIONES.md`, `GLOSARIO.md`, `TROUBLESHOOTING.md`, etc.).
+  - Se excluyeron y preservaron los documentos históricos y guías de migración que intencionalmente contrastan ambos sistemas (`evol-dd_Integration_Guide.md`, `RETROFIT_GUIDE.md`, `DECISIONES.md`, `GLOSARIO.md`, `TROUBLESHOOTING.md`, etc.).
   - Actualizado `WORKING-CONTEXT.md` para reflejar el estado vivo correcto (v0.3.2 en main).
 - **QA:** Grep validado; menciones restantes a X-DD son estrictamente contextuales/comparativas.
 - **Estado:** Rama `feature/upgrade-gaps` (se implementaron `evol-update` y `evol-update-project`).
-- **Próxima sesión:** (Cancelado) ~~Construir evol-agent en otro PC.~~ -> Resolver alerta [HIGH] de MemPalace y realizar Release v0.3.3.
+- **Próxima sesión:** (Cancelado) ~~Construir evol-agent en otro PC.~~ -> Resolver alerta [HIGH] de Memoria Persistente y realizar Release v0.3.3.
 
 
 ### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
@@ -115,7 +115,7 @@
   - `scripts/evol-global-install.sh` (Fix 004)
   - `scripts/*.py`, `pyproject.toml` entrypoints (Fix 005)
   - `scripts/evol-gate.py` payload/sign verifying (Fix 006)
-  - `mempalace.yaml`, `evol.config.yml`, hooks (Fix 007, Fix 008)
+  - `memoria_persistente.yaml`, `evol.config.yml`, hooks (Fix 007, Fix 008)
   - `.github/workflows/ci.yml` (Fix 009)
   - `tests/*.py`, `tests/*.bats` (Fix 010)
   - `scripts/evol-eval.py` (Fix 011)
@@ -167,7 +167,7 @@
   - 12 feature branches creadas y mergeadas a develop
 - **Decisiones:**
   - 23 scripts, 16 core agents, 19 workflows, 7 skills, 28 docs archivos
-  - Doctor reporta 0 errores, MemPalace en modo COMPLETO
+  - Doctor reporta 0 errores, Memoria Persistente en modo COMPLETO
   - GitFlow violado inicial, corregido con branches post-hoc
 - **Bloqueos:**
   - Ninguno — todos resueltos
@@ -225,7 +225,7 @@
   - Fix empaquetado definitivo: data dirs DENTRO de src/evol_cli/ (force-include fallaba
     en sdist de PyPI). Verificado con zipfile antes de publicar
   - VSCode Copilot: tasks.json global (no soporta slash commands globales) — limitacion del IDE
-  - MemPalace 3.x: evol-start.sh usa `mine <dir> --wing` (API cambio de `index`)
+  - Memoria Persistente 3.x: evol-start.sh usa `mine <dir> --wing` (API cambio de `index`)
   - Security nativa portada desde X-DD: evol-scan/validate/patch/crash (sin deps externas,
     inspirado en RAPTOR MIT). Agente offsec + guidance tiers + hook pre-build
   - 4 community skills nativas: grill-me, fact-check, idea-refine, prompt-master

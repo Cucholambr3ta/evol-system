@@ -11,13 +11,12 @@ Esta guia cubre los errores mas frecuentes en Evol-DD, su causa raiz y los pasos
 | 1 | `evol-lessons: invalid choice` al usar `--project` | CLI / Lessons | Media |
 | 2 | Hook pre-bash bloquea comandos con `grep` y regex `?` | Hooks | Alta |
 | 3 | `evol-adapt.sh` no genera commands para IDE nuevo | Adapters | Media |
-| 4 | `evol-doctor` reporta Modo BASE con MemPalace instalado | Doctor / PATH | Media |
+| 4 | `evol-doctor` reporta Modo BASE con Memoria Persistente instalado | Doctor / PATH | Media |
 | 5 | `validate-registry` falla con "Additional properties not allowed" | Registry | Alta |
 | 6 | `evol-memory` en modo mock aunque `EVOL_PROVIDER=anthropic` | Memory / Provider | Media |
 | 7 | `git commit` bloqueado por gitflow hook (branch name invalido) | GitFlow / Hooks | Alta |
 | 8 | `evol-init --profile lean` falla ("lean requiere evol-global-install.sh") | Init / Profiles | Alta |
 | 9 | `evol-agent-lifecycle create` falla ("templates/agent.template.md not found") | Agent Lifecycle | Alta |
-| 10 | `evol-shield` reporta HIGH en `no_mcp_config` (falso positivo con `mcp: false`) | Shield / Rules | Media |
 
 ---
 
@@ -149,28 +148,28 @@ bash scripts/evol-adapt.sh nuevo-ide --dry-run
 
 ---
 
-### Error 4 — evol-doctor reporta Modo BASE con MemPalace instalado
+### Error 4 — evol-doctor reporta Modo BASE con Memoria Persistente instalado
 
 **Sintoma:**
 
 ```
-[LOW] Dependencies: mempalace not in PATH (optional)
+[LOW] Dependencies: memoria_persistente not in PATH (optional)
 ```
 
-A pesar de que `mempalace --version` funciona en la terminal del usuario.
+A pesar de que `memoria_persistente --version` funciona en la terminal del usuario.
 
 **Causa:**
 
-`evol-doctor.sh` usa `command -v mempalace` para detectar MemPalace. Si mempalace fue instalado en una ubicacion no-standard (por ejemplo `~/.local/bin` en un sistema donde ese directorio no esta en el PATH del entorno que usa el script), el check falla aunque el binario existe.
+`evol-doctor.sh` usa `command -v memoria_persistente` para detectar Memoria Persistente. Si memoria_persistente fue instalado en una ubicacion no-standard (por ejemplo `~/.local/bin` en un sistema donde ese directorio no esta en el PATH del entorno que usa el script), el check falla aunque el binario existe.
 
 Esto ocurre frecuentemente cuando:
 - El shell del usuario tiene `~/.local/bin` en PATH via `.bashrc` o `.zshrc`, pero el script se ejecuta en un subshell que no carga esos archivos.
-- MemPalace fue instalado en un virtualenv que no esta activo al correr `evol-doctor`.
+- Memoria Persistente fue instalado en un virtualenv que no esta activo al correr `evol-doctor`.
 - En CI, el PATH es mas restrictivo que en el entorno interactivo.
 
 **Solucion:**
 
-Opcion A — Activar el entorno donde MemPalace fue instalado antes de correr doctor:
+Opcion A — Activar el entorno donde Memoria Persistente fue instalado antes de correr doctor:
 
 ```bash
 source ~/.venv/bin/activate
@@ -183,18 +182,18 @@ Opcion B — Pasar la ruta completa a través de la variable de entorno:
 PATH="$HOME/.local/bin:$PATH" evol doctor
 ```
 
-Opcion C — Instalar mempalace en el entorno activo al usar el framework:
+Opcion C — Instalar memoria_persistente en el entorno activo al usar el framework:
 
 ```bash
-pip install mempalace
-evol doctor  # ahora debe detectar mempalace
+pip install memoria_persistente
+evol doctor  # ahora debe detectar memoria_persistente
 ```
 
 **Verificacion:**
 
 ```bash
-which mempalace          # debe retornar la ruta
-evol doctor | grep -i mempalace  # debe decir "detected"
+which memoria_persistente          # debe retornar la ruta
+evol doctor | grep -i memoria_persistente  # debe decir "detected"
 ```
 
 ---
@@ -446,81 +445,3 @@ evol-agent create --name "test-agent" --task "test task" --dry-run 2>/dev/null |
 
 ---
 
-### Error 10 — evol-shield reporta HIGH en no_mcp_config (falso positivo con mcp: false)
-
-**Sintoma:**
-
-```bash
-python3 scripts/evol-shield.py audit --ci
-[HIGH] no_mcp_config: pattern 'mcpServers' found in .claude/settings.json
-```
-
-A pesar de que el archivo solo contiene `"mcp": false` para desactivar MCP.
-
-**Causa:**
-
-La regla `no_mcp_config` en `evol-shield.py` aplica deteccion por regex sobre el contenido de los archivos. El patron `r"mcpServers"` es un string literal — si el archivo de settings menciona `mcpServers` aunque sea para negarlo (por ejemplo en comentarios o en un JSON con `"mcpServers": {}`), el scanner lo detecta como violacion. El shield no interpreta la semantica del JSON, solo busca el patron.
-
-**Solucion:**
-
-Opcion A — Si la mencion de `mcpServers` es en un comentario o string que no activa MCP, reformular para eliminar la cadena del archivo:
-
-```json
-// Antes (dispara el scanner):
-{
-  "mcp": false,
-  "mcpServers": {}
-}
-
-// Despues (no dispara el scanner):
-{
-  "mcp": false
-}
-```
-
-Opcion B — Si el archivo es un test o fixture que necesita mencionar `mcpServers`, agregar el archivo a la lista de exclusiones del shield. Buscar en `evol-shield.py` la variable o funcion de exclusiones y agregar la ruta relativa:
-
-```python
-EXCLUDED_PATHS = [
-    "tests/fixtures/",
-    "evals/",
-]
-```
-
-Opcion C — Si es un falso positivo definitivo y no es posible modificar el archivo, usar la flag `--no-write` con un filtro por severidad (si esta disponible en la version instalada) o ajustar la regla en un branch de contribucion siguiendo el proceso de PR.
-
-**Verificacion:**
-
-```bash
-python3 scripts/evol-shield.py audit --ci --no-write
-# debe retornar exit code 0 sin HIGH ni CRITICAL
-```
-
----
-
-## Diagnostico general
-
-Cuando no se identifica el error en la tabla anterior, el flujo de diagnostico es:
-
-```bash
-# 1. Estado del entorno
-evol doctor --json | python3 -m json.tool
-
-# 2. Integridad del registry
-python3 scripts/validate-registry.py --strict
-
-# 3. Lint de workflows
-bash scripts/lint-workflows.sh
-
-# 4. Auditoria de seguridad
-python3 scripts/evol-shield.py audit --no-write
-
-# 5. Tests del framework
-pytest tests/ -v --tb=short
-```
-
-Si el problema persiste despues de estos cuatro checks, consultar `lecciones.md` del proyecto con:
-
-```bash
-evol-lessons search "descripcion del error"
-```

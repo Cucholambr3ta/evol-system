@@ -243,6 +243,7 @@ cmd_pre_push() {
   log "Ejecutando checks pre-push..."
   _ensure_gitignore
   _check_evol_artifacts_not_staged
+  _check_readme_status
 
   if [ "${EVOL_SKIP_GITLEAKS:-0}" != "1" ]; then
     if command -v gitleaks >/dev/null 2>&1; then
@@ -281,6 +282,16 @@ _check_evol_artifacts_not_staged() {
     warn "Artefactos Evol-DD en staging (no deben ir al repo del producto):"
     for v in "${violations[@]}"; do warn "  - $v"; done
     err "Pre-push bloqueado por artefactos Evol-DD en staging."
+  fi
+}
+
+_check_readme_status() {
+  local base_branch="develop"
+  git rev-parse --verify develop >/dev/null 2>&1 || base_branch="main"
+  if git diff --name-only "$base_branch"...HEAD 2>/dev/null | grep -q "^README.md$"; then
+    log "README.md actualizado en esta rama."
+  else
+    warn "README.md sin cambios. Recomendacion: Ejecuta '/evol readme-master' para mantener estandar Top 100."
   fi
 }
 

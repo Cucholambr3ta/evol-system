@@ -2,7 +2,7 @@
 """Evol-DD Evolve — Auto-generate skills from instinct patterns."""
 import os, sys, json, argparse, subprocess, hashlib, shutil
 from datetime import datetime
-from _evol_common import get_logger, Memoria Persistente_safe, save_json, load_json
+from _evol_common import get_logger, memoria_persistente_safe, save_json, load_json
 
 logger = get_logger("evolve")
 
@@ -133,11 +133,9 @@ pass_threshold: 0.8
 def approve_skill(cluster_id):
     """Approve proposed skill."""
     # Index in Memoria Persistente
-    Memoria Persistente_safe("index", "--path", SKILLS_DIR)
+    memoria_persistente_safe("index", "--path", SKILLS_DIR)
     
-    # Index GitNexus if active
-    if os.environ.get("EVOL_GITNEXUS") == "1":
-        subprocess.run(["npx", "gitnexus", "analyze"], capture_output=True)
+
     
     print(f"[OK] Skill approved and indexed: {cluster_id}")
 

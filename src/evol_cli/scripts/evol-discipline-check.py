@@ -229,7 +229,7 @@ _DOMAIN_KEYWORDS: dict[str, list[str]] = {
 
 _ALLOWED_MULTI_DOMAIN = {
     "INDEX.md", "README.md", "ONBOARDING.md", "RETROFIT_GUIDE.md",
-    "X-DD_Integration_Guide.md", "UBIQUITOUS_LANGUAGE.md",
+    "evol-dd_Integration_Guide.md", "UBIQUITOUS_LANGUAGE.md",
 }
 
 # Lineas minimas relajadas para atomos de carpeta (ADR atomicidad).

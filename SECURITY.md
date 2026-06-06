@@ -32,7 +32,7 @@ Security issues in the following are in scope:
 - HMAC gate signing and verification
 - Credential storage and permissions (`.evol/.gate-key` at `0600`)
 - Supply chain skill installation
-- MemPalace safe indexing configuration
+- Memoria Persistente safe indexing configuration
 - Secret detection and exposure
 - Hook blocking of dangerous commands
 
@@ -46,9 +46,9 @@ Security issues in the following are in scope:
 
 - Gate keys are project-local, never shared
 - Runtime state (`.evol/`) is never versioned
-- MemPalace index paths are allowlisted, never broad `.` scans
+- Memoria Persistente index paths are allowlisted, never broad `.` scans
 - Hooks block dangerous commands by default
-- No MCP server or network protocol
+- Strict local network bindings for MCP servers
 
 ## PGP/GPG
 

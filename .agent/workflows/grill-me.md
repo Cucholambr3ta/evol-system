@@ -140,7 +140,7 @@ Si el usuario lo solicita, generar `GRILL_REPORT.md`:
 
 ## POST-FLIGHT
 - Registra resultado (supuestos validados, riesgos) en `memoria.md`.
-- Si se generó GRILL_REPORT.md, indexar con MemPalace.
+- Si se generó GRILL_REPORT.md, indexar con Memoria Persistente.
 - **Si se interrogó un PLAN.md (Fase 3):** ejecutar `evol-gate grill-done` para
   registrar que el plan fue interrogado. Esto **libera el gate del plan** — sin este
   marker, `evol-gate approve --phase plan` queda BLOQUEADO (enforced). El marker

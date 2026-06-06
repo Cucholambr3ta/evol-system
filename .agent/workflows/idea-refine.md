@@ -136,7 +136,7 @@ Producir **one-pager** en formato fijo:
 ### 4. Almacenamiento
 
 Ofrecer guardar en `docs/ideas/<idea-slug>.md`.
-Si el usuario aprueba: escribir archivo + indexar con MemPalace.
+Si el usuario aprueba: escribir archivo + indexar con Memoria Persistente.
 
 ## Integración con otros workflows
 
@@ -156,5 +156,5 @@ Si el usuario aprueba: escribir archivo + indexar con MemPalace.
 | `evol-architect` | Evalúa factibilidad técnica de cada dirección |
 
 ## POST-FLIGHT
-- Si se guardó one-pager: indexar en MemPalace y anotar en `memoria.md`.
+- Si se guardó one-pager: indexar en Memoria Persistente y anotar en `memoria.md`.
 - Si se descartaron direcciones con razones sólidas: anotar en `lecciones.md`.

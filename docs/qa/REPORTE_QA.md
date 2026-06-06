@@ -61,8 +61,8 @@ Todos los 9 gates estan implementados y ejecutados en CI (`.github/workflows/ci.
 | G3-Workflows-Lint | `bash scripts/lint-workflows.sh` | OK |
 | G4-Registry-Validate | `python3 scripts/validate-registry.py --strict` | OK |
 | G5-Manifests-Validate | jsonschema | OK |
-| G6-Anti-MCP | grep mcpServers | 0 refs |
-| G7-Anti-Emoji | grep emojis | 0 refs |
+| G6-Integración-MCP | grep mcpServers | MCP listo |
+| G7-Anti-Emoji | grep emojis | MCP listo |
 | G8-Shield-Audit | `python3 scripts/evol-shield.py audit --ci` | OK |
 | G9-Init-Idempotent | `bats tests/test_init_idempotent.bats` | PASS |
 

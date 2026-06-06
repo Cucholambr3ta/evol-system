@@ -74,14 +74,14 @@ time bash scripts/evol-init.sh /tmp/test --profile=core
 |-------|-------|
 | ID | NFR-003 |
 | Categoria | DISPONIBILIDAD |
-| Metrica | Porcentaje de features disponibles sin MemPalace |
+| Metrica | Porcentaje de features disponibles sin Memoria Persistente |
 | Umbral | 100% de features core |
 | Prioridad | ALTA |
 | Validacion | Test |
 
 ### Descripcion
 
-El sistema debe funcionar completamente sin MemPalace. El Modo BASE debe tener todas las features del Modo COMPLETO excepto busqueda semantica y recall semantico.
+El sistema debe funcionar completamente sin Memoria Persistente. El Modo BASE debe tener todas las features del Modo COMPLETO excepto busqueda semantica y recall semantico.
 
 ### Features disponibles en Modo BASE
 
@@ -105,7 +105,7 @@ El sistema debe funcionar completamente sin MemPalace. El Modo BASE debe tener t
 ### Validacion
 
 ```bash
-# Sin MemPalace
+# Sin Memoria Persistente
 PATH="" bash scripts/evol-doctor.sh
 # Output: [BASE]
 # Exit: 0
@@ -113,7 +113,7 @@ PATH="" bash scripts/evol-doctor.sh
 
 ---
 
-## NFR-004: Seguridad — Sin MCP
+## NFR-004: Seguridad — Con MCP
 
 | Campo | Valor |
 |-------|-------|
@@ -140,7 +140,7 @@ grep -rn 'mcpServers\|mcp\.json\|xdd-mcp-server\|evol-mcp-server' \
 
 ### Excepciones
 
-- Documentacion en docs/ que explique "sin MCP" cuenta cero en configs generadas
+
 - Archivos .md en prompts/agents/ NO son configs generadas
 
 ---
@@ -470,7 +470,7 @@ git commit -m "fix: something" -b feature/test
 |----|-----------|---------|--------|-----------|------------|
 | NFR-001 | RENDIMIENTO | doctor time | < 5s | MEDIA | Manual |
 | NFR-002 | RENDIMIENTO | init time | < 30s | ALTA | CI |
-| NFR-003 | DISPONIBILIDAD | features sin MemPalace | 100% | ALTA | Test |
+| NFR-003 | DISPONIBILIDAD | features sin Memoria Persistente | 100% | ALTA | Test |
 | NFR-004 | SEGURIDAD | refs MCP | 0 | CRITICAL | CI |
 | NFR-005 | SEGURIDAD | secrets | 0 | CRITICAL | CI |
 | NFR-006 | PORTABILIDAD | rutas relativas | 100% | ALTA | Review |
