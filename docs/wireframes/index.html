@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDMS — Wireframes Index</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 600px; width: 100%; padding: 40px; }
+        .logo { font-size: 32px; font-weight: 700; color: #a78bfa; text-align: center; margin-bottom: 8px; }
+        .logo span { color: #6d28d9; }
+        .subtitle { text-align: center; color: #71717a; font-size: 14px; margin-bottom: 40px; }
+        .wireframe-list { display: flex; flex-direction: column; gap: 16px; }
+        .wireframe-card { background: #111118; border: 1px solid #27272a; border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; transition: all 0.2s; display: block; }
+        .wireframe-card:hover { border-color: #6d28d9; transform: translateY(-2px); }
+        .wireframe-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .wireframe-desc { font-size: 13px; color: #71717a; line-height: 1.5; }
+        .wireframe-badge { display: inline-block; font-size: 10px; padding: 4px 10px; border-radius: 12px; background: #6d28d9; color: #fff; font-weight: 600; margin-top: 12px; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #52525b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">ED<span>MS</span></div>
+        <p class="subtitle">Evol-DD Dashboard & Memory System — Wireframes</p>
+        
+        <div class="wireframe-list">
+            <a href="edms-global.html" class="wireframe-card">
+                <div class="wireframe-title">1. Global View</div>
+                <div class="wireframe-desc">Knowledge graph global, memory health metrics, memory sectors, activity sparkline, alerts, and project selector grid.</div>
+                <span class="wireframe-badge">SCREEN 1</span>
+            </a>
+            
+            <a href="edms-project-board.html" class="wireframe-card">
+                <div class="wireframe-title">2. Project Board</div>
+                <div class="wireframe-desc">Gantt chart (6 phases), Kanban board (TODO/DOING/DONE), User Stories with traceability, Metrics (burndown/velocity/coverage/health), Discipline status.</div>
+                <span class="wireframe-badge">SCREEN 2</span>
+            </a>
+            
+            <a href="edms-navigation-flow.html" class="wireframe-card">
+                <div class="wireframe-title">3. Navigation Flow</div>
+                <div class="wireframe-desc">User flow from Global → Project Selection → Project Board → Memory Mutations. Includes triggers, hooks, and technical stack reference.</div>
+                <span class="wireframe-badge">FLOW</span>
+            </a>
+        </div>
+        
+        <div class="footer">
+            EDMS Wireframes v1.0 — 2026-06-06
+        </div>
+    </div>
+</body>
+</html>

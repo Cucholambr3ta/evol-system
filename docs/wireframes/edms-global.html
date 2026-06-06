@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDMS — Global View Wireframe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; }
+        
+        /* Header */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #111118; border-bottom: 1px solid #27272a; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 20px; font-weight: 700; color: #a78bfa; }
+        .logo span { color: #6d28d9; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .search-box { background: #1a1a24; border: 1px solid #27272a; border-radius: 8px; padding: 8px 16px; color: #e4e4e7; width: 280px; font-size: 13px; }
+        .search-box::placeholder { color: #71717a; }
+        .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #27272a; background: #1a1a24; color: #a1a1aa; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        .icon-btn:hover { background: #27272a; color: #e4e4e7; }
+        
+        /* Main Layout */
+        .main { display: grid; grid-template-columns: 1fr 320px; gap: 0; height: calc(100vh - 57px); }
+        
+        /* Graph Area */
+        .graph-area { position: relative; background: #0d0d14; border-right: 1px solid #27272a; }
+        .graph-canvas { width: 100%; height: 100%; }
+        .graph-overlay { position: absolute; top: 16px; left: 16px; display: flex; gap: 8px; }
+        .graph-filter { background: rgba(17, 17, 24, 0.9); border: 1px solid #27272a; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #a1a1aa; cursor: pointer; backdrop-filter: blur(8px); }
+        .graph-filter.active { background: #6d28d9; color: #fff; border-color: #6d28d9; }
+        .graph-filter:hover { border-color: #6d28d9; }
+        
+        /* Right Panel */
+        .right-panel { display: flex; flex-direction: column; background: #111118; overflow-y: auto; }
+        
+        /* Memory Health Card */
+        .card { padding: 20px; border-bottom: 1px solid #27272a; }
+        .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #71717a; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .card-title .dot { width: 8px; height: 8px; border-radius: 50%; }
+        
+        .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .metric { background: #1a1a24; border-radius: 8px; padding: 12px; }
+        .metric-value { font-size: 24px; font-weight: 700; color: #e4e4e7; }
+        .metric-label { font-size: 11px; color: #71717a; margin-top: 4px; }
+        .metric-value.green { color: #22c55e; }
+        .metric-value.yellow { color: #eab308; }
+        .metric-value.red { color: #ef4444; }
+        
+        /* Sector Bars */
+        .sector-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .sector { display: flex; align-items: center; gap: 10px; }
+        .sector-color { width: 12px; height: 12px; border-radius: 3px; }
+        .sector-name { font-size: 12px; color: #a1a1aa; flex: 1; }
+        .sector-bar { flex: 2; height: 6px; background: #27272a; border-radius: 3px; overflow: hidden; }
+        .sector-fill { height: 100%; border-radius: 3px; }
+        .sector-count { font-size: 12px; color: #71717a; width: 50px; text-align: right; }
+        .sector-pct { font-size: 11px; color: #52525b; width: 35px; text-align: right; }
+        
+        /* Activity Sparkline */
+        .activity-row { display: flex; gap: 3px; align-items: flex-end; height: 40px; margin-top: 12px; }
+        .activity-bar { flex: 1; background: #6d28d9; border-radius: 2px; min-height: 2px; opacity: 0.6; }
+        .activity-bar:hover { opacity: 1; }
+        .activity-stats { display: flex; gap: 16px; margin-top: 8px; }
+        .activity-stat { font-size: 12px; color: #71717a; }
+        .activity-stat strong { color: #e4e4e7; }
+        
+        /* Alerts */
+        .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px; background: #1a1a24; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid; }
+        .alert.warning { border-color: #eab308; }
+        .alert.error { border-color: #ef4444; }
+        .alert.info { border-color: #3b82f6; }
+        .alert-icon { font-size: 14px; margin-top: 1px; }
+        .alert-text { font-size: 12px; color: #a1a1aa; line-height: 1.4; }
+        
+        /* Projects Section */
+        .projects-section { flex: 1; display: flex; flex-direction: column; }
+        .projects-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #27272a; }
+        .projects-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #71717a; }
+        .projects-actions { display: flex; gap: 8px; }
+        .btn-sm { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: #1a1a24; color: #a1a1aa; font-size: 12px; cursor: pointer; }
+        .btn-sm:hover { background: #27272a; color: #e4e4e7; }
+        .btn-sm.primary { background: #6d28d9; border-color: #6d28d9; color: #fff; }
+        .btn-sm.primary:hover { background: #7c3aed; }
+        
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; padding: 16px 20px; overflow-y: auto; }
+        .project-card { background: #1a1a24; border: 1px solid #27272a; border-radius: 10px; padding: 16px; cursor: pointer; transition: all 0.2s; }
+        .project-card:hover { border-color: #6d28d9; transform: translateY(-2px); }
+        .project-status { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .project-status.green { background: #22c55e; }
+        .project-status.yellow { background: #eab308; }
+        .project-status.red { background: #ef4444; }
+        .project-status.purple { background: #a78bfa; }
+        .project-name { font-size: 14px; font-weight: 600; color: #e4e4e7; margin-top: 8px; }
+        .project-phase { font-size: 12px; color: #71717a; margin-top: 4px; }
+        .project-progress { margin-top: 12px; }
+        .progress-bar { height: 4px; background: #27272a; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #6d28d9; border-radius: 2px; }
+        .progress-text { font-size: 11px; color: #52525b; margin-top: 4px; }
+        
+        /* Tabs */
+        .tab-bar { display: flex; gap: 0; padding: 0 20px; border-bottom: 1px solid #27272a; }
+        .tab { padding: 12px 16px; font-size: 12px; color: #71717a; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab.active { color: #e4e4e7; border-color: #6d28d9; }
+        .tab:hover { color: #e4e4e7; }
+        
+        /* SVG Graph Mock */
+        .graph-svg { width: 100%; height: 100%; }
+        .node { cursor: pointer; }
+        .node circle { stroke-width: 2; }
+        .node text { font-size: 10px; fill: #a1a1aa; pointer-events: none; }
+        .edge { stroke: #27272a; stroke-width: 1; }
+        
+        /* Legend */
+        .graph-legend { position: absolute; bottom: 16px; left: 16px; background: rgba(17, 17, 24, 0.9); border: 1px solid #27272a; border-radius: 8px; padding: 12px; backdrop-filter: blur(8px); }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #71717a; margin-bottom: 4px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+        
+        /* Wireframe Label */
+        .wireframe-badge { position: fixed; top: 12px; right: 12px; background: #f59e0b; color: #000; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; z-index: 100; }
+    </style>
+</head>
+<body>
+    <div class="wireframe-badge">WIREFRAME v1.0</div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">ED<span>MS</span></div>
+        </div>
+        <div class="header-right">
+            <input type="text" class="search-box" placeholder="⌘K Search memory, projects, agents...">
+            <div class="icon-btn" title="Settings">⚙</div>
+            <div class="icon-btn" title="Profile">👤</div>
+        </div>
+    </header>
+    
+    <!-- Main Layout -->
+    <div class="main">
+        <!-- Knowledge Graph -->
+        <div class="graph-area">
+            <div class="graph-overlay">
+                <div class="graph-filter active">All</div>
+                <div class="graph-filter">Episodic</div>
+                <div class="graph-filter">Semantic</div>
+                <div class="graph-filter">Procedural</div>
+                <div class="graph-filter">Reflexive</div>
+                <div class="graph-filter">Emotional</div>
+            </div>
+            
+            <svg class="graph-svg" viewBox="0 0 800 600">
+                <!-- Edges -->
+                <line class="edge" x1="200" y1="150" x2="350" y2="200" />
+                <line class="edge" x1="200" y1="150" x2="150" y2="300" />
+                <line class="edge" x1="350" y1="200" x2="500" y2="180" />
+                <line class="edge" x1="350" y1="200" x2="400" y2="350" />
+                <line class="edge" x1="500" y1="180" x2="650" y2="250" />
+                <line class="edge" x1="150" y1="300" x2="300" y2="400" />
+                <line class="edge" x1="400" y1="350" x2="550" y2="420" />
+                <line class="edge" x1="650" y1="250" x2="550" y2="420" />
+                <line class="edge" x1="300" y1="400" x2="400" y2="350" />
+                <line class="edge" x1="550" y1="420" x2="700" y2="500" />
+                
+                <!-- Nodes - Projects (Large) -->
+                <g class="node" transform="translate(200, 150)">
+                    <circle r="24" fill="#6d28d9" stroke="#a78bfa" />
+                    <text y="4" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">SaaS</text>
+                </g>
+                <g class="node" transform="translate(350, 200)">
+                    <circle r="20" fill="#2563eb" stroke="#60a5fa" />
+                    <text y="4" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">API</text>
+                </g>
+                <g class="node" transform="translate(500, 180)">
+                    <circle r="18" fill="#dc2626" stroke="#f87171" />
+                    <text y="4" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">ML</text>
+                </g>
+                
+                <!-- Nodes - Disciplines (Medium) -->
+                <g class="node" transform="translate(150, 300)">
+                    <circle r="14" fill="#16a34a" stroke="#4ade80" />
+                    <text y="4" text-anchor="middle" fill="#fff" font-size="9">DDD</text>
+                </g>
+                <g class="node" transform="translate(650, 250)">
+                    <circle r="14" fill="#ea580c" stroke="#fb923c" />
+                    <text y="4" text-anchor="middle" fill="#fff" font-size="9">TDD</text>
+                </g>
+                
+                <!-- Nodes - Agents (Small) -->
+                <g class="node" transform="translate(400, 350)">
+                    <circle r="10" fill="#0891b2" stroke="#22d3ee" />
+                    <text y="3" text-anchor="middle" fill="#fff" font-size="7">arch</text>
+                </g>
+                <g class="node" transform="translate(300, 400)">
+                    <circle r="10" fill="#7c3aed" stroke="#a78bfa" />
+                    <text y="3" text-anchor="middle" fill="#fff" font-size="7">build</text>
+                </g>
+                <g class="node" transform="translate(550, 420)">
+                    <circle r="10" fill="#ca8a04" stroke="#facc15" />
+                    <text y="3" text-anchor="middle" fill="#fff" font-size="7">qa</text>
+                </g>
+                
+                <!-- Nodes - Lessons (Tiny) -->
+                <g class="node" transform="translate(700, 500)">
+                    <circle r="8" fill="#be123c" stroke="#fb7185" />
+                    <text y="3" text-anchor="middle" fill="#fff" font-size="6">L</text>
+                </g>
+            </svg>
+            
+            <div class="graph-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#6d28d9"></div> Projects</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Disciplines</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#0891b2"></div> Agents</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#be123c"></div> Lessons</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ea580c"></div> Entities</div>
+            </div>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <!-- Memory Health -->
+            <div class="card">
+                <div class="card-title"><div class="dot" style="background:#22c55e"></div> MEMORY HEALTH</div>
+                <div class="metric-grid">
+                    <div class="metric">
+                        <div class="metric-value">12,847</div>
+                        <div class="metric-label">Total Nodes</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">34,201</div>
+                        <div class="metric-label">Total Edges</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value green">94.2%</div>
+                        <div class="metric-label">Consolidation</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">16</div>
+                        <div class="metric-label">Active Agents</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">1,203</div>
+                        <div class="metric-label">Lessons Learned</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value red">12</div>
+                        <div class="metric-label">Lessons Repeated</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value green">0.8ms</div>
+                        <div class="metric-label">Avg Retrieval</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">847</div>
+                        <div class="metric-label">Drawer Count</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sectors -->
+            <div class="card">
+                <div class="card-title"><div class="dot" style="background:#6d28d9"></div> MEMORY SECTORS</div>
+                <div class="sector-list">
+                    <div class="sector">
+                        <div class="sector-color" style="background:#3b82f6"></div>
+                        <div class="sector-name">Episodic</div>
+                        <div class="sector-bar"><div class="sector-fill" style="width:33%;background:#3b82f6"></div></div>
+                        <div class="sector-count">4,231</div>
+                        <div class="sector-pct">33%</div>
+                    </div>
+                    <div class="sector">
+                        <div class="sector-color" style="background:#22c55e"></div>
+                        <div class="sector-name">Semantic</div>
+                        <div class="sector-bar"><div class="sector-fill" style="width:40%;background:#22c55e"></div></div>
+                        <div class="sector-count">5,102</div>
+                        <div class="sector-pct">40%</div>
+                    </div>
+                    <div class="sector">
+                        <div class="sector-color" style="background:#eab308"></div>
+                        <div class="sector-name">Procedural</div>
+                        <div class="sector-bar"><div class="sector-fill" style="width:15%;background:#eab308"></div></div>
+                        <div class="sector-count">1,890</div>
+                        <div class="sector-pct">15%</div>
+                    </div>
+                    <div class="sector">
+                        <div class="sector-color" style="background:#ef4444"></div>
+                        <div class="sector-name">Emotional</div>
+                        <div class="sector-bar"><div class="sector-fill" style="width:3%;background:#ef4444"></div></div>
+                        <div class="sector-count">412</div>
+                        <div class="sector-pct">3%</div>
+                    </div>
+                    <div class="sector">
+                        <div class="sector-color" style="background:#a855f7"></div>
+                        <div class="sector-name">Reflexive</div>
+                        <div class="sector-bar"><div class="sector-fill" style="width:9%;background:#a855f7"></div></div>
+                        <div class="sector-count">1,212</div>
+                        <div class="sector-pct">9%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity -->
+            <div class="card">
+                <div class="card-title"><div class="dot" style="background:#3b82f6"></div> ACTIVITY (24h)</div>
+                <div class="activity-row">
+                    <div class="activity-bar" style="height:20%"></div>
+                    <div class="activity-bar" style="height:35%"></div>
+                    <div class="activity-bar" style="height:45%"></div>
+                    <div class="activity-bar" style="height:30%"></div>
+                    <div class="activity-bar" style="height:60%"></div>
+                    <div class="activity-bar" style="height:80%"></div>
+                    <div class="activity-bar" style="height:100%"></div>
+                    <div class="activity-bar" style="height:75%"></div>
+                    <div class="activity-bar" style="height:55%"></div>
+                    <div class="activity-bar" style="height:40%"></div>
+                    <div class="activity-bar" style="height:65%"></div>
+                    <div class="activity-bar" style="height:50%"></div>
+                    <div class="activity-bar" style="height:35%"></div>
+                    <div class="activity-bar" style="height:25%"></div>
+                    <div class="activity-bar" style="height:45%"></div>
+                    <div class="activity-bar" style="height:70%"></div>
+                    <div class="activity-bar" style="height:85%"></div>
+                    <div class="activity-bar" style="height:60%"></div>
+                    <div class="activity-bar" style="height:40%"></div>
+                    <div class="activity-bar" style="height:30%"></div>
+                    <div class="activity-bar" style="height:50%"></div>
+                    <div class="activity-bar" style="height:65%"></div>
+                    <div class="activity-bar" style="height:45%"></div>
+                    <div class="activity-bar" style="height:55%"></div>
+                </div>
+                <div class="activity-stats">
+                    <div class="activity-stat"><strong>42</strong> Sessions</div>
+                    <div class="activity-stat"><strong>892</strong> Writes</div>
+                    <div class="activity-stat"><strong>1.2k</strong> Queries</div>
+                </div>
+            </div>
+            
+            <!-- Alerts -->
+            <div class="card">
+                <div class="card-title"><div class="dot" style="background:#ef4444"></div> ALERTS</div>
+                <div class="alert warning">
+                    <div class="alert-icon">⚠</div>
+                    <div class="alert-text">Memory bloat detected in Phase 4 consolidation. 340 items pending compression.</div>
+                </div>
+                <div class="alert error">
+                    <div class="alert-icon">🚨</div>
+                    <div class="alert-text">3 lessons repeated across projects. Consider adding prevention rules.</div>
+                </div>
+                <div class="alert info">
+                    <div class="alert-icon">ℹ</div>
+                    <div class="alert-text">Sprint-05 closed. 12 items consolidated to knowledge tier.</div>
+                </div>
+            </div>
+            
+            <!-- Projects -->
+            <div class="projects-section">
+                <div class="projects-header">
+                    <div class="projects-title">PROJECTS</div>
+                    <div class="projects-actions">
+                        <button class="btn-sm primary">+ New</button>
+                        <button class="btn-sm">Import</button>
+                        <button class="btn-sm">Sync</button>
+                    </div>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div><span class="project-status green"></span><span style="font-size:12px;color:#71717a">Active</span></div>
+                        <div class="project-name">SaaS Platform</div>
+                        <div class="project-phase">Phase 4 — Build</div>
+                        <div class="project-progress">
+                            <div class="progress-bar"><div class="progress-fill" style="width:84%"></div></div>
+                            <div class="progress-text">84% complete</div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div><span class="project-status yellow"></span><span style="font-size:12px;color:#71717a">Active</span></div>
+                        <div class="project-name">API Gateway</div>
+                        <div class="project-phase">Phase 2 — Spec</div>
+                        <div class="project-progress">
+                            <div class="progress-bar"><div class="progress-fill" style="width:32%"></div></div>
+                            <div class="progress-text">32% complete</div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div><span class="project-status red"></span><span style="font-size:12px;color:#71717a">Active</span></div>
+                        <div class="project-name">ML Pipeline</div>
+                        <div class="project-phase">Phase 5 — QA</div>
+                        <div class="project-progress">
+                            <div class="progress-bar"><div class="progress-fill" style="width:91%"></div></div>
+                            <div class="progress-text">91% complete</div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div><span class="project-status purple"></span><span style="font-size:12px;color:#71717a">Active</span></div>
+                        <div class="project-name">Infra Migration</div>
+                        <div class="project-phase">Phase 3 — Plan</div>
+                        <div class="project-progress">
+                            <div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div>
+                            <div class="progress-text">67% complete</div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div><span class="project-status green"></span><span style="font-size:12px;color:#71717a">Done</span></div>
+                        <div class="project-name">Legacy Refactor</div>
+                        <div class="project-phase">Phase 6 — Complete</div>
+                        <div class="project-progress">
+                            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                            <div class="progress-text">100% complete</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab active">Recent</div>
+                    <div class="tab">All</div>
+                    <div class="tab">Templates</div>
+                    <div class="tab">Archived</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
