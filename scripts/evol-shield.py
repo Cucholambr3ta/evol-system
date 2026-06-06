@@ -10,16 +10,6 @@ logger = get_logger("shield")
 REPO_ROOT = "."
 
 RULES = {
-    "no_mcp_config": {
-        "description": "No MCP server configuration in generated IDE configs and scripts",
-        "patterns": [r"mcpServers", r"mcp\.json", r"evol-mcp-server", r"xdd-mcp-server"],
-        "severity": "CRITICAL",
-        # Solo aplica a archivos generados por evol-adapt.sh y scripts de instalacion.
-        # Docs y prompts pueden mencionar MCP como referencia o para documentar
-        # la invariante "cero MCP" — eso no es una violacion.
-        "applies_to": [".json", ".yml", ".yaml"],
-        "skip_dirs": ["docs/", "prompts/agents/", "skills/", "tests/", "evals/"],
-    },
     "no_dangerous_commands": {
         "description": "No dangerous shell commands in scripts and hooks",
         "patterns": [r"rm\s+-rf\s+/(?!tmp|proc|sys)", r"git\s+--force", r"chmod\s+777", r"curl\s+\|sh"],
@@ -54,7 +44,7 @@ RULES = {
     }
 }
 
-def scan_file(filepath, violations):
+def scan_file(filepath, violations, root_dir="."):
     """Scan file for rule violations."""
     if not os.path.exists(filepath):
         return
@@ -118,7 +108,7 @@ def audit_directory(directory, extensions=None):
             ]):
                 continue
             
-            scan_file(str(filepath), violations)
+            scan_file(str(filepath), violations, root_dir=directory)
     
     return violations
 

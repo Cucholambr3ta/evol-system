@@ -11,6 +11,7 @@ AGENT_MANIFEST="${REPO_ROOT}/agent.yaml"
 show_usage() {
     echo "Usage: $0 <destination> [--profile=<profile>] [--pip-mode]"
     echo "  --profile=<profile>  Installation profile: minimal, core, developer, security, research, full, lean"
+    echo "  --mcp-servers=...    Comma-separated list of MCP servers (e.g. github,gitnexus)"
     echo "  --pip-mode           Use pip-installed framework"
     echo "  --list-profiles      Show available profiles"
     echo "  --explain=<profile>  Show modules for a profile"
@@ -199,10 +200,12 @@ main() {
     local dry_run=false
     local upgrade=false
     local profile_passed=false
+    local opt_mcp_servers=""
 
     while [ $# -gt 0 ]; do
         case "$1" in
             --profile=*) profile="${1#*=}"; profile_passed=true; shift ;;
+            --mcp-servers=*) opt_mcp_servers="${1#*=}"; shift ;;
             --pip-mode) mode="pip"; shift ;;
             --list-profiles) list_profiles; exit 0 ;;
             --explain=*) explain_profile "${1#*=}"; exit 0 ;;
@@ -337,6 +340,43 @@ with open(profile_path, 'w') as f:
 
 print(f'[evol-init] Profile $profile saved to evol.profile.yml')
 " 2>/dev/null || echo "[evol-init] evol.profile.yml updated (YAML write skipped)"
+    fi
+
+    # Escribir configuración de MCP siempre (default)
+    if command -v python3 >/dev/null 2>&1; then
+        python3 -c "
+import yaml, os
+config_path = os.path.join(os.getcwd(), 'evol.config.yml')
+data = {}
+if os.path.exists(config_path):
+    try:
+        with open(config_path) as f:
+            data = yaml.safe_load(f) or {}
+    except:
+        pass
+
+if 'mcp' not in data:
+    data['mcp'] = {}
+data['mcp']['enabled'] = True
+
+if 'servers' not in data['mcp']:
+    data['mcp']['servers'] = {}
+
+servers_str = '$opt_mcp_servers'
+if servers_str:
+    for s in servers_str.split(','):
+        s = s.strip()
+        if s and s not in data['mcp']['servers']:
+            data['mcp']['servers'][s] = {
+                'command': 'npx',
+                'args': ['-y', f'@modelcontextprotocol/server-{s}' if s != 'gitnexus' else 'gitnexus']
+            }
+
+with open(config_path, 'w') as f:
+    yaml.dump(data, f, default_flow_style=False)
+
+print('[evol-init] MCP habilitado por defecto en evol.config.yml')
+" 2>/dev/null || echo "[evol-init] Error guardando evol.config.yml"
     fi
 
     # Estructura /acuerdos (cero deuda tecnica — base del briefing arbol 16 dimensiones)

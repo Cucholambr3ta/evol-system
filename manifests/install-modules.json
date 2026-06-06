@@ -240,6 +240,12 @@
         ".agent/workflows/prompt-master.md"
       ],
       "available_from": "0.2.2"
+    },
+    "mcp-manager": {
+      "description": "Gestor de servidores MCP (Model Context Protocol).",
+      "files": [
+        "scripts/evol-mcp.sh"
+      ]
     }
   }
 }

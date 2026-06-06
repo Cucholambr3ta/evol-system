@@ -37,7 +37,6 @@
 ## Notas de arquitectura vigentes
 
 - Gate HMAC-SHA256 por proyecto (`.evol/.gate-key` gitignored)
-- Sin MCP en ningun adapter IDE
 - GitFlow enforced via pre-commit-gitflow.sh
 - Motor memoria nativo: `EVOL_MEMORY=1` activa `evol-memory.py`
 - Motor lecciones: siempre activo, `evol-lessons.py` en core

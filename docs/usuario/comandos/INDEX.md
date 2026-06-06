@@ -11,6 +11,9 @@ Contiene 15 comandos.
 ## [DISCIPLINAS](./DISCIPLINAS.md)
 Contiene 14 comandos.
 
+## [MCP](./MCP.md)
+Comandos de gestión de Model Context Protocol.
+
 ## [MISCELANEA](./MISCELANEA.md)
 Contiene 17 comandos.
 

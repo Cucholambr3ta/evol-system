@@ -103,13 +103,15 @@ Usage:
 - `gitnexus_context` — full symbol context (callers, callees, flows)
 
 GitNexus is **opt-in only** (PolyForm-NC license, incompatible with commercial use).
-It is **not required** — the system works fully in Base Mode without it.
+It is **not required** — the system works fully in Base Mode.
+
+- Keep the framework pure, deterministic, and traceable
+- Always write artifacts using `write_to_file` natively if possible
 
 ---
 
 ## Anti-Patterns
 
-- **NEVER** generate MCP server configuration in any file
 - **NEVER** reference `xdd-*` or X-DD in artifacts
 - **NEVER** use absolute file paths
 - **NEVER** commit secrets, keys, or runtime state

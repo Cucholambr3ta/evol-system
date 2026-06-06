@@ -10,7 +10,8 @@
         "lessons-engine",
         "continuous-memory",
         "memory",
-        "diagnostics"
+        "diagnostics",
+        "mcp-manager"
       ]
     },
     {
@@ -85,7 +86,8 @@
         "workflows-core",
         "memory",
         "global-wrapper",
-        "diagnostics"
+        "diagnostics",
+        "mcp-manager"
       ]
     }
   ]
