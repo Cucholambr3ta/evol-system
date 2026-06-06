@@ -12,7 +12,7 @@
 - **Activacion por profile, no global:** cada proyecto declara su subset en `evol.profile.yml` (bloque `methodologies:`); el orquestador inyecta solo esas capas en su fase, resuelve el DAG de dependencias (ej. chaos exige odd_obs+threat_driven), y aplica los criterios como sub-gate. No se inyecta lo no declarado.
 - **0 agentes permanentes nuevos:** las disciplinas se ejecutan con los 16 agentes core + efimeros (evol-agent-factory). El core permanente NO crece con el upgrade.
 - **3 formas de integracion por disciplina** (campo `executor` en la ficha): mapeo a workflow existente, skill nueva (6 gaps: ux-driven, event-sourcing, api-versioning, iac-driven, debt-budget, use-case-driven), o capa declarativa (regla/sub-gate sin workflow).
-- **Erradicación de MemPalace (2026-06-06):** Se retiró MemPalace y todo el "Modo COMPLETO" legacy de X-DD. La memoria queda gobernada por la Standard Library de Python en "Modo BASE" puro, preparándose el terreno para una integración nativa de memoria persistente usando ChromaDB y LadybugDB en futuras iteraciones.
+- **Erradicación de Memoria Persistente (2026-06-06):** Se retiró Memoria Persistente y todo el "Modo COMPLETO" legacy de X-DD. La memoria queda gobernada por la Standard Library de Python en "Modo BASE" puro, preparándose el terreno para una integración nativa de memoria persistente usando ChromaDB y LadybugDB en futuras iteraciones.
 
 # Convenciones
 
@@ -26,6 +26,6 @@
 
 > Atomo de MEMORY. Riesgos vigentes y mitigaciones.
 
-- **`docs/X-DD_Integration_Guide.md` sin rebrand:** el guide heredado conserva 16 referencias "X-DD" en vez de "Evol-DD". El conteo de disciplinas (31) ya esta corregido, pero el branding completo del guide queda pendiente de port.
+- **[MITIGADO] `docs/evol-dd_Integration_Guide.md` sin rebrand:** Se reescribió la guía por completo aplicando el estricto `DOC_STANDARD`, eliminando el legacy naming e inyectando la nueva filosofía.
 - **Sidecars de disciplinas pueden driftar:** editar una ficha `.md` sin correr `evol-doc-sync.py sync-folder docs/disciplinas` deja el `checksum_md` desincronizado; `validate-disciplinas.py --strict` lo detecta y falla.
 

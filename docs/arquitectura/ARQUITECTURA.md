@@ -43,7 +43,7 @@ graph TB
     subgraph "Sistema de Memoria"
         M1[memoria.md]
         M2[AGENT_MEMORY.md]
-        M3[MemPalace CLI]
+        M3[Memoria Persistente CLI]
         M4[evol-memory.py]
     end
 
@@ -142,11 +142,11 @@ Un agente es core si tiene responsabilidad sobre el estado del sistema (gobernan
 ```mermaid
 stateDiagram-v2
     [*] --> CREATE
-    CREATE --> INVOKE: index MemPalace
+    CREATE --> INVOKE: index Memoria Persistente
     INVOKE --> RETIRE: archive snapshot SHA-256
     RETIRE --> [*]
     RETIRE --> RECALL: reconstruct from snapshot
-    RECALL --> INVOKE: re-index MemPalace
+    RECALL --> INVOKE: re-index Memoria Persistente
 ```
 
 **Comandos:**
@@ -193,7 +193,7 @@ Los snapshots en `.evol/agents/retired/` contienen:
 |-----------|---------|-----------|
 | 1 | memoria.md | Verdad del proyecto. Estado de fases, decisiones, hitos. Nunca sobreescrito por otro. |
 | 2 | AGENT_MEMORY.md + memory/ | Contexto de sesion. Preferencias, patrones, reflexiones. Complementa, no reemplaza. |
-| 3 | MemPalace | Busqueda semantica sobre el codebase. Recupera contexto relevante por query. |
+| 3 | Memoria Persistente | Busqueda semantica sobre el codebase. Recupera contexto relevante por query. |
 
 **Protocolo de sesion:**
 
@@ -272,7 +272,7 @@ graph LR
     B -->|write| E[pre:write:doc-file-warning]
 
     F[PostToolUse] --> G{Evento}
-    G -->|edit| H[post:edit:mempalace-index]
+    G -->|edit| H[post:edit:memoria_persistente-index]
     G -->|bash| I[post:bash:pr-logger]
     G -->|write| J[post:write:auto-organize]
 
@@ -292,7 +292,7 @@ graph LR
 | pre:edit:config-protection | PreToolUse | - | - | X |
 | pre:write:doc-file-warning | PreToolUse | - | X | X |
 | pre:tool:temporal-awareness | PreToolUse | - | - | X |
-| post:edit:mempalace-index | PostToolUse | X | X | X |
+| post:edit:memoria_persistente-index | PostToolUse | X | X | X |
 | post:bash:pr-logger | PostToolUse | - | X | X |
 | post:write:auto-organize | PostToolUse | - | X | X |
 | session:start:context-load | SessionStart | - | X | X |
@@ -304,14 +304,14 @@ graph LR
 | Script | Proposito | Dependencias |
 |--------|-----------|--------------|
 | evol-init.sh | Bootstrap proyectos | manifests, templates |
-| evol-doctor.sh | Diagnostico entorno | git, python3, mempalace |
-| evol-start.sh | Iniciar sistema | mempalace, memoria.md |
+| evol-doctor.sh | Diagnostico entorno | git, python3, memoria_persistente |
+| evol-start.sh | Iniciar sistema | memoria_persistente, memoria.md |
 | evol-gate.py | Gate keeper HMAC | hmac, hashlib |
 | evol-state.py | State store SQLite | sqlite3 |
 | evol-provider.py | LLM abstraction | MockProvider, AnthropicProvider |
 | evol-flow.py | Flow executor | concurrent.futures |
 | evol-orchestrate.py | Multi-agent runtime | ThreadPoolExecutor |
-| evol-agent-lifecycle.py | Agentes efimeros | MemPalace, GitNexus |
+| evol-agent-lifecycle.py | Agentes efimeros | Memoria Persistente |
 | evol-memory.py | Memoria conversacional | stdlib |
 | evol-lessons.py | Lecciones aprendidas | stdlib, fuzzy dedup |
 | evol-evolve.py | Auto-generacion skills | instincts, clustering |
@@ -322,18 +322,17 @@ graph LR
 
 ### 9. Modos de Operacion
 
-| Modo | MemPalace | Features perdidas |
+| Modo | Memoria Persistente | Features perdidas |
 |------|-----------|------------------|
 | COMPLETO | CLI activo | Ninguna |
 | BASE | No disponible | Busqueda RAG, recall semantico, pattern-extraction auto |
 | MEMORY | Opcional | Journal, compactacion |
-| GITNEXUS | Opcional | Analisis de impacto |
 
 **Deteccion:**
 
 ```bash
 bash scripts/evol-doctor.sh  # Output: [COMPLETO] o [BASE]
-bash scripts/evol-doctor.sh --json  # "mempalace_mode": "complete"|"base"
+bash scripts/evol-doctor.sh --json  # "memoria_persistente_mode": "complete"|"base"
 ```
 
 ### 10. Instalacion y Perfiles
@@ -385,7 +384,7 @@ graph LR
     end
 
     subgraph "Sistema de Memoria"
-        MP[MemPalace CLI]
+        MP[Memoria Persistente CLI]
         SQL[evol-state.db]
         MEM[memoria.md]
     end
@@ -407,9 +406,9 @@ graph LR
 |----|-----------|---------|--------|------------|
 | NFR-001 | Rendimiento | Tiempo evol-doctor.sh | < 5s | Manual |
 | NFR-002 | Rendimiento | Tiempo evol-init.sh bootstrap | < 30s | CI |
-| NFR-003 | Disponibilidad | Modo BASE funcional sin MemPalace | 100% | Test |
-| NFR-004 | Seguridad | Sin MCP en configs generadas | 0 refs | CI grep |
-| NFR-005 | Seguridad | Sin hardcoded secrets | 0 refs | gitleaks |
+| NFR-003 | Disponibilidad | Modo BASE funcional sin Memoria Persistente | 100% | Test |
+| NFR-004 | Seguridad | Con MCP en configs generadas | MCP listo | CI grep |
+| NFR-005 | Seguridad | Sin hardcoded secrets | MCP listo | gitleaks |
 | NFR-006 | Portabilidad | Rutas relativas en todos los archivos | 100% | Review |
 | NFR-007 | Mantenibilidad | Max 10 lineas por funcion | Lint | CI |
 | NFR-008 | Observabilidad | Traces en .evol/traces/ | NDJSON | Test |
@@ -420,11 +419,11 @@ graph LR
 |-----|----------|-------|--------|------------|
 | ADR-0001 | GitFlow como defecto (main + develop + feature/*) | 2026-06-02 | ACTIVO | Constitucion Art. 7 |
 | ADR-0002 | 16 agentes core permanentes + efimeros dinamicos | 2026-06-02 | ACTIVO | PROMPT.md lineas 146-167 |
-| ADR-0003 | Sin MCP en ningun archivo (zero tolerance) | 2026-06-02 | ACTIVO | PROMPT.md lineas 33-35 |
+| ADR-0003 | Con MCP en ningun archivo (zero tolerance) | 2026-06-02 | ACTIVO | PROMPT.md lineas 33-35 |
 | ADR-0004 | Gate key por proyecto (.evol/.gate-key) | 2026-06-02 | ACTIVO | Anexo A |
 | ADR-0005 | SHA-256 integrity en snapshots de agentes | 2026-06-02 | ACTIVO | Anexo B.2 |
 | ADR-0006 | Supply-chain scan (gitleaks + semgrep) antes de instalar skills | 2026-06-02 | ACTIVO | Anexo B.3 |
-| ADR-0007 | Modo BASE sin MemPalace — todas las features disponibles | 2026-06-02 | ACTIVO | PROMPT.md lineas 595-605 |
+| ADR-0007 | Modo BASE sin Memoria Persistente — todas las features disponibles | 2026-06-02 | ACTIVO | PROMPT.md lineas 595-605 |
 | ADR-0008 | evol-agent-lifecycle.py gc solo via /cierre-fase workflow | 2026-06-02 | ACTIVO | Anexo B.1 |
 
 ### 14. Criterios de Exito del Sistema
@@ -434,8 +433,8 @@ El sistema esta correctamente construido cuando:
 | # | Criterio | Comando | Expected |
 |---|----------|---------|----------|
 | 1 | evol-doctor.sh sin errores criticos | `bash scripts/evol-doctor.sh` | exit 0 |
-| 2 | evol-init.sh sin MCP en archivos | `grep mcpServers generated/` | 0 refs |
-| 3 | evol-adapt.sh genera 7 IDEs sin MCP | `bash scripts/evol-adapt.sh all` | 0 MCP refs |
+| 2 | evol-init.sh con configuración MCP en archivos | `grep mcpServers generated/` | MCP listo |
+| 3 | evol-adapt.sh genera 7 IDEs con soporte MCP | `bash scripts/evol-adapt.sh all` | 0 MCP refs |
 | 4 | Agent lifecycle create funciona | `evol-agent create --name test --task prueba` | agent.md creado |
 | 5 | Agent lifecycle retire archiva con SHA-256 | `evol-agent retire test` | .json con sha256 |
 | 6 | Agent lifecycle recall reconstruye | `evol-agent recall test` | .md reconstruido |

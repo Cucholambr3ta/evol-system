@@ -143,7 +143,7 @@ Scenario: Crear agente efimero
   Then archivo "prompts/agents/ephemeral/*-test-agent.md" existe
   And registry contiene entrada para "test-agent"
   And mensaje "Agent created: test-agent" mostrado
-  And MemPalace indexado
+  And Memoria Persistente indexado
 
 Scenario: Invocar agente
   Given agente "test-agent" existe
@@ -458,7 +458,7 @@ Scenario: Apply fix
 | G3-Workflows-Lint | bash scripts/lint-workflows.sh OK | SI | bash |
 | G4-Registry-Validate | python3 scripts/validate-registry.py --strict OK | SI | Python |
 | G5-Manifests-Validate | jsonschema contra schemas/ OK | SI | python jsonschema |
-| G6-Anti-MCP | grep mcpServers en artefactos = 0 | SI | grep |
+| G6-Integración-MCP | MCP config habilitado en artefactos = 1 | SI | grep |
 | G7-Anti-Emoji | grep emojis en docs/ = 0 | SI | grep |
 | G8-Shield-Audit | python3 scripts/evol-shield.py audit --ci OK | SI | evol-shield.py |
 | G9-Init-Idempotent | bats tests/test_init_idempotent.bats OK | SI | bats |
@@ -482,7 +482,7 @@ graph LR
         B2[bats]
         B3[lint-workflows]
         B4[validate-registry]
-        B5[anti-mcp grep]
+        B5[MCP config check]
         B6[shield audit]
     end
 

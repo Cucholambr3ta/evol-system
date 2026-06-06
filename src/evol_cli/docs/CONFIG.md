@@ -15,10 +15,10 @@ evol_version: 0.1.0-dev
 
 Version del framework. Sincronizada con `VERSION` y `pyproject.toml`.
 
-### mempalace
+### memoria_persistente
 
 ```yaml
-mempalace:
+memoria_persistente:
   enabled: true
   mode: cli           # cli | base (sin CLI)
   default_wing: evol-dd
@@ -91,7 +91,7 @@ ide_adapters:
   generate_for:
     - claude-code
     - opencode
-  mcp: false
+  mcp: true
 ```
 
 ## Perfil — evol.profile.yml

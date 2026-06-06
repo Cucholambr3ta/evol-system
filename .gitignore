@@ -10,8 +10,13 @@ memory/raw/
 .evol-mcp-exclude
 
 # Local indexes and machine-specific memory
-.gitnexus/
 entities.json
+# Project scaffolding artifacts (from running evol-init locally)
+api/
+assets/
+design/
+idea/
+memory/
 
 # IDE/adaptor generated outputs
 .claude/
@@ -90,3 +95,8 @@ agent.yaml
 
 # Notas de trabajo sueltas
 dudas.md
+acuerdos/
+memoria.md
+lecciones.md
+evol.profile.yml
+AGENT_MEMORY.md

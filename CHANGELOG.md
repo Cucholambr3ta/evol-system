@@ -8,6 +8,26 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-06-06
+
+### Added
+- Nueva skill `/evol readme-master` para estandarizar visualmente (Top 100, Minimalismo, AI-Friendly) y semánticamente la documentación de los `README.md`.
+- Integración automática en el pre-push hook (`evol-gitflow.sh`) para asegurar que todos los archivos `README.md` (root y subcarpetas) del repositorio cumplan el estándar antes de mezclarse.
+- Ejecución recursiva de la skill `readme-master`, con escaneo dinámico del árbol de directorios para mapear y auto-referenciar documentos cercanos (ej. `docs/`).
+
+## [0.4.0] - 2026-06-06
+
+### Added
+- Integración nativa de **MCP (Model Context Protocol)** por defecto, abandonando la política opt-in y anti-MCP. Ahora `evol.config.yml` habilita los servidores automáticamente.
+- Script `evol-mcp.sh` (módulo `mcp-manager`) como gestor oficial de configuraciones MCP del proyecto. Comandos: `add`, `remove`, `list`, `status`.
+
+### Removed
+- **GitNexus:** Se eliminó por completo el soporte, referencias, skills exclusivas (`.claude/skills/gitnexus/`), bloques de contexto forzados en `AGENTS.md` y `CLAUDE.md`, así como la documentación `gitnexus-optin.md` debido a la migración de estrategia en favor del uso de integraciones estándar de MCP.
+
+### Changed
+- `evol-shield.py` ya no bloquea la inclusión de configuraciones `mcpServers` en entornos IDE (regla `no_mcp_config` eliminada).
+- `evol-init.sh` no requiere bandera `--mcp` para el scaffolding de configuraciones.
+
 ## [0.3.2] - 2026-06-05
 
 ### Added
@@ -108,7 +128,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - Framework core with CLI entrypoints (gate, eval, flow, provider, shield, orchestrate, agent, evolve, research, memory, lessons)
 - GitFlow branching strategy with develop/main/release process
 - HMAC-signed gate protocol for approval workflow
-- MemPalace memory integration for agent context persistence
+- Memoria Persistente memory integration for agent context persistence
 - Agent registry with 16 core agents and ephemeral agent lifecycle
 - Eval harness with structural, behavioral, output_match, pass_at_k graders
 - Security shield with secret detection and config auditing
@@ -132,7 +152,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - evol-init.sh with profile manifest system (minimal, core, developer, security, research, full, lean)
 - evol-naming strict mode with all xdd references migrated to evol
 - Gate HMAC chain with payload persistence and verify-on-read
-- MemPalace safe indexing with explicit allowlist (no `.evol/`, `.xdd/`, `.git/`, dialog/, tool_result/)
+- Memoria Persistente safe indexing with explicit allowlist (no `.evol/`, `.xdd/`, `.git/`, dialog/, tool_result/)
 - Security hooks with structured JSON input and real blocking for dangerous commands
 - CI as real gate without `|| true` masks, running pytest, shield, doctor, registry validation
 - Hermetic tests using EVOL_HOME, EVOL_STATE_DB, EVOL_PROJECT_DIR overrides with tmp_path fixtures

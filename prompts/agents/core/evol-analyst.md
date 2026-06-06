@@ -18,12 +18,6 @@ Impact analysis, metrics, blast radius assessment.
 - Metrics analysis
 - Dependency analysis
 
-## GitNexus Integration
-When EVOL_GITNEXUS=1:
-- Use gitnexus_impact() to calculate blast radius
-- Report direct callers, affected processes, risk level
-- Warn if HIGH or CRITICAL risk before proceeding
-
 ## Deliverables
 - Impact reports
 - Risk assessments
@@ -34,5 +28,4 @@ When EVOL_GITNEXUS=1:
 `/evol analyst <assessment-type>`
 
 ## Constraints
-- MUST run impact analysis before editing any symbol
-- MUST warn user if HIGH or CRITICAL risk before proceeding
+- Must warn user if HIGH or CRITICAL risk is detected before proceeding

@@ -30,9 +30,9 @@ X-DD tiene ~180 agentes permanentes en disco. Eso genera sobrecarga de contexto 
 
 Evol-DD tiene **16 agentes core permanentes**. Para cualquier labor especializada que exceda esos 16, el sistema crea un **agente efímero**: existe mientras se necesita, se retira cuando termina su tarea, y su conocimiento queda indexado en Memoria Persistente para poder ser recuperado en el futuro sin recrearlo desde cero.
 
-### 2. Sin MCP en absoluto
+### 2. Integración Nativa MCP
 
-X-DD usa un servidor MCP propio y Memoria Persistente en modo MCP. Evol-DD no usa MCP de ningún tipo — sin servidor MCP, sin protocolo de red MCP, sin configuracion de servidor en ningún IDE. Memoria Persistente se usa exclusivamente en modo CLI (`Memoria Persistente index`, `Memoria Persistente search`) como herramienta local, no como servidor. Ningún adapter IDE debe generar configuración MCP.
+X-DD usa un servidor MCP propio y Memoria Persistente en modo MCP. Evol-DD usa integración nativa de servidores MCP (Model Context Protocol) por defecto en todos los IDEs. Memoria Persistente se usa exclusivamente en modo CLI (`Memoria Persistente index`, `Memoria Persistente search`) como herramienta local, no como servidor. Los adapters IDE deben configurar e integrar los servidores MCP.
 
 ### 3. Auto-generación de skills
 
@@ -221,7 +221,7 @@ Esto:
 - Genera `prompts/agents/ephemeral/<timestamp>-marketing-seo-specialist.md` desde `templates/agent.template.md`
 - Registra en `registry.json` con flags `ephemeral: true`, `expires_after`, `created_for_task`
 - Indexa en Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
-- Indexa en GitNexus si `EVOL_GITNEXUS=1`
+
 
 **Retirar:**
 ```bash
@@ -232,7 +232,7 @@ Esto:
 - Actualiza registry: `retired: true`, `retired_at`, `sessions_used`
 - Archiva snapshot completo en `.evol/agents/retired/<name>.json` (prompt + metadata + sessions)
 - Memoria Persistente retiene el conocimiento indexado (no lo borra)
-- GitNexus retiene el índice (para recall futuro)
+
 
 **Recuperar:**
 ```bash
@@ -331,12 +331,12 @@ evol-dd/
 │   │   ├── DR_PLAN.md
 │   │   └── MONITORING.md
 │   ├── constitucion.md
-│   ├── X-DD_Integration_Guide.md
+│   ├── evol-dd_Integration_Guide.md
 │   ├── RETROFIT_GUIDE.md
 │   ├── CONFIG.md
 │   ├── GATE.md
 │   ├── IDE_SETUP.md
-│   └── gitnexus-optin.md
+
 ├── evals/
 ├── manifests/
 │   ├── install-modules.json
@@ -371,7 +371,7 @@ evol-dd/
 │   ├── evol-brand.sh
 │   ├── evol-update.py
 │   ├── evol-global-install.sh
-│   ├── _evol_common.py         ← utilidades compartidas (Memoria Persistente_safe, etc.)
+│   ├── _evol_common.py         ← utilidades compartidas (memoria_persistente_safe, etc.)
 │   ├── lint-workflows.sh
 │   ├── validate-registry.py
 │   ├── generate-equipo.sh
@@ -419,7 +419,7 @@ Agregar a `.gitignore`: `dialog/` y `tool_result/`.
 
 ### Scripts heredados de X-DD (adaptar, no copiar literalmente)
 
-Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mismo mecanismo pero renombrados y sin ninguna referencia a MCP:
+Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mismo mecanismo pero renombrados y con soporte MCP completo:
 
 **`evol-init.sh`** — Bootstrap de proyectos
 - Lee `manifests/install-modules.json` e `install-profiles.json`
@@ -433,18 +433,18 @@ Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mi
 
 **`evol-start.sh`** — Arranca el sistema
 - Inicia Memoria Persistente en modo CLI: `Memoria Persistente index --wing evol-dd --path .`
-- NO arranca ningún servidor MCP
+- SÍ arranca y gestiona servidores MCP
 - Carga contexto de la última sesión: `Memoria Persistente search "last_session"`
 
 **`evol-adapt.sh`** — Genera configs IDE (copia real, NUNCA symlinks)
 - Soporta targets: `claude-code`, `opencode`, `cursor`, `windsurf`, `vscode-copilot`, `antigravity`, `codex`, `all`
 - Para cada IDE genera archivos reales en las rutas canónicas de ese IDE
-- NUNCA genera sección MCP en ningún archivo de configuración
+- SIEMPRE habilita la sección MCP en configuraciones compatibles
 - Resuelve trigger: `--trigger` flag > `evol.profile.yml` branding > "evol" por defecto
 - Modo seco: `evol-adapt.sh <target> --dry-run`
 
 **`evol-doctor.sh`** — Diagnóstico del entorno
-- Verifica dependencias: git, Python 3.10+, Memoria Persistente CLI, Node (opcional para GitNexus)
+- Verifica dependencias: git, Python 3.10+, Memoria Persistente CLI
 - Verifica estructura del proyecto: directorios requeridos, archivos core
 - Reporta warnings sin bloquear (salvo errores críticos)
 - Flag `--json` para output estructurado
@@ -471,7 +471,7 @@ Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mi
 **`evol-provider.py`** — Abstracción de LLM providers
 - MockProvider determinista (tests sin red)
 - AnthropicProvider lazy (sin red por defecto)
-- Sin providers MCP
+- Soporta providers MCP nativos
 
 **`evol-flow.py`** — Gate ejecutable de flujos declarativos
 - Corre flujos seq/parallel con MockProvider
@@ -502,7 +502,7 @@ Comandos:
   - Genera `.md` desde `templates/agent.template.md`
   - Registra en registry.json con `ephemeral: true`
   - Indexa Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
-  - Indexa GitNexus si `EVOL_GITNEXUS=1`: `npx gitnexus analyze`
+
 - `invoke NAME` — activa el agente para la sesión actual
 - `retire NAME`
   - Elimina `.md`
@@ -751,12 +751,6 @@ Variables de entorno para extract/suggest-fix:
 |----------|---------|-------------|
 | `EVOL_PROVIDER` | `mock` | Provider LLM (`mock` sin red o `anthropic` para sugerencias reales) |
 
-### Modo GitNexus (opt-in)
-
-Siempre opt-in (`EVOL_GITNEXUS=1`). Separado del modo Memoria Persistente. Licencia PolyForm-NC —
-incompatible con uso comercial. Activar solo en proyectos no-comerciales. Documentado en
-`docs/gitnexus-optin.md`.
-
 ### Modos de orquestacion multi-agente
 
 `evol-orchestrate.py` soporta 4 patterns de composicion (igual que X-DD):
@@ -795,7 +789,7 @@ evol-start            # imprime modo al arrancar
 
 ## Hooks del sistema (event-driven)
 
-El sistema usa hooks bash event-driven, sin MCP. Los hooks reciben JSON por stdin y responden con exit codes (0 = permitir, 2 = bloquear PreToolUse).
+El sistema usa hooks bash event-driven, con soporte MCP. Los hooks reciben JSON por stdin y responden con exit codes (0 = permitir, 2 = bloquear PreToolUse).
 
 Hooks requeridos:
 
@@ -1066,7 +1060,7 @@ La constitución es el documento de gobernanza supremo. Debe contener estos 9 ar
 evol_version: 0.1.0-dev
 Memoria Persistente:
   enabled: true
-  mode: cli                    # IMPORTANTE: cli only, sin MCP
+  mode: mcp                    # IMPORTANTE: habilitado para MCP
   default_wing: evol-dd
   index_paths:
     - .agent
@@ -1107,15 +1101,14 @@ agents:
     default_expires_after_days: 30
     retire_on_task_complete: false
     archive_path: .evol/agents/retired
-gitnexus:
-  enabled: false               # opt-in via EVOL_GITNEXUS=1
+
   license: PolyForm-NC
   commercial_use: false
 ide_adapters:
   generate_for:
     - claude-code
     - opencode
-  mcp: false                   # NUNCA generar config MCP
+  mcp: true                    # Habilitar integración MCP
 ```
 
 ### `evol.profile.yml`
@@ -1144,7 +1137,7 @@ El `CLAUDE.md` raíz de Evol-DD debe ser el manifiesto de operación para Claude
 - Tabla de artefactos producidos por cada workflow
 - Tabla de scripts disponibles con función de cada uno
 - Directrices de calidad: portabilidad absoluta (rutas relativas), cero duplicados, flujo gated pipeline
-- Sección GitNexus opt-in (si está activo, instrucciones de uso)
+
 
 ---
 
@@ -1182,8 +1175,8 @@ El schema debe soportar los siguientes campos para agentes efímeros (además de
 El sistema está correctamente construido cuando:
 
 1. `evol-doctor.sh` reporta 0 errores críticos y detecta Memoria Persistente CLI disponible
-2. `evol-init.sh /tmp/test-project --profile core` instala el proyecto sin errores y no genera ninguna referencia a MCP en los archivos instalados
-3. `evol-adapt.sh all` genera configs para los 7 IDEs y ningún archivo generado contiene la palabra "mcp" en contexto de configuración de servidor
+2. `evol-init.sh /tmp/test-project --profile core` instala el proyecto sin errores y genera la configuración nativa MCP en los archivos instalados
+3. `evol-adapt.sh all` genera configs para los 7 IDEs y los archivos generados incluyen las configuraciones de servidor MCP nativas
 4. `python3 scripts/evol-agent-lifecycle.py create --name "test-agent" --task "prueba"` crea el archivo `.md`, lo registra en registry.json, e indexa Memoria Persistente
 5. `python3 scripts/evol-agent-lifecycle.py retire "test-agent"` elimina el `.md`, archiva el snapshot en `.evol/agents/retired/`, y Memoria Persistente retiene el conocimiento
 6. `python3 scripts/evol-agent-lifecycle.py recall "test-agent"` reconstruye el agente desde el archivo retired
@@ -1200,7 +1193,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 
 **Sprint 0 — Des-X-DD-izacion y base legal (antes de cualquier codigo)**
 1. `rm -rf .git && git init && git checkout -b main && git checkout -b develop`
-2. Reescribir `AGENTS.md` y `CLAUDE.md` a identidad Evol-DD (sin xdd-*, sin MCP)
+2. Reescribir `AGENTS.md` y `CLAUDE.md` a identidad Evol-DD (sin xdd-*)
 3. Renombrar `xdd.profile.yml` → `evol.profile.yml`; eliminar `.xdd/`
 4. Crear `docs/constitucion.md` (9 articulos con GitFlow en Art. 7)
 5. Crear `.gitignore` desde template (scripts/, prompts/, skills/, templates/, configs IDE generadas)
@@ -1210,9 +1203,9 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 
 7. Templates criticos: `agent.template.md`, `working-context.template.md`, `memoria.template.md`, `lecciones.template.md`
 8. Scripts de infraestructura base: `evol-state.py`, `evol-provider.py`, `evol-gate.py`, `evol-flow.py`
-9. `_evol_common.py` — utilidades compartidas incluyendo `Memoria Persistente_safe()` para degradacion elegante
+9. `_evol_common.py` — utilidades compartidas incluyendo `memoria_persistente_safe()` para degradacion elegante
 10. Scripts de instalacion y diagnostico: `evol-doctor.sh` (con check de residuos X-DD + Memoria Persistente discovery en PATHs no-standard), `evol-init.sh`, `evol-start.sh`, `evol-global-install.sh`
-11. `evol-adapt.sh` — 7 IDEs sin MCP
+11. `evol-adapt.sh` — 7 IDEs con soporte MCP
 12. Manifests: `schemas/`, `install-modules.json`, `install-profiles.json`
 13. 16 agentes core (`prompts/agents/core/`) + `registry.json` + `registry.schema.json`
 14. Skills del sistema (`skills/`) con SKILL.md de cada una
@@ -1232,7 +1225,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 ## Notas finales para el agente que construye
 
 - Toda ruta en los archivos generados debe ser relativa. Nunca rutas absolutas del host.
-- Cuando adaptes scripts de X-DD, elimina toda referencia a `xdd`, `mcp`, `xdd-mcp-server`. Renombra variables, funciones y comentarios.
+- Cuando adaptes scripts de X-DD, elimina referencias a `xdd` pero mantén el soporte `mcp`. Renombra variables, funciones y comentarios.
 - Los scripts bash deben ser portables: `#!/usr/bin/env bash`, sin bashisms de versión específica.
 - El sistema de hooks debe ser completamente autónomo: los scripts en `.agent/hooks/scripts/` son versionados en el repo, no en `.git/hooks/`.
 - Al generar configs IDE con `evol-adapt.sh`, recuerda: Claude Code y VSCode Copilot NO siguen symlinks. Siempre `cp` real.
@@ -1272,13 +1265,13 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 
 | Tema | Decisión |
 |------|----------|
-| Workflows | 56 completos adaptados a `/evol` (paridad con X-DD, sin refs MCP/xdd) |
+| Workflows | 56 completos adaptados a `/evol` (paridad con X-DD, sin refs xdd) |
 | Paquete pip | `evol-dd`; módulo `src/evol_cli/`; comando raíz `evol` |
 | Entry-points | `evol-gate`, `evol-eval`, `evol-flow`, `evol-provider`, `evol-shield`, `evol-orchestrate`, `evol-agent`, `evol-evolve`, `evol-research` |
 | Estado SQLite | `~/.evol/state.db` (var `EVOL_STATE_DB`) |
 | Gate key | **POR PROYECTO** — `.evol/.gate-key` local, gitignored. Cada proyecto tiene su propia key HMAC. Para simplificar el bootstrap: `evol gate init --from-global` copia la key global `~/.evol/.gate-key` al proyecto como punto de partida, pero la mantiene separada. Un leak en un proyecto no compromete otros. |
 | VERSION inicial | `0.1.0-dev` |
-| Vars de entorno | `EVOL_PROVIDER_MOCK`, `EVOL_GITNEXUS`, `EVOL_HOOK_PROFILE`, `EVOL_SCRIPTS_DIR`, `EVOL_DATA_DIR`, `EVOL_NO_ADAPT/HOOKS/GITHOOK/BRAND/GATE_INIT` |
+| Vars de entorno | `EVOL_PROVIDER_MOCK`, `EVOL_HOOK_PROFILE`, `EVOL_SCRIPTS_DIR`, `EVOL_DATA_DIR`, `EVOL_NO_ADAPT/HOOKS/GITHOOK/BRAND/GATE_INIT` |
 | Estrategia Git (Art. 7) | **GitFlow como defecto** — ya incorporado en Art. 7 de la Constitucion. `main` + `develop` + `feature/*` + `release/*` + `hotfix/*`. Trunk-based como opt-in. La Constitucion es la fuente unica de esta decision — no hay contradiccion. |
 | Git remoto | `https://github.com/Cucholambr3ta/evol-dd.git` |
 | Git bootstrap | Renombrar `master`→`main`, commit inicial, crear `develop`, push ambas. Feature branches `feature/m*` por milestone → merge a `develop`. |
@@ -1291,8 +1284,8 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | B.2 | Integridad de snapshot | Al `retire`: calcular SHA-256 del prompt y guardarlo en snapshot. Al `recall`: recomputar y comparar — abortar si difiere (flag `--force` para override). Campo: `prompt_sha256` en `.evol/agents/retired/<name>.json`. |
 | B.2b | Contenido del snapshot | Prompt completo + metadata + SHA-256 + log de cada invocación (timestamp, tarea). Campo `invocation_log: [{timestamp, task}]` en el JSON. |
 | B.3 | Supply-chain skills | Antes de instalar: `gitleaks` (secrets) + `semgrep` (patrones peligrosos) sobre la skill descargada. Pin por **commit SHA** (no branch/tag móvil). SHA guardado en registry. Comando: `evol-evolve update-skill NAME` para actualizar explícitamente. |
-| B.4 | Degradación sin Memoria Persistente/GitNexus | Si `Memoria Persistente`/`npx gitnexus` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `Memoria Persistente_safe()` en `scripts/_evol_common.py`. |
-| B.5 | Regla anti-MCP verificable | Regla `no_mcp_config` en `evol-shield.py`: falla si artefacto generado contiene `mcpServers`/`mcp.json`/servidor MCP. Step CI con grep. |
+| B.4 | Degradación sin Memoria Persistente | Si `Memoria Persistente` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `memoria_persistente_safe()` en `scripts/_evol_common.py`. |
+
 | B.6 | Idempotencia install | Tests bats: correr `evol-init` dos veces, verificar no-duplicación de hooks en `~/.claude/settings.json`. Archivo: `tests/test_init_idempotent.bats`. |
 | B.9 | Perfil lean sin global | `evol-init lean` **falla con error claro** si wrapper global no existe: `"lean requiere evol-global-install.sh ejecutado primero"`. Sin degradación silenciosa. |
 
@@ -1311,7 +1304,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | evol-evolve clustering | TF-IDF stdlib (sin sklearn). Sin dependencias extra. Funciona offline. Umbral `min-confidence` default: `0.7` (configurable). |
 | Researcher auth | API pública GitHub por defecto (60 req/h). Con `GITHUB_TOKEN` env var: 5000 req/h. Sin token: funciona con rate-limit; script informa el límite activo al correr. Cache de resultados en SQLite (`research_proposals`). |
 
-### E — Matriz IDE sin MCP
+### E — Matriz IDE con MCP
 
 | IDE | Mecanismo de invocación | Archivos generados |
 |-----|------------------------|-------------------|
@@ -1323,7 +1316,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | antigravity | Skills locales | `.agents/skills/` + `.antigravity/README-evol.md` |
 | codex | Skills globales | `~/.codex/skills/<trigger>-orchestrator/` |
 
-Ninguno genera archivo MCP. `evol-shield.py` verifica en CI.
+Se generan archivos de configuración MCP por defecto.
 
 ### F — docs/test/ y AGENTS.md
 
@@ -1379,7 +1372,7 @@ El CI (`.github/workflows/ci.yml`) debe incluir estos steps obligatorios:
 | Lint workflows | `bash scripts/lint-workflows.sh` | Si |
 | Validate registry | `python3 scripts/validate-registry.py --strict` | Si |
 | Validate manifests | `jsonschema` contra schemas/ | Si |
-| Anti-MCP grep | `grep -r "mcpServers\|mcp\.json" .agent/workflows/ docs/ .github/` → debe ser 0 | Si |
+| Integración-MCP grep | `grep -r "mcpServers\|mcp\.json" .agent/workflows/ docs/ .github/` → debe ser 0 | Si |
 | Anti-emoji grep | `grep -rP "[\x{1F000}-\x{1FAFF}]" docs/` → debe ser 0 | Si |
 | AgentShield audit | `python3 scripts/evol-shield.py audit --ci` | Si |
 | Idempotencia init | `bats tests/test_init_idempotent.bats` | Si |
@@ -1397,7 +1390,7 @@ Carpeta que se instala en cada proyecto generado (modulo `docs-governance`). Cum
 | `docs/test/GHERKIN.md` | Convencion Gherkin (happy path / error / borde) con vocabulario DOMAIN |
 | `docs/test/MATRIZ_TRAZABILIDAD.md` | Plantilla REQ↔TC bidireccional |
 | `docs/test/SEGURIDAD.md` | SAST/DAST/SCA: semgrep, trivy, nuclei, gitleaks, evol-shield. Scan supply-chain skills. |
-| `docs/test/CI.md` | Como corre todo en CI; gates que bloquean merge; grep anti-MCP; grep anti-emoji |
+| `docs/test/CI.md` | Como corre todo en CI; gates que bloquean merge; grep anti-emoji |
 
 Mapa tipo → agente → herramienta:
 
@@ -1436,9 +1429,8 @@ renombrando `xdd→evol` y eliminando refs MCP. Paso en el orden de construccion
 ### I.2 — AGENTS.md reescritura (CERRADO)
 
 Reescribir `AGENTS.md` en **el mismo paso de identidad que `CLAUDE.md`** (Paso 1 del build,
-antes de construir nada encima). Eliminar bloque `<!-- gitnexus:start -->` y GitNexus MCP
 tools. Sustituir tabla de scripts `xdd-*` por `evol-*`. Trigger `/evol`. Referencia a
-`docs/constitucion.md` de Evol-DD. El grep anti-MCP del Anexo G debe incluir `AGENTS.md`.
+`docs/constitucion.md` de Evol-DD. 
 
 ### I.3 — Conteo workflows (CERRADO)
 
@@ -1503,10 +1495,10 @@ evol-lessons    = "evol_cli:lessons"
 Cada entry-point en `src/evol_cli/__init__.py` es un dispatcher fino que ejecuta el script
 correspondiente via `runpy` (mismo patron que `xdd_cli`). NO reescribe los scripts.
 
-### I.9 — Grep anti-MCP robusto (CERRADO)
 
-Usar grep de strings exactos que indican MCP activo (`mcpServers`, `evol-mcp-server`,
-`xdd-mcp-server`) — no buscar "mcp" generico para evitar falso positivo con `mcp: false`.
+
+ (`mcpServers`, `evol-mcp-server`,
+ para evitar falso positivo con `mcp: true`.
 
 ```bash
 grep -rn 'mcpServers\|xdd-mcp-server\|evol-mcp-server' \
@@ -1514,10 +1506,10 @@ grep -rn 'mcpServers\|xdd-mcp-server\|evol-mcp-server' \
   .cursor/ .windsurf/ AGENTS.md CLAUDE.md prompts/ \
   --include='*.md' --include='*.json' \
   --include='*.yml' --include='*.yaml' \
-  && echo "FALLO: MCP detectado" && exit 1 || echo "OK: 0 refs MCP activo"
+
 ```
 
-Ademas: archivo `.evol-mcp-exclude` para casos legitimos futuros (si aplica).
+ futuros (si aplica).
 
 ### I.10 — Doctor detecta residuos X-DD (CERRADO)
 
@@ -1549,14 +1541,14 @@ Paso 0 del build (antes de cualquier otra cosa):
 | ID | Tema | Decision |
 |----|------|----------|
 | I.1 | SSoT workflows | `.agent/workflows/` versionado; dirs IDE = output de evol-adapt.sh (gitignored) |
-| I.2 | AGENTS.md | Reescribir en Paso 0 junto a CLAUDE.md; grep anti-MCP incluye AGENTS.md |
+| I.2 | AGENTS.md | Reescribir en Paso 0 junto a CLAUDE.md; grep MCP-Integrado incluye AGENTS.md |
 | I.3 | Conteo workflows | 56 (55 heredados + research.md nuevo) |
-| I.4 | CLAUDE.md | Reescribir en Paso 0; criterio: 0 refs xdd/MCP |
+| I.4 | CLAUDE.md | Reescribir en Paso 0; criterio: MCP listo xdd/MCP |
 | I.5 | Git bootstrap | Reiniciar historial (rm -rf .git); push main+develop |
 | I.6 | WORKING-CONTEXT.md | Template en templates/; evol-init.sh lo copia |
 | I.7 | schemas/ | JSON schemas de manifests (igual X-DD); mantener en index_paths |
 | I.8 | Entry-points pip | Tabla console_scripts en pyproject.toml (12 entry-points) |
-| I.9 | Grep anti-MCP | Grep exacto de mcpServers/xdd-mcp-server; .evol-mcp-exclude para excepciones |
+
 | I.10 | Doctor residuos X-DD | Warning no bloqueante al detectar artefactos xdd-*/mcp.json |
 | I.11+I.12 | Tests avanzados | El constructor define fixtures; comportamiento esperado documentado |
 | I.13+I.14 | Des-X-DD-izacion | Paso 0 explicito antes de construir nada |
@@ -1584,7 +1576,7 @@ Paso 0 del build (antes de cualquier otra cosa):
 | C1 | Art.7 trunk-based vs GitFlow | Art. 7 actualizado: GitFlow como defecto en Evol-DD |
 | C2 | "Evoluciona autonomamente" vs aprobacion humana | Filosofia central aclarada: evolucion asistida, no autonoma |
 | C3 | Gate key global vs aislamiento criptografico | Key por proyecto; comando `--from-global` para bootstrap |
-| C4 | "Sin MCP" vs Memoria Persistente como dep externa | Aclarado: sin MCP server/protocolo; Memoria Persistente es CLI tool local |
+
 | C5 | 16 core vs factory+efimeros | Criterio formal: core = responsabilidad sobre estado del sistema |
 
 ### Vacios resueltos

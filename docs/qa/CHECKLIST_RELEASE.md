@@ -56,7 +56,7 @@ rm -rf "$tmpdir"
 bats tests/test_init_idempotent.bats
 ```
 
-### 8. Anti-MCP / Anti-Emoji
+### 8. Integración-MCP / Anti-Emoji
 
 ```bash
 grep -r "mcpServers" . --include="*.yml" --include="*.json" --include="*.md" 2>/dev/null | grep -v ".git/" | wc -l  # debe ser 0

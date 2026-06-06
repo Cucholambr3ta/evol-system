@@ -4,10 +4,10 @@ import os, sys, json, argparse, hashlib, shutil, subprocess
 from datetime import datetime, timedelta
 
 try:
-    from _evol_common import get_logger, get_data_dir, Memoria Persistente_safe, save_json, load_json
+    from evol_cli.scripts._evol_common import get_logger, get_data_dir, memoria_persistente_safe, save_json, load_json
 except ImportError:
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from _evol_common import get_logger, get_data_dir, Memoria Persistente_safe, save_json, load_json
+    from _evol_common import get_logger, get_data_dir, memoria_persistente_safe, save_json, load_json
 
 logger = get_logger("agent-lifecycle")
 
@@ -87,13 +87,9 @@ created_at: {datetime.now().isoformat()}
     })
     save_registry(registry)
 
-    Memoria Persistente_safe("index", "--path", EPHEMERAL_DIR)
+    memoria_persistente_safe("index", "--path", EPHEMERAL_DIR)
 
-    if os.environ.get("EVOL_GITNEXUS") == "1":
-        try:
-            subprocess.run(["npx", "gitnexus", "analyze"], capture_output=True, timeout=60)
-        except Exception:
-            pass
+
 
     logger.info(f"Created: {name} -> {filepath}")
     print(f"[OK] Agent created: {name} (expires in {expires_after} days)")
@@ -208,9 +204,9 @@ def recall_agent(name, force=False):
 
     save_registry(registry)
 
-    Memoria Persistente_safe("index", "--path", EPHEMERAL_DIR)
+    memoria_persistente_safe("index", "--path", EPHEMERAL_DIR)
 
-    recall_type = "COMPLETO" if Memoria Persistente_safe("search", name) else "BASICO"
+    recall_type = "COMPLETO" if memoria_persistente_safe("search", name) else "BASICO"
     logger.info(f"Recalled: {name} (type: {recall_type})")
     if recall_type == "COMPLETO":
         print(f"[OK] Agent recalled: {name}")

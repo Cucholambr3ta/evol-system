@@ -44,7 +44,7 @@ Comandos rapidos:
 **Leccion:** Opción A: convertir scripts a módulos Python importables. Opción B (elegida): despachar vía `subprocess.run` a scripts instalados. Nunca mezclar las dos sin contrato claro.
 **Aplica a:** CLI packaging, entrypoints
 
-### [ARQUITECTURA] Runtime state no debe indexarse en MemPalace — 2026-06-02
+### [ARQUITECTURA] Runtime state no debe indexarse en Memoria Persistente — 2026-06-02
 **Contexto:** Indexing de `.evol/`, `dialog/`, `tool_result/` podía exponer secrets
 **Problema:** `.evol/.gate-key` entraba a indices semánticos
 **Causa raiz:** Indexing con path amplio sin allowlist
@@ -167,6 +167,13 @@ _(vacio)_
 **Fix aplicado:** src/evol_cli/{scripts,agent,manifests,skills,docs,templates}/ + shared-data en pyproject
 
 ## PROCESO
+
+### [PROCESO] Distinguir scaffolding del propio framework vs state del framework — 2026-06-06
+**Contexto:** Limpiando archivos no deseados (artefactos sueltos) de la raiz del repositorio de Evol-DD.
+**Problema:** Se elimino `acuerdos/` y otros archivos de contexto asumiendo que eran andamiaje residual de una prueba local de `evol-init`, cuando en realidad almacenaban la memoria propia de los sprints del framework.
+**Causa raiz:** El framework usa la misma convencion de nombres (`acuerdos/`, `lecciones.md`, `memoria.md`) para el andamiaje que inyecta en proyectos de terceros y para su propio estado de desarrollo, lo que genera confusion al inspeccionar el repositorio.
+**Leccion:** Antes de borrar directorios en la raiz del framework que coincidan con su propio output de scaffolding, verificar en el `.gitignore` raiz o en el historial si estan protegidos. El framework aplica *dogfooding* (usa sus propias herramientas), por lo que esos directorios suelen contener la memoria legitima del proyecto y no deben borrarse.
+**Aplica a:** Mantenimiento del repositorio Evol-DD, limpieza de directorios y operaciones `.gitignore`.
 
 ### [PROCESO] Docs deben reflejar implementacion real, no aspiración — 2026-06-02
 **Contexto:** Docs contenían placeholders TBD y claims sin respaldo de código

@@ -7,7 +7,7 @@
 | CB-001 | Manifest invalido al hacer evol-init (profile inexistente) | Binario evol-init disponible, sin evol.profile.yml previo | `evol-init --profile perfil_inexistente` | Error claro con lista de profiles disponibles, sin crear directorio parcial | CRITICA |
 | CB-002 | IDE no detectado en bootstrap (PATH vacio) | evol-adapt.sh ejecutable, PATH={} | `evol-adapt.sh` sin IDEs en PATH | Warning por cada IDE no detectado, continua con los detectados, exit 0 si al menos uno funciono | ALTA |
 | CB-003 | Agente efimero vencido al intentar invocar | AGENT.md con `expires_after_days` ya expirado en fecha de ejecucion | Invocacion del agente por nombre | Error con fecha de expiracion, sugerencia de `recall` o `crear-agente` nuevo | CRITICA |
-| CB-004 | Recall con MemPalace no disponible (solo snapshot JSON) | MemPalace offline, snapshot `mempalace-snapshot.json` presente | `evol-memory recall --agent nombre` | Carga desde snapshot JSON local, warning de datos potencialmente desactualizados | CRITICA |
+| CB-004 | Recall con Memoria Persistente no disponible (solo snapshot JSON) | Memoria Persistente offline, snapshot `memoria_persistente-snapshot.json` presente | `evol-memory recall --agent nombre` | Carga desde snapshot JSON local, warning de datos potencialmente desactualizados | CRITICA |
 | CB-005 | Gate key no existe al hacer transition (primera vez) | Proyecto nuevo, sin `.evol/.gate-key` | `evol-gate.py transition fase1 fase2` | Error explicito con instruccion de ejecutar `evol-gate.py init` primero | ALTA |
 | CB-006 | Registry.json corrupto (JSON invalido) al validate-registry | `registry.json` con syntax error (coma extra, llave sin cerrar) | `validate-registry.py --strict` | Exit 1 con linea exacta del error de parseo, sin intentar validacion parcial | ALTA |
 | CB-007 | Leccion duplicada en evol-lessons (similaridad Jaccard > 0.70) | lecciones.md con al menos una leccion existente | `evol-lessons add "Evitar commits directos a main"` con leccion similar ya presente | Rechazo con ID de la leccion similar, valor Jaccard calculado y texto de la colision | CRITICA |
@@ -55,30 +55,30 @@ Feature: Inicializacion de proyecto con profile invalido
 
 ---
 
-### CB-004: Recall con MemPalace no disponible (solo snapshot JSON)
+### CB-004: Recall con Memoria Persistente no disponible (solo snapshot JSON)
 
 ```gherkin
-Feature: Recall de agente cuando MemPalace no esta disponible
+Feature: Recall de agente cuando Memoria Persistente no esta disponible
 
   Background:
-    Given el archivo "mempalace-snapshot.json" existe en ".evol/memory/"
+    Given el archivo "memoria_persistente-snapshot.json" existe en ".evol/memory/"
     And el snapshot contiene datos del agente "evol-researcher" con fecha "2026-05-01"
-    And MemPalace no esta disponible (proceso no corre, puerto cerrado)
+    And Memoria Persistente no esta disponible (proceso no corre, puerto cerrado)
 
   Scenario: Recall carga desde snapshot local con advertencia
     When el usuario ejecuta "evol-memory recall --agent evol-researcher"
     Then el proceso termina con exit code 0
     And stdout contiene los datos del agente cargados desde el snapshot
-    And stderr contiene "MemPalace no disponible: usando snapshot local"
+    And stderr contiene "Memoria Persistente no disponible: usando snapshot local"
     And stderr contiene la fecha del snapshot "2026-05-01"
     And se indica que los datos pueden estar desactualizados
 
   Scenario: Recall falla correctamente si tampoco existe snapshot
-    Given el archivo "mempalace-snapshot.json" no existe
+    Given el archivo "memoria_persistente-snapshot.json" no existe
     When el usuario ejecuta "evol-memory recall --agent evol-researcher"
     Then el proceso termina con exit code 1
     And stderr contiene "Sin fuente de datos disponible para recall"
-    And stderr sugiere ejecutar "evol-memory snapshot" cuando MemPalace este disponible
+    And stderr sugiere ejecutar "evol-memory snapshot" cuando Memoria Persistente este disponible
 
   Scenario: Los datos cargados desde snapshot son de solo lectura
     When el usuario ejecuta "evol-memory recall --agent evol-researcher"

@@ -203,7 +203,7 @@ check_source_dirs_tracked() {
     done
 }
 
-check_Memoria Persistente_safe() {
+check_memoria_persistente_safe() {
     emit "INFO" "Memoria Persistente" "Checking Memoria Persistente safe indexing config..."
 
     local config_files=(
@@ -409,7 +409,7 @@ main() {
     check_scripts_executable
     check_sensitive_permissions
     check_source_dirs_tracked
-    check_Memoria Persistente_safe
+    check_memoria_persistente_safe
     check_entrypoints
     check_dependencies
     check_legacy_artifacts

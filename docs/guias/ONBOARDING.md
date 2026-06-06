@@ -21,20 +21,12 @@ Git 2.30 es necesario para `git check-ignore -q` que usa `evol-doctor.sh`. Versi
 
 ### Opcionales pero recomendados
 
-**MemPalace CLI** habilita el Modo COMPLETO del sistema. Sin él el framework opera en Modo BASE — todas las fases del pipeline funcionan, pero sin indexacion semantica ni recall automatico de contexto.
+**Memoria Persistente CLI** habilita el Modo COMPLETO del sistema. Sin él el framework opera en Modo BASE — todas las fases del pipeline funcionan, pero sin indexacion semantica ni recall automatico de contexto.
 
-Instalacion de MemPalace:
+Instalacion de Memoria Persistente:
 ```bash
-pip install mempalace
-mempalace --version
-```
-
-**GitNexus** provee analisis de blast radius y grafos de simbolos. Es opt-in obligatorio porque su licencia (PolyForm Noncommercial) es incompatible con uso comercial.
-
-```bash
-# Solo proyectos no-comerciales
-export EVOL_GITNEXUS=1
-npx gitnexus analyze
+pip install memoria_persistente
+memoria_persistente --version
 ```
 
 ### Verificacion de prerequisitos
@@ -143,7 +135,7 @@ La ultima linea del output indica el modo: `[PASS]` significa que todos los chec
 
 Para ver el modo en JSON (util para scripts):
 ```bash
-evol doctor --json | grep mempalace_mode
+evol doctor --json | grep memoria_persistente_mode
 ```
 
 ---
@@ -159,7 +151,7 @@ evol doctor              # output humano con colores
 evol doctor --json       # output JSONL, una linea por check
 ```
 
-Checks que ejecuta: `Profile`, `Manifest`, `RequiredFiles`, `Scripts`, `Permissions`, `SourceTracking`, `MemPalace`, `Entrypoints`, `Dependencies`, `LegacyArtifacts`.
+Checks que ejecuta: `Profile`, `Manifest`, `RequiredFiles`, `Scripts`, `Permissions`, `SourceTracking`, `Memoria Persistente`, `Entrypoints`, `Dependencies`, `LegacyArtifacts`.
 
 ### evol profile
 
@@ -365,7 +357,7 @@ evol-agent create \
 evol-agent invoke db-migration-specialist \
   "Revisar script de migracion en migrations/v2_upgrade.sql"
 
-# Retirar cuando la tarea termina (conocimiento persiste en MemPalace)
+# Retirar cuando la tarea termina (conocimiento persiste en Memoria Persistente)
 evol-agent retire db-migration-specialist
 
 # Recall posterior sin recrear desde cero

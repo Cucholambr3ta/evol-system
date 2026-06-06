@@ -15,12 +15,12 @@
 | Commit | Descripcion |
 |--------|-------------|
 | `369e27d` | feat: add /update-memory workflow to maintain persistent memory |
-| `61f746d` | refactor: remove mempalace dependencies in preparation for persistent memory |
+| `61f746d` | refactor: remove memoria_persistente dependencies in preparation for persistent memory |
 | `e03d5f3` | docs(memoria): migrate monolithic MEMORY to atomic structure |
 
 ## Proximo paso
 
-1. ~~Borrar MemPalace y toda su estructura.~~ (Completado).
+1. ~~Borrar Memoria Persistente y toda su estructura.~~ (Completado).
 2. **Merge & Release v0.3.3**: Mergear cambios a develop, hacer el tag de release de v0.3.3 y subir a PyPI.
 
 ## Resumen del sistema (post-build completo)
@@ -37,7 +37,6 @@
 ## Notas de arquitectura vigentes
 
 - Gate HMAC-SHA256 por proyecto (`.evol/.gate-key` gitignored)
-- Sin MCP en ningun adapter IDE
 - GitFlow enforced via pre-commit-gitflow.sh
 - Motor memoria nativo: `EVOL_MEMORY=1` activa `evol-memory.py`
 - Motor lecciones: siempre activo, `evol-lessons.py` en core

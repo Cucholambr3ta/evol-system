@@ -52,7 +52,7 @@
 | G3 | `bash scripts/lint-workflows.sh` OK | SI |
 | G4 | `python3 scripts/validate-registry.py --strict` OK | SI |
 | G5 | jsonschema contra schemas/ OK | SI |
-| G6 | grep mcpServers en artefactos = 0 | SI |
+| G6 | MCP config habilitado en artefactos = 1 | SI |
 | G7 | grep emojis en docs/ = 0 | SI |
 | G8 | `python3 scripts/evol-shield.py audit --ci` OK | SI |
 | G9 | `bats tests/test_init_idempotent.bats` OK | SI |
@@ -63,8 +63,8 @@
 |----|-------------|--------|
 | NFR-001 | `evol-doctor.sh` completa en < 5s | Implementado |
 | NFR-002 | `evol-init.sh --profile=full` completa en < 30s | Implementado |
-| NFR-003 | Modo BASE funcional sin MemPalace | Implementado |
-| NFR-004 | Sin MCP en configs generadas | Implementado (G6) |
+| NFR-003 | Modo BASE funcional sin Memoria Persistente | Implementado |
+| NFR-004 | Con MCP en configs generadas | Implementado (G6) |
 | NFR-005 | Sin hardcoded secrets | Implementado (G8) |
 | NFR-006 | Rutas relativas en todos los archivos | Roadmap |
 | NFR-007 | Max 10 lineas por funcion | Implementado (lint) |

@@ -54,4 +54,4 @@ Para cada flag captura: key, tipo, owner, audiencia inicial, default (OFF en pro
 - Cambio de default en kill switches.
 
 ## 7. Cierre
-Actualiza `FLAGS.md`, indexa con MemPalace.
+Actualiza `FLAGS.md`, indexa con Memoria Persistente.

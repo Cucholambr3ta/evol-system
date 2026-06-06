@@ -3,7 +3,7 @@
 ## ADR-001: Arquitectura CLI-first
 
 - Status: Accepted
-- Decision: Sistema opera sin MCP, CLI nativo
+- Decision: Sistema opera con integración nativa MCP
 - Consecuencias: Mayor portabilidad, menor complejidad
 
 ---
@@ -15,11 +15,11 @@
 
 ### Contexto
 
-X-DD incluia un servidor MCP propio y utilizaba MemPalace en modo MCP para la continuidad de contexto entre sesiones. Esta arquitectura requeria configuracion de red, un proceso servidor persistente, y dependencias de transporte que variaban por entorno. El mantenimiento del servidor MCP introducia superficie de ataque adicional y puntos de fallo que no aportaban valor diferencial en comparacion con alternativas nativas.
+X-DD incluia un servidor MCP propio y utilizaba Memoria Persistente en modo MCP para la continuidad de contexto entre sesiones. Esta arquitectura requeria configuracion de red, un proceso servidor persistente, y dependencias de transporte que variaban por entorno. El mantenimiento del servidor MCP introducia superficie de ataque adicional y puntos de fallo que no aportaban valor diferencial en comparacion con alternativas nativas.
 
 ### Decision
 
-Evol-DD no utiliza MCP de ningun tipo. Toda integracion con IDEs y herramientas externas se realiza mediante `evol-adapt.sh`, que genera copias reales de la configuracion en los directorios de destino. MemPalace, cuando se usa, opera en modo file-based, no en modo MCP.
+Evol-DD no utiliza MCP de ningun tipo. Toda integracion con IDEs y herramientas externas se realiza mediante `evol-adapt.sh`, que genera copias reales de la configuracion en los directorios de destino. Memoria Persistente, cuando se usa, opera en modo file-based, no en modo MCP.
 
 ### Consecuencias
 
@@ -28,7 +28,7 @@ Evol-DD no utiliza MCP de ningun tipo. Toda integracion con IDEs y herramientas 
 | Seguridad | Superficie de ataque reducida: sin puerto abierto, sin autenticacion de transporte |
 | Configuracion | Sin setup de red. Funciona en entornos air-gapped sin cambios |
 | Compatibilidad IDEs | 7 IDEs soportados via copia real generada por adapt.sh (SSoT unico) |
-| MemPalace | Sigue disponible como opcion opt-in en modo file-based |
+| Memoria Persistente | Sigue disponible como opcion opt-in en modo file-based |
 | Complejidad operativa | Elimina proceso servidor, health-checks y reintentos de conexion |
 
 ---
@@ -110,12 +110,12 @@ Evol-DD mantiene exactamente 16 agentes core con caracter permanente. Su criteri
 |--------|-------------|
 | `create` | Definicion escrita, aun no activo en sesion |
 | `active` | Disponible para invocacion en sesion actual |
-| `retired` | Fuera de rotacion activa, conocimiento en MemPalace |
-| `recalled` | Reactivado desde MemPalace para una sesion especifica |
+| `retired` | Fuera de rotacion activa, conocimiento en Memoria Persistente |
+| `recalled` | Reactivado desde Memoria Persistente para una sesion especifica |
 
 ### Consecuencias
 
-El contexto de sesion se mantiene limpio. La transicion `retired → recalled` requiere que MemPalace haya persistido el conocimiento del agente antes del retire; si MemPalace no estaba activo, la informacion se pierde. El numero 16 es un limite de gobierno, no tecnico: no hay verificacion automatica que impida crear mas de 16 agentes con ciclo de vida `active` simultaneamente; la disciplina es responsabilidad del equipo.
+El contexto de sesion se mantiene limpio. La transicion `retired → recalled` requiere que Memoria Persistente haya persistido el conocimiento del agente antes del retire; si Memoria Persistente no estaba activo, la informacion se pierde. El numero 16 es un limite de gobierno, no tecnico: no hay verificacion automatica que impida crear mas de 16 agentes con ciclo de vida `active` simultaneamente; la disciplina es responsabilidad del equipo.
 
 ---
 
@@ -126,7 +126,7 @@ El contexto de sesion se mantiene limpio. La transicion `retired → recalled` r
 
 ### Contexto
 
-X-DD depende de MemPalace (MIT) para la continuidad de contexto entre sesiones. MemPalace es una dependencia externa con su propio modelo de instalacion y configuracion. En entornos con restricciones de red o en onboardings rapidos, la ausencia de MemPalace dejaba al sistema sin ningun mecanismo de continuidad, forzando al usuario a reconstruir contexto manualmente al inicio de cada sesion.
+X-DD depende de Memoria Persistente (MIT) para la continuidad de contexto entre sesiones. Memoria Persistente es una dependencia externa con su propio modelo de instalacion y configuracion. En entornos con restricciones de red o en onboardings rapidos, la ausencia de Memoria Persistente dejaba al sistema sin ningun mecanismo de continuidad, forzando al usuario a reconstruir contexto manualmente al inicio de cada sesion.
 
 ### Decision
 
@@ -141,7 +141,7 @@ La busqueda sobre el historial usa BM25 implementado sobre texto plano. La integ
 
 ### Consecuencias
 
-El motor funciona sin MemPalace, lo que elimina la dependencia critica para continuidad basica. Los archivos son Markdown editables, por lo que un humano puede corregir o enriquecer el contexto directamente. La busqueda BM25 es efectiva para corpus pequenos (menos de 500 entradas); para corpus grandes, la precision decrece respecto a embeddings. MemPalace sigue siendo la opcion recomendada para proyectos con historial extenso o equipos grandes.
+El motor funciona sin Memoria Persistente, lo que elimina la dependencia critica para continuidad basica. Los archivos son Markdown editables, por lo que un humano puede corregir o enriquecer el contexto directamente. La busqueda BM25 es efectiva para corpus pequenos (menos de 500 entradas); para corpus grandes, la precision decrece respecto a embeddings. Memoria Persistente sigue siendo la opcion recomendada para proyectos con historial extenso o equipos grandes.
 
 ---
 

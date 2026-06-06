@@ -85,7 +85,7 @@ El agente no obedece ciegamente — asesora, luego ejecuta.
 
 **Agentes efimeros son ciudadanos de primera clase:**
 - Su ciclo de vida completo (crear / invoke / retire / recall) es protocolo
-- Su conocimiento persiste en MemPalace y GitNexus tras retirarse
+- Su conocimiento persiste en Memoria Persistente tras retirarse
 - Recall reconstruye el agente sin recrearlo desde cero
 
 **Limites de agentes efimeros:**

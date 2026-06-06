@@ -60,7 +60,7 @@ El sistema debe permitir crear, invocar, retirar y recuperar agentes efimeros.
 |----|----------|------|------------|
 | CA-002-01 | `create --name X --task Y --expires-after Z` genera archivo .md desde template | Funcional | Test CP-002 |
 | CA-002-02 | Registry actualizado con entrada ephemeral=true | Funcional | Test CP-002 |
-| CA-002-03 | MemPalace indexado tras create (si disponible) | Funcional | Test CP-002 |
+| CA-002-03 | Memoria Persistente indexado tras create (si disponible) | Funcional | Test CP-002 |
 | CA-002-04 | `invoke X` incrementa sessions_used en 1 | Funcional | Test CP-002 |
 | CA-002-05 | `retire X` elimina .md y archiva snapshot JSON | Funcional | Test CP-002 |
 | CA-002-06 | Snapshot incluye prompt_sha256 calculado | Funcional | Review code |
@@ -84,7 +84,7 @@ El sistema debe permitir crear, invocar, retirar y recuperar agentes efimeros.
 
 - REQ-015 (templates)
 - REQ-003 (registry)
-- REQ-012 (MemPalace integration)
+- REQ-012 (Memoria Persistente integration)
 
 ---
 
@@ -239,14 +239,14 @@ El sistema debe implementar jerarquia de memorias con precedencia clara.
 |----|----------|------|------------|
 | CA-007-01 | memoria.md es truth del proyecto y nunca sobreescrito por otro | Funcional | Review |
 | CA-007-02 | AGENT_MEMORY.md complementa memoria.md sin reemplazarlo | Funcional | Review |
-| CA-007-03 | MemPalace para busqueda semantica; no reemplaza memoria.md | Funcional | Review |
-| CA-007-04 | Precedencia: memoria.md > AGENT_MEMORY.md > MemPalace | Funcional | Review constitucion.md |
+| CA-007-03 | Memoria Persistente para busqueda semantica; no reemplaza memoria.md | Funcional | Review |
+| CA-007-04 | Precedencia: memoria.md > AGENT_MEMORY.md > Memoria Persistente | Funcional | Review constitucion.md |
 | CA-007-05 | evol-memory.py load/show/summarize/compact/search/gc/stats | Funcional | Test CP-005 |
 | CA-007-06 | evol-lessons.py add/search/list/stats/gc/suggest-fix/apply-fix | Funcional | Test CP-006 |
 
 ### Dependencias
 
-- REQ-008 (MemPalace CLI, opt-in)
+- REQ-008 (Memoria Persistente CLI, opt-in)
 - REQ-009 (lecciones.md)
 
 ---
@@ -259,7 +259,7 @@ El sistema debe implementar jerarquia de memorias con precedencia clara.
 
 ### Descripcion
 
-El sistema debe implementar hooks bash event-driven sin MCP.
+El sistema debe implementar hooks bash event-driven con integración MCP.
 
 ### Criterios de Aceptacion
 
@@ -267,7 +267,7 @@ El sistema debe implementar hooks bash event-driven sin MCP.
 |----|----------|------|------------|
 | CA-008-01 | hooks.json define 3 perfiles: minimal, standard, strict | Funcional | Review |
 | CA-008-02 | pre:bash:dangerous-command bloquea rm -rf/, --force, chmod 777, curl\|sh | Funcional | Test |
-| CA-008-03 | post:edit:mempalace-index re-indexa async | Funcional | Review hook |
+| CA-008-03 | post:edit:memoria_persistente-index re-indexa async | Funcional | Review hook |
 | CA-008-04 | session:start:context-load carga memoria.md y WORKING-CONTEXT.md | Funcional | Review hook |
 | CA-008-05 | stop:git-check advierte cambios sin commit | Funcional | Review hook |
 | CA-008-06 | pre:commit:gitflow valida branch naming | Funcional | Review hook |
@@ -280,7 +280,7 @@ El sistema debe implementar hooks bash event-driven sin MCP.
 | pre:bash:dangerous-command | - | X | X |
 | pre:edit:config-protection | - | - | X |
 | pre:write:doc-file-warning | - | X | X |
-| post:edit:mempalace-index | X | X | X |
+| post:edit:memoria_persistente-index | X | X | X |
 | session:start:context-load | - | X | X |
 | stop:git-check | - | X | X |
 
@@ -342,7 +342,7 @@ El sistema debe implementar eval harness para skills.
 | CA-010-03 | evol-eval.py list muestra suites disponibles | Funcional | Test |
 | CA-010-04 | evol-shield.py audit detecta violaciones | Funcional | Test |
 | CA-010-05 | evol-shield.py audit --ci falla con exit 1 en CRITICAL | Funcional | Test |
-| CA-010-06 | Anti-MCP: grep mcpServers en artefactos = 0 | Funcional | CI |
+| CA-010-06 | Integración-MCP: MCP config habilitado en artefactos = 1 | Funcional | CI |
 | CA-010-07 | Anti-Emoji: grep emojis en docs/ = 0 | Funcional | CI |
 
 ### Graders

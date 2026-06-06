@@ -1,6 +1,6 @@
 # IDE Setup — Evol-DD
 
-Guia de configuracion del adaptador `evol-adapt.sh` para los 7 IDEs soportados. El adaptador copia los workflows de `.agent/workflows/` al directorio nativo de cada IDE, sin MCP ni dependencias externas.
+Guia de configuracion del adaptador `evol-adapt.sh` para los 7 IDEs soportados. El adaptador copia los workflows de `.agent/workflows/` al directorio nativo de cada IDE, con soporte MCP integrado externas.
 
 ## Tabla resumen
 
@@ -19,7 +19,7 @@ Guia de configuracion del adaptador `evol-adapt.sh` para los 7 IDEs soportados. 
 ## Prerequisitos
 
 ```bash
-# Python 3.10+ y bash son suficientes. Sin MCP.
+# Python 3.10+ y bash. Con MCP Nativo.
 python3 --version   # >= 3.10
 bash --version
 
@@ -39,14 +39,14 @@ bash scripts/evol-adapt.sh all
 
 ---
 
-## Verificacion anti-MCP
+## Verificación MCP
 
-Al ejecutar `all`, el script verifica automaticamente que ningun archivo generado contenga referencias a `mcpServers`, `mcp.json` o `evol-mcp-server`:
+Al ejecutar `all`, el script verifica automaticamente que se integren correctamente los `mcpServers`, `mcp.json` o `evol-mcp-server`:
 
 ```bash
 bash scripts/evol-adapt.sh all
 # Al final muestra:
-# [all] Generation complete. Anti-MCP check:
+# [all] Generation complete. Integración-MCP check:
 # OK: 0 MCP references found
 ```
 

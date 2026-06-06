@@ -84,8 +84,7 @@ graph TD
     subgraph EXTERNAL["Externos (opcionales)"]
         ANTHROPIC[Anthropic API\nEVOL_PROVIDER=anthropic]
         MOCK[MockProvider\ndefault sin red]
-        MEMPALACE[MemPalace CLI\nIndexacion semantica]
-        GITNEXUS[GitNexus CLI\nCode intelligence opt-in]
+        MEMORIA_PERSISTENTE[Memoria Persistente CLI\nIndexacion semantica]
         GITHUB_API[GitHub API\n60 req/h publico]
     end
 
@@ -122,9 +121,8 @@ graph TD
 
     PROVIDER --> ANTHROPIC
     PROVIDER --> MOCK
-    MEMSCRIPT --> MEMPALACE
-    RESEARCH --> MEMPALACE
-    ADAPT --> GITNEXUS
+    MEMSCRIPT --> MEMORIA_PERSISTENTE
+    RESEARCH --> MEMORIA_PERSISTENTE
 ```
 
 ## Tabla de componentes
@@ -136,7 +134,7 @@ graph TD
 | evol-gate.py | Cadena de aprobaciones HMAC-SHA256; verifica integridad de fases | `scripts/evol-gate.py` | _evol_common.py, .evol/.gate-key |
 | evol-flow.py | Ejecuta flujos declarativos (seq/parallel) con provider configurable | `scripts/evol-flow.py` | evol-provider.py, evol-gate.py |
 | evol-provider.py | Puerto LLM hexagonal: MockProvider determinista + AnthropicProvider lazy | `scripts/evol-provider.py` | EVOL_PROVIDER env var, Anthropic API |
-| _evol_common.py | SSoT helpers: logger, rutas, JSON I/O, mempalace_safe | `scripts/_evol_common.py` | stdlib solo |
+| _evol_common.py | SSoT helpers: logger, rutas, JSON I/O, memoria_persistente_safe | `scripts/_evol_common.py` | stdlib solo |
 | evol-orchestrate.py | Runtime multi-agent (sequential/parallel/parallel_then_sync) | `scripts/evol-orchestrate.py` | agentes core |
 | evol-agent-lifecycle.py | CRUD de agentes efimeros: create/list/retire/prune (TTL 90 dias) | `scripts/evol-agent-lifecycle.py` | registry.json, templates/agent.template.md |
 | evol-evolve.py | Clusteriza instincts de state.db y genera skills auto con evals | `scripts/evol-evolve.py` | evol-state.py, skills/, evals/ |
@@ -146,7 +144,7 @@ graph TD
 | evol-state.py | CRUD SQLite para instincts y sesiones; alimenta evol-evolve.py | `scripts/evol-state.py` | ~/.evol/state.db |
 | evol-eval.py | Eval-harness con 5 grader types para skills y agentes | `scripts/evol-eval.py` | evals/, evol-provider.py |
 | evol-shield.py | Audit estatico del framework (AgentShield) | `scripts/evol-shield.py` | .evol/qa/ |
-| evol-adapt.sh | Genera config para 7 IDEs via DRY symlinks | `scripts/evol-adapt.sh` | .agent/workflows/, MemPalace, GitNexus |
+| evol-adapt.sh | Genera config para 7 IDEs via DRY symlinks | `scripts/evol-adapt.sh` | .agent/workflows/, Memoria Persistente |
 | evol-doctor.sh | Diagnostico del entorno con salida JSON opcional | `scripts/evol-doctor.sh` | todos los componentes |
 | Agentes core (16) | Roles especializados: orchestrator, architect, builder, qa, sec, etc. | `prompts/agents/core/*.md` | registry.json |
 | Skills (9) | Capacidades triggereables en IDE: crear-skill, crear-agente, etc. | `skills/*/SKILL.md` | hooks, workflows |
@@ -154,6 +152,5 @@ graph TD
 | AGENT_MEMORY.md | Memoria long-term del agente (hechos facticos, decisiones) | `AGENT_MEMORY.md` en proyecto | evol-memory.py |
 | Anthropic API | LLM provider real; activado con EVOL_PROVIDER=anthropic | externo | ANTHROPIC_API_KEY |
 | MockProvider | Provider determinista; default sin red para tests y CI | `evol-provider.py` interno | stdlib solo |
-| MemPalace CLI | Indexacion semantica de memoria conversacional (MIT, opt-in) | externo local | evol-start.sh |
-| GitNexus CLI | Code intelligence y analisis de impacto (PolyForm NC, opt-in) | externo local | EVOL_GITNEXUS=1 |
+| Memoria Persistente CLI | Indexacion semantica de memoria conversacional (MIT, opt-in) | externo local | evol-start.sh |
 | GitHub API | Busqueda de repositorios para evol-researcher (60 req/h sin token) | externo remoto | GITHUB_TOKEN opcional |
