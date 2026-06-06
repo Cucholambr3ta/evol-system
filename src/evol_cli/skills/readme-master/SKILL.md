@@ -25,35 +25,32 @@ compatible_with:
 # Skill: Readme Master
 
 ## Propósito
-Esta skill genera y actualiza archivos `README.md` inyectando la calidad de diseño y las narrativas de los proyectos de software más populares (Top 100). Evita la monotonía del texto plano integrando componentes HTML embebidos, diagramas Mermaid, tablas comparativas y un storytelling adaptado al tipo de repositorio, todo cumpliendo rigurosamente con el estándar estricto de **Evol-DD** (Cero Emojis).
+Esta skill genera y actualiza archivos `README.md` inyectando la calidad de diseño visual y las narrativas de los proyectos de software más populares (Top 100). Evita la monotonía del texto plano integrando componentes HTML embebidos, diagramas Mermaid, tablas comparativas y un storytelling adaptado al tipo de repositorio, cumpliendo siempre con el estándar estricto de **Evol-DD** (Cero Emojis).
 
 ## Uso
 El agente evaluará el código base o la descripción entregada y reconstruirá el archivo `README.md` siguiendo estrictamente esta arquitectura:
 
-### 1. La Estructura Estándar (El Esqueleto)
+### 1. La Estructura Estándar (El Esqueleto Top 100)
 Todo `README.md` generado debe contener, en orden estricto:
-1. **Cabecera (Header):** Título alineado al centro usando HTML (`<h1 align="center">`).
-2. **Badges Dinámicos:** Alineados bajo la cabecera. Incluir Shields.io estáticos o dinámicos para CI/CD, Versión, Licencia y Stack Principal.
-3. **Pitch Corto:** Un párrafo de 1 a 3 líneas describiendo concisamente el valor del proyecto.
+1. **Hero (Cabecera Visual):** Un bloque `<div align="center">` con el `<h1>` principal, un `<p>` resaltado con el pitch de 2 líneas, y un `<p>` secundario que aloje *Badges de Shields.io* estéticos. Es obligatorio añadir soporte visual a los badges (ej. `?logo=python&logoColor=white`).
+2. **Tabla Comparativa (Problema vs Solución):** Una tabla en HTML (`<table>...</table>`) que contraste cómo la industria resuelve el dolor y cómo lo soluciona este proyecto de manera magistral.
+3. **Módulos de Código (El "Aha! Moment"):** Debajo de la tabla, inyectar directamente la demostración del flujo clave en bloques Markdown ````bash`` o ````python`` (fragmentos ultracortos).
 4. **Tabla de Contenidos (TOC):** Solo generada si el archivo supera las 5 secciones.
-5. **Demostración Visual / Arquitectura:** Si no hay GIF/Screenshot disponible, **debe generarse un bloque de diagrama de arquitectura en Mermaid** (````mermaid`) que describa el flujo principal del código evaluado.
-6. **Características (Features):** Lista de viñetas claras enfocadas en el dolor que solucionan.
-7. **Quick Start / Instalación:** Bloques de código copiables con pasos de ejecución `< 5 minutos`.
-8. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información densa o FAQs sin romper el ritmo de lectura.
-9. **Contributing & Comunidad:** Guía corta de cómo aportar.
-10. **Licencia:** Mención legal.
+5. **Arquitectura:** **Debe generarse un bloque de diagrama de arquitectura en Mermaid** (````mermaid`) que describa el flujo principal.
+6. **Instalación & Quick Start:** Bloques de código copiables con pasos de ejecución `< 5 minutos`.
+7. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información densa o FAQs sin romper el ritmo de lectura.
+8. **Contributing & Licencia.**
 
 ### 2. Storytelling: Adaptación del Relato
 Antes de escribir, el agente inferirá la naturaleza del repositorio:
-- **Developer Experience (DX):** Si es un Framework, CLI o Herramienta. La narrativa debe ser agresiva hacia la eficiencia ("Instalar toma 10 segundos, ahorra 3 horas"). Minimizar teoría, maximizar ejemplos copiables. Usar diseño corporativo/estilizado.
-- **Ecosistema Open Source:** Si es una librería comunitaria. Enfocarse en la gobernanza y extender el llamado a colaboradores. Usar cuadros o tablas de contribuidores (All-Contributors format).
-- **Utilitario / Kernel:** Si es una herramienta de bajo nivel. El relato debe ser directo, áspero y minimalista. Sin banners, pura especificación y rendimiento.
+- **Developer Experience (DX):** Si es un Framework, CLI o Herramienta. La narrativa debe ser agresiva hacia la eficiencia ("Instalar toma 10 segundos, ahorra 3 horas"). Minimizar teoría, maximizar ejemplos copiables de inmediato.
+- **Ecosistema Open Source:** Si es una librería comunitaria. Enfocarse en la gobernanza y extender el llamado a colaboradores. Usar cuadros o tablas de contribuidores.
+- **Utilitario / Kernel:** Si es una herramienta de bajo nivel. El relato debe ser directo y minimalista.
 
 ### 3. Técnicas de Maquetación HTML (Nivel Top 100)
-- **Cero Emojis (Regla Evol-DD):** Está terminantemente prohibido usar emojis (🚀, 📦, 🛠️) en el documento generado. Utiliza viñetas estándar (`-`), símbolos matemáticos o HTML simple.
-- **Alineación HTML:** Para títulos y badges usar `<p align="center">`.
-- **Secciones Colapsables:** Todo bloque de código complejo de configuración, logs enormes o FAQs debe ir envuelto en `<details><summary>Mostrar Configuración Avanzada</summary> ... </details>`.
-- **Tablas de Arquitectura:** Genera tablas en Markdown para dependencias, stack tecnológico y comparativas funcionales.
+- **Cero Emojis (Regla Evol-DD):** Está terminantemente prohibido usar emojis (🚀, 📦, 🛠️). Utiliza caracteres Unicode estéticos como `❖`, `►`, `■` o viñetas estándar (`-`).
+- **Alineación HTML:** Para el Hero y badges, usar obligatoriamente `<div align="center">`.
+- **Secciones Colapsables:** Todo bloque de configuración gigante, logs enormes o listados aburridos deben ir envueltos en `<details><summary><b>► Mostrar Detalle</b></summary><br>... </details>`.
 
 ## Ejecución
-Cuando el usuario solicite la creación o actualización, primero analiza el `package.json`, `pyproject.toml`, o los archivos fuente clave para extraer la misión real del proyecto y reflejarla fielmente. Finalmente, escribe o sobrescribe el archivo `README.md` en la raíz.
+Cuando el usuario solicite la creación o actualización, primero analiza el `package.json`, `pyproject.toml`, o los archivos fuente clave para extraer la misión real del proyecto. Luego rediseña y escribe el archivo `README.md` en la raíz con el nuevo estilo en HTML y Markdown.
