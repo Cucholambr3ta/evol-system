@@ -81,10 +81,10 @@ def main():
     print(f"[REGISTRY] {len(agents)} agents registered")
 
     core_count = sum(1 for a in agents if a.get("category") == "core")
-    print(f"[REGISTRY] {core_count} core agents (expected: 16)")
+    print(f"[REGISTRY] {core_count} core agents (expected: 17)")
 
-    if core_count != 16:
-        print("[REGISTRY] FAIL: Expected 16 core agents")
+    if core_count != 17:
+        print("[REGISTRY] FAIL: Expected 17 core agents")
         if strict:
             sys.exit(1)
 

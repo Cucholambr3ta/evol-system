@@ -46,6 +46,7 @@ Run `scripts/generate-equipo.sh` to regenerate it after any registry change.
 | 14 | `evol-analyst` | Impact analysis, metrics, blast radius |
 | 15 | `evol-agent-factory` | Creates ephemeral agents via guided interaction |
 | 16 | `evol-researcher` | Autonomous research (skills, methodologies, frameworks) |
+| 17 | `evol-auditor` | Phase auditor: detects gaps, blind spots, missing skills. Logs lessons before retiring. |
 
 ---
 
