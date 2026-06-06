@@ -54,5 +54,5 @@ Antes de escribir, el agente inferirá la naturaleza del repositorio:
 ## Ejecución Recursiva
 Cuando el usuario solicite la creación o actualización, el agente debe:
 1. Buscar los archivos `README.md` a actualizar (ya sea en la raíz, en una subcarpeta específica, o **todos** los READMEs del proyecto si se solicita de forma global).
-2. Analizar el código fuente adyacente para extraer la misión real de ese sub-módulo o proyecto.
+2. Analizar el código fuente adyacente y **escanear el árbol de directorios locales** (buscando específicamente carpetas como `docs/`, o archivos Markdown hermanos) para entender la misión del proyecto y descubrir automáticamente qué enlaces debe incluir en la sección de "Documentación".
 3. Rediseñar y escribir cada archivo `README.md` encontrado, aplicando el estándar estructural, HTML y Markdown de manera proporcional a su contexto local.
