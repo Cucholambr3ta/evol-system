@@ -61,8 +61,6 @@
 
 ## Bitácora de Sesiones
 
-<<<<<<< Updated upstream
-=======
 ### Sesión 2026-06-06 — Fix Rebrand Residual en docs/
 
 - **Meta:** Limpiar menciones residuales de X-DD y xdd que quedaron tras el rebrand principal, específicamente en la documentación (`docs/`).
@@ -94,7 +92,7 @@
 - **Estado:** Branch main = v0.3.2, develop = main. PyPI activo.
 - **Próxima sesión:** Construir evol-agent en otro PC con /evol.
 
->>>>>>> Stashed changes
+
 ### Sesión 2026-06-05 — Herencia upgrade 31 metodologías (Lote F, v0.3.2) + merge develop + fix Mermaid
 - **Meta:** Heredar el upgrade X-DD (22 metodologías → registro de disciplinas 9→31) a Evol-DD con branding evol, mergear a develop, arreglar render Mermaid.
 - **Hitos (commit feature `42c50f1`, merge `fe27101`):**
