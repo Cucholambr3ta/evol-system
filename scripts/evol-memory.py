@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evol-DD Memory Engine — Conversational memory, stdlib only."""
+"""Evol-DD Memory Engine — Conversational memory + EDMS (ChromaDB/LadybugDB)."""
 import os, sys, json, time, argparse, re
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -14,6 +14,16 @@ TOOL_RESULT_DIR = "tool_result"
 COMPACT_THRESHOLD = int(os.environ.get("EVOL_MEMORY_COMPACT_THRESHOLD", 90000))
 COMPACT_RESERVE = int(os.environ.get("EVOL_MEMORY_COMPACT_RESERVE", 10000))
 TOOL_TTL_DAYS = int(os.environ.get("EVOL_MEMORY_TOOL_TTL_DAYS", 3))
+
+# ── EDMS integration ──────────────────────────────────────────────────────────
+
+def _get_store():
+    """Lazy import of MemoryStore with fallback."""
+    try:
+        from evol_memory_store import MemoryStore
+        return MemoryStore()
+    except ImportError:
+        return None
 
 def load():
     """Load session context (SessionStart hook)."""
@@ -285,6 +295,201 @@ def memory_split(project="."):
     print("[evol-memory] ✓ MEMORY.md migrado a 3 atomos + agregado regenerado.")
 
 
+# ── EDMS subcommands ──────────────────────────────────────────────────────────
+
+def edms_index(text, project=".", sprint=None, phase=None, tipo="artefacto",
+               disciplinas=None, agent=None, importance=0.5):
+    """Index text into EDMS (ChromaDB + LadybugDB)."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible. Instalar: pip install -e '.[memory]'")
+        return
+
+    meta = {
+        "proyecto": Path(project).resolve().name,
+        "tipo": tipo,
+        "importance": importance,
+        "source_file": None,
+    }
+    if sprint:
+        meta["sprint"] = sprint
+    if phase:
+        meta["fase"] = phase
+    if disciplinas:
+        meta["disciplinas"] = [d.strip() for d in disciplinas.split(",")]
+    if agent:
+        meta["agente"] = agent
+
+    doc_id = store.index(text, meta)
+    print(f"[evol-memory] Indexed: {doc_id} (tipo={tipo})")
+
+
+def edms_search(query, project=".", sprint=None, phase=None, tipo=None,
+                disciplinas=None, n_results=10):
+    """Search EDMS with metadata filters."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    results = store.search(
+        query,
+        project=Path(project).resolve().name,
+        sprint=sprint,
+        phase=phase,
+        tipo=tipo,
+        disciplinas=disciplinas,
+        n_results=n_results,
+    )
+
+    if not results:
+        print("[evol-memory] No results found.")
+        return
+
+    for i, r in enumerate(results):
+        meta = r.get("metadata", {})
+        print(f"[{i+1}] {r['id']} (distance={r.get('distance', '?'):.3f})")
+        print(f"    tipo={meta.get('tipo', '?')} sprint={meta.get('sprint', '?')} fase={meta.get('fase', '?')}")
+        print(f"    {r['text'][:120]}...")
+    print(f"[evol-memory] {len(results)} results")
+
+
+def edms_wake_up(project=".", sprint=None):
+    """Generate wake-up context for new session."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    ctx = store.get_context(Path(project).resolve().name, sprint=sprint)
+    print(ctx)
+
+
+def edms_graph_add_node(node_type, props_json):
+    """Add node to knowledge graph."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    try:
+        props = json.loads(props_json)
+    except json.JSONDecodeError:
+        print("[evol-memory] Error: props_json must be valid JSON")
+        return
+
+    node_id = store.graph_add_node(node_type, props)
+    print(f"[evol-memory] Node created: {node_type}:{node_id}")
+
+
+def edms_graph_add_relation(source_id, relation_type, target_id):
+    """Add relation to knowledge graph."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    store.graph_add_relation(source_id, relation_type, target_id)
+    print(f"[evol-memory] Relation: {source_id} -[{relation_type}]-> {target_id}")
+
+
+def edms_graph_traverse(node_id, depth=2):
+    """Traverse knowledge graph from a node."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    result = store.graph_traverse(node_id, depth)
+    if result.get("relations"):
+        print(f"[evol-memory] Subgraph from {node_id}:")
+        for rel in result["relations"]:
+            print(f"  {rel['source']} -[{rel['type']}]-> {rel['target']}")
+    else:
+        print(f"[evol-memory] No connections found for {node_id}")
+
+
+def edms_bootstrap(project="."):
+    """Import acuerdos/ files into EDMS."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    acuerdos = Path(project) / "acuerdos"
+    if not acuerdos.exists():
+        print(f"[evol-memory] {acuerdos} no existe.")
+        return
+
+    count = 0
+    for md_file in sorted(acuerdos.rglob("*.md")):
+        if md_file.name == "README.md":
+            continue
+
+        content = md_file.read_text(encoding="utf-8")
+        if len(content.strip()) < 20:
+            continue
+
+        # Auto-detect metadata from path
+        rel = md_file.relative_to(acuerdos)
+        parts = rel.parts
+
+        meta = {"proyecto": Path(project).resolve().name, "source_file": str(rel)}
+
+        if "memoria" in parts:
+            meta["tipo"] = "decision"
+            meta["fase"] = "Retro"
+        elif "lecciones" in parts:
+            meta["tipo"] = "leccion"
+            meta["fase"] = "QA"
+        elif "research" in parts:
+            meta["tipo"] = "artefacto"
+            meta["fase"] = "Spec"
+        elif "discovery" in parts:
+            meta["tipo"] = "artefacto"
+            meta["fase"] = "Briefing"
+        else:
+            meta["tipo"] = "artefacto"
+
+        store.index(content, meta)
+        count += 1
+
+    print(f"[evol-memory] ✓ {count} archivos indexados desde {acuerdos}/")
+
+
+def edms_stats():
+    """Show EDMS stats."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    print("=== EDMS Stats ===")
+    print(f"Memory dir: {store.memory_dir}")
+
+    # ChromaDB stats
+    if store._chroma_collection:
+        count = store._chroma_collection.count()
+        print(f"ChromaDB collection 'evol_memory': {count} drawers")
+    else:
+        print("ChromaDB: not available (using local fallback)")
+
+    # Local fallback stats
+    idx_file = store.memory_dir / "local_index.json"
+    if idx_file.exists():
+        with open(idx_file) as f:
+            local_count = len(json.load(f))
+        print(f"Local index: {local_count} drawers")
+
+    # Graph stats
+    if store._ladybug_client if hasattr(store, '_ladybug_client') else False:
+        print("LadybugDB: available")
+    else:
+        print(f"Graph (in-memory): {len(store._graph)} entries")
+
+    print("====================")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Memory Engine")
     # Arg global --project ANTES del subcomando
@@ -316,6 +521,44 @@ def main():
 
     sub.add_parser("memory-split", help="Migra MEMORY.md monolitico a 3 atomos")
 
+    # EDMS subcommands
+    sub.add_parser("edms-stats", help="Show EDMS stats")
+
+    p = sub.add_parser("edms-index", help="Index text into EDMS")
+    p.add_argument("text", help="Text to index")
+    p.add_argument("--tipo", default="artefacto", help="Tipo: decision|leccion|convencion|riesgo|artefacto|resumen|handoff")
+    p.add_argument("--disciplinas", default=None, help="Comma-separated disciplinas")
+    p.add_argument("--sprint", default=None, help="Sprint number")
+    p.add_argument("--phase", default=None, help="Pipeline phase")
+    p.add_argument("--agent", default=None, help="Agent name")
+    p.add_argument("--importance", type=float, default=0.5, help="Importance 0-1")
+
+    p = sub.add_parser("edms-search", help="Search EDMS")
+    p.add_argument("query", help="Search query")
+    p.add_argument("--tipo", default=None, help="Filter by tipo")
+    p.add_argument("--disciplinas", default=None, help="Filter by disciplina")
+    p.add_argument("--sprint", default=None, help="Filter by sprint")
+    p.add_argument("--phase", default=None, help="Filter by phase")
+    p.add_argument("--n", type=int, default=10, help="Max results")
+
+    p = sub.add_parser("edms-wake-up", help="Generate wake-up context")
+    p.add_argument("--sprint", default=None, help="Sprint number")
+
+    p = sub.add_parser("edms-graph", help="Graph operations")
+    graph_sub = p.add_subparsers(dest="graph_cmd")
+    p_add = graph_sub.add_parser("add-node", help="Add node")
+    p_add.add_argument("node_type", help="Node type (Proyecto, Sprint, etc.)")
+    p_add.add_argument("props", help="JSON properties")
+    p_add_rel = graph_sub.add_parser("add-relation", help="Add relation")
+    p_add_rel.add_argument("source", help="Source node ID")
+    p_add_rel.add_argument("relation", help="Relation type")
+    p_add_rel.add_argument("target", help="Target node ID")
+    p_trav = graph_sub.add_parser("traverse", help="Traverse graph")
+    p_trav.add_argument("node_id", help="Starting node ID")
+    p_trav.add_argument("--depth", type=int, default=2, help="Traversal depth")
+
+    p = sub.add_parser("edms-bootstrap", help="Import acuerdos/ into EDMS")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -344,6 +587,33 @@ def main():
             print(_json.dumps({"ok": True, "sprint": s}))
     elif args.cmd == "memory-split":
         memory_split(project=args.project)
+    elif args.cmd == "edms-index":
+        edms_index(
+            text=args.text, project=args.project, sprint=args.sprint,
+            phase=args.phase, tipo=args.tipo, disciplinas=args.disciplinas,
+            agent=args.agent, importance=args.importance,
+        )
+    elif args.cmd == "edms-search":
+        edms_search(
+            query=args.query, project=args.project, sprint=args.sprint,
+            phase=args.phase, tipo=args.tipo, disciplinas=args.disciplinas,
+            n_results=args.n,
+        )
+    elif args.cmd == "edms-wake-up":
+        edms_wake_up(project=args.project, sprint=args.sprint)
+    elif args.cmd == "edms-graph":
+        if args.graph_cmd == "add-node":
+            edms_graph_add_node(args.node_type, args.props)
+        elif args.graph_cmd == "add-relation":
+            edms_graph_add_relation(args.source, args.relation, args.target)
+        elif args.graph_cmd == "traverse":
+            edms_graph_traverse(args.node_id, args.depth)
+        else:
+            print("[evol-memory] Usage: edms-graph {add-node|add-relation|traverse}")
+    elif args.cmd == "edms-bootstrap":
+        edms_bootstrap(project=args.project)
+    elif args.cmd == "edms-stats":
+        edms_stats()
     else:
         parser.print_help()
 

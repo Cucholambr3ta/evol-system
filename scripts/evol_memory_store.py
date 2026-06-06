@@ -139,6 +139,8 @@ class MemoryStore:
             self._init_chroma()
         if LADYBUG_AVAILABLE:
             self._init_ladybug()
+        else:
+            self._load_graph()
 
     def _init_chroma(self):
         chroma_path = str(self.memory_dir / 'chromadb')
@@ -151,6 +153,19 @@ class MemoryStore:
     def _init_ladybug(self):
         ladybug_path = str(self.memory_dir / 'ladybugdb')
         self._ladybug_client = ladybugdb.Client(path=ladybug_path)
+
+    def _load_graph(self):
+        """Load graph from disk (fallback when LadybugDB not available)."""
+        graph_file = self.memory_dir / 'graph.json'
+        if graph_file.exists():
+            with open(graph_file) as f:
+                self._graph = json.load(f)
+
+    def _save_graph(self):
+        """Save graph to disk (fallback when LadybugDB not available)."""
+        graph_file = self.memory_dir / 'graph.json'
+        with open(graph_file, 'w') as f:
+            json.dump(self._graph, f, indent=2, ensure_ascii=False)
 
     # ── Index ─────────────────────────────────────────────────────────────
 
@@ -300,6 +315,7 @@ class MemoryStore:
         # Fallback: in-memory dict
         key = f"{node_type}:{node_id}"
         self._graph[key] = {'type': node_type, 'properties': properties}
+        self._save_graph()
         return node_id
 
     def graph_add_relation(self, source_id: str, relation_type: str, target_id: str) -> bool:
@@ -316,6 +332,7 @@ class MemoryStore:
         rel_key = f"{source_id}->{target_id}"
         if rel_key not in self._graph:
             self._graph[rel_key] = {'type': relation_type}
+            self._save_graph()
         return True
 
     def graph_traverse(self, node_id: str, depth: int = 2) -> dict:
