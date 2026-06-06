@@ -294,3 +294,11 @@ _(vacio)_
 **Lección:** Para sincronizar sidecars en subcarpetas de segundo nivel o más profundas, se debe ejecutar `evol-doc-sync.py sync-folder` de manera explícita en cada subcarpeta o extender el script para soportar recursividad profunda.
 **Aplica a:** Herramientas de documentación, scripts de mantenimiento.
 
+### [PROCESO] Consultar convenciones de rutas antes de crear artefactos — 2026-06-06
+**Contexto:** Creando wireframes HTML para EDMS Fase 6 (Observabilidad).
+**Problema:** Los wireframes se crearon en `docs/wireframes/` en vez de `acuerdos/design/wireframes/`. Las convenciones ya estaban definidas en `constitucion.md` Art. 9 y `evol.md` pre-flight routing.
+**Causa raíz:** No se ejecutó el check de convenciones antes de escribir. Se asumió `docs/` por patrón habitual en vez de leer el proyecto.
+**Lección:** Antes de crear cualquier artefacto, consultar: (1) `docs/constitucion.md` Art. 9 (mapeo input→workflow→ruta), (2) `.agent/workflows/evol.md` (pre-flight routing), (3) `acuerdos/` existente (estructura actual). El pre-flight routing que definí en evol.md debe ser consultado ANTES de crear archivos, no solo después.
+**Aplica a:** Todo agente creando artefactos en Evol-DD.
+**Fix aplicado:** Wireframes movidos a `acuerdos/design/wireframes/`.
+
