@@ -11,11 +11,11 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
-- **Ultimo hito:** Implementados workflows agenticos para `/evol-update` y resolución de upgrade gaps (rama feature/upgrade-gaps)
-- **Proximo paso:** Resolver advertencia de Memoria Persistente [HIGH], testear el apply en producción y cortar nuevo release (v0.3.3)
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.5.0 activa en produccion
+- **Ultimo hito:** Integrada skill readme-master, diseño Top 100 y hooks recursivos pre-push.
+- **Proximo paso:** Construir memoria persistente nativa (ChromaDB + LadybugDB).
 - **PyPI:** https://pypi.org/project/evol-dd/
-- **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (Memoria Persistente 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
+- **Versiones publicadas:** 0.1.0 → 0.3.3 (update-memory) → 0.4.0 → 0.5.0 (readme-master)
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -56,23 +56,25 @@
 | 0.2.1 | 2026-06-03 | Security nativa: evol-scan/validate/patch/crash |
 | 0.2.2 | 2026-06-03 | 4 community skills (grill/fact-check/idea-refine/prompt-master) |
 | 0.2.3 | 2026-06-03 | grill-me ENFORCED en gate del plan (marker SHA + 7 tests) |
+| 0.2.7 | 2026-06-04 | E5-E8: sprint-close, historias, gitflow, discipline-check (69 tests) |
+| 0.3.0 | 2026-06-05 | setup-repo, security-inventory, briefing idea.md, sprint eval |
+| 0.3.2 | 2026-06-05 | 31 disciplinas, rebrand x-dd→evol-dd, .gitignore limpio |
 
 ---
 
 ## Bitácora de Sesiones
 
-### Sesión 2026-06-06 — Fix Rebrand Residual en docs/
+### Sesión 2026-06-06 — Fix Rebrand Residual, MemPalace Removal & v0.3.3
 
-- **Meta:** Limpiar menciones residuales de X-DD y xdd que quedaron tras el rebrand principal, específicamente en la documentación (`docs/`).
+- **Meta:** Limpiar menciones residuales de X-DD, erradicar MemPalace, estructurar memoria atómica y hacer release.
 - **Hitos:**
-  - Sustituciones aplicadas a 40+ archivos (`docs/disciplinas/`, `docs/qa/`, `docs/diagramas/`, etc.).
-  - Se excluyeron y preservaron los documentos históricos y guías de migración que intencionalmente contrastan ambos sistemas (`evol-dd_Integration_Guide.md`, `RETROFIT_GUIDE.md`, `DECISIONES.md`, `GLOSARIO.md`, `TROUBLESHOOTING.md`, etc.).
-  - Actualizado `WORKING-CONTEXT.md` para reflejar el estado vivo correcto (v0.3.2 en main).
+  - Sustituciones aplicadas a docs (residuales) y preservación de documentos históricos.
+  - Erradicación de MemPalace de los scripts core y templates, preparación para ChromaDB/LadybugDB.
+  - Generación de comandos atómicos en `docs/usuario/comandos/`.
+  - Workflow `/update-memory` creado.
 - **QA:** Grep validado; menciones restantes a X-DD son estrictamente contextuales/comparativas.
-- **Estado:** Rama `feature/upgrade-gaps` (se implementaron `evol-update` y `evol-update-project`).
-- **Próxima sesión:** (Cancelado) ~~Construir evol-agent en otro PC.~~ -> Resolver alerta [HIGH] de Memoria Persistente y realizar Release v0.3.3.
-
-
+- **Estado:** Branch main = v0.5.0, develop = main. PyPI activo.
+- **Próxima sesión:** Diseño e implementación de Memoria Persistente nativa.
 ### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
 
 - **Meta:** Limpieza completa de namespace x-dd en todo el codebase, corrección de gaps en .gitignore, y release v0.3.2 en PyPI.
