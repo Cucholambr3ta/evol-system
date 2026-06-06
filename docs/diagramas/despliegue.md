@@ -31,8 +31,7 @@ graph TD
         end
 
         subgraph OPTIONAL_LOCAL["Herramientas opcionales locales"]
-            MEMPALACE[MemPalace CLI\nMIT · indexacion semantica]
-            GITNEXUS[GitNexus CLI\nPolyForm NC · opt-in EVOL_GITNEXUS=1]
+            MEMORIA_PERSISTENTE[Memoria Persistente CLI\nMIT · indexacion semantica]
         end
     end
 
@@ -56,11 +55,9 @@ graph TD
     SCRIPTS -->|evol-provider.py routing| MOCK
     SCRIPTS -->|evol-provider.py routing| ANTHROPIC
 
-    SCRIPTS -.->|opt-in evol-start.sh| MEMPALACE
-    SCRIPTS -.->|opt-in EVOL_GITNEXUS=1| GITNEXUS
+    SCRIPTS -.->|opt-in evol-start.sh| MEMORIA_PERSISTENTE
 
-    MEMPALACE -->|indexa| MEM_DIR
-    GITNEXUS -->|analiza| PROJECT
+    MEMORIA_PERSISTENTE -->|indexa| MEM_DIR
 
     MEM_FILES -->|cargado en SessionStart| SCRIPTS
     STATE_DB -->|instincts leidos por evol-evolve.py| SCRIPTS
@@ -83,5 +80,4 @@ graph TD
 | GitHub (remoto) | GitHub API | HTTPS REST v3 | evol-researcher.py; 60 req/h sin token |
 | LLM Provider | MockProvider | en proceso | Default; determinista; sin red; apto para CI |
 | LLM Provider | Anthropic API | HTTPS | Activar con EVOL_PROVIDER=anthropic; requiere ANTHROPIC_API_KEY |
-| MemPalace CLI | indexacion semantica | CLI local | Licencia MIT; activar con evol-start.sh |
-| GitNexus CLI | code intelligence | CLI local | Licencia PolyForm NC; activar con EVOL_GITNEXUS=1; solo proyectos no-comerciales |
+| Memoria Persistente CLI | indexacion semantica | CLI local | Licencia MIT; activar con evol-start.sh |

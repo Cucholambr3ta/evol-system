@@ -62,7 +62,7 @@ fi
 | Health check completo (`evol-doctor`)  | Al inicio de sesion | Manual o hook `session-context-load`            |
 | Instincts y proposals                  | Semanal             | Manual: `evol-state.py list` + `evol-researcher.py list` |
 | Shield audit                           | Por PR/merge        | CI: `evol-shield.py audit --ci`                 |
-| Tamano de AGENT_MEMORY.md              | Cada 5 sesiones     | Manual o automatico via `mempalace-index` hook  |
+| Tamano de AGENT_MEMORY.md              | Cada 5 sesiones     | Manual o automatico via `memoria_persistente-index` hook  |
 | Dias desde cierre-fase                 | Semanal             | Manual: revisar `memoria.md`                    |
 | Lecciones pendientes                   | Al abrir sprint     | Manual: `grep pendiente lecciones.md`           |
 

@@ -1,0 +1,36 @@
+{
+  "skill_name": "readme-master",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Genera un README.md completo para una pequeña CLI en Python llamada 'Evol-Tools' que hace parsing de archivos JSON de forma paralela. Usa la estructura completa del Top 100 con HTML colapsables para FAQ.",
+      "expected_output": "Un README estructurado con DX Storytelling, diagramas Mermaid, cabeceras HTML centradas, secciones colapsables y CERO EMOJIS.",
+      "assertions": [
+        {
+          "assertion_id": "assert-no-emojis",
+          "description": "El output no debe contener emojis (filtro grep anti-emoji).",
+          "check": "! grep -P \"[\\x{1F000}-\\x{1FAFF}]\" output.md",
+          "type": "bash"
+        },
+        {
+          "assertion_id": "assert-html-center",
+          "description": "Debe incluir centrado HTML para la cabecera.",
+          "check": "grep -qi 'align=\"center\"' output.md",
+          "type": "contains"
+        },
+        {
+          "assertion_id": "assert-html-details",
+          "description": "Debe usar tags details y summary para colapsar informacion.",
+          "check": "grep -q '<details>' output.md && grep -q '<summary>' output.md",
+          "type": "contains"
+        },
+        {
+          "assertion_id": "assert-mermaid",
+          "description": "Debe incluir un bloque de codigo Mermaid.",
+          "check": "grep -q '```mermaid' output.md",
+          "type": "contains"
+        }
+      ]
+    }
+  ]
+}

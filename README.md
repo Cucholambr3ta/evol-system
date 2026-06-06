@@ -1,259 +1,148 @@
-# Evol-DD
+<div align="center">
+  <h1>Evol-DD</h1>
+  <p><b>El framework de desarrollo agéntico que aprende con cada proyecto que construye.</b></p>
+  
+  <p>
+    <img src="https://img.shields.io/pypi/v/evol-dd?color=blue&logo=pypi&logoColor=white" alt="PyPI Version">
+    <img src="https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white" alt="Python Version">
+    <img src="https://img.shields.io/badge/license-MIT-4CAF50?logo=opensourceinitiative&logoColor=white" alt="License">
+    <img src="https://img.shields.io/badge/branching-GitFlow-F05032?logo=git&logoColor=white" alt="GitFlow">
+  </p>
+</div>
 
-> El framework de desarrollo agéntico que aprende con cada proyecto que construye.
+<br/>
 
-[![PyPI](https://img.shields.io/pypi/v/evol-dd)](https://pypi.org/project/evol-dd/)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![GitFlow](https://img.shields.io/badge/branching-GitFlow-orange)](docs/constitucion.md)
-
----
-
-## Por que Evol-DD
-
-La mayoria de frameworks de IA tienen 180+ agentes permanentes en disco, dependen de
-servidores MCP, y olvidan todo lo que aprendieron en la sesion anterior.
-
-Evol-DD es diferente en cuatro puntos concretos:
-
-| Problema comun | Solucion Evol-DD |
-|----------------|-----------------|
-| Agentes: demasiados, todo permanente | 16 agentes core + efimeros bajo demanda |
-| Sin memoria entre sesiones | AGENT_MEMORY.md + journals diarios nativos |
-| Errores que se repiten | Motor de lecciones con ciclo de mejora continua |
-| Skills que no crecen | Loop iterativo de creacion con evals y 7 IDEs |
+Evol-DD elimina los servidores permanentes mediante **Model Context Protocol (MCP)** y memoria local. Está diseñado para equipos que necesitan agentes que recuerden el contexto entre sesiones, conviertan errores en lecciones arquitectónicas y corran nativamente dentro del IDE sin depender de plataformas cerradas.
 
 ---
 
-## Memoria que persiste
+## ❖ Por qué Evol-DD
 
-El agente recuerda lo que hiciste la semana pasada. Sin repetir contexto.
+La mayoría de frameworks de IA tienen más de 180 agentes permanentes en disco, dependen de infraestructura compleja y repiten los mismos errores proyecto tras proyecto.
+
+<table>
+  <thead>
+    <tr>
+      <th>Problema Común</th>
+      <th>Solución Evol-DD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>► Agentes infinitos y pesados</td>
+      <td><b>16 Core</b> + Agentes Efímeros bajo demanda.</td>
+    </tr>
+    <tr>
+      <td>► Amnesia de sesión a sesión</td>
+      <td><b>Memoria Nativa</b> serializada en <code>AGENT_MEMORY.md</code>.</td>
+    </tr>
+    <tr>
+      <td>► Mismos errores recurrentes</td>
+      <td><b>Motor de Lecciones</b> integrado al flujo CI/CD.</td>
+    </tr>
+    <tr>
+      <td>► Cerrado a una plataforma</td>
+      <td><b>100% Portable</b> (Cursor, Windsurf, Claude Code, Copilot).</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## ❖ Ecosistema Core
+
+### 1. Memoria Local Persistente
+Busca decisiones pasadas y contexto sin tokens adicionales en el LLM.
 
 ```bash
-# Al iniciar sesion, el agente carga automaticamente:
-EVOL_MEMORY=1 bash scripts/evol-start.sh
-# → AGENT_MEMORY.md (long-term: preferencias, patrones, decisiones clave)
-# → memory/2026-06-02.md (journal del dia anterior)
-
-# Buscar en el historial de sesiones pasadas:
-python3 scripts/evol-memory.py search "decision sobre base de datos"
+python3 scripts/evol-memory.py search "decisión arquitectónica sobre la BD"
 ```
 
-La memoria vive en tu repo, en archivos Markdown que puedes leer y editar.
-No hay servidor, no hay API key requerida para el modo basico.
-
----
-
-## Lecciones que se acumulan
-
-Cada error se convierte en regla. Cada regla se mejora con el investigador.
+### 2. Motor de Lecciones
+Automatiza que el agente nunca repita el mismo error técnico.
 
 ```bash
-# Registrar una leccion tras resolver un bug
-python3 scripts/evol-lessons.py add \
-  --titulo "Gate key comprometida afecta todos los proyectos" \
-  --categoria SEGURIDAD \
-  --contexto "Key global compartida entre proyectos" \
-  --problema "Un leak compromete todos los proyectos del usuario" \
-  --leccion "Gate key debe ser por proyecto, --from-global solo como inicio" \
-  --aplica "Todo proyecto con evol-gate.py"
-
-# El investigador propone como mejorar esa leccion
-python3 scripts/evol-lessons.py suggest-fix "Gate key comprometida" --apply
-
-# Antes de tomar una decision arquitectonica, consultar lecciones relevantes
-python3 scripts/evol-lessons.py search "seguridad autenticacion"
+python3 scripts/evol-lessons.py add --categoria SEGURIDAD --leccion "Gate key aislada por proyecto"
 ```
 
----
-
-## Agentes precisos, efimeros
-
-Crea un especialista para la tarea. Retiralo al terminar. Recuperalo cuando vuelvas a necesitarlo.
+### 3. Agentes Efímeros Criptográficos
+Levanta un especialista para un ticket y retíralo (hash SHA-256) cuando acabe.
 
 ```bash
-# Crear agente especializado para una auditoria legal
-python3 scripts/evol-agent-lifecycle.py create \
-  --name "legal-saas-reviewer" \
-  --task "Revisar contratos SaaS con cliente enterprise" \
-  --expires-after 7
-
-# El agente existe, hace su trabajo, y se retira
-python3 scripts/evol-agent-lifecycle.py retire "legal-saas-reviewer"
-# → Archivado en .evol/agents/retired/ con SHA-256 de integridad
-# → Memoria Persistente retiene el conocimiento semantico
-
-# Semanas despues, recuperarlo exactamente igual
-python3 scripts/evol-agent-lifecycle.py recall "legal-saas-reviewer"
-```
-
-16 agentes core permanentes (architect, builder, qa, sec, devops, domain, doc, ux,
-data, reviewer, orchestrator, pm, release, analyst, agent-factory, researcher).
-Para todo lo demas: efimeros.
-
----
-
-## Skills que crecen con el ecosistema
-
-Una skill creada hoy, disponible en Claude Code, Cursor, Windsurf y 4 IDEs mas.
-
-```bash
-# Loop iterativo: captura intencion → draft → evals paralelos → optimizar triggering
-/evol crear-skill
-
-# El sistema detecta patrones recurrentes y propone skills automaticas
-python3 scripts/evol-evolve.py run --dry-run
-# → Propone: "skill-sql-optimizer" basada en 8 sesiones con el mismo patron
-
-# Sincronizar con skills de la comunidad
-python3 scripts/evol-evolve.py sync-community --dry-run
-
-# Portar a los 7 IDEs con un comando
-bash scripts/evol-adapt.sh all --dest=. --trigger=evol
+python3 scripts/evol-agent-lifecycle.py create --name "auditor-sec" --expires-after 1
 ```
 
 ---
 
-## Prerequisitos
+## ❖ Instalación y Desinstalación
 
-Evol-DD requiere **Python 3.10+** y **pipx** (recomendado) o pip.
+Requiere **Python 3.10+** y `pipx`.
 
-### Verificar que tienes lo necesario
-
+### Instalación Rápida
 ```bash
-python3 --version   # debe ser 3.10 o superior
-pipx --version      # recomendado para instalar CLIs
-# o
-pip --version       # alternativa
-```
-
-### Instalar pipx si no lo tienes
-
-```bash
-# Ubuntu / Debian / Linux Mint
-sudo apt install pipx
-pipx ensurepath
-source ~/.bashrc    # recargar PATH
-
-# macOS (con Homebrew)
-brew install pipx
-pipx ensurepath
-
-# Windows (PowerShell)
-python -m pip install --user pipx
-python -m pipx ensurepath
-
-# Verificar
-pipx --version
-```
-
-### Instalar Python 3.10+ si no lo tienes
-
-```bash
-# Ubuntu / Debian
-sudo apt install python3 python3-pip python3-full
-
-# macOS
-brew install python
-
-# Windows
-# Descargar desde https://python.org/downloads
-# Marcar "Add Python to PATH" durante la instalacion
-```
-
----
-
-## Instalacion
-
-```bash
-pipx install evol-dd && evol
-```
-
-Eso es todo. El segundo comando (`evol`) configura automaticamente `/evol` en los IDEs soportados.
-
-| IDE | Como invocar | Disponibilidad |
-|-----|-------------|----------------|
-| Claude Code | `/evol` en el chat | Global — cualquier carpeta |
-| OpenCode | `/evol` en el chat | Global — cualquier carpeta |
-| Cursor | `@evol` mention | Global — cualquier carpeta |
-| Windsurf | `/evol` slash nativo | Global — cualquier carpeta |
-| Antigravity | `/evol` en skills | Global — cualquier carpeta |
-| Codex | `/evol` skill global | Global — cualquier carpeta |
-| **VSCode Copilot** | `Ctrl+Shift+P` → **Run Task** → **Evol-DD: /evol** | Global via tasks |
-
-**VSCode Copilot:** Copilot no soporta slash commands globales fuera del workspace activo (limitacion del IDE). La solucion instalada son **tasks globales** en `~/.vscode/tasks.json` — disponibles en cualquier proyecto via `Ctrl+Shift+P` → "Run Task". Para tener `/evol` como slash command dentro de Copilot Chat en un proyecto especifico, correr `evol init /proyecto` que copia los prompts al workspace.
-
----
-
-## Actualizacion
-
-```bash
-pipx upgrade evol-dd && evol
-```
-
-Al detectar una nueva version, `evol` reinstala los triggers actualizados en todos los IDEs.
-
----
-
-## Quick Start
-
-```bash
-# 1. Instalar y activar en todos los IDEs
+# 1. Instalación Global (disponible en todos los IDEs vía pipx)
 pipx install evol-dd && evol
 
-# 2. Abrir tu proyecto en Claude Code, OpenCode, Windsurf, etc.
-#    /evol ya esta disponible — invocar en el chat
+# 2. Inicializar tu repositorio
+evol init . --profile core
+```
 
-# 3. Bootstrap del proyecto (opcional — para memoria, lecciones, gate)
-evol init /path/to/project --profile core
+### Desinstalación
+Si deseas retirar Evol-DD de tu sistema y de tus IDEs:
+```bash
+# Elimina el paquete global
+pipx uninstall evol-dd
 
-# Perfiles disponibles:
-#   minimal    — solo nucleo + workflows + memoria
-#   core       — DEFAULT: + agentes + gate + CI
-#   developer  — + hooks + agentes efimeros + investigador
-#   security   — + SecDD + AgentShield
-#   research   — + eval harness + evolution engine
-#   full       — todo incluido
+# Eliminar skills e integraciones locales de tus IDEs
+rm -rf ~/.claude/commands/evol*
+rm -rf ~/.gemini/skills/evol*
+```
+*(Nota: Tus datos de memoria y lecciones en los repositorios locales no se borran, ya que pertenecen a tu código fuente).*
 
-# 4. Diagnostico del entorno
-evol doctor
+---
+
+## ❖ Arquitectura del Sistema (Mermaid)
+
+```mermaid
+graph TD
+    A[IDE / Terminal] --> B[Evol CLI]
+    B --> C[Orquestador]
+    C --> D[Memoria & Lecciones Local]
+    C --> E[Ejecutor GitFlow]
+    C --> F[Agentes Efímeros]
+    C -.-> G[Model Context Protocol]
 ```
 
 ---
 
-## Caracteristicas
+## ❖ Documentación y Ecosistema (FAQ)
 
-| Capacidad | Detalle |
-|-----------|---------|
-| Sin MCP | CLI nativo. Sin servidor, sin configuracion de red. |
-| Memoria nativa | AGENT_MEMORY.md + journals + `acuerdos/memoria/sprint-NN.md` por sprint. BM25 search. |
-| Lecciones por sprint | `evol-memory sprint-close` crea `acuerdos/lecciones/sprint-NN.md` + INDEX.md idempotente. |
-| Historias de usuario | `/evol historias`: 4 artefactos por historia (propuesta, Gherkin, tecnico, checklist >=50 tareas). |
-| Ciclo de sprint | `/evol sprint`: equipo dinamico por componente, auditor permanente, eval pre-push, GitFlow. |
-| GitFlow automatizado | `evol-gitflow.sh setup/sprint-start/sprint-close/pre-push` con modo dev/collab. |
-| Gate de contenido | `evol-discipline-check.py`: valida SDD/FDD/DDD/BDD/TDD/STDD/SecDD. `EVOL_DISCIPLINE=1`. |
-| Agentes efimeros | create/retire/recall con SHA-256 de integridad. |
-| Growth engine | /crear-skill + /crear-agente con evals iterativos. |
-| 7 IDEs | claude-code, opencode, cursor, windsurf, vscode-copilot, antigravity, codex. |
-| Gate HMAC-SHA256 | "APROBADO" auditable y firmado por proyecto. |
-| Stdlib-first | Cero dependencias externas requeridas para el core. |
+<details>
+<summary><b>► Compatibilidad de IDEs</b></summary>
+<br>
+Soporte "Zero-Config" vía comando <code>/evol</code> para:
+<ul>
+  <li>Claude Code</li>
+  <li>OpenCode</li>
+  <li>Cursor</li>
+  <li>Windsurf</li>
+  <li>Antigravity</li>
+  <li>VSCode Copilot (vía Tasks)</li>
+</ul>
+</details>
 
----
-
-## Documentacion
-
-| Documento | Para que |
-|-----------|---------|
-| [docs/constitucion.md](docs/constitucion.md) | 9 articulos de gobernanza — ley suprema |
-| [AGENTS.md](AGENTS.md) | Los 16 agentes core con roles y limites |
-| [CLAUDE.md](CLAUDE.md) | Manifiesto de operacion para Claude Code |
-| [docs/modos.md](docs/modos.md) | Modo Base vs Completo vs Memoria |
-| [docs/guias/ONBOARDING.md](docs/guias/ONBOARDING.md) | Primeros pasos detallados |
-| [docs/arquitectura/ARQUITECTURA.md](docs/arquitectura/ARQUITECTURA.md) | Arquitectura completa con diagramas C4 |
-| [INSTALL.md](INSTALL.md) | Perfiles de instalacion (minimal, core, developer, full) |
+<details>
+<summary><b>► Documentación Completa y Gobernanza</b></summary>
+<br>
+<ul>
+  <li><a href="docs/constitucion.md">Constitución Evol-DD</a></li>
+  <li><a href="AGENTS.md">Manifest de Agentes</a></li>
+  <li><a href="docs/arquitectura/ARQUITECTURA.md">C4 Model</a></li>
+  <li><a href="docs/disciplinas/INDEX.md">Índice de Disciplinas</a></li>
+</ul>
+</details>
 
 ---
 
-## License
-
-MIT — ver [LICENSE](LICENSE)
+## ❖ Licencia
+MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.

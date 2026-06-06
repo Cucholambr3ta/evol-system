@@ -12,7 +12,7 @@ Este documento aplica la metodologia STRIDE para identificar, categorizar y miti
 | Tampering | Modificacion no autorizada | Git hooks, signed commits |
 | Repudiation | Negacion de acciones | Audit log en .evol/ |
 | Information Disclosure | Exposicion de secretos | No secrets in code, gitleaks |
-| Denial of Service | Indisponibilidad | Modo BASE sin MemPalace |
+| Denial of Service | Indisponibilidad | Modo BASE sin Memoria Persistente |
 | Elevation of Privilege | Escalada de permisos | No chmod 777, no root |
 
 ## Activos del Sistema
@@ -23,7 +23,7 @@ Este documento aplica la metodologia STRIDE para identificar, categorizar y miti
 | Agent prompts | HIGH | Contenido de agentes incluyendo conocimiento |
 | Registry (registry.json) | HIGH | Registro unificado de agentes |
 | State database (state.db) | MEDIUM | Instincts, evolutions, proposals |
-| MemPalace index | MEDIUM | Indice semantico |
+| Memoria Persistente index | MEDIUM | Indice semantico |
 | Snapshot files (.evol/agents/retired/) | HIGH | Archivos JSON de agentes archivados |
 | Scripts de hooks | HIGH | Codigo ejecutable en eventos |
 | Skills externas | CRITICAL | Codigo de terceros |
@@ -41,7 +41,7 @@ Este documento aplica la metodologia STRIDE para identificar, categorizar y miti
 | THR-007 | Git config | Tampering | Force push elimina historial | git push --force | Perdida de historial | pre-commit hook bloquea --force | LOW | pre:bash:dangerous-command.sh |
 | THR-008 | State.db | Repudiation | Edicion manual oculta cambios | sqlite3 state.db (manual) | Trazabilidad perdida | Solo via evol-state.py API | MEDIUM | evol-state.py como unico accessor |
 | THR-009 | Snapshots | Tampering | Modificacion de snapshot mientras archivado | Acceso filesystem | Recupacion de agente corrupto | SHA-256 verificado en recall, --force override | LOW | evol-agent-lifecycle.py recall integrity check |
-| THR-010 | MemPalace index | Denial of Service | Indice corrupto o no disponible | Fallo de mempalace | Perdida de busqueda semantica | Modo BASE funciona sin MemPalace | MEDIUM | mempalace_safe() wrapper |
+| THR-010 | Memoria Persistente index | Denial of Service | Indice corrupto o no disponible | Fallo de memoria_persistente | Perdida de busqueda semantica | Modo BASE funciona sin Memoria Persistente | MEDIUM | memoria_persistente_safe() wrapper |
 
 ## Diagrama de Flujo de Amenazas
 
@@ -64,7 +64,7 @@ graph TB
             T6[THR-006: Memory PII]
             T7[THR-007: Git Force Push]
             T9[THR-009: Snapshot Tamper]
-            T10[THR-010: MemPalace DoS]
+            T10[THR-010: Memoria Persistente DoS]
         end
     end
 
@@ -90,7 +90,7 @@ graph TB
 | GitFlow enforced | THR-007 | pre-commit-gitflow.sh | hooks.json ID pre:commit:gitflow |
 | Anti-dangerous commands | THR-005 | pre-bash-dangerous-command.sh | Exit 2 para rm -rf/, --force |
 | Schema validation registry | THR-003 | validate-registry.py --strict | Lineas 30-45 |
-| Mode BASE sin MemPalace | THR-010 | evol-doctor.sh detecta y opera | Lineas 34-41 doctor.sh |
+| Mode BASE sin Memoria Persistente | THR-010 | evol-doctor.sh detecta y opera | Lineas 34-41 doctor.sh |
 | Snapshots archivados gitignored | THR-006, THR-009 | .gitignore exclude .evol/ | Lineas 16-19 .gitignore |
 
 ## Plan de Remediacion
@@ -137,7 +137,7 @@ graph TB
 |-----------|------------|---------------|
 | GDPR | PII en memoria, DSAR, minimizacion | Implementado: dialog/ gitignored, tool_result/ gitignored |
 | SecDD | Threat modeling, STRIDE, controles | Implementado: este documento |
-| OWASP | Supply chain, secrets, injection | Implementado: gitleaks, semgrep, anti-MCP |
+| OWASP | Supply chain, secrets, injection | Implementado: gitleaks, semgrep, MCP-Integrado |
 
 ## Monitoreo
 

@@ -107,7 +107,7 @@ Scenario: Crear agente efimero
   And campo "ephemeral": true en registry
   And campo "expires_after_days": 7 en registry
   And mensaje "Agent created: test-agent (expires in 7 days)" mostrado
-  And MemPalace indexado (si disponible)  # REQ-004
+  And Memoria Persistente indexado (si disponible)  # REQ-004
 
 Scenario: Invocar agente
   Given agente "test-agent" existe y no esta retired
@@ -131,14 +131,14 @@ Scenario: Retirar agente con snapshot
 
 Scenario: Recuperar agente (recall completo)
   Given agente "test-agent" retired con snapshot
-  And MemPalace activo con indice previo
+  And Memoria Persistente activo con indice previo
   When ejecuto "python3 scripts/evol-agent-lifecycle.py recall test-agent"
   Then archivo .md reconstruido en prompts/agents/ephemeral/
   And archivo identical al original (SHA-256 match)
   And registry marca "retired": false
   And registry marca "recalled": true
   And registro "recalled_at" con timestamp
-  And MemPalace re-indexado
+  And Memoria Persistente re-indexado
   And mensaje "Recall type: COMPLETO (JSON + semantic)" mostrado  # REQ-007
 
 Scenario: Garbage collection de agentes vencidos
@@ -574,7 +574,7 @@ Scenario: Sin permisos de escritura
 ### Edge Cases
 
 ```gherkin
-Scenario: Anti-MCP verification
+Scenario: Integración-MCP verification
   Given configs generados
   When ejecuto grep en configs generados
   Then 0 referencias a "mcpServers" encontradas
@@ -616,7 +616,7 @@ Scenario: Generar y aprobar propuesta
   Then entrada en tabla evolutions con status "proposed"
   When ejecuto "python3 scripts/evol-evolve.py approve cluster-1"
   Then skill activada
-  Then MemPalace indexado  # REQ-024
+  Then Memoria Persistente indexado  # REQ-024
 
 Scenario: Invalidar anti-patron
   Given instinct existe

@@ -14,7 +14,7 @@ trigger: /evol onboard-dev
 
 ## 0. Pre-flight
 - Copia `templates/onboarding.template.md` a `ONBOARDING.md` si no existe.
-- Confirma con el dev: rol, experiencia previa con el stack, MemPalace disponible.
+- Confirma con el dev: rol, experiencia previa con el stack, Memoria Persistente disponible.
 
 ## 1. Sub-comandos
 El workflow acepta:
@@ -29,7 +29,7 @@ Guiar al dev:
 bash ./scripts/evol-doctor.sh
 bash ./scripts/evol-start.sh
 ```
-Verificar lectura de: `CLAUDE.md`, `memoria.md`, `lecciones.md`, `docs/X-DD_Integration_Guide.md`.
+Verificar lectura de: `CLAUDE.md`, `memoria.md`, `lecciones.md`, `docs/evol-dd_Integration_Guide.md`.
 
 ## 3. Tour de arquitectura
 El agente recorre:
@@ -40,7 +40,7 @@ El agente recorre:
 - Convenciones de commits, branches, PRs (`docs/constitucion.md` Art. 7)
 - Cómo correr tests por nivel (TDD / BDD / E2E)
 
-## 4. Pareo con MemPalace
+## 4. Pareo con Memoria Persistente
 Demostrar preguntas semánticas útiles:
 - "¿cómo manejamos autenticación aquí?"
 - "¿qué lecciones hay sobre migraciones?"

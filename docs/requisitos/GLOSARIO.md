@@ -48,11 +48,11 @@ Este documento define el vocabulario unificado (Ubiquitous Language) del dominio
 
 **Definicion:** CREAR → INVOCAR → RETIRAR → [RECUPERAR]
 
-**CREATE:** Genera .md desde template, registra en registry.json, indexa MemPalace.
+**CREATE:** Genera .md desde template, registra en registry.json, indexa Memoria Persistente.
 
 **INVOKE:** Marca sesion, incrementa sessions_used.
 
-**RETIRE:** Elimina .md, archiva snapshot JSON con SHA-256, MemPalace retiene.
+**RETIRE:** Elimina .md, archiva snapshot JSON con SHA-256, Memoria Persistente retiene.
 
 **RECALL:** Reconstruye .md desde snapshot, re-registra, re-indexa.
 
@@ -175,7 +175,7 @@ Este documento define el vocabulario unificado (Ubiquitous Language) del dominio
 
 1. memoria.md (verdad del proyecto)
 2. AGENT_MEMORY.md + memory/ (sesion)
-3. MemPalace (busqueda semantica)
+3. Memoria Persistente (busqueda semantica)
 
 ---
 
@@ -313,7 +313,7 @@ Ver "Agent Ephemeral"
 
 **Definicion:** Configuracion de operacion segun disponibilidad de componentes.
 
-| Modo | MemPalace | Features |
+| Modo | Memoria Persistente | Features |
 |------|-----------|----------|
 | COMPLETO | CLI activo | Todas |
 | BASE | No disponible | Core, sin RAG |
@@ -367,8 +367,8 @@ Ver "Agent Ephemeral"
 
 **Tipos:**
 
-- COMPLETO: JSON + contexto semantico (MemPalace activo)
-- BASICO: Solo JSON (MemPalace no activo)
+- COMPLETO: JSON + contexto semantico (Memoria Persistente activo)
+- BASICO: Solo JSON (Memoria Persistente no activo)
 
 ---
 
@@ -434,7 +434,7 @@ Ver "Agent Ephemeral"
 | Termino | Reemplazar por | Razon |
 |---------|---------------|-------|
 | xdd-* | evol-* | Diferenciacion de X-DD |
-| MCP | sin MCP | Zero tolerance MCP |
+| MCP | MCP Nativo | MCP First-Class |
 | agent | core o ephemeral | Claridad |
 
 ---

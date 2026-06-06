@@ -91,12 +91,12 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> CREATE: evol-agent-lifecycle create
-    CREATE --> INVOKE: MemPalace index
+    CREATE --> INVOKE: Memoria Persistente index
     INVOKE --> INVOKE: evol-agent-lifecycle invoke
     INVOKE --> RETIRE: evol-agent-lifecycle retire
     RETIRE --> [*]
     RETIRE --> RECALL: evol-agent-lifecycle recall
-    RECALL --> INVOKE: MemPalace re-index
+    RECALL --> INVOKE: Memoria Persistente re-index
 ```
 
 ### Instinct (BC-1)
@@ -299,7 +299,7 @@ Instinct (Aggregate Root)
 
 | Evento | Trigger | Acciones | BC |
 |--------|---------|----------|----|
-| AgentCreated | create | Index MemPalace, update registry | BC-1 |
+| AgentCreated | create | Index Memoria Persistente, update registry | BC-1 |
 | AgentInvoked | invoke | Increment sessions_used | BC-1 |
 | AgentRetired | retire | Archive snapshot, SHA-256 | BC-1 |
 | AgentRecalled | recall | Reconstruct .md, re-index | BC-1 |
@@ -321,7 +321,7 @@ Instinct (Aggregate Root)
 | Skill | Capacidad especializada activable por trigger | Capability, feature | - |
 | Lifecycle | CREATE -> INVOKE -> RETIRE -> [RECALL] | Ciclo, vida | - |
 | Gate | Checkpoint HMAC-SHA256 para cambios estructurales | Approval, checkpoint | - |
-| MemPalace | Sistema de busqueda semantica CLI | Semantic search | - |
+| Memoria Persistente | Sistema de busqueda semantica CLI | Semantic search | - |
 | Trigger | Palabra clave para activar workflow/agent | Slash command | - |
 | Snapshot | Archivo JSON archivado de agente retired | Archive, backup | - |
 | Cluster | Grupo de instincts similares para propuesta | Group, bundle | - |
@@ -349,7 +349,7 @@ graph LR
     end
 
     subgraph "BC-4: Memory"
-        G[MemPalace]
+        G[Memoria Persistente]
         H[lecciones.md]
     end
 
@@ -395,7 +395,7 @@ graph LR
 3. Reemplazar placeholders
 4. Guardar en prompts/agents/ephemeral/
 5. Registrar en registry.json
-6. Indexar MemPalace
+6. Indexar Memoria Persistente
 
 ### SkillFactory
 
@@ -406,4 +406,4 @@ graph LR
 2. Crear directorio skills/<nombre>/
 3. Generar SKILL.md con frontmatter
 4. Generar eval suite en evals/<nombre>/
-5. Indexar MemPalace
+5. Indexar Memoria Persistente

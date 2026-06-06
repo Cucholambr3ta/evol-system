@@ -19,8 +19,7 @@ Este documento especifica las restricciones tecnicas, dependencias externas y su
 
 | Dependencia | Version | Proposito | Fallback si no disponible |
 |-------------|---------|-----------|---------------------------|
-| MemPalace CLI | any | Busqueda semantica | Modo BASE |
-| Node.js | any | GitNexus indexing | Sin GitNexus |
+| Memoria Persistente CLI | any | Busqueda semantica | Modo BASE |
 | gitleaks | any | Secrets detection | Warning, scan skipped |
 | semgrep | any | SAST | Warning, scan skipped |
 | bats | any | Shell tests | Skip tests |
@@ -71,13 +70,13 @@ Este documento especifica las restricciones tecnicas, dependencias externas y su
 
 **Roadmap:** Implementar commit SHA pinning en v0.2.
 
-### L05: Recall semantico requiere MemPalace activo
+### L05: Recall semantico requiere Memoria Persistente activo
 
-**Restriccion:** El recall de agente efimero solo recupera contexto semantico si MemPalace estuvo activo al momento del retire.
+**Restriccion:** El recall de agente efimero solo recupera contexto semantico si Memoria Persistente estuvo activo al momento del retire.
 
-**Razon:** Sin MemPalace, solo se tiene snapshot JSON.
+**Razon:** Sin Memoria Persistente, solo se tiene snapshot JSON.
 
-**Impacto:** Si MemPalace no estuvo activo, recall basico (JSON only).
+**Impacto:** Si Memoria Persistente no estuvo activo, recall basico (JSON only).
 
 **Mitigacion:** Documentar en modos.md, siempre ofrecer modo BASE.
 
@@ -118,7 +117,7 @@ Se asume que el usuario tiene permisos de escritura en su directorio HOME para:
 
 ### S06: Timeout de red 30s
 
-Se asume que 30 segundos es timeout razonable para llamadas de red (MemPalace, GitHub).
+Se asume que 30 segundos es timeout razonable para llamadas de red (Memoria Persistente, GitHub).
 
 **Verificacion:** _evol_common.py subprocess timeout.
 
@@ -132,13 +131,13 @@ Una sesion comienza cuando el agente recibe la primera instruccion del usuario y
 
 ## Constraints Arquitectonicos
 
-### C01: Sin MCP
+### C01: Con MCP
 
-**Constraint:** Evol-DD no usa MCP de ningun tipo — sin servidor MCP, sin protocolo de red MCP, sin configuracion de servidor en ningun IDE.
+**Constraint:** Evol-DD usa integración nativa de servidores MCP (Model Context Protocol) por defecto en todos los IDEs.
 
 **Razon:** Diferenciacion de X-DD, simplicidad, seguridad.
 
-**Impacto:** MemPalace se usa solo en modo CLI.
+**Impacto:** Memoria Persistente se usa solo en modo CLI.
 
 ### C02: Gate key por proyecto
 
@@ -211,7 +210,7 @@ Una sesion comienza cuando el agente recibe la primera instruccion del usuario y
 
 ### OL01: MCP server
 
-No construir servidor MCP propio ni usar protocolo MCP.
+Uso activo del protocolo MCP para extender herramientas.
 
 ### OL02: Key global
 

@@ -290,9 +290,7 @@ La skill en `skills/<nombre>/` es automaticamente:
 - Disponible via slash commands en **Claude Code**, **OpenCode**, **Windsurf**, **VSCode Copilot**
 - Disponible via @-mention en **Cursor**
 
-Verificar que no hay MCP generado:
 ```bash
-grep -r "mcpServers" .claude/ .opencode/ .cursor/ 2>/dev/null | wc -l
 # Debe ser 0
 ```
 

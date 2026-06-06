@@ -48,5 +48,5 @@ Copia `templates/adr.template.md` a `docs/adr/NNNN-<slug-kebab-case>.md` y guía
 
 ## 5. Cierre
 - Commit con prefijo `docs(adr): NNNN <título>`.
-- MemPalace indexa.
+- Memoria Persistente indexa.
 - Notificar a equipo si decisión impacta a otros componentes.

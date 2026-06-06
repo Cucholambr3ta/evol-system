@@ -121,7 +121,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - Framework core with CLI entrypoints (gate, eval, flow, provider, shield, orchestrate, agent, evolve, research, memory, lessons)
 - GitFlow branching strategy with develop/main/release process
 - HMAC-signed gate protocol for approval workflow
-- MemPalace memory integration for agent context persistence
+- Memoria Persistente memory integration for agent context persistence
 - Agent registry with 16 core agents and ephemeral agent lifecycle
 - Eval harness with structural, behavioral, output_match, pass_at_k graders
 - Security shield with secret detection and config auditing
@@ -145,7 +145,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - evol-init.sh with profile manifest system (minimal, core, developer, security, research, full, lean)
 - evol-naming strict mode with all xdd references migrated to evol
 - Gate HMAC chain with payload persistence and verify-on-read
-- MemPalace safe indexing with explicit allowlist (no `.evol/`, `.xdd/`, `.git/`, dialog/, tool_result/)
+- Memoria Persistente safe indexing with explicit allowlist (no `.evol/`, `.xdd/`, `.git/`, dialog/, tool_result/)
 - Security hooks with structured JSON input and real blocking for dangerous commands
 - CI as real gate without `|| true` masks, running pytest, shield, doctor, registry validation
 - Hermetic tests using EVOL_HOME, EVOL_STATE_DB, EVOL_PROJECT_DIR overrides with tmp_path fixtures
