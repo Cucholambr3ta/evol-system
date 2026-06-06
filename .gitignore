@@ -11,11 +11,7 @@ memory/raw/
 
 # Local indexes and machine-specific memory
 entities.json
-AGENT_MEMORY.md
-WORKING-CONTEXT.md
-
 # Project scaffolding artifacts (from running evol-init locally)
-acuerdos/
 api/
 assets/
 design/
