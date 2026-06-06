@@ -608,6 +608,28 @@ def main():
 
     sub.add_parser("edms-tier-stats", help="Show tier statistics")
 
+    # FlowScript query commands
+    p = sub.add_parser("edms-why", help="WHY: Find causes for a decision")
+    p.add_argument("text", help="Decision text to investigate")
+
+    sub.add_parser("edms-tensions", help="TENSIONS: Find conflicting lessons")
+    sub.add_parser("edms-blocked", help="BLOCKED: Find blocking risks")
+
+    p = sub.add_parser("edms-whatif", help="WHATIF: Simulate scenario")
+    p.add_argument("scenario", help="Scenario to simulate")
+
+    p = sub.add_parser("edms-alternatives", help="ALTERNATIVES: Find alternatives considered")
+    p.add_argument("text", help="Decision text")
+
+    # Team memory commands
+    p = sub.add_parser("edms-agent-index", help="Index with agent namespace")
+    p.add_argument("text", help="Text to index")
+    p.add_argument("--agent", required=True, help="Agent ID")
+    p.add_argument("--scope", default="shared", choices=["shared", "private"], help="Scope")
+
+    p = sub.add_parser("edms-agent-context", help="Get agent-specific context")
+    p.add_argument("--agent", required=True, help="Agent ID")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -669,6 +691,39 @@ def main():
         edms_decay(args.project, args.days)
     elif args.cmd == "edms-tier-stats":
         edms_tier_stats(args.project)
+    elif args.cmd == "edms-why":
+        results = store.query_why(args.text) if store else []
+        print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No causes found")
+    elif args.cmd == "edms-tensions":
+        store = _get_store()
+        results = store.query_tensions() if store else []
+        print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No tensions found")
+    elif args.cmd == "edms-blocked":
+        store = _get_store()
+        results = store.query_blocked() if store else []
+        print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No blocking risks")
+    elif args.cmd == "edms-whatif":
+        store = _get_store()
+        results = store.query_whatif(args.scenario) if store else []
+        print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No scenarios found")
+    elif args.cmd == "edms-alternatives":
+        store = _get_store()
+        results = store.query_alternatives(args.text) if store else []
+        print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No alternatives found")
+    elif args.cmd == "edms-agent-index":
+        store = _get_store()
+        if store:
+            doc_id = store.index_agent(args.text, args.agent, args.scope)
+            print(f"[evol-memory] Indexed for agent {args.agent}: {doc_id}")
+        else:
+            print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-agent-context":
+        store = _get_store()
+        if store:
+            ctx = store.get_agent_context(args.agent, args.project)
+            print(ctx)
+        else:
+            print("[evol-memory] EDMS no disponible.")
     else:
         parser.print_help()
 

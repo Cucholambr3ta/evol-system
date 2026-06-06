@@ -532,3 +532,162 @@ class MemoryStore:
                     break
 
         return stats
+
+    # ── FlowScript Queries (6 types) ──────────────────────────────────────
+
+    def query_why(self, decision_text: str) -> list[dict]:
+        """WHY: Por que se tomo esta decision? Find causes."""
+        results = self.search(decision_text, tipo='decision', n_results=5)
+        causes = []
+        for r in results:
+            # Look for related causes in graph
+            node_id = hashlib.sha256(r['text'].encode()).hexdigest()[:12]
+            traversal = self.graph_traverse(node_id, depth=2)
+            for rel in traversal.get('relations', []):
+                if rel['type'] in ('CAUSA', 'AFECTA'):
+                    causes.append({'decision': r['text'][:100], 'cause': rel})
+        return causes
+
+    def query_tensions(self) -> list[dict]:
+        """TENSIONS: Que lecciones conflictan entre si?"""
+        lessons = self.search("", tipo='leccion', n_results=20)
+        tensions = []
+        for i, l1 in enumerate(lessons):
+            for l2 in lessons[i+1:]:
+                # Simple conflict detection: different categories, same topic
+                cat1 = l1['metadata'].get('fase', '')
+                cat2 = l2['metadata'].get('fase', '')
+                if cat1 != cat2:
+                    words1 = set(l1['text'].lower().split())
+                    words2 = set(l2['text'].lower().split())
+                    common = words1 & words2
+                    if len(common) > 3:  # Significant overlap
+                        tensions.append({
+                            'lesson1': l1['text'][:100],
+                            'lesson2': l2['text'][:100],
+                            'common_words': list(common)[:5]
+                        })
+        return tensions
+
+    def query_blocked(self) -> list[dict]:
+        """BLOCKED: Que riesgos bloquean progreso?"""
+        risks = self.search("", tipo='riesgo', n_results=10)
+        blocked = []
+        for r in risks:
+            if r['metadata'].get('status', 'activo') == 'activo':
+                blocked.append({
+                    'risk': r['text'][:100],
+                    'metadata': r['metadata']
+                })
+        return blocked
+
+    def query_whatif(self, scenario: str) -> list[dict]:
+        """WHATIF: Que pasaria si...? Simulate over subgraph."""
+        # Find related decisions
+        decisions = self.search(scenario, tipo='decision', n_results=3)
+        scenarios = []
+        for d in decisions:
+            node_id = hashlib.sha256(d['text'].encode()).hexdigest()[:12]
+            traversal = self.graph_traverse(node_id, depth=3)
+            scenarios.append({
+                'decision': d['text'][:100],
+                'consequences': [rel for rel in traversal.get('relations', [])]
+            })
+        return scenarios
+
+    def query_alternatives(self, decision_text: str) -> list[dict]:
+        """ALTERNATIVES: Que alternativas se consideraron?"""
+        results = self.search(decision_text, tipo='decision', n_results=5)
+        alternatives = []
+        for r in results:
+            # Look for DESCARTA relations
+            node_id = hashlib.sha256(r['text'].encode()).hexdigest()[:12]
+            traversal = self.graph_traverse(node_id, depth=2)
+            for rel in traversal.get('relations', []):
+                if rel['type'] == 'DESCARTA':
+                    alternatives.append({
+                        'chosen': r['text'][:100],
+                        'alternative': rel
+                    })
+        return alternatives
+
+    # ── Team Memory Namespaces ────────────────────────────────────────────
+
+    def index_agent(self, text: str, agent_id: str, scope: str = 'shared',
+                    metadata: dict | None = None) -> str:
+        """Index text with agent-specific namespace.
+
+        Args:
+            text: Text to index
+            agent_id: Agent identifier (e.g., 'evol-architect')
+            scope: 'shared' (visible to all) or 'private' (agent-only)
+            metadata: Additional metadata
+
+        Returns:
+            Document ID
+        """
+        meta = metadata or {}
+        meta['agente'] = agent_id
+        meta['scope'] = scope
+        return self.index(text, meta)
+
+    def search_agent(self, query: str, agent_id: str | None = None,
+                     scope: str | None = None, **kwargs) -> list[dict]:
+        """Search with agent namespace filtering.
+
+        Args:
+            query: Search query
+            agent_id: Filter by agent (None = all agents)
+            scope: Filter by scope (shared/private)
+            **kwargs: Additional search filters
+
+        Returns:
+            List of matching drawers
+        """
+        if agent_id:
+            kwargs['agent'] = agent_id
+        return self.search(query, **kwargs)
+
+    def get_agent_context(self, agent_id: str, project: str) -> str:
+        """Get context specific to an agent.
+
+        Returns:
+            String with agent-relevant memory
+        """
+        parts = [f"Agente: {agent_id}"]
+
+        # Agent's own memories
+        agent_memories = self.search_agent("", agent_id=agent_id, n_results=5)
+        if agent_memories:
+            parts.append("Memorias propias:")
+            for m in agent_memories:
+                parts.append(f"  - {m['text'][:80]}")
+
+        # Shared memories relevant to agent
+        shared = self.search_agent("", scope='shared', n_results=5)
+        if shared:
+            parts.append("Memorias compartidas:")
+            for s in shared:
+                parts.append(f"  - {s['text'][:80]}")
+
+        context = '\n'.join(parts)
+        if len(context) > 800:
+            context = context[:797] + '...'
+        return context
+
+        with open(idx_file) as f:
+            idx = json.load(f)
+
+        for item in idx:
+            meta = item.get('metadata', {})
+            if meta.get('proyecto') != project:
+                continue
+
+            tipo = meta.get('tipo', 'artefacto')
+            for tier in stats:
+                if tipo.startswith(tier):
+                    stats[tier] += 1
+                    stats['total'] += 1
+                    break
+
+        return stats
