@@ -30,16 +30,16 @@ Esta skill genera y actualiza archivos `README.md` inyectando la calidad de dise
 ## Uso
 El agente evaluará el código base o la descripción entregada y reconstruirá el archivo `README.md` siguiendo estrictamente esta arquitectura:
 
-### 1. La Estructura Estándar (El Esqueleto Top 100)
+### 1. El Estándar 2026 (Minimalista y AI-Friendly)
 Todo `README.md` generado debe contener, en orden estricto:
-1. **Hero (Cabecera Visual):** Un bloque `<div align="center">` con el `<h1>` principal, un `<p>` resaltado con el pitch de 2 líneas, y un `<p>` secundario que aloje *Badges de Shields.io* estéticos. Es obligatorio añadir soporte visual a los badges (ej. `?logo=python&logoColor=white`).
-2. **Tabla Comparativa (Problema vs Solución):** Una tabla en HTML (`<table>...</table>`) que contraste cómo la industria resuelve el dolor y cómo lo soluciona este proyecto de manera magistral.
-3. **Módulos de Código (El "Aha! Moment"):** Debajo de la tabla, inyectar directamente la demostración del flujo clave en bloques Markdown ````bash`` o ````python`` (fragmentos ultracortos).
-4. **Tabla de Contenidos (TOC):** Solo generada si el archivo supera las 5 secciones.
-5. **Arquitectura:** **Debe generarse un bloque de diagrama de arquitectura en Mermaid** (````mermaid`) que describa el flujo principal.
-6. **Instalación & Quick Start:** Bloques de código copiables con pasos de ejecución `< 5 minutos`.
-7. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información densa o FAQs sin romper el ritmo de lectura.
-8. **Contributing & Licencia.**
+1. **Banner Adaptativo:** Un bloque HTML `<picture>` en el `<div align="center">` que soporte cambio automático entre tema claro y oscuro (mediante `prefers-color-scheme`).
+2. **Hero Minimalista y Focus Hook:** Inmediatamente después del banner, el `<h1>` y **una sola línea** hiper-enfocada (Focus Message) describiendo la propuesta de valor sin ruido visual.
+3. **Badges Monocromáticos:** Uso de Shields.io con el estilo `style=flat-square` y un color corporativo uniforme (ej. `#1e293b`) para denotar profesionalismo.
+4. **Tabla Comparativa (Problema vs Solución):** Una tabla limpia en HTML que contraste el enfoque tradicional vs el enfoque moderno del proyecto.
+5. **Core Features (AI-Friendly Snippets):** Títulos semánticos directos (para que los LLMs indexen rápido) seguidos de bloques de código Markdown ````bash`` o ````python`` ultracortos.
+6. **Arquitectura:** **Obligatorio un diagrama de arquitectura en Mermaid** (````mermaid`) que describa el sistema.
+7. **Instalación & Quick Start.**
+8. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información sin romper el minimalismo.
 
 ### 2. Storytelling: Adaptación del Relato
 Antes de escribir, el agente inferirá la naturaleza del repositorio:
@@ -47,10 +47,10 @@ Antes de escribir, el agente inferirá la naturaleza del repositorio:
 - **Ecosistema Open Source:** Si es una librería comunitaria. Enfocarse en la gobernanza y extender el llamado a colaboradores. Usar cuadros o tablas de contribuidores.
 - **Utilitario / Kernel:** Si es una herramienta de bajo nivel. El relato debe ser directo y minimalista.
 
-### 3. Técnicas de Maquetación HTML (Nivel Top 100)
-- **Cero Emojis (Regla Evol-DD):** Está terminantemente prohibido usar emojis (🚀, 📦, 🛠️). Utiliza caracteres Unicode estéticos como `❖`, `►`, `■` o viñetas estándar (`-`).
-- **Alineación HTML:** Para el Hero y badges, usar obligatoriamente `<div align="center">`.
-- **Secciones Colapsables:** Todo bloque de configuración gigante, logs enormes o listados aburridos deben ir envueltos en `<details><summary><b>► Mostrar Detalle</b></summary><br>... </details>`.
+### 3. Técnicas 2026 de Maquetación HTML
+- **Cero Emojis (Regla Evol-DD):** Está terminantemente prohibido usar emojis. Utiliza caracteres Unicode estéticos como `❖`, `►`, `■`.
+- **Alineación HTML:** Para el Hero y badges, usar `<div align="center">`.
+- **Secciones Colapsables:** Todo bloque de configuración gigante o FAQs deben ir envueltos en `<details><summary><b>► Mostrar Detalle</b></summary><br>... </details>`.
 
 ## Ejecución
 Cuando el usuario solicite la creación o actualización, primero analiza el `package.json`, `pyproject.toml`, o los archivos fuente clave para extraer la misión real del proyecto. Luego rediseña y escribe el archivo `README.md` en la raíz con el nuevo estilo en HTML y Markdown.
