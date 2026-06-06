@@ -1,0 +1,18 @@
+{
+  "doc": "riesgos.md",
+  "dominio": "memoria",
+  "subdominio": "riesgos",
+  "resumen": "Atomo de MEMORY. Riesgos vigentes y mitigaciones.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 410,
+  "lineas": 12,
+  "checksum_md": "a79f8ebe4edd978d",
+  "actualizado": "2026-06-06T10:56:34.078620+00:00",
+  "tokens_json": 65
+}

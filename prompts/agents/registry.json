@@ -252,6 +252,22 @@
       ],
       "ephemeral": false,
       "retired": null
+    },
+    {
+      "id": 18,
+      "name": "evol-compliance-auditor",
+      "description": "Auditor de cumplimiento del orquestador. Verifica fases del pipeline, detecta violaciones, genera reportes de sprint, y actualiza lecciones de memoria.",
+      "category": "core",
+      "file": "core/evol-compliance-auditor.md",
+      "triggers": [
+        "/evol compliance-audit",
+        "/evol audit-compliance"
+      ],
+      "skills": [
+        "agent-eval"
+      ],
+      "ephemeral": false,
+      "retired": null
     }
   ]
 }

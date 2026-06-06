@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDMS — Project Board Wireframe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; }
+        
+        /* Header */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #111118; border-bottom: 1px solid #27272a; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 18px; font-weight: 700; color: #a78bfa; }
+        .logo span { color: #6d28d9; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #71717a; }
+        .breadcrumb .sep { color: #3f3f46; }
+        .breadcrumb .current { color: #e4e4e7; font-weight: 500; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .search-box { background: #1a1a24; border: 1px solid #27272a; border-radius: 8px; padding: 8px 16px; color: #e4e4e7; width: 240px; font-size: 13px; }
+        .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #27272a; background: #1a1a24; color: #a1a1aa; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        
+        /* Tab Bar */
+        .tab-bar { display: flex; gap: 0; padding: 0 24px; background: #111118; border-bottom: 1px solid #27272a; }
+        .tab { padding: 12px 16px; font-size: 13px; color: #71717a; cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px; }
+        .tab.active { color: #e4e4e7; border-color: #6d28d9; }
+        .tab:hover { color: #e4e4e7; }
+        .tab-icon { font-size: 14px; }
+        
+        /* Main Content */
+        .content { padding: 20px 24px; }
+        
+        /* Gantt Section */
+        .gantt-section { background: #111118; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .section-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .section-actions { display: flex; gap: 8px; }
+        .btn-xs { padding: 4px 10px; border-radius: 6px; border: 1px solid #27272a; background: #1a1a24; color: #a1a1aa; font-size: 11px; cursor: pointer; }
+        .btn-xs:hover { background: #27272a; color: #e4e4e7; }
+        .btn-xs.active { background: #6d28d9; border-color: #6d28d9; color: #fff; }
+        
+        /* Gantt Rows */
+        .gantt-row { display: flex; align-items: center; margin-bottom: 8px; }
+        .gantt-label { width: 160px; font-size: 12px; color: #a1a1aa; flex-shrink: 0; }
+        .gantt-bar-container { flex: 1; height: 28px; background: #1a1a24; border-radius: 6px; position: relative; overflow: hidden; }
+        .gantt-bar { position: absolute; height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 500; color: #fff; }
+        .gantt-bar.phase1 { background: linear-gradient(90deg, #22c55e, #16a34a); left: 0%; width: 25%; }
+        .gantt-bar.phase2 { background: linear-gradient(90deg, #3b82f6, #2563eb); left: 20%; width: 25%; }
+        .gantt-bar.phase3 { background: linear-gradient(90deg, #a855f7, #7c3aed); left: 40%; width: 20%; }
+        .gantt-bar.phase4 { background: linear-gradient(90deg, #f59e0b, #d97706); left: 55%; width: 25%; }
+        .gantt-bar.phase5 { background: linear-gradient(90deg, #ef4444, #dc2626); left: 75%; width: 15%; opacity: 0.4; }
+        .gantt-bar.phase6 { background: linear-gradient(90deg, #6b7280, #4b5563); left: 88%; width: 12%; opacity: 0.3; }
+        .gantt-bar.sub { height: 6px; top: 11px; border-radius: 3px; }
+        .gantt-gate { position: absolute; right: 0; top: 0; height: 100%; width: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .gantt-gate.done { color: #22c55e; }
+        .gantt-gate.pending { color: #eab308; }
+        .gantt-gate.locked { color: #52525b; }
+        
+        /* Bottom Grid */
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        /* Kanban */
+        .kanban-section { background: #111118; border: 1px solid #27272a; border-radius: 12px; padding: 20px; }
+        .kanban-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+        .kanban-col { background: #1a1a24; border-radius: 8px; padding: 12px; min-height: 200px; }
+        .kanban-col-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #71717a; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .kanban-count { background: #27272a; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+        .kanban-card { background: #111118; border: 1px solid #27272a; border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: grab; transition: all 0.2s; }
+        .kanban-card:hover { border-color: #6d28d9; transform: translateY(-1px); }
+        .kanban-card-id { font-size: 10px; color: #52525b; font-family: monospace; }
+        .kanban-card-title { font-size: 13px; color: #e4e4e7; margin-top: 4px; font-weight: 500; }
+        .kanban-card-meta { display: flex; gap: 8px; margin-top: 8px; }
+        .kanban-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #27272a; color: #a1a1aa; }
+        .kanban-tag.priority-p0 { background: #7f1d1d; color: #fca5a5; }
+        .kanban-tag.priority-p1 { background: #78350f; color: #fcd34d; }
+        .kanban-tag.priority-p2 { background: #1e3a5f; color: #93c5fd; }
+        
+        /* User Stories */
+        .stories-section { background: #111118; border: 1px solid #27272a; border-radius: 12px; padding: 20px; }
+        .story-card { background: #1a1a24; border: 1px solid #27272a; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .story-header { display: flex; align-items: flex-start; justify-content: space-between; }
+        .story-id { font-size: 11px; color: #6d28d9; font-weight: 600; font-family: monospace; }
+        .story-status { font-size: 10px; padding: 3px 8px; border-radius: 4px; }
+        .story-status.in-progress { background: #78350f; color: #fcd34d; }
+        .story-status.todo { background: #1e3a5f; color: #93c5fd; }
+        .story-status.done { background: #14532d; color: #86efac; }
+        .story-title { font-size: 14px; font-weight: 600; color: #e4e4e7; margin-top: 8px; }
+        .story-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 12px; color: #71717a; }
+        .story-meta strong { color: #a1a1aa; }
+        .story-trace { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .trace-tag { font-size: 10px; padding: 3px 8px; border-radius: 4px; background: #27272a; color: #a1a1aa; font-family: monospace; }
+        .story-progress { margin-top: 10px; }
+        .story-progress-text { font-size: 11px; color: #71717a; margin-bottom: 4px; }
+        
+        /* Metrics Section */
+        .metrics-section { background: #111118; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .metric-card { background: #1a1a24; border-radius: 10px; padding: 16px; text-align: center; }
+        .metric-card canvas { margin: 0 auto; }
+        .metric-card-title { font-size: 12px; color: #71717a; margin-top: 12px; }
+        .metric-card-value { font-size: 20px; font-weight: 700; color: #e4e4e7; margin-top: 4px; }
+        
+        /* Discipline Bar */
+        .discipline-bar { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+        .discipline-chip { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #1a1a24; border-radius: 6px; font-size: 12px; }
+        .discipline-chip .check { color: #22c55e; }
+        .discipline-chip .pending { color: #eab308; }
+        .discipline-chip .fail { color: #ef4444; }
+        
+        /* Wireframe Label */
+        .wireframe-badge { position: fixed; top: 12px; right: 12px; background: #f59e0b; color: #000; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; z-index: 100; }
+    </style>
+</head>
+<body>
+    <div class="wireframe-badge">WIREFRAME v1.0</div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">ED<span>MS</span></div>
+            <div class="breadcrumb">
+                <span class="sep">›</span>
+                <span>SaaS Platform</span>
+                <span class="sep">›</span>
+                <span class="current">Phase 4 — Build</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <input type="text" class="search-box" placeholder="⌘K Search in project...">
+            <div class="icon-btn">⚙</div>
+            <div class="icon-btn">👤</div>
+        </div>
+    </header>
+    
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <div class="tab"><span class="tab-icon">🕸</span> Graph</div>
+        <div class="tab active"><span class="tab-icon">📅</span> Gantt</div>
+        <div class="tab"><span class="tab-icon">🎯</span> Kanban</div>
+        <div class="tab"><span class="tab-icon">📖</span> Stories</div>
+        <div class="tab"><span class="tab-icon">📊</span> Metrics</div>
+        <div class="tab"><span class="tab-icon">⚙</span> Pipeline</div>
+    </div>
+    
+    <!-- Content -->
+    <div class="content">
+        <!-- Gantt Chart -->
+        <div class="gantt-section">
+            <div class="section-header">
+                <div class="section-title">📅 GANTT CHART</div>
+                <div class="section-actions">
+                    <button class="btn-xs active">Critical Path</button>
+                    <button class="btn-xs">Dependencies</button>
+                    <button class="btn-xs">Resources</button>
+                    <button class="btn-xs">Baseline</button>
+                    <button class="btn-xs">Export PDF</button>
+                </div>
+            </div>
+            
+            <!-- Timeline Header -->
+            <div style="display:flex;margin-bottom:12px;">
+                <div style="width:160px;font-size:10px;color:#52525b;">TASK</div>
+                <div style="flex:1;display:flex;justify-content:space-between;font-size:10px;color:#52525b;">
+                    <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span>
+                </div>
+            </div>
+            
+            <!-- Phase 1 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 1 (Briefing)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase1">Complete</div>
+                    <div class="gantt-gate done">✓</div>
+                </div>
+            </div>
+            
+            <!-- Phase 2 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 2 (Spec)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase2">Complete</div>
+                    <div class="gantt-gate done">✓</div>
+                </div>
+            </div>
+            
+            <!-- Phase 3 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 3 (Plan)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase3">Complete</div>
+                    <div class="gantt-gate done">✓</div>
+                </div>
+            </div>
+            
+            <!-- Phase 4 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 4 (Build)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase4">In Progress</div>
+                    <div class="gantt-gate pending">⏳</div>
+                </div>
+            </div>
+            
+            <!-- Sub-tasks -->
+            <div class="gantt-row" style="margin-left:20px;">
+                <div class="gantt-label" style="width:140px;font-size:11px;color:#52525b;">├─ TDD cycle</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase4 sub" style="width:60%;left:55%;"></div>
+                </div>
+            </div>
+            <div class="gantt-row" style="margin-left:20px;">
+                <div class="gantt-label" style="width:140px;font-size:11px;color:#52525b;">├─ STDD cycle</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase4 sub" style="width:50%;left:60%;"></div>
+                </div>
+            </div>
+            <div class="gantt-row" style="margin-left:20px;">
+                <div class="gantt-label" style="width:140px;font-size:11px;color:#52525b;">└─ Integration</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase4 sub" style="width:40%;left:65%;"></div>
+                </div>
+            </div>
+            
+            <!-- Phase 5 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 5 (QA)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase5">Queued</div>
+                    <div class="gantt-gate locked">🔒</div>
+                </div>
+            </div>
+            
+            <!-- Phase 6 -->
+            <div class="gantt-row">
+                <div class="gantt-label">Fase 6 (Retro)</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar phase6">Queued</div>
+                    <div class="gantt-gate locked">🔒</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Grid: Kanban + Stories -->
+        <div class="bottom-grid">
+            <!-- Kanban Board -->
+            <div class="kanban-section">
+                <div class="section-header">
+                    <div class="section-title">🎯 KANBAN BOARD</div>
+                    <div class="section-actions">
+                        <button class="btn-xs">Filter</button>
+                        <button class="btn-xs">Sort</button>
+                    </div>
+                </div>
+                
+                <div class="kanban-columns">
+                    <!-- TODO -->
+                    <div class="kanban-col">
+                        <div class="kanban-col-header">
+                            <span>📝 TODO</span>
+                            <span class="kanban-count">4</span>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="kanban-card-id">T-101</div>
+                            <div class="kanban-card-title">Implement OAuth2 flow</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p0">P0</span>
+                                <span class="kanban-tag">F-Auth</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="kanban-card-id">T-102</div>
+                            <div class="kanban-card-title">Create user model</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p1">P1</span>
+                                <span class="kanban-tag">F-Auth</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="kanban-card-id">T-105</div>
+                            <div class="kanban-card-title">Payment webhook handler</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p1">P1</span>
+                                <span class="kanban-tag">F-Payment</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="kanban-card-id">T-108</div>
+                            <div class="kanban-card-title">Rate limiting middleware</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p2">P2</span>
+                                <span class="kanban-tag">F-Infra</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DOING -->
+                    <div class="kanban-col">
+                        <div class="kanban-col-header">
+                            <span>🔄 DOING</span>
+                            <span class="kanban-count">2</span>
+                        </div>
+                        <div class="kanban-card" style="border-color:#6d28d9;">
+                            <div class="kanban-card-id">T-103</div>
+                            <div class="kanban-card-title">JWT token validation</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p0">P0</span>
+                                <span class="kanban-tag">F-Auth</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card" style="border-color:#6d28d9;">
+                            <div class="kanban-card-id">T-104</div>
+                            <div class="kanban-card-title">Session management</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag priority-p0">P0</span>
+                                <span class="kanban-tag">F-Auth</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DONE -->
+                    <div class="kanban-col">
+                        <div class="kanban-col-header">
+                            <span>✅ DONE</span>
+                            <span class="kanban-count">6</span>
+                        </div>
+                        <div class="kanban-card" style="opacity:0.6;">
+                            <div class="kanban-card-id">T-095</div>
+                            <div class="kanban-card-title">Database schema</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag" style="background:#14532d;color:#86efac;">Done</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card" style="opacity:0.6;">
+                            <div class="kanban-card-id">T-096</div>
+                            <div class="kanban-card-title">API routing setup</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag" style="background:#14532d;color:#86efac;">Done</span>
+                            </div>
+                        </div>
+                        <div class="kanban-card" style="opacity:0.6;">
+                            <div class="kanban-card-id">T-097</div>
+                            <div class="kanban-card-title">Auth middleware base</div>
+                            <div class="kanban-card-meta">
+                                <span class="kanban-tag" style="background:#14532d;color:#86efac;">Done</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Stories -->
+            <div class="stories-section">
+                <div class="section-header">
+                    <div class="section-title">📖 USER STORIES</div>
+                    <div class="section-actions">
+                        <button class="btn-xs active">Active</button>
+                        <button class="btn-xs">All</button>
+                        <button class="btn-xs">+ Add</button>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-header">
+                        <div class="story-id">US-042</div>
+                        <div class="story-status in-progress">In Progress</div>
+                    </div>
+                    <div class="story-title">Auth con OAuth2</div>
+                    <div class="story-meta">
+                        <span><strong>Priority:</strong> P0 (MoSCoW: Must)</span>
+                        <span><strong>Feature:</strong> F-Auth (RICE: 92)</span>
+                        <span><strong>Agent:</strong> evol-architect</span>
+                    </div>
+                    <div class="story-trace">
+                        <span class="trace-tag">SPEC-042</span>
+                        <span class="trace-tag">DOMAIN-Auth</span>
+                        <span class="trace-tag">THREAT-007</span>
+                        <span class="trace-tag">.feature</span>
+                        <span class="trace-tag">BDD-042</span>
+                    </div>
+                    <div class="story-progress">
+                        <div class="story-progress-text">Acceptance: 3/4 passing</div>
+                        <div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden;">
+                            <div style="height:100%;width:75%;background:#6d28d9;border-radius:2px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-header">
+                        <div class="story-id">US-043</div>
+                        <div class="story-status todo">Todo</div>
+                    </div>
+                    <div class="story-title">Payment Webhook</div>
+                    <div class="story-meta">
+                        <span><strong>Priority:</strong> P1 (MoSCoW: Should)</span>
+                        <span><strong>Feature:</strong> F-Payment (RICE: 78)</span>
+                    </div>
+                    <div class="story-trace">
+                        <span class="trace-tag">SPEC-043</span>
+                        <span class="trace-tag">DOMAIN-Payment</span>
+                        <span class="trace-tag">THREAT-012</span>
+                    </div>
+                    <div class="story-progress">
+                        <div class="story-progress-text">Acceptance: 0/3 passing</div>
+                        <div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden;">
+                            <div style="height:100%;width:0%;background:#6d28d9;border-radius:2px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-header">
+                        <div class="story-id">US-044</div>
+                        <div class="story-status done">Done</div>
+                    </div>
+                    <div class="story-title">User Registration</div>
+                    <div class="story-meta">
+                        <span><strong>Priority:</strong> P0 (MoSCoW: Must)</span>
+                        <span><strong>Feature:</strong> F-Auth (RICE: 88)</span>
+                    </div>
+                    <div class="story-trace">
+                        <span class="trace-tag">SPEC-044</span>
+                        <span class="trace-tag">DOMAIN-Auth</span>
+                        <span class="trace-tag">BDD-044</span>
+                    </div>
+                    <div class="story-progress">
+                        <div class="story-progress-text">Acceptance: 4/4 passing</div>
+                        <div style="height:4px;background:#27272a;border-radius:2px;overflow:hidden;">
+                            <div style="height:100%;width:100%;background:#22c55e;border-radius:2px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Metrics Section -->
+        <div class="metrics-section">
+            <div class="section-header">
+                <div class="section-title">📊 PROJECT METRICS</div>
+                <div class="section-actions">
+                    <button class="btn-xs active">Current Sprint</button>
+                    <button class="btn-xs">Last 3 Sprints</button>
+                    <button class="btn-xs">All Time</button>
+                </div>
+            </div>
+            
+            <div class="metrics-grid">
+                <!-- Burndown -->
+                <div class="metric-card">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <polyline points="0,5 20,15 40,25 60,30 80,42 100,48 120,55" fill="none" stroke="#27272a" stroke-width="2" stroke-dasharray="4"/>
+                        <polyline points="0,5 20,12 40,20 60,28 80,35 100,40" fill="none" stroke="#6d28d9" stroke-width="2"/>
+                        <circle cx="100" cy="40" r="4" fill="#6d28d9"/>
+                    </svg>
+                    <div class="metric-card-title">Burndown</div>
+                    <div class="metric-card-value">64%</div>
+                </div>
+                
+                <!-- Velocity -->
+                <div class="metric-card">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <rect x="5" y="30" width="15" height="25" rx="2" fill="#3b82f6" opacity="0.6"/>
+                        <rect x="25" y="20" width="15" height="35" rx="2" fill="#3b82f6" opacity="0.7"/>
+                        <rect x="45" y="25" width="15" height="30" rx="2" fill="#3b82f6" opacity="0.8"/>
+                        <rect x="65" y="15" width="15" height="40" rx="2" fill="#3b82f6" opacity="0.9"/>
+                        <rect x="85" y="10" width="15" height="45" rx="2" fill="#6d28d9"/>
+                    </svg>
+                    <div class="metric-card-title">Velocity</div>
+                    <div class="metric-card-value">12 pts/spr</div>
+                </div>
+                
+                <!-- Coverage -->
+                <div class="metric-card">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <circle cx="60" cy="35" r="25" fill="none" stroke="#27272a" stroke-width="6"/>
+                        <circle cx="60" cy="35" r="25" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="138" stroke-dashoffset="18" transform="rotate(-90 60 35)"/>
+                        <text x="60" y="38" text-anchor="middle" fill="#e4e4e7" font-size="14" font-weight="700">87%</text>
+                    </svg>
+                    <div class="metric-card-title">Spec Coverage</div>
+                    <div class="metric-card-value">87%</div>
+                </div>
+                
+                <!-- Health -->
+                <div class="metric-card">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <rect x="10" y="45" width="20" height="10" rx="2" fill="#22c55e"/>
+                        <rect x="35" y="35" width="20" height="20" rx="2" fill="#22c55e"/>
+                        <rect x="60" y="25" width="20" height="30" rx="2" fill="#eab308"/>
+                        <rect x="85" y="15" width="20" height="40" rx="2" fill="#6d28d9"/>
+                    </svg>
+                    <div class="metric-card-title">Health Score</div>
+                    <div class="metric-card-value" style="color:#22c55e;">78/100</div>
+                </div>
+            </div>
+            
+            <!-- Disciplines -->
+            <div class="discipline-bar">
+                <div class="discipline-chip"><span class="check">✓</span> SDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> FDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> DDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> BDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> ATDD</div>
+                <div class="discipline-chip"><span class="pending">⏳</span> TDD</div>
+                <div class="discipline-chip"><span class="pending">⏳</span> STDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> SecDD</div>
+                <div class="discipline-chip"><span class="check">✓</span> Privacy</div>
+                <div class="discipline-chip" style="margin-left:auto;font-size:11px;color:#71717a;">Debt: 4.2h remaining | 12.3h consumed</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

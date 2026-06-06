@@ -238,7 +238,7 @@ bash scripts/evol-adapt.sh all --dry-run  # ver sin generar
 
 ## Como añadir un agente core
 
-Los 16 agentes core son permanentes. Anadir uno aumenta a 17. Esta operacion es infrecuente y requiere deliberacion.
+Los 18 agentes core son permanentes. Anadir uno aumenta a 19. Esta operacion es infrecuente y requiere deliberacion.
 
 ### Crear el archivo del agente
 

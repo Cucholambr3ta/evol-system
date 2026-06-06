@@ -2,7 +2,7 @@
   "doc": "ARQUITECTURA.md",
   "dominio": "arquitectura",
   "subdominio": "ARQUITECTURA",
-  "resumen": "Evol-DD es un framework de desarrollo agentico con 16 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.",
+  "resumen": "Evol-DD es un framework de desarrollo agentico con 18 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.",
   "secciones": [
     "resumen-ejecutivo",
     "vision-general",

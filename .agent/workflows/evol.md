@@ -12,7 +12,7 @@ skills:
 
 > Ley suprema: `docs/constitucion.md`. Leer `memoria.md` + `lecciones.md` antes de cualquier accion (Art. 3 + Art. 9).
 
-**Version:** 1.0.0 | **Agentes core:** 16 permanentes + efimeros bajo demanda
+**Version:** 1.0.0 | **Agentes core:** 17 permanentes + auditor de cumplimiento + efimeros bajo demanda
 
 ---
 
@@ -173,6 +173,62 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 
 ---
 
+## Auditor de Cumplimiento (Capa 2 — enforcement semantico)
+
+El orquestador tiene un **auditor de cumplimiento** que verifica el pipeline
+en tiempo real. Opera en 3 capas:
+
+- **Capa 1 (mecanica):** Hooks en `.agent/hooks/scripts/` ejecutan validaciones
+  antes y después de cada fase. El LLM lee su output.
+- **Capa 2 (semantica):** Esta sección. El orquestador DEBE ejecutar los
+  comandos de compliance antes de cada transición.
+- **Capa 3 (reporte):** Al cierre de sprint, se genera un reporte de cumplimiento.
+
+### Regla obligatoria por fase
+
+Al **INICIAR** cada fase, el orquestador DEBE ejecutar:
+
+```bash
+python3 scripts/evol-compliance.py check --fase=<NUM> [--sprint=NN]
+```
+
+| Resultado | Accion del orquestador |
+|-----------|----------------------|
+| **PASS** | Continuar normalmente |
+| **WARN** | Mostrar warnings al usuario, continuar si confirma |
+| **BLOCK** | NO avanzar. Mostrar razon. Requiere resolucion explicita |
+
+Al **FINALIZAR** cada fase, el orquestador DEBE ejecutar:
+
+```bash
+python3 scripts/evol-compliance.py record --fase=<NUM> [--sprint=NN] --agent=<AGENT>
+```
+
+### Verificacion de lecciones
+
+Antes de cada fase, verificar lecciones pendientes:
+
+```bash
+python3 scripts/evol-compliance.py check-lessons --fase=<NUM>
+```
+
+Si hay lecciones pendientes relevantes, el orquestador DEBE:
+1. Mostrarlas al usuario
+2. Recordarlas al agente que ejecuta la fase
+3. Verificar al finalizar si se aplicaron
+
+### Al cierre de sprint
+
+```bash
+python3 scripts/evol-lessons.py verify-applied --sprint=NN
+python3 scripts/evol-compliance.py report --sprint=NN
+```
+
+Esto genera `acuerdos/auditoria/compliance-sprint-NN.md` y actualiza
+el estado de lecciones en `lecciones.md`.
+
+---
+
 ## Comandos rapidos
 
 ```
@@ -193,6 +249,7 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 /evol-update-project     → inyectar actualización del core al proyecto local
 /evol memory search X    → buscar en memoria conversacional
 /evol lessons search X   → buscar lecciones antes de decidir
+/evol compliance-audit   → auditoria de cumplimiento del sprint
 ```
 
 ---

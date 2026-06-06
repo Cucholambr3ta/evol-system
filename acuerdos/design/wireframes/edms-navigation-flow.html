@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDMS — Navigation Flow Wireframe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; padding: 40px; }
+        
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: #71717a; font-size: 14px; margin-bottom: 40px; }
+        
+        /* Flow Container */
+        .flow { display: flex; flex-direction: column; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        
+        /* Screen Card */
+        .screen { background: #111118; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; }
+        .screen-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #1a1a24; border-bottom: 1px solid #27272a; }
+        .screen-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .screen-badge { font-size: 10px; padding: 4px 10px; border-radius: 12px; background: #6d28d9; color: #fff; font-weight: 600; }
+        .screen-body { padding: 24px; }
+        
+        /* Mock UI */
+        .mock-layout { display: grid; gap: 16px; }
+        .mock-header { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1a1a24; border-radius: 8px; }
+        .mock-logo { width: 40px; height: 20px; background: #6d28d9; border-radius: 4px; }
+        .mock-search { flex: 1; height: 24px; background: #27272a; border-radius: 4px; }
+        .mock-icons { display: flex; gap: 8px; }
+        .mock-icon { width: 24px; height: 24px; background: #27272a; border-radius: 4px; }
+        
+        .mock-main { display: grid; grid-template-columns: 1fr 280px; gap: 16px; min-height: 200px; }
+        .mock-graph { background: #0d0d14; border-radius: 8px; position: relative; overflow: hidden; }
+        .mock-graph svg { width: 100%; height: 100%; }
+        .mock-panel { display: flex; flex-direction: column; gap: 12px; }
+        .mock-card { background: #1a1a24; border-radius: 8px; padding: 12px; }
+        .mock-card-title { font-size: 10px; color: #71717a; text-transform: uppercase; margin-bottom: 8px; }
+        .mock-metric { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+        .mock-metric-label { color: #71717a; }
+        .mock-metric-value { color: #e4e4e7; font-weight: 600; }
+        
+        .mock-projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .mock-project { background: #1a1a24; border-radius: 8px; padding: 12px; border: 1px solid #27272a; }
+        .mock-project-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .mock-project-name { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .mock-project-phase { font-size: 10px; color: #71717a; margin-top: 2px; }
+        .mock-progress { height: 3px; background: #27272a; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+        .mock-progress-fill { height: 100%; background: #6d28d9; border-radius: 2px; }
+        
+        /* Tabs Mock */
+        .mock-tabs { display: flex; gap: 0; padding: 0 16px; background: #1a1a24; border-bottom: 1px solid #27272a; }
+        .mock-tab { padding: 8px 12px; font-size: 10px; color: #71717a; }
+        .mock-tab.active { color: #e4e4e7; border-bottom: 2px solid #6d28d9; }
+        
+        /* Gantt Mock */
+        .mock-gantt { display: flex; flex-direction: column; gap: 6px; }
+        .mock-gantt-row { display: flex; align-items: center; gap: 8px; }
+        .mock-gantt-label { width: 80px; font-size: 9px; color: #71717a; }
+        .mock-gantt-bar-container { flex: 1; height: 16px; background: #27272a; border-radius: 4px; }
+        .mock-gantt-bar { height: 100%; border-radius: 4px; }
+        
+        /* Kanban Mock */
+        .mock-kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .mock-kanban-col { background: #1a1a24; border-radius: 6px; padding: 8px; }
+        .mock-kanban-header { font-size: 9px; color: #71717a; text-transform: uppercase; margin-bottom: 8px; }
+        .mock-kanban-card { background: #111118; border-radius: 4px; padding: 8px; margin-bottom: 4px; border: 1px solid #27272a; }
+        .mock-kanban-card-title { font-size: 10px; color: #e4e4e7; }
+        
+        /* Arrow */
+        .arrow-container { display: flex; justify-content: center; align-items: center; padding: 20px 0; }
+        .arrow { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .arrow-line { width: 2px; height: 40px; background: linear-gradient(180deg, #6d28d9, #3b82f6); }
+        .arrow-head { width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #3b82f6; }
+        .arrow-label { font-size: 12px; color: #71717a; background: #1a1a24; padding: 4px 12px; border-radius: 12px; border: 1px solid #27272a; }
+        
+        /* Triggers */
+        .triggers { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .trigger { font-size: 10px; padding: 4px 8px; border-radius: 4px; background: #27272a; color: #a1a1aa; }
+        .trigger.hook { background: #1e3a5f; color: #93c5fd; }
+        .trigger.cli { background: #14532d; color: #86efac; }
+        .trigger.auto { background: #78350f; color: #fcd34d; }
+        
+        /* Two Column */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        
+        /* Wireframe Label */
+        .wireframe-badge { position: fixed; top: 12px; right: 12px; background: #f59e0b; color: #000; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; z-index: 100; }
+    </style>
+</head>
+<body>
+    <div class="wireframe-badge">WIREFRAME v1.0</div>
+    
+    <h1>EDMS — Navigation Flow</h1>
+    <p class="subtitle">Flujo de usuario: Global View → Project Selection → Project Board</p>
+    
+    <div class="flow">
+        <!-- Screen 1: Global View -->
+        <div class="screen">
+            <div class="screen-header">
+                <div class="screen-title">Pantalla 1: EDMS Global <span class="screen-badge">INITIAL</span></div>
+                <div class="triggers">
+                    <span class="trigger cli">evol edms</span>
+                    <span class="trigger">localhost:3113</span>
+                    <span class="trigger hook">SessionStart</span>
+                </div>
+            </div>
+            <div class="screen-body">
+                <div class="mock-layout">
+                    <div class="mock-header">
+                        <div class="mock-logo"></div>
+                        <div class="mock-search"></div>
+                        <div class="mock-icons">
+                            <div class="mock-icon"></div>
+                            <div class="mock-icon"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mock-main">
+                        <div class="mock-graph">
+                            <svg viewBox="0 0 400 200">
+                                <line x1="100" y1="60" x2="200" y2="80" stroke="#27272a" stroke-width="1"/>
+                                <line x1="200" y1="80" x2="300" y2="60" stroke="#27272a" stroke-width="1"/>
+                                <line x1="200" y1="80" x2="200" y2="140" stroke="#27272a" stroke-width="1"/>
+                                <circle cx="100" cy="60" r="16" fill="#6d28d9" stroke="#a78bfa" stroke-width="2"/>
+                                <circle cx="200" cy="80" r="14" fill="#3b82f6" stroke="#60a5fa" stroke-width="2"/>
+                                <circle cx="300" cy="60" r="12" fill="#dc2626" stroke="#f87171" stroke-width="2"/>
+                                <circle cx="200" cy="140" r="10" fill="#16a34a" stroke="#4ade80" stroke-width="2"/>
+                                <text x="100" y="64" text-anchor="middle" fill="#fff" font-size="8">SaaS</text>
+                                <text x="200" y="84" text-anchor="middle" fill="#fff" font-size="7">API</text>
+                                <text x="300" y="64" text-anchor="middle" fill="#fff" font-size="7">ML</text>
+                                <text x="200" y="144" text-anchor="middle" fill="#fff" font-size="6">DDD</text>
+                            </svg>
+                        </div>
+                        <div class="mock-panel">
+                            <div class="mock-card">
+                                <div class="mock-card-title">Memory Health</div>
+                                <div class="mock-metric"><span class="mock-metric-label">Nodes</span><span class="mock-metric-value">12,847</span></div>
+                                <div class="mock-metric"><span class="mock-metric-label">Edges</span><span class="mock-metric-value">34,201</span></div>
+                                <div class="mock-metric"><span class="mock-metric-label">Consolidation</span><span class="mock-metric-value" style="color:#22c55e;">94.2%</span></div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-title">Sectors</div>
+                                <div style="display:flex;gap:4px;margin-top:4px;">
+                                    <div style="flex:33%;height:6px;background:#3b82f6;border-radius:3px;"></div>
+                                    <div style="flex:40%;height:6px;background:#22c55e;border-radius:3px;"></div>
+                                    <div style="flex:15%;height:6px;background:#eab308;border-radius:3px;"></div>
+                                    <div style="flex:3%;height:6px;background:#ef4444;border-radius:3px;"></div>
+                                    <div style="flex:9%;height:6px;background:#a855f7;border-radius:3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mock-projects">
+                        <div class="mock-project">
+                            <span class="mock-project-dot" style="background:#22c55e"></span>
+                            <div class="mock-project-name">SaaS Platform</div>
+                            <div class="mock-project-phase">Phase 4 — Build</div>
+                            <div class="mock-progress"><div class="mock-progress-fill" style="width:84%"></div></div>
+                        </div>
+                        <div class="mock-project">
+                            <span class="mock-project-dot" style="background:#eab308"></span>
+                            <div class="mock-project-name">API Gateway</div>
+                            <div class="mock-project-phase">Phase 2 — Spec</div>
+                            <div class="mock-progress"><div class="mock-progress-fill" style="width:32%"></div></div>
+                        </div>
+                        <div class="mock-project">
+                            <span class="mock-project-dot" style="background:#ef4444"></span>
+                            <div class="mock-project-name">ML Pipeline</div>
+                            <div class="mock-project-phase">Phase 5 — QA</div>
+                            <div class="mock-progress"><div class="mock-progress-fill" style="width:91%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arrow -->
+        <div class="arrow-container">
+            <div class="arrow">
+                <div class="arrow-label">User clicks project or double-clicks node</div>
+                <div class="arrow-line"></div>
+                <div class="arrow-head"></div>
+            </div>
+        </div>
+        
+        <!-- Screen 2: Project Board -->
+        <div class="screen">
+            <div class="screen-header">
+                <div class="screen-title">Pantalla 2: Tablero de Proyecto <span class="screen-badge">PROJECT VIEW</span></div>
+                <div class="triggers">
+                    <span class="trigger auto">URL: /edms/project/:id</span>
+                    <span class="trigger hook">Gantt / Kanban / Stories / Metrics</span>
+                </div>
+            </div>
+            <div class="screen-body">
+                <div class="mock-layout">
+                    <div class="mock-header">
+                        <div class="mock-logo"></div>
+                        <div style="font-size:12px;color:#71717a;">› SaaS Platform › Phase 4</div>
+                        <div class="mock-search" style="flex:0.5;"></div>
+                        <div class="mock-icons">
+                            <div class="mock-icon"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mock-tabs">
+                        <div class="mock-tab">Graph</div>
+                        <div class="mock-tab active">Gantt</div>
+                        <div class="mock-tab">Kanban</div>
+                        <div class="mock-tab">Stories</div>
+                        <div class="mock-tab">Metrics</div>
+                        <div class="mock-tab">Pipeline</div>
+                    </div>
+                    
+                    <div class="mock-gantt">
+                        <div class="mock-gantt-row">
+                            <div class="mock-gantt-label">Briefing</div>
+                            <div class="mock-gantt-bar-container"><div class="mock-gantt-bar" style="width:25%;background:#22c55e;"></div></div>
+                        </div>
+                        <div class="mock-gantt-row">
+                            <div class="mock-gantt-label">Spec</div>
+                            <div class="mock-gantt-bar-container"><div class="mock-gantt-bar" style="width:25%;background:#3b82f6;margin-left:20%;"></div></div>
+                        </div>
+                        <div class="mock-gantt-row">
+                            <div class="mock-gantt-label">Plan</div>
+                            <div class="mock-gantt-bar-container"><div class="mock-gantt-bar" style="width:20%;background:#a855f7;margin-left:40%;"></div></div>
+                        </div>
+                        <div class="mock-gantt-row">
+                            <div class="mock-gantt-label">Build</div>
+                            <div class="mock-gantt-bar-container"><div class="mock-gantt-bar" style="width:25%;background:#f59e0b;margin-left:55%;"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="two-col">
+                        <div>
+                            <div class="mock-kanban">
+                                <div class="mock-kanban-col">
+                                    <div class="mock-kanban-header">TODO (4)</div>
+                                    <div class="mock-kanban-card"><div class="mock-kanban-card-title">T-101 OAuth2</div></div>
+                                    <div class="mock-kanban-card"><div class="mock-kanban-card-title">T-102 User model</div></div>
+                                </div>
+                                <div class="mock-kanban-col">
+                                    <div class="mock-kanban-header">DOING (2)</div>
+                                    <div class="mock-kanban-card" style="border-color:#6d28d9;"><div class="mock-kanban-card-title">T-103 JWT</div></div>
+                                </div>
+                                <div class="mock-kanban-col">
+                                    <div class="mock-kanban-header">DONE (6)</div>
+                                    <div class="mock-kanban-card" style="opacity:0.6;"><div class="mock-kanban-card-title">T-095 Schema</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mock-card">
+                                <div class="mock-card-title">Metrics</div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                    <div style="text-align:center;padding:8px;background:#111118;border-radius:6px;">
+                                        <div style="font-size:16px;font-weight:700;color:#e4e4e7;">64%</div>
+                                        <div style="font-size:9px;color:#71717a;">Burndown</div>
+                                    </div>
+                                    <div style="text-align:center;padding:8px;background:#111118;border-radius:6px;">
+                                        <div style="font-size:16px;font-weight:700;color:#e4e4e7;">12 pts</div>
+                                        <div style="font-size:9px;color:#71717a;">Velocity</div>
+                                    </div>
+                                    <div style="text-align:center;padding:8px;background:#111118;border-radius:6px;">
+                                        <div style="font-size:16px;font-weight:700;color:#22c55e;">87%</div>
+                                        <div style="font-size:9px;color:#71717a;">Coverage</div>
+                                    </div>
+                                    <div style="text-align:center;padding:8px;background:#111118;border-radius:6px;">
+                                        <div style="font-size:16px;font-weight:700;color:#22c55e;">78/100</div>
+                                        <div style="font-size:9px;color:#71717a;">Health</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arrow -->
+        <div class="arrow-container">
+            <div class="arrow">
+                <div class="arrow-label">User interacts (drag task, edit story, move kanban card)</div>
+                <div class="arrow-line"></div>
+                <div class="arrow-head"></div>
+            </div>
+        </div>
+        
+        <!-- Screen 3: Mutations -->
+        <div class="screen">
+            <div class="screen-header">
+                <div class="screen-title">Pantalla 3: Mutación de Memoria <span class="screen-badge">REAL-TIME</span></div>
+                <div class="triggers">
+                    <span class="trigger hook">Hook: PostToolUse</span>
+                    <span class="trigger hook">WebSocket broadcast</span>
+                    <span class="trigger auto">Zustand optimistic update</span>
+                </div>
+            </div>
+            <div class="screen-body">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+                    <div class="mock-card">
+                        <div class="mock-card-title">1. User Action</div>
+                        <div style="font-size:12px;color:#a1a1aa;line-height:1.6;">
+                            Drag task T-103 from DOING → DONE<br>
+                            Edit story US-042 acceptance criteria<br>
+                            Add lesson from QA gate failure
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-title">2. System Update</div>
+                        <div style="font-size:12px;color:#a1a1aa;line-height:1.6;">
+                            Hook fires → Ladybug update<br>
+                            ChromaDB re-index if text changed<br>
+                            Graph relations auto-updated
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-title">3. UI Sync</div>
+                        <div style="font-size:12px;color:#a1a1aa;line-height:1.6;">
+                            WebSocket broadcast to all clients<br>
+                            Zustand updates local state<br>
+                            Graph re-renders with new nodes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical Stack -->
+        <div class="screen">
+            <div class="screen-header">
+                <div class="screen-title">Stack Técnico <span class="screen-badge">REFERENCE</span></div>
+            </div>
+            <div class="screen-body">
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+                    <div class="mock-card">
+                        <div class="mock-card-title">Frontend</div>
+                        <div style="font-size:11px;color:#a1a1aa;line-height:1.8;">
+                            React 19 + Vite + TypeScript<br>
+                            Sigma.js v3 + Graphology<br>
+                            SVAR React Gantt (MIT)<br>
+                            @dnd-kit (Kanban)<br>
+                            Apache ECharts<br>
+                            shadcn/ui + TailwindCSS<br>
+                            Zustand (state)<br>
+                            React Router v7
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-title">Backend</div>
+                        <div style="font-size:11px;color:#a1a1aa;line-height:1.8;">
+                            FastAPI<br>
+                            WebSocket + python-socketio<br>
+                            Ladybug (graph engine)<br>
+                            ChromaDB (vector search)<br>
+                            Redis (optional cache)
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-title">Data Stores</div>
+                        <div style="font-size:11px;color:#a1a1aa;line-height:1.8;">
+                            Ladybug: Nodes, edges, causal chains<br>
+                            ChromaDB: Embeddings, similarity<br>
+                            Git: Snapshots, versioning
+                        </div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-title">Integration</div>
+                        <div style="font-size:11px;color:#a1a1aa;line-height:1.8;">
+                            evol edms (CLI command)<br>
+                            /api/v1/hooks/* (orquestador)<br>
+                            WebSocket /ws/edms<br>
+                            AGENT_ID + scope auth
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

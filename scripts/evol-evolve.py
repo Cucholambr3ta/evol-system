@@ -93,7 +93,8 @@ Patterns:
     
     skill_content += """
 ## Capabilities
-[TODO: Define capabilities based on patterns]
+Auto-generated from instinct cluster. Patterns detected:
+""" + "\n".join(f"- {i['pattern']} ({i['confidence']:.0%} confidence)" for i in cluster["instincts"]) + """
 
 ## Usage
 ```bash

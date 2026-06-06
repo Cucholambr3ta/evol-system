@@ -71,7 +71,7 @@ graph TD
 | Maquina del usuario | evol CLI (pip) | ejecucion local | Requiere Python 3.10+, Bash 5+, git |
 | Maquina del usuario | scripts/evol-*.py | subprocess / stdlib | Sin dependencias externas en modo default |
 | Proyecto del usuario | .evol/ | filesystem local | Permisos 0700; gate-key en 0600 |
-| Proyecto del usuario | prompts/agents/ | Markdown + registry.json | 16 core + ephemeral generados |
+| Proyecto del usuario | prompts/agents/ | Markdown + registry.json | 18 core + ephemeral generados |
 | Proyecto del usuario | skills/ | SKILL.md + hooks + workflows | 9 skills; portables a 7 IDEs via evol-adapt.sh |
 | Proyecto del usuario | memory/ | archivos .md por fecha | Journals diarios; TTL configurable via EVOL_MEMORY_TOOL_TTL_DAYS |
 | Estado global | ~/.evol/state.db | SQLite3 | Instincts compartidos entre proyectos |

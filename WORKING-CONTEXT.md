@@ -5,39 +5,40 @@
 
 ## Estado actual
 
-- **Branch:** `feature/update-memory`
-- **Fase Evol-DD:** F6-Retro — Update memory and prepare release
-- **Version:** `0.3.3`
+- **Branch:** `feature/edms-memory-system`
+- **Fase Evol-DD:** F6+ — Compliance Auditor + EDMS + Orchestration
+- **Version:** `0.4.0-dev`
 - **Repo:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Hitos recientes
 
 | Commit | Descripcion |
 |--------|-------------|
-| `369e27d` | feat: add /update-memory workflow to maintain persistent memory |
-| `61f746d` | refactor: remove memoria_persistente dependencies in preparation for persistent memory |
-| `e03d5f3` | docs(memoria): migrate monolithic MEMORY to atomic structure |
+| `408ce01` | fix(critical): implement orchestrate.py + missing audit templates |
+| `270862e` | feat(compliance): add compliance auditor — agent #18 + 3-layer enforcement |
+| `a20228b` | fix(core): update all references from 16 to 17 core agents |
 
 ## Proximo paso
 
-1. ~~Borrar Memoria Persistente y toda su estructura.~~ (Completado).
-2. **Merge & Release v0.3.3**: Mergear cambios a develop, hacer el tag de release de v0.3.3 y subir a PyPI.
+1. ~~Implement evol-orchestrate.py~~ (Completado).
+2. ~~Add compliance auditor (agent #18)~~ (Completado).
+3. **Merge a develop** cuando se cierre el sprint actual.
 
-## Resumen del sistema (post-build completo)
+## Resumen del sistema
 
 | Componente | Cantidad | Ubicacion |
 |------------|----------|-----------|
-| Workflows | 69 | `.agent/workflows/` |
-| Agentes core | 16 | `prompts/agents/core/` |
-| Scripts evol-* | 25 | `scripts/` |
+| Workflows | 71 | `.agent/hooks/scripts/` + `.agent/workflows/` |
+| Agentes core | 18 | `prompts/agents/core/` |
+| Scripts evol-* | 26 | `scripts/` |
 | Skills | 9 | `skills/` |
-| Perfiles install | 7 | `manifests/install-profiles.json` |
-| Hooks | 19 | `.agent/hooks/` |
+| Hooks registrados | 19 | `.agent/hooks/hooks.json` |
+| Audit templates | 6 | `templates/audit/` |
 
 ## Notas de arquitectura vigentes
 
 - Gate HMAC-SHA256 por proyecto (`.evol/.gate-key` gitignored)
 - GitFlow enforced via pre-commit-gitflow.sh
-- Motor memoria nativo: `EVOL_MEMORY=1` activa `evol-memory.py`
-- Motor lecciones: siempre activo, `evol-lessons.py` en core
-- Schema registry.json: 22 propiedades incluyendo ciclo de vida efimeros
+- Compliance auditor: 3 capas (hooks + workflow + sprint-end)
+- Orchestration engine: 5 patterns built-in, SQLite recording
+- 18 core agents (registry.json)

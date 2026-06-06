@@ -8,6 +8,30 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-06-06
+
+### Added
+- **EDMS Phase 1-5**: MemoryStore abstraction layer with ChromaDB (vector search) + JSON fallback, 26 CLI subcommands, lifecycle hooks, 4-tier consolidation pipeline, FlowScript queries (why/tensions/blocked/whatIf/alternatives), team memory namespaces.
+- **EDMS Phase 6**: `edms-compact` command with LLM summarization + extractive fallback (Jaccard dedup + key sentence extraction). Compacts raw observations into compressed tier.
+- **Compliance Auditor (Agent #18)**: 3-layer enforcement (hooks + workflow + sprint-end), phase compliance tracking, lesson verification, sprint compliance reports.
+- **Orchestration Engine**: 5 built-in patterns (security_review, feature_squad, release_train, briefing_squad, brainstorm_party), SQLite recording, dry-run mode.
+- **Cross-platform installer**: `curl | bash` installer (`install.sh`) with auto Python/pipx detection, OS-adaptive package manager support, optional IDE trigger installation.
+- **18 core agents** with compliance auditor workflow and audit templates (briefing, agent-creation).
+- **31 tests** across 4 test suites (memory_store, memory, compliance, lessons).
+- **NetworkX** as optional graph database dependency (replaces JSON-only in-memory graph).
+
+### Changed
+- `pyproject.toml`: Added `[project.optional-dependencies]` for `memory` (chromadb), `graph` (networkx), and `full` (both).
+- All hooks now support 3 profiles: minimal (1 hook), standard (11 hooks), strict (7 hooks).
+- EDMS auto-detects project venv and re-executes with correct Python if chromadb is missing.
+
+### Fixed
+- `consolidate_tier()` now filters by `tier` field instead of `tipo` prefix.
+- `get_tier_stats()` counts by actual `tier` field.
+- `decay_old_items()` operates on `tier` field, skips archived items.
+- `evol-compliance.py`: lesson_tracking table auto-created on first use.
+- Orphan hooks (`session-start-reme-load.sh`, `stop-reme-summary.sh`) now have correct permissions.
+
 ## [0.5.0] - 2026-06-06
 
 ### Added
@@ -129,7 +153,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - GitFlow branching strategy with develop/main/release process
 - HMAC-signed gate protocol for approval workflow
 - Memoria Persistente memory integration for agent context persistence
-- Agent registry with 16 core agents and ephemeral agent lifecycle
+- Agent registry with 18 core agents and ephemeral agent lifecycle
 - Eval harness with structural, behavioral, output_match, pass_at_k graders
 - Security shield with secret detection and config auditing
 - Skills supply chain with quarantine, pinning, and secret scanning

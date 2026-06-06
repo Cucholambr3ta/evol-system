@@ -93,7 +93,7 @@ La clave global en `~/.evol/.gate-key` sigue siendo valida como conveniencia de 
 
 ---
 
-## ADR-005: 16 agentes core permanentes + efimeros ilimitados
+## ADR-005: 18 agentes core permanentes + efimeros ilimitados
 
 - Status: Accepted
 - Date: 2026-06-02
@@ -104,7 +104,7 @@ X-DD define 180 agentes permanentes con responsabilidades granulares. En la prac
 
 ### Decision
 
-Evol-DD mantiene exactamente 16 agentes core con caracter permanente. Su criterio de permanencia es responsabilidad sobre el SISTEMA (orquestacion, gate, memoria, lecciones, seguridad, QA, etc.), no sobre dominios de negocio especificos. Los agentes de dominio son efimeros: se crean con `crear-agente`, tienen un ciclo de vida formal (create / active / retired / recalled) y expiran segun `expires_after_days` en su AGENT.md.
+Evol-DD mantiene exactamente 18 agentes core con caracter permanente. Su criterio de permanencia es responsabilidad sobre el SISTEMA (orquestacion, gate, memoria, lecciones, seguridad, QA, etc.), no sobre dominios de negocio especificos. Los agentes de dominio son efimeros: se crean con `crear-agente`, tienen un ciclo de vida formal (create / active / retired / recalled) y expiran segun `expires_after_days` en su AGENT.md.
 
 | Estado | Descripcion |
 |--------|-------------|
@@ -115,7 +115,7 @@ Evol-DD mantiene exactamente 16 agentes core con caracter permanente. Su criteri
 
 ### Consecuencias
 
-El contexto de sesion se mantiene limpio. La transicion `retired → recalled` requiere que Memoria Persistente haya persistido el conocimiento del agente antes del retire; si Memoria Persistente no estaba activo, la informacion se pierde. El numero 16 es un limite de gobierno, no tecnico: no hay verificacion automatica que impida crear mas de 16 agentes con ciclo de vida `active` simultaneamente; la disciplina es responsabilidad del equipo.
+El contexto de sesion se mantiene limpio. La transicion `retired → recalled` requiere que Memoria Persistente haya persistido el conocimiento del agente antes del retire; si Memoria Persistente no estaba activo, la informacion se pierde. El numero 18 es un limite de gobierno, no tecnico: no hay verificacion automatica que impida crear mas de 18 agentes con ciclo de vida `active` simultaneamente; la disciplina es responsabilidad del equipo.
 
 ---
 

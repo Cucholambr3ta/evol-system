@@ -53,17 +53,16 @@ def find_tool(tool_name, extra_paths=None):
     return None
 
 def find_memory_db():
-    """Busca ejecutable de memoria persistente en PATH y directorios locales comunes."""
-    paths_to_check = [
-        "chromadb",
-        "ladybugdb",
-        os.path.expanduser("~/.local/bin/chromadb"),
-        os.path.expanduser("~/.venv/bin/chromadb"),
-        "venv/bin/chromadb",
-        ".venv/bin/chromadb"
-    ]
+    """Busca motor de memoria persistente (ChromaDB/LadybugDB) en Python packages y PATH."""
+    # Check if chromadb is importable (package installed)
+    try:
+        import chromadb
+        return "chromadb"
+    except ImportError:
+        pass
+    # Fallback: check common binary locations
     import shutil
-    for p in paths_to_check:
+    for p in ["chromadb", os.path.expanduser("~/.local/bin/chromadb")]:
         if shutil.which(p):
             return p
     return None

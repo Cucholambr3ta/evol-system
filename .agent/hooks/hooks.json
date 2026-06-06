@@ -3,11 +3,12 @@
   "profiles": {
     "minimal": [
       {
-        "id": "post:edit:Memoria Persistente-index",
+        "id": "post:edit:memory-index",
         "event": "PostToolUse",
         "enabled": true,
-        "script": "post-edit-Memoria Persistente-index.sh",
-        "trigger": "edit"
+        "script": "post-edit-memory-index.sh",
+        "trigger": "edit",
+        "description": "Index edits to acuerdos/ into EDMS (ChromaDB/LadybugDB)"
       }
     ],
     "standard": [
@@ -16,40 +17,86 @@
         "event": "PreToolUse",
         "enabled": true,
         "script": "pre-bash-dangerous-command.sh",
-        "trigger": "bash"
+        "trigger": "bash",
+        "description": "Block dangerous commands (rm -rf, curl|sh, sudo, force push)"
       },
       {
         "id": "pre:write:doc-file-warning",
         "event": "PreToolUse",
         "enabled": true,
         "script": "pre-write-doc-file-warning.sh",
-        "trigger": "write"
+        "trigger": "write",
+        "description": "Warn on doc file writes"
       },
       {
         "id": "post:bash:pr-logger",
         "event": "PostToolUse",
         "enabled": true,
         "script": "post-bash-pr-logger.sh",
-        "trigger": "bash"
+        "trigger": "bash",
+        "description": "Log PR-related bash commands"
       },
       {
         "id": "post:write:auto-organize",
         "event": "PostToolUse",
         "enabled": true,
         "script": "post-write-auto-organize.sh",
-        "trigger": "write"
+        "trigger": "write",
+        "description": "Auto-organize written files"
       },
       {
         "id": "session:start:context-load",
         "event": "SessionStart",
         "enabled": true,
-        "script": "session-start-context-load.sh"
+        "script": "session-start-context-load.sh",
+        "description": "Load memoria.md + EDMS wake-up context (~170 tokens)"
       },
       {
         "id": "stop:git-check",
         "event": "Stop",
         "enabled": true,
-        "script": "stop-git-check.sh"
+        "script": "stop-git-check.sh",
+        "description": "Check git state on stop"
+      },
+      {
+        "id": "pre:commit:gitflow",
+        "event": "PreToolUse",
+        "enabled": true,
+        "script": "pre-commit-gitflow.sh",
+        "trigger": "bash",
+        "description": "Validate GitFlow conventions before commit"
+      },
+      {
+        "id": "pre:phase:compliance-check",
+        "event": "PreToolUse",
+        "enabled": true,
+        "script": "pre-phase-compliance-check.sh",
+        "trigger": "bash",
+        "description": "Validate artifacts + gate + lessons before phase progression"
+      },
+      {
+        "id": "pre:phase:lessons-check",
+        "event": "PreToolUse",
+        "enabled": true,
+        "script": "pre-phase-lessons-check.sh",
+        "trigger": "bash",
+        "description": "Show pending lessons relevant to the phase"
+      },
+      {
+        "id": "post:phase:gate-verify",
+        "event": "PostToolUse",
+        "enabled": true,
+        "script": "post-phase-gate-verify.sh",
+        "trigger": "bash",
+        "description": "Record phase completion in compliance table"
+      },
+      {
+        "id": "post:phase:record-metrics",
+        "event": "PostToolUse",
+        "enabled": true,
+        "script": "post-phase-record-metrics.sh",
+        "trigger": "bash",
+        "description": "Record phase metrics for sprint reports"
       }
     ],
     "strict": [
@@ -58,19 +105,22 @@
         "event": "PreToolUse",
         "enabled": true,
         "script": "pre-edit-config-protection.sh",
-        "trigger": "edit"
+        "trigger": "edit",
+        "description": "Protect governance config files from direct edit"
       },
       {
         "id": "pre:tool:temporal-awareness",
         "event": "PreToolUse",
         "enabled": true,
-        "script": "pre-tool-temporal-awareness.sh"
+        "script": "pre-tool-temporal-awareness.sh",
+        "description": "Inject temporal context into tool calls"
       },
       {
         "id": "stop:pattern-extraction",
         "event": "Stop",
         "enabled": true,
-        "script": "stop-pattern-extraction.sh"
+        "script": "stop-pattern-extraction.sh",
+        "description": "Extract session patterns for instincts"
       },
       {
         "id": "pre:build:security-scan",
@@ -79,6 +129,27 @@
         "script": "pre-build-scan.sh",
         "trigger": "bash",
         "description": "SAST scan antes del gate Build. Bloquea si CRITICAL."
+      },
+      {
+        "id": "session:end:handoff",
+        "event": "SessionEnd",
+        "enabled": true,
+        "script": "session-end-handoff.sh",
+        "description": "Create handoff marker for next session (branch, pending, next_action)"
+      },
+      {
+        "id": "post:tool:failure-capture",
+        "event": "PostToolUse",
+        "enabled": true,
+        "script": "post-tool-failure-capture.sh",
+        "description": "Capture tool failures as lesson candidates in acuerdos/lecciones/"
+      },
+      {
+        "id": "session:end:compliance-report",
+        "event": "SessionEnd",
+        "enabled": true,
+        "script": "session-end-compliance-report.sh",
+        "description": "Generate compliance report + verify lessons applied at sprint end"
       }
     ]
   },

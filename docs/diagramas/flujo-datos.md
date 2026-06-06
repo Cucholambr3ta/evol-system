@@ -24,7 +24,7 @@ sequenceDiagram
     Gate->>FS: escribir .evol/.gate-log.jsonl (genesis hash)
     Gate-->>Init: gate inicializado
     Init->>FS: copiar templates/ al proyecto
-    Init->>FS: crear prompts/agents/core/ (16 agentes)
+    Init->>FS: crear prompts/agents/core/ (18 agentes)
     Init->>FS: crear skills/ (segun perfil)
     Init->>FS: crear .agent/workflows/ y hooks/
     Init->>FS: crear AGENT_MEMORY.md desde template
