@@ -1,0 +1,44 @@
+{
+  "dominio": "memoria",
+  "docs": [
+    {
+      "subdominio": "MEMORY",
+      "doc": "MEMORY.md",
+      "resumen": "GENERADO automaticamente desde los atomos (decisiones/convenciones/riesgos).",
+      "tokens_md": 2017,
+      "entidades": []
+    },
+    {
+      "subdominio": "convenciones",
+      "doc": "convenciones.md",
+      "resumen": "Atomo de MEMORY. Estandares de codigo y patrones del proyecto.",
+      "tokens_md": 609,
+      "entidades": []
+    },
+    {
+      "subdominio": "decisiones",
+      "doc": "decisiones.md",
+      "resumen": "Atomo de MEMORY. Decisiones de arquitectura y producto persistentes.",
+      "tokens_md": 944,
+      "entidades": []
+    },
+    {
+      "subdominio": "riesgos",
+      "doc": "riesgos.md",
+      "resumen": "Atomo de MEMORY. Riesgos vigentes y mitigaciones.",
+      "tokens_md": 410,
+      "entidades": []
+    },
+    {
+      "subdominio": "sprint-27",
+      "doc": "sprint-27.md",
+      "resumen": "- INC E5: evol-memory.py sprint-close (11 tests)",
+      "tokens_md": 221,
+      "entidades": []
+    }
+  ],
+  "total_docs": 5,
+  "total_tokens_md": 4201,
+  "actualizado": "2026-06-06T10:56:34.079143+00:00",
+  "total_tokens_json": 177
+}

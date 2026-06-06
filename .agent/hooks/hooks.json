@@ -3,11 +3,12 @@
   "profiles": {
     "minimal": [
       {
-        "id": "post:edit:Memoria Persistente-index",
+        "id": "post:edit:memory-index",
         "event": "PostToolUse",
         "enabled": true,
-        "script": "post-edit-Memoria Persistente-index.sh",
-        "trigger": "edit"
+        "script": "post-edit-memory-index.sh",
+        "trigger": "edit",
+        "description": "Index edits to acuerdos/ into EDMS (ChromaDB/LadybugDB)"
       }
     ],
     "standard": [
@@ -43,7 +44,8 @@
         "id": "session:start:context-load",
         "event": "SessionStart",
         "enabled": true,
-        "script": "session-start-context-load.sh"
+        "script": "session-start-context-load.sh",
+        "description": "Load memoria.md + EDMS wake-up context (~170 tokens)"
       },
       {
         "id": "stop:git-check",
@@ -79,6 +81,20 @@
         "script": "pre-build-scan.sh",
         "trigger": "bash",
         "description": "SAST scan antes del gate Build. Bloquea si CRITICAL."
+      },
+      {
+        "id": "session:end:handoff",
+        "event": "SessionEnd",
+        "enabled": true,
+        "script": "session-end-handoff.sh",
+        "description": "Create handoff marker for next session (branch, pending, next_action)"
+      },
+      {
+        "id": "post:tool:failure-capture",
+        "event": "PostToolUse",
+        "enabled": true,
+        "script": "post-tool-failure-capture.sh",
+        "description": "Capture tool failures as lesson candidates in acuerdos/lecciones/"
       }
     ]
   },
