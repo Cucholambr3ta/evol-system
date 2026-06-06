@@ -14,7 +14,7 @@ Constitution, the Constitution prevails.
 
 ## Core Agents Directory
 
-All 16 core agents are defined in `prompts/agents/core/`. They are permanent and
+All 17 core agents are defined in `prompts/agents/core/`. They are permanent and
 never retire — the system cannot function without them.
 
 ---

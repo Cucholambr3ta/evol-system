@@ -104,7 +104,7 @@ El sistema debe mantener un registro unificado de todos los agentes.
 |----|----------|------|------------|
 | CA-003-01 | registry.json existe en prompts/agents/ | Funcional | Test |
 | CA-003-02 | Schema registry.schema.json valida entrada | Funcional | validate-registry.py |
-| CA-003-03 | 16 agentes core registrados con category=core | Funcional | Test |
+| CA-003-03 | 17 agentes core registrados con category=core | Funcional | Test |
 | CA-003-04 | Agentes efimeros registrados con ephemeral=true | Funcional | Test CP-002 |
 | CA-003-05 | No IDs duplicados | Funcional | validate-registry.py --strict |
 | CA-003-06 | Todos los campos requeridos presentes | Funcional | JSON Schema validation |
@@ -187,7 +187,7 @@ El sistema debe implementar el pipeline de 6 fases con gates de aprobacion.
 
 ### Descripcion
 
-El sistema debe incluir 16 agentes core permanentes.
+El sistema debe incluir 17 agentes core permanentes.
 
 ### Criterios de Aceptacion
 

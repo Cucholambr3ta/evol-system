@@ -11,13 +11,18 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** F6-Retro — Update memory + auditoría de documentación
-- **Branch:** feature/audit-docs
-- **Ultimo hito:** Auditoría completa de `docs/` finalizada. Sincronización al 100% de sidecars JSON (0 drifts) y mirroring a `src/evol_cli/docs/`. Fusión de profile JIT y auditor core en develop.
-- **Proximo paso:** Continuar con la implementación de EDMS.
+- **Fase Evol-DD:** EDMS Implementado — Todas las fases completadas
+- **Branch:** feature/edms-memory-system (pushed)
+- **Ultimo hito:** EDMS Fase 1-5 completadas. MemoryStore con ChromaDB + LadybugDB + fallback. 6 subcomandos CLI. 4 hooks de lifecycle. 4-tier consolidation. FlowScript queries. Team memory namespaces. 10/10 tests pasando.
+- **Proximo paso:** Merge a develop, Fase 6 (observabilidad), o continuar con otras tareas.
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.3.3 (update-memory) → 0.4.0 → 0.5.0 (readme-master)
-- **EDMS:** En fase de disseno. Plan completo en `docs/plan-implementacion-edms.md`. Zero codigo escrito.
+- **EDMS:** IMPLEMENTADO. Branch `feature/edms-memory-system` con 5 commits:
+  - `16f109e` feat(edms): MemoryStore abstraction layer + 10 passing tests
+  - `5e18054` feat(edms): extend evol-memory.py with EDMS subcommands
+  - `7911d8d` feat(edms): Fase 3 - lifecycle hooks + memory updates
+  - `a8ec8b9` feat(edms): Fase 4 - 4-tier consolidation pipeline
+  - `fc1e530` feat(edms): Fase 5 - FlowScript queries + Team memory namespaces
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -187,7 +192,7 @@
   - S1: 5 scripts infraestructura (_evol_common, state, provider, gate, flow)
   - S2: 4 scripts bootstrap (doctor, init, start, global-install)
   - S3: evol-adapt.sh + 19 workflows SSoT
-  - S4: 16 agentes core + registry.json + equipo.md
+  - S4: 17 agentes core + registry.json + equipo.md
   - S5: 7 skills + 7 eval suites
   - S6: 11 hooks + hooks.json
   - S7: evol-agent-lifecycle.py (create/invoke/retire/recall/gc)
@@ -198,7 +203,7 @@
   - Docs granular completo reescrito (ARQUITECTURA, DOMINIO, PLAN_QA, CASOS_GHERKIN, THREATS, FUNCIONALES, NO_FUNCIONALES, RESTRICCIONES, GLOSARIO)
   - 12 feature branches creadas y mergeadas a develop
 - **Decisiones:**
-  - 23 scripts, 16 core agents, 19 workflows, 7 skills, 28 docs archivos
+  - 23 scripts, 17 core agents, 19 workflows, 7 skills, 28 docs archivos
   - Doctor reporta 0 errores, Memoria Persistente en modo COMPLETO
   - GitFlow violado inicial, corregido con branches post-hoc
 - **Bloqueos:**

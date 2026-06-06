@@ -89,7 +89,7 @@ evol-start.sh, evol-provider.py
 
 ## 4. Agentes Core
 
-16 agentes core implementados en `prompts/agents/core/`. Registrados en `prompts/agents/registry.json`.
+17 agentes core implementados en `prompts/agents/core/`. Registrados en `prompts/agents/registry.json`.
 `docs/equipo.md` generado automaticamente via `scripts/generate-equipo.sh`.
 
 ## 5. Workflows

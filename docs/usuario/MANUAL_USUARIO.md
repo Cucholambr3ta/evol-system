@@ -26,7 +26,7 @@ Las lecciones son acumulativas. A medida que el equipo trabaja mas proyectos con
 
 ### 3. Agentes
 
-El sistema tiene 16 agentes core permanentes, cada uno especializado en un area: arquitectura, implementacion, calidad, seguridad, operaciones, documentacion, investigacion, entre otros. Cuando un proyecto lo requiere, el sistema puede crear agentes efimeros adicionales, especializados en una tarea concreta, que se retiran cuando terminan su trabajo pero dejan su conocimiento en el sistema.
+El sistema tiene 17 agentes core permanentes, cada uno especializado en un area: arquitectura, implementacion, calidad, seguridad, operaciones, documentacion, investigacion, entre otros. Cuando un proyecto lo requiere, el sistema puede crear agentes efimeros adicionales, especializados en una tarea concreta, que se retiran cuando terminan su trabajo pero dejan su conocimiento en el sistema.
 
 El orquestador coordina a los agentes: sabe cuando llamar al arquitecto, cuando al especialista en seguridad, y cuando es suficiente con el agente de implementacion solo.
 

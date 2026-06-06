@@ -26,7 +26,7 @@ Este documento define el vocabulario unificado (Ubiquitous Language) del dominio
 
 **Definicion:** Agente permanente con responsabilidad sobre el estado del sistema (gobernanza, arquitectura, seguridad, orquestacion).
 
-**Contexto:** Los 16 agentes core nunca se retiran. Son el nucleo inmutable.
+**Contexto:** Los 17 agentes core nunca se retiran. Son el nucleo inmutable.
 
 **Criterio:** Un agente es core si tiene responsabilidad sobre estado del sistema — independientemente del dominio del proyecto.
 
