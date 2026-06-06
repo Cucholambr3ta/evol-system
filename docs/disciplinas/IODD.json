@@ -2,10 +2,10 @@
   "doc": "IODD.md",
   "dominio": "disciplinas",
   "subdominio": "IODD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-iodd-en-x-dd",
+    "que-es-iodd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "iodd-en-el-pipeline",

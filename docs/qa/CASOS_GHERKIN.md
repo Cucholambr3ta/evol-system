@@ -298,7 +298,7 @@ Scenario: Transicion entre fases con APROBADO
 Scenario: Verificar estado actual en memoria.md
   Given fase "spec" activa
   When leo memoria.md
-  Then campo "Fase X-DD activa" muestra "2-Spec"
+  Then campo "Fase Evol-DD activa" muestra "2-Spec"
   And proximo paso en campo "Proximo paso" disponible
 
 Scenario: Pipeline completo de 6 fases

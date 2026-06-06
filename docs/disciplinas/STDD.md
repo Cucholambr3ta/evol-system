@@ -1,12 +1,12 @@
 # STDD — Security-Test-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es STDD en X-DD](#1-que-es-stdd-en-x-dd)
+1. [Que es STDD en Evol-DD](#1-que-es-stdd-en-evol-dd)
 2. [El ciclo STDD extendido](#2-el-ciclo-stdd-extendido)
 3. [Mapeo STRIDE a stubs de security tests](#3-mapeo-stride-a-stubs-de-security-tests)
 4. [Cuando aplica STDD](#4-cuando-aplica-stdd)
@@ -17,7 +17,7 @@
 
 ---
 
-## 1. Que es STDD en X-DD
+## 1. Que es STDD en Evol-DD
 
 Security-Test-Driven Development es la extension de TDD al dominio de la seguridad.
 Aplica el mismo principio Rojo-Verde-Refactor pero para casos de prueba que verifican
@@ -25,7 +25,7 @@ propiedades de seguridad: que el sistema resiste inyecciones, que la autorizacio
 correctamente, que los datos PII no se exponen, y que los controles de seguridad estan
 implementados.
 
-En X-DD, STDD extiende el ciclo de la Fase 4 (Build) con un paso adicional de seguridad.
+En Evol-DD, STDD extiende el ciclo de la Fase 4 (Build) con un paso adicional de seguridad.
 Mientras TDD verifica el comportamiento funcional esperado, STDD verifica que el
 comportamiento ante entradas adversariales es correcto.
 
@@ -254,5 +254,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Riesgos | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | Vectores de riesgo prioritarios para derivar casos de prueba de seguridad |
 
 > **Mantenido por:** Security-Engineer + SecOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 8
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 8
 > **Ver tambien:** [SecDD.md](./SecDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [TDD.md](./TDD.md) | [INDEX.md](./INDEX.md)

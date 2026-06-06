@@ -1,12 +1,12 @@
 # CHAOS — Chaos / Resiliency-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es Chaos-Driven en X-DD](#1-que-es-chaos-driven-en-x-dd)
+1. [Que es Chaos-Driven en Evol-DD](#1-que-es-chaos-driven-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [Chaos en el pipeline](#4-chaos-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es Chaos-Driven en X-DD
+## 1. Que es Chaos-Driven en Evol-DD
 
 Chaos / Resiliency-Driven Development es la disciplina donde los fallos de infraestructura se
 introducen de forma controlada para validar que el sistema se recupera automaticamente. La
 resiliencia no se asume: se prueba inyectando fallos en condiciones gobernadas.
 
-En X-DD, Chaos opera en la Fase 5 (QA) como extension del workflow `/evol dr-drill` (con el
+En Evol-DD, Chaos opera en la Fase 5 (QA) como extension del workflow `/evol dr-drill` (con el
 sandbox aislado de `evol-sandbox`). Consume `docs/specs/THREATS.md` (amenazas de tipo DoS) y
 produce `chaos/experiments/*/fault_injection.json` y `chaos/hypothesis/*.md`.
 
-El principio de Chaos en X-DD: la recuperacion automatica se valida con experimentos, no con
+El principio de Chaos en Evol-DD: la recuperacion automatica se valida con experimentos, no con
 fe. Cada experimento parte de una hipotesis ("el sistema se recupera en < N min ante el fallo
 X") y se ejecuta en staging aislado; un sistema que solo se prueba en el camino feliz fallara
 en el primer incidente real.
@@ -143,5 +143,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [Chaos Mesh](https://github.com/chaos-mesh/chaos-mesh) | Plataforma de chaos engineering cloud-native |
 
 > **Mantenido por:** SecOps + DevOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [ODD_OBS.md](./ODD_OBS.md) | [SLODRIVEN.md](./SLODRIVEN.md) | [INDEX.md](./INDEX.md)

@@ -5,25 +5,23 @@
 
 ## Estado actual
 
-- **Branch:** `develop`
-- **Fase Evol-DD:** F6-Retro — Documentacion completa + release v0.1.0 pendiente
-- **Version:** `0.1.0-dev`
+- **Branch:** `main`
+- **Fase Evol-DD:** F6-Retro — Fixes post-release
+- **Version:** `0.3.2`
 - **Repo:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Hitos recientes
 
 | Commit | Descripcion |
 |--------|-------------|
-| `4dee648` | fix(crear-skill): sweep referencias x-dd residuales a evol |
-| `705479f` | merge: fix/gaps-post-auditoria — 63 archivos, 69 workflows |
-| `bd2356e` | fix(gaps): P0-P4 audit gaps — version, workflows, dirs, docs |
+| `feb4fd3` | docs(memoria): actualizar estado v0.3.2 + historial PyPI + bitacora rebrand |
+| `971c91c` | fix(rebrand): x-dd → evol-dd namespace cleanup + .gitignore + bump v0.3.2 |
+| `65cc0da` | docs(disciplinas): actualizar conteo 9->31 + constitucion Art.9 + MEMORY.md |
 
 ## Proximo paso
 
-1. Completar documentacion operativa (22 archivos vacios identificados en auditoria)
-2. Commit docs completos
-3. Merge develop a release/v0.1.0
-4. Tag v0.1.0 segun checklist en `docs/operaciones/RELEASE_PROCESS.md`
+1. Construir `evol-agent` en otro PC con `/evol` (spec enriquecida lista).
+2. Monitorear feedback externo y bugs tras el lanzamiento v0.3.2.
 
 ## Resumen del sistema (post-build completo)
 

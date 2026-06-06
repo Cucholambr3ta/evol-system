@@ -1,12 +1,12 @@
 # Pipeline-Driven — Pipeline-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es Pipeline-Driven en X-DD](#1-que-es-pipeline-driven-en-x-dd)
+1. [Que es Pipeline-Driven en Evol-DD](#1-que-es-pipeline-driven-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [Pipeline-Driven en el pipeline](#4-pipeline-driven-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es Pipeline-Driven en X-DD
+## 1. Que es Pipeline-Driven en Evol-DD
 
 Pipeline-Driven Development es la disciplina donde la estrategia de despliegue y los criterios
 de rollback automatico se definen antes de escribir el codigo de aplicacion. El pipeline de
 entrega es un artefacto disenado, con stages y triggers de rollback explicitos.
 
-En X-DD, Pipeline-Driven opera en la Fase 4 (Build), mapeada a los workflows `/evol deploy-prod`
+En Evol-DD, Pipeline-Driven opera en la Fase 4 (Build), mapeada a los workflows `/evol deploy-prod`
 y `/evol rollback`. Produce `pipeline/stages.json` (etapas del despliegue) y
 `pipeline/rollback_triggers.md` (condiciones de reversion automatica).
 
-El principio de Pipeline-Driven en X-DD: todo despliegue es reversible automaticamente en
+El principio de Pipeline-Driven en Evol-DD: todo despliegue es reversible automaticamente en
 menos de 5 minutos. Si no se sabe como volver atras antes de desplegar, no se despliega; el
 rollback es parte del diseno, no una reaccion al incidente.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | GitOps | [Argo CD](https://github.com/argoproj/argo-cd) | Entrega continua declarativa GitOps de referencia |
 
 > **Mantenido por:** DevOps + Orchestrator
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [IODD.md](./IODD.md) | [ODD_OBS.md](./ODD_OBS.md) | [SLODRIVEN.md](./SLODRIVEN.md) | [INDEX.md](./INDEX.md)

@@ -2,10 +2,10 @@
   "doc": "UXDD.md",
   "dominio": "disciplinas",
   "subdominio": "UXDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-uxdd-en-x-dd",
+    "que-es-uxdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "uxdd-en-el-pipeline",

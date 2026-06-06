@@ -2,10 +2,10 @@
   "doc": "SLODRIVEN.md",
   "dominio": "disciplinas",
   "subdominio": "SLODRIVEN",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-slosla-driven-en-x-dd",
+    "que-es-slosla-driven-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "slosla-en-el-pipeline",

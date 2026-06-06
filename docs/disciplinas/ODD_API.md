@@ -1,12 +1,12 @@
 # ODD_API — OpenAPI-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es ODD_API en X-DD](#1-que-es-odd_api-en-x-dd)
+1. [Que es ODD_API en Evol-DD](#1-que-es-odd_api-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [ODD_API en el pipeline](#4-odd_api-en-el-pipeline)
@@ -18,19 +18,19 @@
 
 ---
 
-## 1. Que es ODD_API en X-DD
+## 1. Que es ODD_API en Evol-DD
 
 OpenAPI-Driven Development es la disciplina donde el contrato de la API (especificacion
 OpenAPI 3.1) es el artefacto fuente que guia implementacion, pruebas y documentacion. El
 contrato se escribe y aprueba antes de codificar el servidor o el cliente: es spec-first
 aplicado al limite de la API.
 
-En X-DD, ODD_API opera en la Fase 2 (Spec). El contrato `api/openapi.yaml` se deriva de
+En Evol-DD, ODD_API opera en la Fase 2 (Spec). El contrato `api/openapi.yaml` se deriva de
 los invariantes de `SPEC.md` (REQ-NNN) y del vocabulario de `DOMAIN.md`, y se valida con
 `openapi-spec-validator` como sub-gate de la fase. Ningun endpoint entra al PLAN sin estar
 descrito en el contrato.
 
-El principio de ODD_API en X-DD: un endpoint sin contrato OpenAPI no existe para el
+El principio de ODD_API en Evol-DD: un endpoint sin contrato OpenAPI no existe para el
 pipeline. El contrato es la unica fuente de verdad de la superficie de la API; el codigo
 del servidor y los stubs de cliente se derivan de el, no al reves.
 
@@ -150,5 +150,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [kin-openapi](https://github.com/getkin/kin-openapi) | Toolkit para validar y manejar especificaciones OpenAPI |
 
 > **Mantenido por:** Architect + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [CCDD.md](./CCDD.md) | [APIVDD.md](./APIVDD.md) | [INDEX.md](./INDEX.md)

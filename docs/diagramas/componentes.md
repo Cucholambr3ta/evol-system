@@ -145,7 +145,7 @@ graph TD
 | evol-lessons.py | Motor de lecciones aprendidas con deduplicacion Jaccard (threshold 0.7) | `scripts/evol-lessons.py` | lecciones.md, evol-provider.py |
 | evol-state.py | CRUD SQLite para instincts y sesiones; alimenta evol-evolve.py | `scripts/evol-state.py` | ~/.evol/state.db |
 | evol-eval.py | Eval-harness con 5 grader types para skills y agentes | `scripts/evol-eval.py` | evals/, evol-provider.py |
-| evol-shield.py | Audit estatico del framework (AgentShield) | `scripts/evol-shield.py` | .xdd/qa/ |
+| evol-shield.py | Audit estatico del framework (AgentShield) | `scripts/evol-shield.py` | .evol/qa/ |
 | evol-adapt.sh | Genera config para 7 IDEs via DRY symlinks | `scripts/evol-adapt.sh` | .agent/workflows/, MemPalace, GitNexus |
 | evol-doctor.sh | Diagnostico del entorno con salida JSON opcional | `scripts/evol-doctor.sh` | todos los componentes |
 | Agentes core (16) | Roles especializados: orchestrator, architect, builder, qa, sec, etc. | `prompts/agents/core/*.md` | registry.json |
@@ -155,5 +155,5 @@ graph TD
 | Anthropic API | LLM provider real; activado con EVOL_PROVIDER=anthropic | externo | ANTHROPIC_API_KEY |
 | MockProvider | Provider determinista; default sin red para tests y CI | `evol-provider.py` interno | stdlib solo |
 | MemPalace CLI | Indexacion semantica de memoria conversacional (MIT, opt-in) | externo local | evol-start.sh |
-| GitNexus CLI | Code intelligence y analisis de impacto (PolyForm NC, opt-in) | externo local | XDD_GITNEXUS=1 |
+| GitNexus CLI | Code intelligence y analisis de impacto (PolyForm NC, opt-in) | externo local | EVOL_GITNEXUS=1 |
 | GitHub API | Busqueda de repositorios para evol-researcher (60 req/h sin token) | externo remoto | GITHUB_TOKEN opcional |

@@ -61,6 +61,40 @@
 
 ## Bitácora de Sesiones
 
+<<<<<<< Updated upstream
+=======
+### Sesión 2026-06-06 — Fix Rebrand Residual en docs/
+
+- **Meta:** Limpiar menciones residuales de X-DD y xdd que quedaron tras el rebrand principal, específicamente en la documentación (`docs/`).
+- **Hitos:**
+  - Sustituciones aplicadas a 40+ archivos (`docs/disciplinas/`, `docs/qa/`, `docs/diagramas/`, etc.).
+  - Se excluyeron y preservaron los documentos históricos y guías de migración que intencionalmente contrastan ambos sistemas (`X-DD_Integration_Guide.md`, `RETROFIT_GUIDE.md`, `DECISIONES.md`, `GLOSARIO.md`, `TROUBLESHOOTING.md`, etc.).
+  - Actualizado `WORKING-CONTEXT.md` para reflejar el estado vivo correcto (v0.3.2 en main).
+- **QA:** Grep validado; menciones restantes a X-DD son estrictamente contextuales/comparativas.
+- **Estado:** main branch, contexto sincronizado.
+- **Próxima sesión:** Construir evol-agent en otro PC.
+
+
+### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
+
+- **Meta:** Limpieza completa de namespace x-dd en todo el codebase, corrección de gaps en .gitignore, y release v0.3.2 en PyPI.
+- **Hitos:**
+  - Rebrand funcional: `evol-scan.py` scanner names `xdd-heuristic/xdd-sca` → `evol-heuristic/evol-sca`; temp path `/tmp/xdd-gitleaks.json` → `/tmp/evol-gitleaks.json`.
+  - `evol-discipline-check.py`: removidos 6 fallback `.xdd/` de los bloques candidates.
+  - 45 workflows (SSoT + mirrors): `xdd.profile.yml`, `xdd-orchestrate.py`, `xdd-state.py`, `xdd-gate.py`, `xdd-researcher`, `X-DD CORE CONTROL DOMAINS`, `X-DD System`, `X-DD Orchestrator`, `Constitución X-DD`, `/x-dd`, `/xdd-build`, footers disciplinas, link muerto `xdd-fs-context → evol-fs-context`.
+  - 9 frontmatter descriptions `"Workflow X-DD"` → descripciones reales.
+  - `skills/crear-skill/SKILL.md`: `origin: x-dd` → `origin: evol-dd` (ambas copias).
+  - `.gitignore`: fix negación `.github/prompts/` (era anulada por `!.github/`); agregados `.vscode/` y `dudas.md`.
+  - VERSION + pyproject.toml: `0.3.1` → `0.3.2`.
+  - Commit `971c91c`: 110 archivos, 723 inserciones.
+  - Push develop → origin; rama `main` creada y pusheada.
+  - Tag `v0.3.2` en main; build wheel (scripts=68, agent=206, manifests=6, skills=64); publicado en PyPI.
+  - `/evol` reinstalado globalmente en 7 IDEs con `evol-install-global`.
+- **QA:** 104 pytest OK. 7/7 verificaciones OK. Mirrors idénticos.
+- **Estado:** Branch main = v0.3.2, develop = main. PyPI activo.
+- **Próxima sesión:** Construir evol-agent en otro PC con /evol.
+
+>>>>>>> Stashed changes
 ### Sesión 2026-06-05 — Herencia upgrade 31 metodologías (Lote F, v0.3.2) + merge develop + fix Mermaid
 - **Meta:** Heredar el upgrade X-DD (22 metodologías → registro de disciplinas 9→31) a Evol-DD con branding evol, mergear a develop, arreglar render Mermaid.
 - **Hitos (commit feature `42c50f1`, merge `fe27101`):**

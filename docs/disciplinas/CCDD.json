@@ -2,10 +2,10 @@
   "doc": "CCDD.md",
   "dominio": "disciplinas",
   "subdominio": "CCDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-ccdd-en-x-dd",
+    "que-es-ccdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "ccdd-en-el-pipeline",

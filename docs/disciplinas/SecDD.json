@@ -2,10 +2,10 @@
   "doc": "SecDD.md",
   "dominio": "disciplinas",
   "subdominio": "SecDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-secdd-en-x-dd",
+    "que-es-secdd-en-evol-dd",
     "herramientas-sast-dast-y-secrets-scanning",
     "requisitos-del-qa-reportmd",
     "controles-de-seguridad-obligatorios",

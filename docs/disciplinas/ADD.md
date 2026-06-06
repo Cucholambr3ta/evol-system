@@ -1,12 +1,12 @@
 # ADD — Architecture-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es ADD en X-DD](#1-que-es-add-en-x-dd)
+1. [Que es ADD en Evol-DD](#1-que-es-add-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [ADD en el pipeline](#4-add-en-el-pipeline)
@@ -18,7 +18,7 @@
 
 ---
 
-## 1. Que es ADD en X-DD
+## 1. Que es ADD en Evol-DD
 
 Architecture-Driven Development es la disciplina donde las decisiones arquitectonicas se
 documentan como Architecture Decision Records (ADR) y se validan con pruebas de concepto
@@ -26,12 +26,12 @@ documentan como Architecture Decision Records (ADR) y se validan con pruebas de 
 patron de comunicacion, estrategia de persistencia) queda registrada con su contexto,
 opciones consideradas, decision y consecuencias.
 
-En X-DD, ADD opera en la Fase 2 (Spec). Produce ADRs numerados en `docs/adr/NNNN-*.md`
+En Evol-DD, ADD opera en la Fase 2 (Spec). Produce ADRs numerados en `docs/adr/NNNN-*.md`
 (formato Nygard) mediante el workflow `/evol adr-new`. Una decision arquitectonica tomada
 sin ADR es una decision no trazable: no se puede auditar por que se eligio ni que se
 descarto.
 
-El principio de ADD en X-DD: ninguna decision arquitectonica significativa se ejecuta sin
+El principio de ADD en Evol-DD: ninguna decision arquitectonica significativa se ejecuta sin
 ADR aprobado. El ADR precede al codigo; si la decision requiere validacion empirica, el
 PoC se corre en entorno aislado y su resultado se adjunta al ADR.
 
@@ -148,5 +148,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [adr-tools](https://github.com/npryce/adr-tools) | CLI Git-native para gestionar ADRs |
 
 > **Mantenido por:** Architect + Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [DDD.md](./DDD.md) | [EDA.md](./EDA.md) | [INDEX.md](./INDEX.md)

@@ -1,12 +1,12 @@
 # APIVDD — API Versioning-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es APIVDD en X-DD](#1-que-es-apivdd-en-x-dd)
+1. [Que es APIVDD en Evol-DD](#1-que-es-apivdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [APIVDD en el pipeline](#4-apivdd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es APIVDD en X-DD
+## 1. Que es APIVDD en Evol-DD
 
 API Versioning-Driven Development es la disciplina donde las estrategias de versionado y las
 politicas de deprecacion se definen antes de implementar cambios en una API. El versionado no
 es una reaccion a un breaking change accidental, es una politica planificada.
 
-En X-DD, APIVDD opera en la Fase 3 (Plan) sobre el contrato OpenAPI. Se ejecuta mediante una
+En Evol-DD, APIVDD opera en la Fase 3 (Plan) sobre el contrato OpenAPI. Se ejecuta mediante una
 skill nueva (`/evol api-versioning`). Produce `api_versions/deprecation_schedule.json` y
 `api_versions/breaking_changes/*.md` con su plan de migracion.
 
-El principio de APIVDD en X-DD: todo breaking change tiene un plan de migracion documentado y
+El principio de APIVDD en Evol-DD: todo breaking change tiene un plan de migracion documentado y
 una fecha de deprecacion comunicada antes de ejecutarse. Romper a un consumidor sin previo
 aviso es una falla de proceso, no un accidente.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Best practices | [Modern API Design Best Practices — Xano](https://www.xano.com/blog/modern-api-design-best-practices) | Estrategias de evolucion de API |
 
 > **Mantenido por:** Architect + Release
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [ODD_API.md](./ODD_API.md) | [CCDD.md](./CCDD.md) | [DeprecationDD.md](./DeprecationDD.md) | [INDEX.md](./INDEX.md)

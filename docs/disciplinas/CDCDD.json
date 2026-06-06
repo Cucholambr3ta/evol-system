@@ -2,10 +2,10 @@
   "doc": "CDCDD.md",
   "dominio": "disciplinas",
   "subdominio": "CDCDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-cdcdd-en-x-dd",
+    "que-es-cdcdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "cdcdd-en-el-pipeline",

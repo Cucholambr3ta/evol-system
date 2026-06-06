@@ -1,12 +1,12 @@
 # A11yDD — Accessibility-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es A11yDD en X-DD](#1-que-es-a11ydd-en-x-dd)
+1. [Que es A11yDD en Evol-DD](#1-que-es-a11ydd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [A11yDD en el pipeline](#4-a11ydd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es A11yDD en X-DD
+## 1. Que es A11yDD en Evol-DD
 
 Accessibility-Driven Development es la disciplina donde los criterios WCAG 2.1/2.2 (nivel AA)
 se tratan como criterios de aceptacion obligatorios, no como un retrofit posterior. La
 accesibilidad es un requisito funcional verificable desde el diseno.
 
-En X-DD, A11yDD opera entre la Fase 1 (Briefing) y la Fase 5 (QA), mapeada al workflow
+En Evol-DD, A11yDD opera entre la Fase 1 (Briefing) y la Fase 5 (QA), mapeada al workflow
 `/evol a11y-audit`. Produce `a11y/wcag_criteria.json` (criterios por componente) y
 `a11y/screen_reader_tests/*.feature` (escenarios de lector de pantalla).
 
-El principio de A11yDD en X-DD: un componente sin criterios WCAG asignados no esta terminado.
+El principio de A11yDD en Evol-DD: un componente sin criterios WCAG asignados no esta terminado.
 La accesibilidad se verifica automaticamente (axe-core, Lighthouse) y manualmente en flujos
 criticos; no se asume.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Comunidad | [The A11Y Project](https://github.com/a11yproject/a11yproject.com) | Recursos y patrones de accesibilidad |
 
 > **Mantenido por:** UX + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [UXDD.md](./UXDD.md) | [BDD.md](./BDD.md) | [INDEX.md](./INDEX.md)

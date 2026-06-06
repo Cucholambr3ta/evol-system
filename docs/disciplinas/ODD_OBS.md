@@ -1,12 +1,12 @@
 # ODD_Obs — Observability-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es ODD_Obs en X-DD](#1-que-es-odd_obs-en-x-dd)
+1. [Que es ODD_Obs en Evol-DD](#1-que-es-odd_obs-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [ODD_Obs en el pipeline](#4-odd_obs-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es ODD_Obs en X-DD
+## 1. Que es ODD_Obs en Evol-DD
 
 Observability-Driven Development es la disciplina donde los logs, metricas y trazas se
 especifican como ciudadanos de primera clase, con estructura y cardinalidad definidas antes
 del codigo. La observabilidad se disena, no se anade tras el primer incidente que no se pudo
 diagnosticar.
 
-En X-DD, ODD_Obs opera en la Fase 5 (QA) y se materializa transversalmente, mapeada al
+En Evol-DD, ODD_Obs opera en la Fase 5 (QA) y se materializa transversalmente, mapeada al
 workflow `/evol observability-init`. Produce `observability/metrics/*.json` y
 `observability/logs/*.schema.json`, ademas de la configuracion de dashboards.
 
-El principio de ODD_Obs en X-DD: si un comportamiento no se puede observar en produccion, no
+El principio de ODD_Obs en Evol-DD: si un comportamiento no se puede observar en produccion, no
 esta terminado. Las metricas, logs estructurados y trazas se definen junto con la feature; un
 sistema que no se puede depurar remotamente es una caja negra.
 
@@ -147,5 +147,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Demo | [OpenTelemetry Astronomy Shop](https://github.com/open-telemetry/opentelemetry-demo) | Microservicios con telemetria completa |
 
 > **Mantenido por:** Architect + DevOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [SLODRIVEN.md](./SLODRIVEN.md) | [PDD.md](./PDD.md) | [CHAOS.md](./CHAOS.md) | [INDEX.md](./INDEX.md)

@@ -1,12 +1,12 @@
 # ESDD — Event Sourcing-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es ESDD en X-DD](#1-que-es-esdd-en-x-dd)
+1. [Que es ESDD en Evol-DD](#1-que-es-esdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [ESDD en el pipeline](#4-esdd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es ESDD en X-DD
+## 1. Que es ESDD en Evol-DD
 
 Event Sourcing-Driven Development es la disciplina donde el estado actual de una entidad se
 deriva de la reproduccion de una secuencia de eventos inmutables, en lugar de almacenarse
 como un unico registro mutable. El event store es la fuente de verdad; las proyecciones de
 lectura se reconstruyen a partir de los eventos.
 
-En X-DD, ESDD opera en la Fase 2 (Spec). Disena `eventsourcing/event_store_schema.json` y la
+En Evol-DD, ESDD opera en la Fase 2 (Spec). Disena `eventsourcing/event_store_schema.json` y la
 logica de aplicacion de eventos por aggregate. Se ejecuta mediante una skill nueva
 (`/evol event-sourcing`), porque no existe workflow previo que lo cubra.
 
-El principio de ESDD en X-DD: si el negocio requiere auditoria completa o reconstruccion del
+El principio de ESDD en Evol-DD: si el negocio requiere auditoria completa o reconstruccion del
 estado en cualquier punto del tiempo, el estado no se muta, se deriva. Cada cambio es un
 evento inmutable, y la entidad es la suma de su historia.
 
@@ -148,5 +148,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Libreria | [eventsourcing (Python)](https://github.com/pyeventsourcing/eventsourcing) | Libreria completa de event sourcing |
 
 > **Mantenido por:** Architect + Domain
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [DDD.md](./DDD.md) | [EDA.md](./EDA.md) | [CDCDD.md](./CDCDD.md) | [INDEX.md](./INDEX.md)

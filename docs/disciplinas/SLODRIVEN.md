@@ -1,12 +1,12 @@
 # SLO/SLA-Driven — SLO/SLA-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es SLO/SLA-Driven en X-DD](#1-que-es-sloslsa-driven-en-x-dd)
+1. [Que es SLO/SLA-Driven en Evol-DD](#1-que-es-sloslsa-driven-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [SLO/SLA en el pipeline](#4-sloslsa-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es SLO/SLA-Driven en X-DD
+## 1. Que es SLO/SLA-Driven en Evol-DD
 
 SLO/SLA-Driven Development es la disciplina donde los objetivos de nivel de servicio (SLO) y
 los acuerdos (SLA) se definen como contratos que guian el diseno y el monitoreo. El error
 budget derivado del SLO se vuelve una moneda que gobierna el ritmo de releases.
 
-En X-DD, SLO/SLA opera en la Fase 5 (QA) como **capa declarativa** (no tiene workflow propio):
+En Evol-DD, SLO/SLA opera en la Fase 5 (QA) como **capa declarativa** (no tiene workflow propio):
 se apoya en `observability-init` para las metricas y en `perf-budget` para los umbrales, y se
 materializa como un **sub-gate** de error budget. Produce `sla/slo_documents/*.json` y
 `sla/error_budget_policy.md`.
 
-El principio de SLO/SLA en X-DD: el error budget agotado bloquea los deploys. La fiabilidad es
+El principio de SLO/SLA en Evol-DD: el error budget agotado bloquea los deploys. La fiabilidad es
 una feature con presupuesto: si se quema el budget, se congela el lanzamiento de novedades
 hasta recuperar margen.
 
@@ -146,5 +146,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Estandar | [OpenSLO](https://github.com/OpenSLO/OpenSLO) | Lenguaje declarativo YAML para definir SLOs |
 
 > **Mantenido por:** Architect + DevOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [ODD_OBS.md](./ODD_OBS.md) | [PDD.md](./PDD.md) | [PIPELINE-DRIVEN.md](./PIPELINE-DRIVEN.md) | [INDEX.md](./INDEX.md)

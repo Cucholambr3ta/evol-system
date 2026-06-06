@@ -2,10 +2,10 @@
   "doc": "DDD.md",
   "dominio": "disciplinas",
   "subdominio": "DDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-ddd-en-x-dd",
+    "que-es-ddd-en-evol-dd",
     "ubiquitous-language",
     "bounded-contexts",
     "context-map",

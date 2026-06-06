@@ -1,12 +1,12 @@
 # COMPLIANCE — Compliance-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es Compliance-Driven en X-DD](#1-que-es-compliance-driven-en-x-dd)
+1. [Que es Compliance-Driven en Evol-DD](#1-que-es-compliance-driven-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [Compliance en el pipeline](#4-compliance-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es Compliance-Driven en X-DD
+## 1. Que es Compliance-Driven en Evol-DD
 
 Compliance-Driven Development es la disciplina donde las regulaciones (GDPR, HIPAA, PCI-DSS,
 SOC 2) se tratan como restricciones de diseno desde la fase de especificacion, no como una
 auditoria sorpresa al final. Cada control de compliance se traduce en una prueba automatizada.
 
-En X-DD, Compliance opera en la Fase 2 (Spec) como extension del workflow `/evol privacy-review`.
+En Evol-DD, Compliance opera en la Fase 2 (Spec) como extension del workflow `/evol privacy-review`.
 Produce `compliance/control_mappings.json` (mapeo control regulatorio -> implementacion) y
 `compliance/audit_logs_spec.json` (que se audita y como).
 
-El principio de Compliance en X-DD: cada control regulatorio aplicable tiene una prueba que
+El principio de Compliance en Evol-DD: cada control regulatorio aplicable tiene una prueba que
 lo verifica. Un control "implementado" sin prueba automatizada es una afirmacion no
 verificable que no sobrevive a una auditoria real.
 
@@ -148,5 +148,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Guia dev | [Developer-First Compliance — Appwrite](https://appwrite.io/blog/post/developer-first-thinking-about-compliance-requirements) | Decisiones de arquitectura orientadas a compliance |
 
 > **Mantenido por:** SecOps + Architect
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [PrivacyDD.md](./PrivacyDD.md) | [SecDD.md](./SecDD.md) | [INDEX.md](./INDEX.md)

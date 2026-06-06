@@ -1,12 +1,12 @@
 # PrivacyDD — Privacy by Design
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es PrivacyDD en X-DD](#1-que-es-privacydd-en-x-dd)
+1. [Que es PrivacyDD en Evol-DD](#1-que-es-privacydd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [PrivacyDD en el pipeline](#4-privacydd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es PrivacyDD en X-DD
+## 1. Que es PrivacyDD en Evol-DD
 
 Privacy by Design es la disciplina donde la minimizacion de datos, el consentimiento y el
 derecho al olvido se disenan antes de la implementacion, no se anaden como parche tras un
 incidente. La privacidad es una propiedad por defecto del sistema, no una opcion.
 
-En X-DD, PrivacyDD opera en la Fase 2 (Spec) y se ejecuta mapeada al workflow
+En Evol-DD, PrivacyDD opera en la Fase 2 (Spec) y se ejecuta mapeada al workflow
 `/evol privacy-review`. Produce `privacy/pii_inventory.json` (inventario de datos personales),
 `privacy/consent_models/*.json` y `privacy/deletion_policies/*.sql`.
 
-El principio de PrivacyDD en X-DD: todo campo PII tiene base legal y politica de retencion
+El principio de PrivacyDD en Evol-DD: todo campo PII tiene base legal y politica de retencion
 documentada desde el diseno. Un dato personal sin proposito declarado y sin politica de
 borrado es una pasivo legal, no un activo.
 
@@ -147,5 +147,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | SDK | [pbd — Privacy by Design SDK](https://github.com/dsietz/pbd) | SDK para aplicar practicas de privacidad |
 
 > **Mantenido por:** Architect + SecOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [COMPLIANCE.md](./COMPLIANCE.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [INDEX.md](./INDEX.md)

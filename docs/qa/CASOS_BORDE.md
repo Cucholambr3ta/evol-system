@@ -4,7 +4,7 @@
 
 | ID | Escenario | Precondicion | Input | Resultado esperado | Prioridad |
 |----|-----------|--------------|-------|--------------------|-----------|
-| CB-001 | Manifest invalido al hacer evol-init (profile inexistente) | Binario evol-init disponible, sin xdd.profile.yml previo | `evol-init --profile perfil_inexistente` | Error claro con lista de profiles disponibles, sin crear directorio parcial | CRITICA |
+| CB-001 | Manifest invalido al hacer evol-init (profile inexistente) | Binario evol-init disponible, sin evol.profile.yml previo | `evol-init --profile perfil_inexistente` | Error claro con lista de profiles disponibles, sin crear directorio parcial | CRITICA |
 | CB-002 | IDE no detectado en bootstrap (PATH vacio) | evol-adapt.sh ejecutable, PATH={} | `evol-adapt.sh` sin IDEs en PATH | Warning por cada IDE no detectado, continua con los detectados, exit 0 si al menos uno funciono | ALTA |
 | CB-003 | Agente efimero vencido al intentar invocar | AGENT.md con `expires_after_days` ya expirado en fecha de ejecucion | Invocacion del agente por nombre | Error con fecha de expiracion, sugerencia de `recall` o `crear-agente` nuevo | CRITICA |
 | CB-004 | Recall con MemPalace no disponible (solo snapshot JSON) | MemPalace offline, snapshot `mempalace-snapshot.json` presente | `evol-memory recall --agent nombre` | Carga desde snapshot JSON local, warning de datos potencialmente desactualizados | CRITICA |
@@ -15,7 +15,7 @@
 | CB-009 | Skill con frontmatter sin 'description' al evol-adapt.sh codex | SKILL.md existente con campos obligatorios faltantes | `evol-adapt.sh codex` | Skill omitida del output codex, warning con path y campo faltante, resto de skills procesadas | MEDIA |
 | CB-010 | evol-evolve clustering con menos de 3 instincts disponibles | state.db con 0-2 instincts registrados | `evol-evolve cluster` | Warning de corpus insuficiente para clustering significativo, sugerencia de minimo de instincts | MEDIA |
 | CB-011 | evol-researcher con rate limit de GitHub API (60 req/h) | Token GitHub ausente o limite alcanzado | Busqueda de patrones en GitHub via evol-researcher | Fallback a resultados cacheados si existen, error descriptivo con tiempo estimado de reset | ALTA |
-| CB-012 | evol-adapt.sh con directorio destino inexistente | IDE configurado en xdd.profile.yml con path no creado | `evol-adapt.sh vscode` con destino `~/.vscode/nonexistent/` | Creacion del directorio con mkdir -p antes de copiar, o error si permisos insuficientes | MEDIA |
+| CB-012 | evol-adapt.sh con directorio destino inexistente | IDE configurado en evol.profile.yml con path no creado | `evol-adapt.sh vscode` con destino `~/.vscode/nonexistent/` | Creacion del directorio con mkdir -p antes de copiar, o error si permisos insuficientes | MEDIA |
 | CB-013 | evol-gate approve con aprobador == autor (mismo usuario) | Fase pendiente de aprobacion, `git config user.email` igual al del autor del artefacto | `evol-gate.py approve fase2` por el mismo autor | Rechazo con mensaje de separacion de roles, identidad de autor y aprobador mostradas | ALTA |
 | CB-014 | evol-lessons suggest-fix sin EVOL_PROVIDER=anthropic (mock) | EVOL_PROVIDER ausente o distinto de anthropic | `evol-lessons suggest-fix CB-007` | Sugestion generica de mock con flag `[mock]` en output, sin crash, estado leccion no cambia a fix-proposed | MEDIA |
 | CB-015 | evol-init --profile lean sin wrapper global instalado | evol-dd clonado localmente, sin instalacion global en PATH | `evol-init --profile lean` ejecutado desde directorio del proyecto | Detecta ausencia de wrapper global, ejecuta desde ruta relativa `./scripts/evol-init.sh`, warning de instalacion recomendada | CRITICA |
@@ -31,7 +31,7 @@ Feature: Inicializacion de proyecto con profile invalido
 
   Background:
     Given el binario evol-init esta disponible en PATH
-    And no existe xdd.profile.yml en el directorio actual
+    And no existe evol.profile.yml en el directorio actual
     And los profiles validos son: "default", "lean", "enterprise"
 
   Scenario: Profile inexistente produce error con lista de alternativas
@@ -186,7 +186,7 @@ Feature: Bootstrap de proyecto sin instalacion global del wrapper
     When el usuario ejecuta "./scripts/evol-init.sh --profile lean" desde el directorio del proyecto
     Then el proceso termina con exit code 0
     And el directorio ".evol" es creado con la estructura del profile "lean"
-    And "xdd.profile.yml" es generado con profile=lean
+    And "evol.profile.yml" es generado con profile=lean
     And stderr contiene "Wrapper global no instalado. Ejecutando desde ruta relativa."
     And stderr contiene instruccion para instalar el wrapper global
 
@@ -205,6 +205,6 @@ Feature: Bootstrap de proyecto sin instalacion global del wrapper
 
   Scenario: El profile lean genera exactamente los artefactos minimos esperados
     When el bootstrap con profile lean completa correctamente
-    Then existen los archivos: ".evol/", "xdd.profile.yml", "memoria.md", "lecciones.md"
+    Then existen los archivos: ".evol/", "evol.profile.yml", "memoria.md", "lecciones.md"
     And no existen artefactos de profiles mas complejos como "DISCOVERY.md" o "THREATS.md"
 ```

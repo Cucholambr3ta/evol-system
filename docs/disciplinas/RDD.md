@@ -1,12 +1,12 @@
 # RDD — Refactoring-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es RDD en X-DD](#1-que-es-rdd-en-x-dd)
+1. [Que es RDD en Evol-DD](#1-que-es-rdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [RDD en el pipeline](#4-rdd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es RDD en X-DD
+## 1. Que es RDD en Evol-DD
 
 Refactoring-Driven Development es la disciplina donde el refactoring se planifica guiado por
 metricas de deuda tecnica y cobertura de pruebas, no por intuicion. Se refactoriza lo que las
 metricas senalan como problematico, con la red de seguridad de los tests.
 
-En X-DD, RDD opera en la Fase 4 (Build), mapeada al workflow `/evol refactor-area`. Consume
+En Evol-DD, RDD opera en la Fase 4 (Build), mapeada al workflow `/evol refactor-area`. Consume
 `debt/debt_items.json` y produce `refactoring/sessions/*.md` (registro de cada sesion) y
 `refactoring/after_metrics.json` (metricas post-refactoring).
 
-El principio de RDD en X-DD: no se refactoriza sin tests que protejan el comportamiento, y no
+El principio de RDD en Evol-DD: no se refactoriza sin tests que protejan el comportamiento, y no
 se refactoriza por gusto sino por metrica. La cobertura no baja tras un refactoring; si baja,
 el refactoring se rechaza.
 
@@ -143,5 +143,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Catalogo | [Refactoring Catalog — refactoring.com](https://refactoring.com/catalog/) | Catalogo de refactorings con mecanica paso a paso |
 
 > **Mantenido por:** Maintainer + Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 8
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 8
 > **Ver tambien:** [TDD.md](./TDD.md) | [DebtBudgetDD.md](./DebtBudgetDD.md) | [INDEX.md](./INDEX.md)

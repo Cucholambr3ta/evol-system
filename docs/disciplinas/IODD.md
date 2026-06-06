@@ -1,12 +1,12 @@
 # IODD — Infrastructure-as-Code-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es IODD en X-DD](#1-que-es-iodd-en-x-dd)
+1. [Que es IODD en Evol-DD](#1-que-es-iodd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [IODD en el pipeline](#4-iodd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es IODD en X-DD
+## 1. Que es IODD en Evol-DD
 
 Infrastructure-as-Code-Driven Development es la disciplina donde los recursos de
 infraestructura (computo, red, almacenamiento, IAM) se especifican como codigo desde la
 fase de especificacion, no se aprovisionan a mano en una consola. La infraestructura es
 declarativa, versionada y recreable desde cero.
 
-En X-DD, IODD opera en la Fase 2 (Spec) y se materializa en Build. Produce `infra/main.tf`
+En Evol-DD, IODD opera en la Fase 2 (Spec) y se materializa en Build. Produce `infra/main.tf`
 (o modulos equivalentes) y `infra/dependencies_graph.json` desde SPEC.md y los ADRs de
 infraestructura. Se ejecuta mediante una skill nueva (`/evol iac-driven`).
 
-El principio de IODD en X-DD: no hay recursos creados manualmente en consola. Si un recurso
+El principio de IODD en Evol-DD: no hay recursos creados manualmente en consola. Si un recurso
 existe en produccion y no esta en el codigo de infraestructura, es drift y debe corregirse.
 La infraestructura se recrea desde cero de forma reproducible.
 
@@ -148,5 +148,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [OpenTofu](https://github.com/opentofu/opentofu) | Motor IaC declarativo open-source (fork de Terraform) |
 
 > **Mantenido por:** Architect + DevOps
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [ADD.md](./ADD.md) | [PIPELINE-DRIVEN.md](./PIPELINE-DRIVEN.md) | [ODD_OBS.md](./ODD_OBS.md) | [INDEX.md](./INDEX.md)

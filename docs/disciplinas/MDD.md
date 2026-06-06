@@ -1,12 +1,12 @@
 # MDD — Migration-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es MDD en X-DD](#1-que-es-mdd-en-x-dd)
+1. [Que es MDD en Evol-DD](#1-que-es-mdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [MDD en el pipeline](#4-mdd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es MDD en X-DD
+## 1. Que es MDD en Evol-DD
 
 Migration-Driven Development es la disciplina donde los cambios en el esquema de la base de
 datos se especifican como migraciones versionadas, reversibles y con migracion de datos
 explicita. Cada cambio de esquema es un par up/down probado, no un ALTER manual.
 
-En X-DD, MDD opera en la Fase 3 (Plan) y se materializa en Build, mapeada al workflow
+En Evol-DD, MDD opera en la Fase 3 (Plan) y se materializa en Build, mapeada al workflow
 `/evol db-migrate`. Produce `migrations/*/up.sql`, `migrations/*/down.sql` y, cuando aplica,
 `migrations/*/data_migration.md`.
 
-El principio de MDD en X-DD: toda migracion tiene rollback definido y se prueba antes de
+El principio de MDD en Evol-DD: toda migracion tiene rollback definido y se prueba antes de
 aplicar en produccion. Un cambio de esquema sin migracion reversible es un riesgo de
 indisponibilidad: si falla en produccion, no hay vuelta atras automatica.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [Flyway](https://github.com/flyway/flyway) | Herramienta de referencia de migraciones versionadas |
 
 > **Mantenido por:** Domain + Data
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [DDD.md](./DDD.md) | [CDCDD.md](./CDCDD.md) | [INDEX.md](./INDEX.md)

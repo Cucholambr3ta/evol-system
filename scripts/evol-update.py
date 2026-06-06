@@ -117,6 +117,13 @@ def _propagate(project_dir: Path, data: Path) -> None:
                 shutil.copy2(tpl, dst_tpl / tpl.name); n += 1
         print(f"[evol-update]   {n} templates actualizados")
 
+    # Upgrade profile modules and directories
+    init_script = data / "scripts" / "evol-init.sh"
+    if init_script.exists():
+        subprocess.run(["bash", str(init_script), ".", "--upgrade"],
+                       cwd=project_dir, capture_output=True)
+        print(f"[evol-update]   perfil y carpetas actualizados via evol-init.sh --upgrade")
+
     # Re-generar configs IDE
     adapt = project_dir / "scripts" / "evol-adapt.sh"
     if adapt.exists():

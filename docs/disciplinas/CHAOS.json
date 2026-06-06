@@ -2,10 +2,10 @@
   "doc": "CHAOS.md",
   "dominio": "disciplinas",
   "subdominio": "CHAOS",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-chaos-driven-en-x-dd",
+    "que-es-chaos-driven-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "chaos-en-el-pipeline",

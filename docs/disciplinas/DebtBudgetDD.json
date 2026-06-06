@@ -2,10 +2,10 @@
   "doc": "DebtBudgetDD.md",
   "dominio": "disciplinas",
   "subdominio": "DebtBudgetDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-debtbudgetdd-en-x-dd",
+    "que-es-debtbudgetdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "debtbudgetdd-en-el-pipeline",

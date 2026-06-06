@@ -1,6 +1,6 @@
 # FDD — Feature-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
@@ -24,7 +24,7 @@ completos y entregables al usuario, en lugar de capas tecnicas (base de datos, A
 Un feature es una funcion de negocio que tiene valor independiente para un usuario o sistema
 consumidor.
 
-En X-DD, FDD opera en dos momentos del pipeline: durante la Fase 1 (Briefing) donde se
+En Evol-DD, FDD opera en dos momentos del pipeline: durante la Fase 1 (Briefing) donde se
 construye el catalogo de features, y durante la Fase 3 (Plan) donde el PLAN.md se organiza
 por features verticales priorizados por valor, no por componentes tecnicos.
 
@@ -69,7 +69,7 @@ funcion de negocio, y debe ser rechazado durante la revision del catalogo.
 
 ## 3. FDD en el pipeline
 
-FDD interviene en dos fases del pipeline X-DD. En la Fase 1 produce el catalogo; en la
+FDD interviene en dos fases del pipeline Evol-DD. En la Fase 1 produce el catalogo; en la
 Fase 3 reorganiza el PLAN.md alrededor de ese catalogo.
 
 ```mermaid
@@ -240,5 +240,5 @@ siguientes fuentes (verificadas via `/evol fact-check`).
 | Priorizacion | [RICE Scoring Model — Intercom](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/) | Modelo RICE usado para priorizar el catalogo de features |
 
 > **Mantenido por:** Product-Manager + Project-Manager
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [BDD.md](./BDD.md) | [INDEX.md](./INDEX.md)

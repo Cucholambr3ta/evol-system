@@ -32,7 +32,7 @@ graph TD
 
         subgraph OPTIONAL_LOCAL["Herramientas opcionales locales"]
             MEMPALACE[MemPalace CLI\nMIT · indexacion semantica]
-            GITNEXUS[GitNexus CLI\nPolyForm NC · opt-in XDD_GITNEXUS=1]
+            GITNEXUS[GitNexus CLI\nPolyForm NC · opt-in EVOL_GITNEXUS=1]
         end
     end
 
@@ -57,7 +57,7 @@ graph TD
     SCRIPTS -->|evol-provider.py routing| ANTHROPIC
 
     SCRIPTS -.->|opt-in evol-start.sh| MEMPALACE
-    SCRIPTS -.->|opt-in XDD_GITNEXUS=1| GITNEXUS
+    SCRIPTS -.->|opt-in EVOL_GITNEXUS=1| GITNEXUS
 
     MEMPALACE -->|indexa| MEM_DIR
     GITNEXUS -->|analiza| PROJECT
@@ -84,4 +84,4 @@ graph TD
 | LLM Provider | MockProvider | en proceso | Default; determinista; sin red; apto para CI |
 | LLM Provider | Anthropic API | HTTPS | Activar con EVOL_PROVIDER=anthropic; requiere ANTHROPIC_API_KEY |
 | MemPalace CLI | indexacion semantica | CLI local | Licencia MIT; activar con evol-start.sh |
-| GitNexus CLI | code intelligence | CLI local | Licencia PolyForm NC; activar con XDD_GITNEXUS=1; solo proyectos no-comerciales |
+| GitNexus CLI | code intelligence | CLI local | Licencia PolyForm NC; activar con EVOL_GITNEXUS=1; solo proyectos no-comerciales |

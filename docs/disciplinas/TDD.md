@@ -1,12 +1,12 @@
 # TDD — Test-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es TDD en X-DD](#1-que-es-tdd-en-x-dd)
+1. [Que es TDD en Evol-DD](#1-que-es-tdd-en-evol-dd)
 2. [El ciclo Rojo-Verde-Refactor](#2-el-ciclo-rojo-verde-refactor)
 3. [Cuando aplica TDD y cuando no](#3-cuando-aplica-tdd-y-cuando-no)
 4. [TDD en el pipeline](#4-tdd-en-el-pipeline)
@@ -17,22 +17,22 @@
 
 ---
 
-## 1. Que es TDD en X-DD
+## 1. Que es TDD en Evol-DD
 
 Test-Driven Development es la disciplina que invierte el orden natural de desarrollo:
 en lugar de escribir codigo y luego escribir tests para verificarlo, se escribe primero
 el test que describe el comportamiento deseado, y luego el codigo minimo para que ese
 test pase.
 
-En X-DD, TDD se activa exclusivamente durante la Fase 4 (Build) y aplica a toda logica
+En Evol-DD, TDD se activa exclusivamente durante la Fase 4 (Build) y aplica a toda logica
 de negocio. Es la disciplina que mas impacto operativo tiene en el flujo de trabajo del
 `Builder`, porque cambia el ritmo de cada sesion de programacion.
 
-El principio de TDD en X-DD no es "escribir mas tests". Es que el test sea la primera
+El principio de TDD en Evol-DD no es "escribir mas tests". Es que el test sea la primera
 especificacion ejecutable de una funcion antes de que exista. Si no puedes escribir un
 test que describa el comportamiento, no tienes una especificacion suficientemente clara.
 
-TDD en X-DD es un mandato constitucional (Art. 8) para toda logica de negocio. No es
+TDD en Evol-DD es un mandato constitucional (Art. 8) para toda logica de negocio. No es
 opcional ni una recomendacion.
 
 ---
@@ -182,7 +182,7 @@ a la Fase 5. Este es un requisito no negociable.
 
 ## 5. Mandato constitucional — Art. 8
 
-La Constitucion X-DD v1.5 establece en su Articulo 8:
+La Constitucion Evol-DD v1.5 establece en su Articulo 8:
 
 > Todo codigo que implemente logica de negocio, transformaciones de datos o reglas de
 > dominio se escribe siguiendo el ciclo TDD (Rojo-Verde-Refactor). El codigo de produccion
@@ -293,5 +293,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Referencia | [Test-Driven Development — Martin Fowler](https://martinfowler.com/bliki/TestDrivenDevelopment.html) | Definicion concisa y discusion de la practica |
 
 > **Mantenido por:** Builder + Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 8
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 8
 > **Ver tambien:** [STDD.md](./STDD.md) | [ATDD.md](./ATDD.md) | [INDEX.md](./INDEX.md)

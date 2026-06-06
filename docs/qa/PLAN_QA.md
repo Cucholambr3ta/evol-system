@@ -301,7 +301,7 @@ Scenario: Transicion entre fases con APROBADO
 Scenario: Verificar estado actual
   Given fase "spec" activa
   When leo memoria.md
-  Then campo "Fase X-DD activa" muestra "2-Spec"
+  Then campo "Fase Evol-DD activa" muestra "2-Spec"
 
 Scenario: Pipeline completo
   Given fase "briefing" activa

@@ -1,12 +1,12 @@
 # EDA — Event-Driven Architecture (como disciplina)
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es EDA en X-DD](#1-que-es-eda-en-x-dd)
+1. [Que es EDA en Evol-DD](#1-que-es-eda-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [EDA en el pipeline](#4-eda-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es EDA en X-DD
+## 1. Que es EDA en Evol-DD
 
 Event-Driven Architecture como disciplina trata los eventos de dominio como contratos de
 primera clase: se definen esquemas, topicos y la relacion productor/consumidor antes de
 escribir la logica de negocio. El evento no es un efecto secundario del codigo, es un
 artefacto disenado y versionado.
 
-En X-DD, EDA opera en la Fase 2 (Spec) sobre el modelo de dominio. Deriva `eda/schemas/*.avsc`,
+En Evol-DD, EDA opera en la Fase 2 (Spec) sobre el modelo de dominio. Deriva `eda/schemas/*.avsc`,
 `eda/topics/*.json` y `eda/producers/*.json` desde los eventos identificados en `DOMAIN.md`.
 Se ejecuta como extension del workflow `/evol data-pipeline`.
 
-El principio de EDA en X-DD: todo evento tiene schema evolutivo (Avro/Protobuf) con politica
+El principio de EDA en Evol-DD: todo evento tiene schema evolutivo (Avro/Protobuf) con politica
 de compatibilidad declarada. Un evento sin schema versionado es un acoplamiento oculto entre
 servicios que rompera en produccion al cambiar.
 
@@ -150,5 +150,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | EDA + DDD | [Navigating Complexity in EDA with DDD — David Boyne](https://github.com/boyney123/navigating-complexity-in-eda-with-ddd) | Recursos para combinar EDA con DDD |
 
 > **Mantenido por:** Architect + Data
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [DDD.md](./DDD.md) | [ESDD.md](./ESDD.md) | [CDCDD.md](./CDCDD.md) | [INDEX.md](./INDEX.md)
