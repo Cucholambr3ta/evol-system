@@ -8,6 +8,19 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-06-06
+
+### Added
+- Integración nativa de **MCP (Model Context Protocol)** por defecto, abandonando la política opt-in y anti-MCP. Ahora `evol.config.yml` habilita los servidores automáticamente.
+- Script `evol-mcp.sh` (módulo `mcp-manager`) como gestor oficial de configuraciones MCP del proyecto. Comandos: `add`, `remove`, `list`, `status`.
+
+### Removed
+- **GitNexus:** Se eliminó por completo el soporte, referencias, skills exclusivas (`.claude/skills/gitnexus/`), bloques de contexto forzados en `AGENTS.md` y `CLAUDE.md`, así como la documentación `gitnexus-optin.md` debido a la migración de estrategia en favor del uso de integraciones estándar de MCP.
+
+### Changed
+- `evol-shield.py` ya no bloquea la inclusión de configuraciones `mcpServers` en entornos IDE (regla `no_mcp_config` eliminada).
+- `evol-init.sh` no requiere bandera `--mcp` para el scaffolding de configuraciones.
+
 ## [0.3.2] - 2026-06-05
 
 ### Added
