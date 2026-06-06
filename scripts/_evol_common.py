@@ -52,19 +52,20 @@ def find_tool(tool_name, extra_paths=None):
             return found
     return None
 
-def find_Memoria Persistente():
-    """Find Memoria Persistente in standard locations."""
-    locations = [
-        os.environ.get("PATH", ""),
-        os.path.expanduser("~/.local/bin"),
-        os.path.expanduser("~/.venv/bin"),
-        "venv/bin",
-        ".venv/bin",
+def find_memory_db():
+    """Busca ejecutable de memoria persistente en PATH y directorios locales comunes."""
+    paths_to_check = [
+        "chromadb",
+        "ladybugdb",
+        os.path.expanduser("~/.local/bin/chromadb"),
+        os.path.expanduser("~/.venv/bin/chromadb"),
+        "venv/bin/chromadb",
+        ".venv/bin/chromadb"
     ]
-    for loc in locations:
-        found = find_tool("Memoria Persistente", [loc])
-        if found:
-            return found
+    import shutil
+    for p in paths_to_check:
+        if shutil.which(p):
+            return p
     return None
 
 # === SHA-256 ===

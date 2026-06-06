@@ -5,24 +5,23 @@
 
 ## Estado actual
 
-- **Branch:** `feature/upgrade-gaps`
-- **Fase Evol-DD:** F6-Retro — Fixes post-release
-- **Version:** `0.3.2` (en transición a `0.3.3`)
+- **Branch:** `feature/update-memory`
+- **Fase Evol-DD:** F6-Retro — Update memory and prepare release
+- **Version:** `0.3.3`
 - **Repo:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Hitos recientes
 
 | Commit | Descripcion |
 |--------|-------------|
-| `3fd7bf9` | feat: implement evol-update and evol-update-project workflows and fix upgrade gaps |
-| `feb4fd3` | docs(memoria): actualizar estado v0.3.2 + historial PyPI + bitacora rebrand |
-| `971c91c` | fix(rebrand): x-dd → evol-dd namespace cleanup + .gitignore + bump v0.3.2 |
+| `369e27d` | feat: add /update-memory workflow to maintain persistent memory |
+| `61f746d` | refactor: remove mempalace dependencies in preparation for persistent memory |
+| `e03d5f3` | docs(memoria): migrate monolithic MEMORY to atomic structure |
 
 ## Proximo paso
 
-1. ~~Construir `evol-agent` en otro PC con `/evol`~~ (Despriorizado / Cerrado).
-2. **Resolver Advertencia [HIGH]**: Excluir explícitamente `.evol/` de la indexación de Memoria Persistente en la configuración.
-3. **Merge & Release v0.3.3**: Mergear `feature/upgrade-gaps` a develop y lanzar nueva versión a PyPI con los workflows de actualización.
+1. ~~Borrar MemPalace y toda su estructura.~~ (Completado).
+2. **Merge & Release v0.3.3**: Mergear cambios a develop, hacer el tag de release de v0.3.3 y subir a PyPI.
 
 ## Resumen del sistema (post-build completo)
 
