@@ -106,28 +106,21 @@ El sistema actualiza `memoria.md` con las decisiones tomadas, los artefactos pro
 
 ---
 
-## Como hablar con el sistema
+## Cómo hablar con el sistema
 
-Los comandos del sistema son slash commands del IDE. Se escriben directamente en el chat de Claude Code.
+Los comandos del sistema son slash commands del IDE. Se escriben directamente en el chat de Claude Code u otros IDEs soportados.
 
-```
-/evol                    — retoma el estado del proyecto y presenta opciones
-/evol briefing           — inicia el ciclo con un nuevo briefing
-/evol spec               — genera especificacion desde el briefing activo
-/evol plan               — genera plan desde la spec activa
-/evol build              — implementa desde el plan activo
-/evol qa                 — genera reporte de calidad
-/evol retro              — cierra la fase y actualiza memoria
-/evol research           — pide al sistema que investigue un tema
-/evol gate status        — muestra el estado de aprobaciones de las fases
-```
+Debido a la extensa cantidad de comandos y flujos especializados (más de 89 workflows que cubren metodologías, agentes core, calidad y operaciones), la documentación de los triggers se mantiene bajo la doctrina de documentación atómica.
 
-Para tareas especificas que no son parte del pipeline principal:
+👉 **[Ver el Catálogo Atómico de Comandos y Triggers](comandos/INDEX.md)**
 
-```
-/evol doc                — genera o actualiza la documentacion del proyecto
-/evol gate approve       — firma la aprobacion de la fase actual
-```
+El catálogo está granularmente dividido en:
+- **PIPELINE**: Comandos de las 6 fases nucleares (briefing, spec, plan, build, qa, retro).
+- **AGENTES**: Comandos para invocar a los 16 especialistas y crear agentes efímeros.
+- **DISCIPLINAS**: Triggers para las metodologías *-Driven (ux-driven, event-sourcing, etc.).
+- **CALIDAD_SEGURIDAD**: Herramientas de validación (grill-me, fact-check, security-audit).
+- **OPERACIONES**: Gestión de infraestructura, release y despliegues.
+- **UTILIDADES**: Comandos de apoyo como optimización de prompts y generación de ideas.
 
 El sistema puede recibir instrucciones en lenguaje natural. Si escribes "quiero agregar autenticacion OAuth al modulo de usuarios", el sistema lo interpreta, busca lecciones relevantes sobre autenticacion, y propone el enfoque antes de ejecutar.
 
