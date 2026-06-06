@@ -5,23 +5,24 @@
 
 ## Estado actual
 
-- **Branch:** `main`
+- **Branch:** `feature/upgrade-gaps`
 - **Fase Evol-DD:** F6-Retro — Fixes post-release
-- **Version:** `0.3.2`
+- **Version:** `0.3.2` (en transición a `0.3.3`)
 - **Repo:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Hitos recientes
 
 | Commit | Descripcion |
 |--------|-------------|
+| `3fd7bf9` | feat: implement evol-update and evol-update-project workflows and fix upgrade gaps |
 | `feb4fd3` | docs(memoria): actualizar estado v0.3.2 + historial PyPI + bitacora rebrand |
 | `971c91c` | fix(rebrand): x-dd → evol-dd namespace cleanup + .gitignore + bump v0.3.2 |
-| `65cc0da` | docs(disciplinas): actualizar conteo 9->31 + constitucion Art.9 + MEMORY.md |
 
 ## Proximo paso
 
-1. Construir `evol-agent` en otro PC con `/evol` (spec enriquecida lista).
-2. Monitorear feedback externo y bugs tras el lanzamiento v0.3.2.
+1. ~~Construir `evol-agent` en otro PC con `/evol`~~ (Despriorizado / Cerrado).
+2. **Resolver Advertencia [HIGH]**: Excluir explícitamente `.evol/` de la indexación de MemPalace en la configuración.
+3. **Merge & Release v0.3.3**: Mergear `feature/upgrade-gaps` a develop y lanzar nueva versión a PyPI con los workflows de actualización.
 
 ## Resumen del sistema (post-build completo)
 

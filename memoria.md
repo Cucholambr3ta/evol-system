@@ -12,8 +12,8 @@
 
 ## Estado Actual
 - **Fase Evol-DD:** PUBLICADO EN PYPI — v0.2.3 activa en produccion
-- **Ultimo hito:** grill-me enforced en gate del plan (bloqueo criptografico Fase 3)
-- **Proximo paso:** Construir evol-agent en otro PC con /evol (spec enriquecida lista)
+- **Ultimo hito:** Implementados workflows agenticos para `/evol-update` y resolución de upgrade gaps (rama feature/upgrade-gaps)
+- **Proximo paso:** Resolver advertencia de MemPalace [HIGH], testear el apply en producción y cortar nuevo release (v0.3.3)
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.1.4 (install global 7 IDEs) → 0.1.6 (fix packaging) → 0.1.9 (MemPalace 3.x) → 0.2.0 → 0.2.1 (security nativa) → 0.2.2 (4 community skills) → 0.2.3 (grill enforced)
 
@@ -69,8 +69,8 @@
   - Se excluyeron y preservaron los documentos históricos y guías de migración que intencionalmente contrastan ambos sistemas (`X-DD_Integration_Guide.md`, `RETROFIT_GUIDE.md`, `DECISIONES.md`, `GLOSARIO.md`, `TROUBLESHOOTING.md`, etc.).
   - Actualizado `WORKING-CONTEXT.md` para reflejar el estado vivo correcto (v0.3.2 en main).
 - **QA:** Grep validado; menciones restantes a X-DD son estrictamente contextuales/comparativas.
-- **Estado:** main branch, contexto sincronizado.
-- **Próxima sesión:** Construir evol-agent en otro PC.
+- **Estado:** Rama `feature/upgrade-gaps` (se implementaron `evol-update` y `evol-update-project`).
+- **Próxima sesión:** (Cancelado) ~~Construir evol-agent en otro PC.~~ -> Resolver alerta [HIGH] de MemPalace y realizar Release v0.3.3.
 
 
 ### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
