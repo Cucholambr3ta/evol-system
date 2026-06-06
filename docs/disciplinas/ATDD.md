@@ -1,12 +1,12 @@
 # ATDD — Acceptance Test-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es ATDD en X-DD](#1-que-es-atdd-en-x-dd)
+1. [Que es ATDD en Evol-DD](#1-que-es-atdd-en-evol-dd)
 2. [Diferencia entre ATDD y BDD](#2-diferencia-entre-atdd-y-bdd)
 3. [Stubs de acceptance tests que fallan por diseno](#3-stubs-de-acceptance-tests-que-fallan-por-diseno)
 4. [ATDD en el pipeline](#4-atdd-en-el-pipeline)
@@ -17,13 +17,13 @@
 
 ---
 
-## 1. Que es ATDD en X-DD
+## 1. Que es ATDD en Evol-DD
 
 Acceptance Test-Driven Development es la disciplina que convierte los criterios de
 aceptacion del solicitante en tests automatizados que deben fallar antes de que exista
 implementacion, y que deben pasar antes de que el feature se marque como entregado.
 
-En X-DD, ATDD complementa a BDD: mientras BDD describe el comportamiento en Gherkin
+En Evol-DD, ATDD complementa a BDD: mientras BDD describe el comportamiento en Gherkin
 para comunicacion con el negocio, ATDD produce tests de aceptacion en codigo TypeScript
 que se ejecutan en el CI y bloquean el merge si fallan.
 
@@ -54,7 +54,7 @@ la perspectiva del usuario, difieren en formato, audiencia y mecanismo de ejecuc
 | Granularidad | Feature completo | Criterio de aceptacion individual |
 | Relacion | El .feature es la especificacion legible | El .acceptance.test.ts es la verificacion tecnica |
 
-En X-DD, ambas disciplinas coexisten y se complementan. Un FEAT-NNN tiene un archivo
+En Evol-DD, ambas disciplinas coexisten y se complementan. Un FEAT-NNN tiene un archivo
 .feature (BDD) Y uno o mas archivos .acceptance.test.ts (ATDD). Esto proporciona
 doble verificacion: semantica (Gherkin) y programatica (TypeScript).
 
@@ -262,5 +262,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Patron | [Specification by Example — Gojko Adzic](https://gojko.net/books/specification-by-example/) | Tecnica afin: ejemplos concretos como especificacion ejecutable |
 
 > **Mantenido por:** QA-Reviewer + Architect
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2 y Art. 8
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2 y Art. 8
 > **Ver tambien:** [BDD.md](./BDD.md) | [TDD.md](./TDD.md) | [INDEX.md](./INDEX.md)

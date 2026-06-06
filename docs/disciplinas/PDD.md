@@ -1,12 +1,12 @@
 # PDD — Performance-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es PDD en X-DD](#1-que-es-pdd-en-x-dd)
+1. [Que es PDD en Evol-DD](#1-que-es-pdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [PDD en el pipeline](#4-pdd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es PDD en X-DD
+## 1. Que es PDD en Evol-DD
 
 Performance-Driven Development es la disciplina donde los objetivos de rendimiento (latencia
 p95, throughput) se definen como tests que deben pasar antes de completar una feature. El
 rendimiento es un criterio de aceptacion verificable, no una optimizacion posterior.
 
-En X-DD, PDD opera en la Fase 5 (QA) y como capa declarativa transversal. Se ejecuta mapeada
+En Evol-DD, PDD opera en la Fase 5 (QA) y como capa declarativa transversal. Se ejecuta mapeada
 al workflow `/evol perf-budget`. Produce `performance/slos/*.json` (objetivos) y
 `performance/load_test_scenarios/*.md` (escenarios k6). Su parte declarativa son los tags BDD
 `@performance` con umbrales.
 
-El principio de PDD en X-DD: una feature con requisito de rendimiento no esta terminada hasta
+El principio de PDD en Evol-DD: una feature con requisito de rendimiento no esta terminada hasta
 que pasa su prueba de carga. El pipeline falla si las pruebas superan los umbrales; el
 rendimiento se mide, no se asume.
 
@@ -144,5 +144,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | PDD para LLM | [Performance-Driven Development — Prolego](https://github.com/prolego-team/pdd) | Metodologia PDD aplicada a sistemas LLM |
 
 > **Mantenido por:** Architect + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [BDD.md](./BDD.md) | [SLODRIVEN.md](./SLODRIVEN.md) | [ODD_OBS.md](./ODD_OBS.md) | [INDEX.md](./INDEX.md)

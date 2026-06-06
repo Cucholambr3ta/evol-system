@@ -1,12 +1,12 @@
 # UXDD — UX-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es UXDD en X-DD](#1-que-es-uxdd-en-x-dd)
+1. [Que es UXDD en Evol-DD](#1-que-es-uxdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [UXDD en el pipeline](#4-uxdd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es UXDD en X-DD
+## 1. Que es UXDD en Evol-DD
 
 UX-Driven Development es la disciplina donde los flujos de usuario, las microinteracciones y
 los mensajes de la interfaz se especifican antes de escribir cualquier codigo frontend. La
 experiencia se disena como artefacto, no se improvisa durante la implementacion.
 
-En X-DD, UXDD opera en la Fase 1 (Briefing), alimentandose del catalogo de features (FDD) y
+En Evol-DD, UXDD opera en la Fase 1 (Briefing), alimentandose del catalogo de features (FDD) y
 de los wireframes que produce el briefing. Se ejecuta mediante una skill nueva
 (`/evol ux-driven`). Produce `ux/user_journeys/*.json`, `ux/ui_messages/*.md` y
 `ux/microinteractions/*.yaml`.
 
-El principio de UXDD en X-DD: todo flujo principal tiene un user journey definido antes del
+El principio de UXDD en Evol-DD: todo flujo principal tiene un user journey definido antes del
 codigo, y los mensajes de error no contienen jerga tecnica. La experiencia es parte del
 contrato del producto, no un detalle de implementacion.
 
@@ -147,5 +147,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Kit agentico | [ux-ui-agent-skills](https://github.com/plugin87/ux-ui-agent-skills) | Habilidades para convertir un agente LLM en experto UX/UI |
 
 > **Mantenido por:** UX + Product-Manager
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [FDD.md](./FDD.md) | [A11yDD.md](./A11yDD.md) | [UDD.md](./UDD.md) | [INDEX.md](./INDEX.md)

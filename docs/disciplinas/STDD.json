@@ -2,10 +2,10 @@
   "doc": "STDD.md",
   "dominio": "disciplinas",
   "subdominio": "STDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-stdd-en-x-dd",
+    "que-es-stdd-en-evol-dd",
     "el-ciclo-stdd-extendido",
     "mapeo-stride-a-stubs-de-security-tests",
     "cuando-aplica-stdd",

@@ -1,12 +1,12 @@
-# Disciplinas X-DD — Indice Maestro
+# Disciplinas Evol-DD — Indice Maestro
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Introduccion
 
-Este indice centraliza las **31 disciplinas** de desarrollo que X-DD integra sobre su
+Este indice centraliza las **31 disciplinas** de desarrollo que Evol-DD integra sobre su
 pipeline gated de 6 fases: las **9 base** (declaradas en la Constitucion) y las **22
 extendidas** (catalogo `ultimate-update.md`). Cada disciplina ocupa un documento atomico en
 este directorio con su sidecar `.json` (que incluye `fuentes[]` — las URLs de respaldo). La
@@ -39,7 +39,7 @@ ficha sin fuentes es INCOMPLETA — el validador la rechaza.
 | ATDD — Acceptance Test-Driven Development | [ATDD.md](./ATDD.md) | Fase 1 + Fase 5 | `tests/acceptance/*.acceptance.test.ts` | Gate 1 + Gate 5 |
 | TDD — Test-Driven Development | [TDD.md](./TDD.md) | Fase 4 | `tests/unit/*.test.ts` | Gate 4 |
 | STDD — Security-Test-Driven Development | [STDD.md](./STDD.md) | Fase 4 | `tests/security/**/*.security.test.ts` | Gate 4 |
-| SecDD — Security-Driven Development | [SecDD.md](./SecDD.md) | Fase 5 | `.xdd/qa/QA_REPORT.md` | Gate 5 |
+| SecDD — Security-Driven Development | [SecDD.md](./SecDD.md) | Fase 5 | `.evol/qa/QA_REPORT.md` | Gate 5 |
 | Threat-Driven Development | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | Fase 2 | `docs/specs/THREATS.md` | Gate 2 |
 
 ---
@@ -76,7 +76,7 @@ ficha sin fuentes es INCOMPLETA — el validador la rechaza.
 ## Diagrama del pipeline con disciplinas
 
 El siguiente diagrama muestra donde entra cada disciplina en el pipeline de 6 fases de
-X-DD. Las disciplinas son capas que se embeben en las fases existentes; no crean nuevas
+Evol-DD. Las disciplinas son capas que se embeben en las fases existentes; no crean nuevas
 fases ni cambian el numero de gates.
 
 ```mermaid
@@ -236,11 +236,11 @@ Las 22 extendidas se activan en `evol.profile.yml` (`methodologies:`) segun el p
 | [EDA.md](./EDA.md) | Event-Driven Architecture — schemas de eventos |
 | [UDD.md](./UDD.md) | Use-Case-Driven — casos de uso como unidad de diseno |
 | [../X-DD_Integration_Guide.md](../X-DD_Integration_Guide.md) | Guia de integracion — composicion, arboles de decision |
-| [../DOC_STANDARD.md](../DOC_STANDARD.md) | Estandar de documentacion X-DD v2.0 |
+| [../DOC_STANDARD.md](../DOC_STANDARD.md) | Estandar de documentacion Evol-DD v2.0 |
 
 ---
 
 > **Mantenido por:** Architect + Orchestrator
-> **Gobernado por:** Constitucion X-DD v1.5
+> **Gobernado por:** Constitucion Evol-DD v1.5
 > **Actualizar cuando:** se agregue una nueva disciplina o cambie el pipeline
 > **Total disciplinas:** 31 (9 base + 22 extendidas)

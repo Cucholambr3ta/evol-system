@@ -11,9 +11,9 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.3.2 activa en produccion
-- **Ultimo hito:** Rebrand x-dd→evol-dd completo + release v0.3.2 + rama main creada
-- **Proximo paso:** Construir evol-agent en otro PC con /evol (spec enriquecida lista)
+- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.3.3 activa en produccion
+- **Ultimo hito:** Implementados workflows agenticos `/evol-update`, `/update-memory` y erradicacion de MemPalace.
+- **Proximo paso:** Construir memoria persistente nativa (ChromaDB + LadybugDB).
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.1.4 → 0.1.6 → 0.1.9 → 0.2.0 → 0.2.1 → 0.2.2 → 0.2.3 (grill enforced) → 0.2.7 (E5-E8) → 0.3.0 → 0.3.2 (rebrand + 31 disciplinas)
 
@@ -64,6 +64,16 @@
 
 ## Bitácora de Sesiones
 
+### Sesión 2026-06-06 — Fix Rebrand Residual, MemPalace Removal & v0.3.3
+
+- **Meta:** Limpiar menciones residuales de X-DD, erradicar MemPalace, estructurar memoria atómica y hacer release.
+- **Hitos:**
+  - Sustituciones aplicadas a docs (residuales).
+  - Erradicación de MemPalace de los scripts core y templates, preparación para ChromaDB/LadybugDB.
+  - Generación de comandos atómicos en `docs/usuario/comandos/`.
+  - Workflow `/update-memory` creado.
+- **Estado:** Branch main = v0.3.3, develop = main. PyPI activo.
+- **Próxima sesión:** Diseño e implementación de Memoria Persistente nativa.
 ### Sesión 2026-06-05 — Rebrand x-dd→evol-dd + .gitignore + release v0.3.2
 
 - **Meta:** Limpieza completa de namespace x-dd en todo el codebase, corrección de gaps en .gitignore, y release v0.3.2 en PyPI.
@@ -82,6 +92,7 @@
 - **QA:** 104 pytest OK. 7/7 verificaciones OK. Mirrors idénticos.
 - **Estado:** Branch main = v0.3.2, develop = main. PyPI activo.
 - **Próxima sesión:** Construir evol-agent en otro PC con /evol.
+
 
 ### Sesión 2026-06-05 — Herencia upgrade 31 metodologías (Lote F, v0.3.2) + merge develop + fix Mermaid
 - **Meta:** Heredar el upgrade X-DD (22 metodologías → registro de disciplinas 9→31) a Evol-DD con branding evol, mergear a develop, arreglar render Mermaid.

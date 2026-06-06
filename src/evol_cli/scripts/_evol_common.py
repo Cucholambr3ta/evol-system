@@ -39,18 +39,7 @@ def get_logger(name="evol"):
 
 logger = get_logger()
 
-# === MemPalace safe wrapper ===
-def mempalace_safe(*args, fallback=None):
-    """Call mempalace CLI if available, else return fallback."""
-    try:
-        result = subprocess.run(["mempalace"] + list(args), capture_output=True, text=True, timeout=30)
-        if result.returncode == 0:
-            return result.stdout.strip()
-        return fallback
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return fallback
-
-# === Tool discovery ===
+# === Memoria Persistente safe wrapper ===
 def find_tool(tool_name, extra_paths=None):
     """Find tool in PATH + extra_paths. Returns path or None."""
     import shutil
@@ -63,19 +52,20 @@ def find_tool(tool_name, extra_paths=None):
             return found
     return None
 
-def find_mempalace():
-    """Find mempalace in standard locations."""
-    locations = [
-        os.environ.get("PATH", ""),
-        os.path.expanduser("~/.local/bin"),
-        os.path.expanduser("~/.venv/bin"),
-        "venv/bin",
-        ".venv/bin",
+def find_memory_db():
+    """Busca ejecutable de memoria persistente en PATH y directorios locales comunes."""
+    paths_to_check = [
+        "chromadb",
+        "ladybugdb",
+        os.path.expanduser("~/.local/bin/chromadb"),
+        os.path.expanduser("~/.venv/bin/chromadb"),
+        "venv/bin/chromadb",
+        ".venv/bin/chromadb"
     ]
-    for loc in locations:
-        found = find_tool("mempalace", [loc])
-        if found:
-            return found
+    import shutil
+    for p in paths_to_check:
+        if shutil.which(p):
+            return p
     return None
 
 # === SHA-256 ===

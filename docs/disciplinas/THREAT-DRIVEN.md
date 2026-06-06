@@ -1,12 +1,12 @@
 # Threat-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es Threat-Driven Development en X-DD](#1-que-es-threat-driven-development-en-x-dd)
+1. [Que es Threat-Driven Development en Evol-DD](#1-que-es-threat-driven-development-en-evol-dd)
 2. [Metodologia STRIDE](#2-metodologia-stride)
 3. [El proceso de threat modeling](#3-el-proceso-de-threat-modeling)
 4. [Formato THR-NNN](#4-formato-thr-nnn)
@@ -18,10 +18,10 @@
 
 ---
 
-## 1. Que es Threat-Driven Development en X-DD
+## 1. Que es Threat-Driven Development en Evol-DD
 
 Threat-Driven Development es la disciplina que aplica modelado de amenazas antes del
-desarrollo, no como auditoria posterior. En X-DD, las amenazas se identifican y
+desarrollo, no como auditoria posterior. En Evol-DD, las amenazas se identifican y
 documentan en la Fase 2 (Spec), cuando el modelo de dominio ya existe pero el codigo
 todavia no. Esto permite que los controles de seguridad sean requisitos de diseno, no
 parches reactivos.
@@ -59,7 +59,7 @@ categoria STRIDE y se determina si la amenaza es aplicable.
 
 ## 3. El proceso de threat modeling
 
-El proceso de threat modeling en X-DD sigue siete pasos secuenciales que producen el
+El proceso de threat modeling en Evol-DD sigue siete pasos secuenciales que producen el
 THREATS.md aprobado.
 
 ```mermaid
@@ -273,5 +273,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Manifiesto | [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) | Principios y valores consensuados de la disciplina |
 
 > **Mantenido por:** SecOps + Architect
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [STDD.md](./STDD.md) | [SecDD.md](./SecDD.md) | [DDD.md](./DDD.md) | [INDEX.md](./INDEX.md)

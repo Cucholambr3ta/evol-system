@@ -2,10 +2,10 @@
   "doc": "ATDD.md",
   "dominio": "disciplinas",
   "subdominio": "ATDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-atdd-en-x-dd",
+    "que-es-atdd-en-evol-dd",
     "diferencia-entre-atdd-y-bdd",
     "stubs-de-acceptance-tests-que-fallan-por-diseno",
     "atdd-en-el-pipeline",

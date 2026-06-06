@@ -1,12 +1,12 @@
 # DDD — Domain-Driven Design
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es DDD en X-DD](#1-que-es-ddd-en-x-dd)
+1. [Que es DDD en Evol-DD](#1-que-es-ddd-en-evol-dd)
 2. [Ubiquitous Language](#2-ubiquitous-language)
 3. [Bounded Contexts](#3-bounded-contexts)
 4. [Context Map](#4-context-map)
@@ -18,21 +18,21 @@
 
 ---
 
-## 1. Que es DDD en X-DD
+## 1. Que es DDD en Evol-DD
 
 Domain-Driven Design es la disciplina que alinea el modelo de software con el modelo de
 negocio mediante un lenguaje compartido, limites explicitos entre subdominios y la
 identificacion de los conceptos centrales del sistema.
 
-En X-DD, DDD se activa durante la Fase 2 (Spec) para que el modelo de dominio este
+En Evol-DD, DDD se activa durante la Fase 2 (Spec) para que el modelo de dominio este
 documentado y aprobado antes de que comience el diseno tecnico detallado. El artefacto
 central es `docs/specs/DOMAIN.md`.
 
-DDD en X-DD no prescribe arquitectura hexagonal ni Event Sourcing. Prescribe tres cosas
+DDD en Evol-DD no prescribe arquitectura hexagonal ni Event Sourcing. Prescribe tres cosas
 concretas y verificables: un glosario de terminos con vocabulario obligatorio, un mapa de
 bounded contexts con sus relaciones, y un catalogo de aggregates con sus domain events.
 
-La regla critica de DDD en X-DD es que el Ubiquitous Language definido en DOMAIN.md es
+La regla critica de DDD en Evol-DD es que el Ubiquitous Language definido en DOMAIN.md es
 vocabulario obligatorio para nombres de variables, funciones, clases y endpoints. Un metodo
 llamado `calculateBillingPeriod` cuando el dominio define `computeCycleTotals` es drift
 semantico. El Tier 3 del QA detecta y reporta este drift.
@@ -138,7 +138,7 @@ Un Aggregate es un cluster de objetos de dominio (entidades y value objects) que
 tratan como una unidad para la persistencia y la aplicacion de invariantes. El Aggregate
 Root es la unica puerta de entrada al aggregate.
 
-### Reglas de aggregates en X-DD
+### Reglas de aggregates en Evol-DD
 
 - Toda modificacion al aggregate pasa por el Aggregate Root.
 - Los aggregates no se referencian mutuamente por objeto sino por ID.
@@ -199,7 +199,7 @@ Los Domain Events son hechos del negocio que ya ocurrieron y que son relevantes 
 otros bounded contexts o para el registro historico del sistema. Se nombran en pasado
 porque representan algo que sucedio, no una instruccion.
 
-### Reglas de domain events en X-DD
+### Reglas de domain events en Evol-DD
 
 - Los domain events se nombran en pasado: `FacturaEmitida`, `UsuarioSuspendido`, `PagoRealizado`.
 - El emisor del evento no conoce a sus consumidores.
@@ -304,5 +304,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Patrones tacticos | [Implementing Domain-Driven Design — Vaughn Vernon](https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/) | Aplicacion practica de aggregates, repositories y domain events |
 
 > **Mantenido por:** Architect + Domain-Expert
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [SDD.md](./SDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [INDEX.md](./INDEX.md)

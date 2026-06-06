@@ -1,12 +1,12 @@
 # CDCDD — Change Data Capture-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es CDCDD en X-DD](#1-que-es-cdcdd-en-x-dd)
+1. [Que es CDCDD en Evol-DD](#1-que-es-cdcdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [CDCDD en el pipeline](#4-cdcdd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es CDCDD en X-DD
+## 1. Que es CDCDD en Evol-DD
 
 Change Data Capture-Driven Development es la disciplina donde los cambios en la base de datos
 fuente se capturan como eventos, especificando las transformaciones y los destinos antes de
 implementar el pipeline de replicacion. CDC convierte el log de cambios de la BD en un stream
 de eventos consumible.
 
-En X-DD, CDCDD opera en la Fase 3 (Plan) como extension del workflow `/evol data-pipeline`.
+En Evol-DD, CDCDD opera en la Fase 3 (Plan) como extension del workflow `/evol data-pipeline`.
 Produce `cdc/sources/*.json` (tablas/columnas a capturar), `cdc/transformations/*.sql` y
 `cdc/targets/*.json` (destinos de replicacion).
 
-El principio de CDCDD en X-DD: la replicacion de datos se disena, no se improvisa con cron
+El principio de CDCDD en Evol-DD: la replicacion de datos se disena, no se improvisa con cron
 jobs. La latencia de replicacion se mantiene dentro del SLO declarado, y cada transformacion
 es trazable de la fuente al destino.
 
@@ -147,5 +147,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [Debezium](https://github.com/debezium/debezium) | Plataforma open-source de referencia para CDC |
 
 > **Mantenido por:** Data + Architect
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [MDD.md](./MDD.md) | [EDA.md](./EDA.md) | [SLODRIVEN.md](./SLODRIVEN.md) | [INDEX.md](./INDEX.md)

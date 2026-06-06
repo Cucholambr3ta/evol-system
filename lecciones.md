@@ -182,6 +182,12 @@ _(vacio)_
 **Leccion:** Al heredar workflows de otro sistema, verificar que el schema de frontmatter este completo. Lint warnings no bloquean build pero indican deuda tecnica real. Corregir antes de publicar.
 **Aplica a:** Cualquier migracion de workflows entre sistemas. El lint debe ser gate bloqueante, no informativo
 **Fix aplicado:** Script Python corrigio 53 workflows: añadio name (slug del filename) y trigger (/evol <slug>) a cada uno
+### [PROCESO] Rebranding incompleto en documentación por falta de escaneo profundo — 2026-06-06
+**Contexto:** Migración y rebranding de todo el proyecto de X-DD a Evol-DD.
+**Problema:** Quedaron múltiples menciones residuales de "X-DD" en la documentación (`docs/disciplinas/`, `docs/qa/`, etc.) después del rebrand principal.
+**Causa raiz:** El reemplazo inicial se enfocó en el código fuente, flujos de trabajo y configuraciones clave, pero no iteró de forma exhaustiva sobre todo el subárbol de documentación.
+**Leccion:** En tareas de rebranding masivo, se debe ejecutar un escaneo programático en todo el directorio del proyecto, pero estableciendo siempre una lista de exclusión (*exclude list*) estricta para preservar documentos históricos o guías de transición (ej. `RETROFIT_GUIDE.md`) donde el nombre anterior aporta un contexto comparativo necesario.
+**Aplica a:** Rebrands masivos, migraciones de nomenclatura a nivel framework.
 
 ## HERRAMIENTAS
 

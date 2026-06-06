@@ -16,7 +16,7 @@ Evol-DD no reemplaza al desarrollador. Lo asiste con un equipo que nunca olvida,
 
 El sistema mantiene un registro vivo del proyecto llamado `memoria.md`. Cada sesion de trabajo comienza leyendo ese archivo para retomar exactamente donde se dejo. No es necesario re-explicar el contexto, los acuerdos tomados ni los problemas abiertos. La memoria persiste entre sesiones, entre dias y entre miembros del equipo.
 
-Para proyectos que necesitan continuidad semantica profunda, el sistema puede activar MemPalace: un motor de busqueda sobre el codigo y la documentacion del proyecto que permite encontrar patrones, precedentes y decisiones relevantes con una pregunta en lenguaje natural.
+Para proyectos que necesitan continuidad semantica profunda, el sistema puede activar Memoria Persistente: un motor de busqueda sobre el codigo y la documentacion del proyecto que permite encontrar patrones, precedentes y decisiones relevantes con una pregunta en lenguaje natural.
 
 ### 2. Lecciones
 
@@ -106,28 +106,21 @@ El sistema actualiza `memoria.md` con las decisiones tomadas, los artefactos pro
 
 ---
 
-## Como hablar con el sistema
+## Cómo hablar con el sistema
 
-Los comandos del sistema son slash commands del IDE. Se escriben directamente en el chat de Claude Code.
+Los comandos del sistema son slash commands del IDE. Se escriben directamente en el chat de Claude Code u otros IDEs soportados.
 
-```
-/evol                    — retoma el estado del proyecto y presenta opciones
-/evol briefing           — inicia el ciclo con un nuevo briefing
-/evol spec               — genera especificacion desde el briefing activo
-/evol plan               — genera plan desde la spec activa
-/evol build              — implementa desde el plan activo
-/evol qa                 — genera reporte de calidad
-/evol retro              — cierra la fase y actualiza memoria
-/evol research           — pide al sistema que investigue un tema
-/evol gate status        — muestra el estado de aprobaciones de las fases
-```
+Debido a la extensa cantidad de comandos y flujos especializados (más de 89 workflows que cubren metodologías, agentes core, calidad y operaciones), la documentación de los triggers se mantiene bajo la doctrina de documentación atómica.
 
-Para tareas especificas que no son parte del pipeline principal:
+👉 **[Ver el Catálogo Atómico de Comandos y Triggers](comandos/INDEX.md)**
 
-```
-/evol doc                — genera o actualiza la documentacion del proyecto
-/evol gate approve       — firma la aprobacion de la fase actual
-```
+El catálogo está granularmente dividido en:
+- **PIPELINE**: Comandos de las 6 fases nucleares (briefing, spec, plan, build, qa, retro).
+- **AGENTES**: Comandos para invocar a los 16 especialistas y crear agentes efímeros.
+- **DISCIPLINAS**: Triggers para las metodologías *-Driven (ux-driven, event-sourcing, etc.).
+- **CALIDAD_SEGURIDAD**: Herramientas de validación (grill-me, fact-check, security-audit).
+- **OPERACIONES**: Gestión de infraestructura, release y despliegues.
+- **UTILIDADES**: Comandos de apoyo como optimización de prompts y generación de ideas.
 
 El sistema puede recibir instrucciones en lenguaje natural. Si escribes "quiero agregar autenticacion OAuth al modulo de usuarios", el sistema lo interpreta, busca lecciones relevantes sobre autenticacion, y propone el enfoque antes de ejecutar.
 
@@ -236,6 +229,6 @@ Los agentes efimeros tienen restricciones: no pueden modificar archivos de gober
 | **Agente core** | Uno de los 16 especialistas permanentes del sistema. Nunca se retiran. Cubren: arquitectura, implementacion, calidad, seguridad, operaciones, documentacion, dominio, UX, datos, revision, orquestacion, PM, release, analisis, factory y research. |
 | **Agente efimero** | Especialista temporal creado para una tarea concreta. Se retira al terminar pero su conocimiento persiste para recall. |
 | **Skill** | Capacidad reutilizable del sistema definida como workflow con casos de prueba propios. Se crean, evaluan y mejoran iterativamente. |
-| **Modo COMPLETO** | Estado del sistema cuando MemPalace esta instalado y activo. Habilita indexacion semantica, recall automatico y extraccion de patrones. |
-| **Modo BASE** | Estado del sistema sin MemPalace. El pipeline completo funciona. La continuidad semantica se maneja manualmente via `memoria.md`. |
+| **Memoria Persistente** | Estado del sistema cuando Memoria Persistente esta instalado y activo. Habilita indexacion semantica, recall automatico y extraccion de patrones. |
+| **Modo BASE** | Estado del sistema sin Memoria Persistente. El pipeline completo funciona. La continuidad semantica se maneja manualmente via `memoria.md`. |
 | **Perfil** | Conjunto predefinido de modulos que determina las capacidades instaladas en el proyecto. Los perfiles van de `minimal` a `full`, con opciones especializadas como `security` y `research`. |

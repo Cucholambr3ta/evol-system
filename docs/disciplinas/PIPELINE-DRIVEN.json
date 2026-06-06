@@ -2,10 +2,10 @@
   "doc": "PIPELINE-DRIVEN.md",
   "dominio": "disciplinas",
   "subdominio": "PIPELINE-DRIVEN",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-pipeline-driven-en-x-dd",
+    "que-es-pipeline-driven-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "pipeline-driven-en-el-pipeline",

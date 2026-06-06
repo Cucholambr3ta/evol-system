@@ -2,10 +2,10 @@
   "doc": "A11yDD.md",
   "dominio": "disciplinas",
   "subdominio": "A11yDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-a11ydd-en-x-dd",
+    "que-es-a11ydd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "a11ydd-en-el-pipeline",

@@ -1,7 +1,7 @@
-# Estandar de Documentacion X-DD
+# Estandar de Documentacion Evol-DD
 
 > Ley unica de formato y granularidad para todo artefacto de documentacion generado por
-> cualquier agente o workflow de X-DD. Referenciada por la Constitucion (Art. 9). Si un
+> cualquier agente o workflow de Evol-DD. Referenciada por la Constitucion (Art. 9). Si un
 > workflow, agente o template entra en conflicto con este documento, este documento gana.
 
 **Version:** 2.0.0
@@ -260,7 +260,7 @@ Este estandar es referenciado por:
 - Todos los workflows en `.agent/workflows/` que emiten artefactos.
 - Todos los templates en `templates/`.
 - El gate de QA (`/qa-review`) como criterio Tier 1.
-- `xdd-discipline-check.py` como validacion automatizada por fase.
+- `evol-discipline-check.py` como validacion automatizada por fase.
 
 Cualquier agente o workflow nuevo que emita documentacion debe declarar conformidad con
 este estandar en su seccion de output.

@@ -2,10 +2,10 @@
   "doc": "MDD.md",
   "dominio": "disciplinas",
   "subdominio": "MDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-mdd-en-x-dd",
+    "que-es-mdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "mdd-en-el-pipeline",

@@ -145,6 +145,8 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 /evol crear-skill        → crear nueva skill con loop iterativo de eval
 /evol crear-agente       → crear agente especializado
 /evol doctor             → diagnostico del entorno
+/evol-update             → actualizar el core global (pipx) y ver novedades
+/evol-update-project     → inyectar actualización del core al proyecto local
 /evol memory search X    → buscar en memoria conversacional
 /evol lessons search X   → buscar lecciones antes de decidir
 ```

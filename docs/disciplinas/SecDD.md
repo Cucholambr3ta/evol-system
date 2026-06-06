@@ -1,12 +1,12 @@
 # SecDD — Security-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es SecDD en X-DD](#1-que-es-secdd-en-x-dd)
+1. [Que es SecDD en Evol-DD](#1-que-es-secdd-en-evol-dd)
 2. [Herramientas: SAST, DAST y Secrets scanning](#2-herramientas-sast-dast-y-secrets-scanning)
 3. [Requisitos del QA_REPORT.md](#3-requisitos-del-qa_reportmd)
 4. [Controles de seguridad obligatorios](#4-controles-de-seguridad-obligatorios)
@@ -17,7 +17,7 @@
 
 ---
 
-## 1. Que es SecDD en X-DD
+## 1. Que es SecDD en Evol-DD
 
 Security-Driven Development es la capa de seguridad automatizada que opera en la Fase 5
 (QA). Mientras STDD verifica propiedades de seguridad mediante tests programaticos
@@ -142,7 +142,7 @@ Un QA_REPORT.md se considera APROBADO cuando cumple todas las siguientes condici
 ## 4. Controles de seguridad obligatorios
 
 Independientemente del perfil de riesgo del proyecto, ciertos controles son obligatorios
-en todos los proyectos X-DD.
+en todos los proyectos Evol-DD.
 
 ### Controles de Tier 1 — Todos los proyectos
 
@@ -265,5 +265,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Verificacion | [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) | Estandar de verificacion que define el "APROBADO" del QA_REPORT |
 
 > **Mantenido por:** SecOps + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [STDD.md](./STDD.md) | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | [INDEX.md](./INDEX.md)

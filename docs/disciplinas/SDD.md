@@ -1,6 +1,6 @@
 # SDD — Spec-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
@@ -23,7 +23,7 @@ Spec-Driven Development es la disciplina que exige que toda iteracion de desarro
 con una especificacion aprobada, no con codigo. El codigo es una consecuencia de la spec,
 no su origen.
 
-En X-DD, SDD actua como la columna vertebral del pipeline de 6 fases: ninguna fase avanza
+En Evol-DD, SDD actua como la columna vertebral del pipeline de 6 fases: ninguna fase avanza
 sin un artefacto de especificacion que haya superado el gate correspondiente. Esto elimina
 el drift entre lo que se pidio, lo que se disenno y lo que se construyo.
 
@@ -39,7 +39,7 @@ transicion de estado.
 
 ## 2. Principio operativo
 
-El principio maestro de SDD en X-DD es:
+El principio maestro de SDD en Evol-DD es:
 
 > Ninguna linea de codigo de produccion se escribe sin una especificacion aprobada que la justifique.
 
@@ -150,7 +150,7 @@ Una iteracion cumple con SDD cuando:
 
 ## 6. Como el gate aplica SDD
 
-El gate HMAC-SHA256 de X-DD implementa SDD de forma automatizada. El comando
+El gate HMAC-SHA256 de Evol-DD implementa SDD de forma automatizada. El comando
 `evol-gate.py transition` verifica que los artefactos de spec existan y esten aprobados
 antes de permitir el avance de fase.
 
@@ -225,5 +225,5 @@ Respaldo bibliografico de la disciplina. El enfoque spec-first se sustenta en la
 | Estandar relacionado | [IEEE 830 — Software Requirements Specifications](https://standards.ieee.org/ieee/830/1222/) | Estandar clasico de especificacion de requisitos que fundamenta la trazabilidad REQ-NNN |
 
 > **Mantenido por:** Architect + Orchestrator
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2 (Flujo Gated Pipeline)
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2 (Flujo Gated Pipeline)
 > **Ver tambien:** [FDD.md](./FDD.md) | [DDD.md](./DDD.md) | [INDEX.md](./INDEX.md)

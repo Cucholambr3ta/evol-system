@@ -2,10 +2,10 @@
   "doc": "PrivacyDD.md",
   "dominio": "disciplinas",
   "subdominio": "PrivacyDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-privacydd-en-x-dd",
+    "que-es-privacydd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "privacydd-en-el-pipeline",

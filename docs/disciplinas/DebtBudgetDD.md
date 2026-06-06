@@ -1,12 +1,12 @@
 # DebtBudgetDD — Technical Debt Budgeting
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es DebtBudgetDD en X-DD](#1-que-es-debtbudgetdd-en-x-dd)
+1. [Que es DebtBudgetDD en Evol-DD](#1-que-es-debtbudgetdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [DebtBudgetDD en el pipeline](#4-debtbudgetdd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es DebtBudgetDD en X-DD
+## 1. Que es DebtBudgetDD en Evol-DD
 
 Technical Debt Budgeting es la disciplina donde se asigna un presupuesto explicito de deuda
 tecnica (por ejemplo, 20% del tiempo) y se mide la deuda generada y pagada en cada iteracion.
 La deuda deja de ser invisible: se contabiliza como un ledger con limite.
 
-En X-DD, DebtBudgetDD opera en la Fase 3 (Plan) y de forma continua. Se ejecuta mediante una
+En Evol-DD, DebtBudgetDD opera en la Fase 3 (Plan) y de forma continua. Se ejecuta mediante una
 skill nueva (`/evol debt-budget`). Produce `debt/budget.json` (limite), `debt/ledger.json`
 (deuda anadida/pagada) y `debt/forecast.md` (proyeccion).
 
-El principio de DebtBudgetDD en X-DD: la deuda tecnica tiene un presupuesto que no se puede
+El principio de DebtBudgetDD en Evol-DD: la deuda tecnica tiene un presupuesto que no se puede
 exceder. Si el ledger supera el limite, el pipeline alerta y prioriza el pago de deuda sobre
 nuevas features. Lo que no se mide, se acumula hasta paralizar.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [code-compass](https://github.com/agoda-com/code-compass-js) | Estimacion de deuda tecnica |
 
 > **Mantenido por:** PM + Maintainer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [RDD.md](./RDD.md) | [DeprecationDD.md](./DeprecationDD.md) | [INDEX.md](./INDEX.md)

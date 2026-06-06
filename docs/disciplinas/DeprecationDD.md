@@ -1,12 +1,12 @@
 # DeprecationDD — Deprecation-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es DeprecationDD en X-DD](#1-que-es-deprecationdd-en-x-dd)
+1. [Que es DeprecationDD en Evol-DD](#1-que-es-deprecationdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [DeprecationDD en el pipeline](#4-deprecationdd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es DeprecationDD en X-DD
+## 1. Que es DeprecationDD en Evol-DD
 
 Deprecation-Driven Development es la disciplina donde el codigo obsoleto tiene una politica de
 sunset automatica: se marca como deprecado, se registra su uso, y tras una fecha tope se
 elimina. La deprecacion es un proceso gestionado, no un comentario `// TODO: remove` que vive
 para siempre.
 
-En X-DD, DeprecationDD opera en la Fase 3 (Plan) como extension del workflow
+En Evol-DD, DeprecationDD opera en la Fase 3 (Plan) como extension del workflow
 `/evol dependency-update`. Produce `deprecations/*/sunset_policy.json` y
 `deprecations/logs/usage_metrics.json` (uso del codigo deprecado).
 
-El principio de DeprecationDD en X-DD: lo deprecado tiene fecha de muerte. Si un componente se
+El principio de DeprecationDD en Evol-DD: lo deprecado tiene fecha de muerte. Si un componente se
 marca obsoleto, se registra su uso y se elimina en la fecha de sunset; codigo deprecado que
 nadie retira es deuda tecnica disfrazada de cortesia.
 
@@ -145,5 +145,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Libreria | [Doctrine Deprecations](https://github.com/doctrine/deprecations) | Libreria ligera para manejo de deprecaciones |
 
 > **Mantenido por:** Maintainer + Release
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [APIVDD.md](./APIVDD.md) | [DebtBudgetDD.md](./DebtBudgetDD.md) | [RDD.md](./RDD.md) | [INDEX.md](./INDEX.md)

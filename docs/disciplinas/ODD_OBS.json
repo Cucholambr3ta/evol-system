@@ -2,10 +2,10 @@
   "doc": "ODD_OBS.md",
   "dominio": "disciplinas",
   "subdominio": "ODD_OBS",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-odd-obs-en-x-dd",
+    "que-es-odd-obs-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "odd-obs-en-el-pipeline",

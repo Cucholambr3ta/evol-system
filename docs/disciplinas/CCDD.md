@@ -1,12 +1,12 @@
 # CCDD — Consumer-Driven Contract Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es CCDD en X-DD](#1-que-es-ccdd-en-x-dd)
+1. [Que es CCDD en Evol-DD](#1-que-es-ccdd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [CCDD en el pipeline](#4-ccdd-en-el-pipeline)
@@ -18,17 +18,17 @@
 
 ---
 
-## 1. Que es CCDD en X-DD
+## 1. Que es CCDD en Evol-DD
 
 Consumer-Driven Contract Development es la disciplina donde los contratos de API son definidos
 por los consumidores y el proveedor debe verificar que los cumple. El contrato refleja lo que
 los consumidores realmente usan, no lo que el proveedor cree exponer.
 
-En X-DD, CCDD opera en la Fase 5 (QA), mapeada al workflow `/evol contract-test`. Produce
+En Evol-DD, CCDD opera en la Fase 5 (QA), mapeada al workflow `/evol contract-test`. Produce
 `contracts/consumer_*.json` (expectativas de cada consumidor, estilo Pact) y
 `contracts/verification_results.json`.
 
-El principio de CCDD en X-DD: el pipeline del proveedor falla si rompe algun contrato de
+El principio de CCDD en Evol-DD: el pipeline del proveedor falla si rompe algun contrato de
 consumidor. El proveedor no decide unilateralmente que puede cambiar; los contratos de los
 consumidores son la red que detecta rupturas antes del deploy.
 
@@ -141,5 +141,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Herramienta | [Pact Foundation](https://github.com/pact-foundation) | Herramientas para contract testing |
 
 > **Mantenido por:** Architect + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [ODD_API.md](./ODD_API.md) | [APIVDD.md](./APIVDD.md) | [BDD.md](./BDD.md) | [INDEX.md](./INDEX.md)

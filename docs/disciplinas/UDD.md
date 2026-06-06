@@ -1,12 +1,12 @@
 # UDD — Use-Case-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es UDD en X-DD](#1-que-es-udd-en-x-dd)
+1. [Que es UDD en Evol-DD](#1-que-es-udd-en-evol-dd)
 2. [Cuando aplicar](#2-cuando-aplicar)
 3. [Artefactos de entrada y salida](#3-artefactos-de-entrada-y-salida)
 4. [UDD en el pipeline](#4-udd-en-el-pipeline)
@@ -18,18 +18,18 @@
 
 ---
 
-## 1. Que es UDD en X-DD
+## 1. Que es UDD en Evol-DD
 
 Use-Case-Driven Development es la disciplina donde los casos de uso son la unidad de diseno y
 planificacion, por encima de las features. Un caso de uso describe una interaccion completa
 actor-sistema con su objetivo, precondiciones, flujo principal y flujos alternativos.
 
-En X-DD, UDD opera en la Fase 1 (Briefing), complementando a FDD: mientras FDD cataloga
+En Evol-DD, UDD opera en la Fase 1 (Briefing), complementando a FDD: mientras FDD cataloga
 features, UDD modela la interaccion transaccional completa. Se ejecuta mediante una skill
 nueva (`/evol use-case-driven`). Produce `usecases/*/usecase.json`, `usecases/*/diagram.puml`
 y `usecases/*/test_scenarios.feature`.
 
-El principio de UDD en X-DD: en dominios transaccionales, la unidad de razonamiento es el
+El principio de UDD en Evol-DD: en dominios transaccionales, la unidad de razonamiento es el
 caso de uso completo (con sus alternativos y excepciones), no la feature aislada. Cada caso
 de uso es trazable desde el objetivo del actor hasta el codigo y sus escenarios BDD.
 
@@ -148,5 +148,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Ejemplo | [Use Case Driven Development](https://github.com/Giannoudis/UseCaseDrivenDevelopment) | Implementacion de desarrollo dirigido por casos de uso |
 
 > **Mantenido por:** Product-Manager + Architect
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [FDD.md](./FDD.md) | [BDD.md](./BDD.md) | [UXDD.md](./UXDD.md) | [INDEX.md](./INDEX.md)

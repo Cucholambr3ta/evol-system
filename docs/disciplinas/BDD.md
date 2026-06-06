@@ -1,12 +1,12 @@
 # BDD — Behavior-Driven Development
 
-**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion X-DD v1.5
+**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5
 
 ---
 
 ## Indice
 
-1. [Que es BDD en X-DD](#1-que-es-bdd-en-x-dd)
+1. [Que es BDD en Evol-DD](#1-que-es-bdd-en-evol-dd)
 2. [Formato Gherkin](#2-formato-gherkin)
 3. [Estructura de tres tiers de escenarios](#3-estructura-de-tres-tiers-de-escenarios)
 4. [BDD en el pipeline](#4-bdd-en-el-pipeline)
@@ -17,18 +17,18 @@
 
 ---
 
-## 1. Que es BDD en X-DD
+## 1. Que es BDD en Evol-DD
 
 Behavior-Driven Development es la disciplina que convierte los criterios de aceptacion
 del negocio en especificaciones ejecutables. En BDD, la especificacion del comportamiento
 del sistema se escribe en un lenguaje legible por el negocio (Gherkin) y se ejecuta como
 suite de tests en el CI.
 
-En X-DD, BDD opera en dos momentos: durante la Fase 1 (Briefing) donde los archivos
+En Evol-DD, BDD opera en dos momentos: durante la Fase 1 (Briefing) donde los archivos
 .feature se crean como contratos ejecutables entre el negocio y el equipo tecnico, y
 durante la Fase 5 (QA) donde esos archivos se ejecutan en el Tier 2 y deben pasar al 100%.
 
-El principio de BDD en X-DD es que un criterio de aceptacion en prosa sin archivo .feature
+El principio de BDD en Evol-DD es que un criterio de aceptacion en prosa sin archivo .feature
 correspondiente no es un criterio de aceptacion: es una intencion no verificable. El DOC_STANDARD
 v2.0 exige que todo criterio de aceptacion tenga su bloque Gherkin.
 
@@ -76,7 +76,7 @@ Feature: [Nombre del feature en formato FDD]
       | caso2    | val2  | res2     |
 ```
 
-### Reglas de escritura Gherkin en X-DD
+### Reglas de escritura Gherkin en Evol-DD
 
 | Regla | Correcto | Incorrecto |
 |-------|---------|------------|
@@ -192,7 +192,7 @@ sequenceDiagram
 
 ## 5. Integracion con Playwright y Cucumber
 
-Los archivos .feature en X-DD se ejecutan con Playwright-BDD (Cucumber sobre Playwright).
+Los archivos .feature en Evol-DD se ejecutan con Playwright-BDD (Cucumber sobre Playwright).
 La estructura de directorios es:
 
 ```
@@ -286,5 +286,5 @@ Respaldo bibliografico de la disciplina (verificadas via `/evol fact-check`).
 | Practica | [BDD — Agile Alliance Glossary](https://www.agilealliance.org/glossary/bdd/) | Definicion consensuada de la practica en la comunidad agile |
 
 > **Mantenido por:** Rapid-Prototyper + QA-Reviewer
-> **Gobernado por:** Constitucion X-DD v1.5, Art. 2
+> **Gobernado por:** Constitucion Evol-DD v1.5, Art. 2
 > **Ver tambien:** [ATDD.md](./ATDD.md) | [FDD.md](./FDD.md) | [INDEX.md](./INDEX.md)

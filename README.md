@@ -81,7 +81,7 @@ python3 scripts/evol-agent-lifecycle.py create \
 # El agente existe, hace su trabajo, y se retira
 python3 scripts/evol-agent-lifecycle.py retire "legal-saas-reviewer"
 # → Archivado en .evol/agents/retired/ con SHA-256 de integridad
-# → MemPalace retiene el conocimiento semantico
+# → Memoria Persistente retiene el conocimiento semantico
 
 # Semanas despues, recuperarlo exactamente igual
 python3 scripts/evol-agent-lifecycle.py recall "legal-saas-reviewer"

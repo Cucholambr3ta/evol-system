@@ -5,25 +5,23 @@
 
 ## Estado actual
 
-- **Branch:** `develop`
-- **Fase Evol-DD:** F6-Retro — Documentacion completa + release v0.1.0 pendiente
-- **Version:** `0.1.0-dev`
+- **Branch:** `feature/update-memory`
+- **Fase Evol-DD:** F6-Retro — Update memory and prepare release
+- **Version:** `0.3.3`
 - **Repo:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Hitos recientes
 
 | Commit | Descripcion |
 |--------|-------------|
-| `4dee648` | fix(crear-skill): sweep referencias x-dd residuales a evol |
-| `705479f` | merge: fix/gaps-post-auditoria — 63 archivos, 69 workflows |
-| `bd2356e` | fix(gaps): P0-P4 audit gaps — version, workflows, dirs, docs |
+| `369e27d` | feat: add /update-memory workflow to maintain persistent memory |
+| `61f746d` | refactor: remove mempalace dependencies in preparation for persistent memory |
+| `e03d5f3` | docs(memoria): migrate monolithic MEMORY to atomic structure |
 
 ## Proximo paso
 
-1. Completar documentacion operativa (22 archivos vacios identificados en auditoria)
-2. Commit docs completos
-3. Merge develop a release/v0.1.0
-4. Tag v0.1.0 segun checklist en `docs/operaciones/RELEASE_PROCESS.md`
+1. ~~Borrar MemPalace y toda su estructura.~~ (Completado).
+2. **Merge & Release v0.3.3**: Mergear cambios a develop, hacer el tag de release de v0.3.3 y subir a PyPI.
 
 ## Resumen del sistema (post-build completo)
 

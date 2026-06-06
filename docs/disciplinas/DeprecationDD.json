@@ -2,10 +2,10 @@
   "doc": "DeprecationDD.md",
   "dominio": "disciplinas",
   "subdominio": "DeprecationDD",
-  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion X-DD v1.5",
+  "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
   "secciones": [
     "indice",
-    "que-es-deprecationdd-en-x-dd",
+    "que-es-deprecationdd-en-evol-dd",
     "cuando-aplicar",
     "artefactos-de-entrada-y-salida",
     "deprecationdd-en-el-pipeline",

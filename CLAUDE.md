@@ -120,11 +120,11 @@ It is **not required** — the system works fully in Base Mode without it.
 
 ```bash
 evol-doctor          # Human output: COMPLETO / BASE
-evol-doctor --json   # Machine output: "mempalace_mode"
+evol-doctor --json   # Machine output: "Memoria Persistente_mode"
 ```
 
-- **COMPLETO:** MemPalace CLI available (semantic search, pattern extraction)
-- **BASE:** No MemPalace — full pipeline still works, learn manually
+- **COMPLETO:** Memoria Persistente CLI available (semantic search, pattern extraction)
+- **BASE:** No Memoria Persistente — full pipeline still works, learn manually
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence

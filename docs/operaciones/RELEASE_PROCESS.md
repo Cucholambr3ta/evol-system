@@ -26,6 +26,8 @@ Tags follow `v<MAJOR>.<MINOR>.<PATCH>` format (e.g., `v0.1.0`).
 
 Tag annotation must include the changelog section for that version.
 
+**Rule: Every release MUST include explicit Upgrade Notes in the tag and CHANGELOG, detailing any manual steps required or if `evol update apply` covers the upgrade entirely.**
+
 ## Release Checklist
 
 ```bash
@@ -56,6 +58,9 @@ git checkout main && git merge release/0.1.0 --no-ff -m "release: merge v0.1.0"
 
 # 8. Create tag
 git tag -a v0.1.0 -m "Release v0.1.0
+
+## Upgrade Notes
+- ...
 
 ## Added
 - ...
