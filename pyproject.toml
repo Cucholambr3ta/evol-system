@@ -32,6 +32,9 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
 ]
+memory = [
+    "chromadb>=0.4.0",
+]
 
 [project.scripts]
 evol = "evol_cli:main"
