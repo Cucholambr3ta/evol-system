@@ -32,10 +32,6 @@ Estructura:
 - dialog/ (gitignored)
 - tool_result/ (gitignored, TTL 3 días)
 
-## Modo GitNexus (opt-in)
-
-`EVOL_GITNEXUS=1`. Solo proyectos no-comerciales.
-
 ## Detección
 
 ```bash

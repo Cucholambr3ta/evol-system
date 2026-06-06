@@ -29,14 +29,6 @@ pip install mempalace
 mempalace --version
 ```
 
-**GitNexus** provee analisis de blast radius y grafos de simbolos. Es opt-in obligatorio porque su licencia (PolyForm Noncommercial) es incompatible con uso comercial.
-
-```bash
-# Solo proyectos no-comerciales
-export EVOL_GITNEXUS=1
-npx gitnexus analyze
-```
-
 ### Verificacion de prerequisitos
 
 ```bash

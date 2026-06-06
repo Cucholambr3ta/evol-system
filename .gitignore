@@ -10,7 +10,6 @@ memory/raw/
 .evol-mcp-exclude
 
 # Local indexes and machine-specific memory
-.gitnexus/
 entities.json
 
 # IDE/adaptor generated outputs

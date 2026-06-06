@@ -8,11 +8,11 @@ Indice del directorio `docs/`. Cada subdirectorio cubre un area especifica del s
 |----------------------|-----------|
 | `constitucion.md` | Ley suprema del sistema. 9 articulos de gobernanza. |
 | `DOC_STANDARD.md` | Estandar: sin emojis, Mermaid obligatorio, Gherkin, trazabilidad. |
-| `modos.md` | Modos de operacion: Base, Completo, Memoria conversacional, GitNexus. |
+| `modos.md` | Modos de operacion: Base, Completo, Memoria conversacional. |
 | `GATE.md` | Gate keeper HMAC-SHA256: arquitectura, comandos, fail-closed. |
 | `CONFIG.md` | Referencia de evol.config.yml y evol.profile.yml. |
 | `IDE_SETUP.md` | Setup de los 7 IDEs soportados por evol-adapt.sh. |
-| `gitnexus-optin.md` | GitNexus opt-in: cuando activar, licencia, integracion. |
+
 | `RETROFIT_GUIDE.md` | Migracion desde Evol-DD: tabla de equivalencias xdd-* vs evol-*. |
 | `X-DD_Integration_Guide.md` | Relacion Evol-DD / Evol-DD: diferencias clave. |
 | `equipo.md` | Directorio de agentes auto-generado desde registry.json. |

@@ -64,7 +64,7 @@ python3 scripts/evol-agent-lifecycle.py list --all
 - Cannot modify governance files (constitucion, gate, hooks)
 - Cannot create other agents (no recursive factory)
 - Must register decisions in memoria.md before completing
-- Must index in MemPalace and GitNexus (if active)
+- Must index in Memoria Persistente
 
 ## References
 - templates/agent.template.md (contract)

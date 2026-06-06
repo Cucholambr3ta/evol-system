@@ -22,7 +22,7 @@ Esta guia cubre la migracion de un proyecto existente de X-DD a Evol-DD. La migr
 | Script X-DD | Script Evol-DD | Diferencias relevantes |
 |---|---|---|
 | `xdd-init.sh` | `evol-init.sh` | Perfiles: minimal/core/developer/security/research/full/lean/custom. Escribe `evol.profile.yml` en lugar de `xdd.profile.yml` |
-| `xdd-doctor.sh` | `evol-doctor.sh` | Verifica artefactos `evol.*` en lugar de `xdd.*`. Chequea `EVOL_GITNEXUS` en lugar de `XDD_GITNEXUS`. Salida `--json` compatible |
+| `xdd-doctor.sh` | `evol-doctor.sh` | Verifica artefactos `evol.*` en lugar de `xdd.*`. Salida `--json` compatible |
 | `xdd-adapt.sh` | `evol-adapt.sh` | Sin cambios funcionales. Variable `EVOL_TRIGGER` reemplaza `XDD_TRIGGER`. Sin `mcp.json` en ningun IDE |
 | `xdd-gate.py` | `evol-gate.py` | Gate key almacenada en `.evol/.gate-key` (per-proyecto) en lugar de `~/.xdd/gate-key` (global). HMAC-SHA256 compatible |
 | `xdd-state.py` | `evol-state.py` | State dir `.evol/` en lugar de `.xdd/`. SQLite en `.evol/state.db` |
@@ -54,7 +54,7 @@ Esta guia cubre la migracion de un proyecto existente de X-DD a Evol-DD. La migr
 | Variable X-DD | Variable Evol-DD | Descripcion |
 |---|---|---|
 | `XDD_TRIGGER` | `EVOL_TRIGGER` | Trigger word para el adaptador de IDEs. Default: `evol` |
-| `XDD_GITNEXUS` | `EVOL_GITNEXUS` | Activa GitNexus. `1` para habilitar |
+
 | `XDD_PROVIDER` | `EVOL_PROVIDER` | Proveedor LLM: `mock`, `anthropic`, `openai` |
 | `XDD_MEMORY_COMPACT_THRESHOLD` | `EVOL_MEMORY_COMPACT_THRESHOLD` | Umbral en tokens para compactacion de memoria. Default: 90000 |
 | `XDD_MEMORY_COMPACT_RESERVE` | `EVOL_MEMORY_COMPACT_RESERVE` | Tokens a reservar post-compactacion. Default: 10000 |

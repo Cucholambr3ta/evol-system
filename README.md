@@ -247,7 +247,7 @@ evol doctor
 | [docs/constitucion.md](docs/constitucion.md) | 9 articulos de gobernanza — ley suprema |
 | [AGENTS.md](AGENTS.md) | Los 16 agentes core con roles y limites |
 | [CLAUDE.md](CLAUDE.md) | Manifiesto de operacion para Claude Code |
-| [docs/modos.md](docs/modos.md) | Modo Base vs Completo vs Memoria vs GitNexus |
+| [docs/modos.md](docs/modos.md) | Modo Base vs Completo vs Memoria |
 | [docs/guias/ONBOARDING.md](docs/guias/ONBOARDING.md) | Primeros pasos detallados |
 | [docs/arquitectura/ARQUITECTURA.md](docs/arquitectura/ARQUITECTURA.md) | Arquitectura completa con diagramas C4 |
 | [INSTALL.md](INSTALL.md) | Perfiles de instalacion (minimal, core, developer, full) |

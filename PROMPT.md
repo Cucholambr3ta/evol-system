@@ -221,7 +221,7 @@ Esto:
 - Genera `prompts/agents/ephemeral/<timestamp>-marketing-seo-specialist.md` desde `templates/agent.template.md`
 - Registra en `registry.json` con flags `ephemeral: true`, `expires_after`, `created_for_task`
 - Indexa en Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
-- Indexa en GitNexus si `EVOL_GITNEXUS=1`
+
 
 **Retirar:**
 ```bash
@@ -232,7 +232,7 @@ Esto:
 - Actualiza registry: `retired: true`, `retired_at`, `sessions_used`
 - Archiva snapshot completo en `.evol/agents/retired/<name>.json` (prompt + metadata + sessions)
 - Memoria Persistente retiene el conocimiento indexado (no lo borra)
-- GitNexus retiene el índice (para recall futuro)
+
 
 **Recuperar:**
 ```bash
@@ -336,7 +336,7 @@ evol-dd/
 │   ├── CONFIG.md
 │   ├── GATE.md
 │   ├── IDE_SETUP.md
-│   └── gitnexus-optin.md
+
 ├── evals/
 ├── manifests/
 │   ├── install-modules.json
@@ -444,7 +444,7 @@ Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mi
 - Modo seco: `evol-adapt.sh <target> --dry-run`
 
 **`evol-doctor.sh`** — Diagnóstico del entorno
-- Verifica dependencias: git, Python 3.10+, Memoria Persistente CLI, Node (opcional para GitNexus)
+- Verifica dependencias: git, Python 3.10+, Memoria Persistente CLI
 - Verifica estructura del proyecto: directorios requeridos, archivos core
 - Reporta warnings sin bloquear (salvo errores críticos)
 - Flag `--json` para output estructurado
@@ -502,7 +502,7 @@ Comandos:
   - Genera `.md` desde `templates/agent.template.md`
   - Registra en registry.json con `ephemeral: true`
   - Indexa Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
-  - Indexa GitNexus si `EVOL_GITNEXUS=1`: `npx gitnexus analyze`
+
 - `invoke NAME` — activa el agente para la sesión actual
 - `retire NAME`
   - Elimina `.md`
@@ -750,12 +750,6 @@ Variables de entorno para extract/suggest-fix:
 | Variable | Default | Descripcion |
 |----------|---------|-------------|
 | `EVOL_PROVIDER` | `mock` | Provider LLM (`mock` sin red o `anthropic` para sugerencias reales) |
-
-### Modo GitNexus (opt-in)
-
-Siempre opt-in (`EVOL_GITNEXUS=1`). Separado del modo Memoria Persistente. Licencia PolyForm-NC —
-incompatible con uso comercial. Activar solo en proyectos no-comerciales. Documentado en
-`docs/gitnexus-optin.md`.
 
 ### Modos de orquestacion multi-agente
 
@@ -1107,8 +1101,7 @@ agents:
     default_expires_after_days: 30
     retire_on_task_complete: false
     archive_path: .evol/agents/retired
-gitnexus:
-  enabled: false               # opt-in via EVOL_GITNEXUS=1
+
   license: PolyForm-NC
   commercial_use: false
 ide_adapters:
@@ -1144,7 +1137,7 @@ El `CLAUDE.md` raíz de Evol-DD debe ser el manifiesto de operación para Claude
 - Tabla de artefactos producidos por cada workflow
 - Tabla de scripts disponibles con función de cada uno
 - Directrices de calidad: portabilidad absoluta (rutas relativas), cero duplicados, flujo gated pipeline
-- Sección GitNexus opt-in (si está activo, instrucciones de uso)
+
 
 ---
 
@@ -1278,7 +1271,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | Estado SQLite | `~/.evol/state.db` (var `EVOL_STATE_DB`) |
 | Gate key | **POR PROYECTO** — `.evol/.gate-key` local, gitignored. Cada proyecto tiene su propia key HMAC. Para simplificar el bootstrap: `evol gate init --from-global` copia la key global `~/.evol/.gate-key` al proyecto como punto de partida, pero la mantiene separada. Un leak en un proyecto no compromete otros. |
 | VERSION inicial | `0.1.0-dev` |
-| Vars de entorno | `EVOL_PROVIDER_MOCK`, `EVOL_GITNEXUS`, `EVOL_HOOK_PROFILE`, `EVOL_SCRIPTS_DIR`, `EVOL_DATA_DIR`, `EVOL_NO_ADAPT/HOOKS/GITHOOK/BRAND/GATE_INIT` |
+| Vars de entorno | `EVOL_PROVIDER_MOCK`, `EVOL_HOOK_PROFILE`, `EVOL_SCRIPTS_DIR`, `EVOL_DATA_DIR`, `EVOL_NO_ADAPT/HOOKS/GITHOOK/BRAND/GATE_INIT` |
 | Estrategia Git (Art. 7) | **GitFlow como defecto** — ya incorporado en Art. 7 de la Constitucion. `main` + `develop` + `feature/*` + `release/*` + `hotfix/*`. Trunk-based como opt-in. La Constitucion es la fuente unica de esta decision — no hay contradiccion. |
 | Git remoto | `https://github.com/Cucholambr3ta/evol-dd.git` |
 | Git bootstrap | Renombrar `master`→`main`, commit inicial, crear `develop`, push ambas. Feature branches `feature/m*` por milestone → merge a `develop`. |
@@ -1291,7 +1284,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | B.2 | Integridad de snapshot | Al `retire`: calcular SHA-256 del prompt y guardarlo en snapshot. Al `recall`: recomputar y comparar — abortar si difiere (flag `--force` para override). Campo: `prompt_sha256` en `.evol/agents/retired/<name>.json`. |
 | B.2b | Contenido del snapshot | Prompt completo + metadata + SHA-256 + log de cada invocación (timestamp, tarea). Campo `invocation_log: [{timestamp, task}]` en el JSON. |
 | B.3 | Supply-chain skills | Antes de instalar: `gitleaks` (secrets) + `semgrep` (patrones peligrosos) sobre la skill descargada. Pin por **commit SHA** (no branch/tag móvil). SHA guardado en registry. Comando: `evol-evolve update-skill NAME` para actualizar explícitamente. |
-| B.4 | Degradación sin Memoria Persistente/GitNexus | Si `Memoria Persistente`/`npx gitnexus` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `Memoria Persistente_safe()` en `scripts/_evol_common.py`. |
+| B.4 | Degradación sin Memoria Persistente | Si `Memoria Persistente` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `Memoria Persistente_safe()` en `scripts/_evol_common.py`. |
 | B.5 | Regla anti-MCP verificable | Regla `no_mcp_config` en `evol-shield.py`: falla si artefacto generado contiene `mcpServers`/`mcp.json`/servidor MCP. Step CI con grep. |
 | B.6 | Idempotencia install | Tests bats: correr `evol-init` dos veces, verificar no-duplicación de hooks en `~/.claude/settings.json`. Archivo: `tests/test_init_idempotent.bats`. |
 | B.9 | Perfil lean sin global | `evol-init lean` **falla con error claro** si wrapper global no existe: `"lean requiere evol-global-install.sh ejecutado primero"`. Sin degradación silenciosa. |

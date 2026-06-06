@@ -11,7 +11,7 @@ AGENT_MANIFEST="${REPO_ROOT}/agent.yaml"
 show_usage() {
     echo "Usage: $0 <destination> [--profile=<profile>] [--pip-mode]"
     echo "  --profile=<profile>  Installation profile: minimal, core, developer, security, research, full, lean"
-    echo "  --mcp-servers=...    Comma-separated list of MCP servers (e.g. github,gitnexus)"
+    echo "  --mcp-servers=...    Comma-separated list of MCP servers (e.g. github,postgres)"
     echo "  --pip-mode           Use pip-installed framework"
     echo "  --list-profiles      Show available profiles"
     echo "  --explain=<profile>  Show modules for a profile"
@@ -369,7 +369,7 @@ if servers_str:
         if s and s not in data['mcp']['servers']:
             data['mcp']['servers'][s] = {
                 'command': 'npx',
-                'args': ['-y', f'@modelcontextprotocol/server-{s}' if s != 'gitnexus' else 'gitnexus']
+                'args': ['-y', f'@modelcontextprotocol/server-{s}']
             }
 
 with open(config_path, 'w') as f:
