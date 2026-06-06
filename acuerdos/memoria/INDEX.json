@@ -5,28 +5,28 @@
       "subdominio": "MEMORY",
       "doc": "MEMORY.md",
       "resumen": "GENERADO automaticamente desde los atomos (decisiones/convenciones/riesgos).",
-      "tokens_md": 2017,
+      "tokens_md": 3200,
       "entidades": []
     },
     {
       "subdominio": "convenciones",
       "doc": "convenciones.md",
       "resumen": "Atomo de MEMORY. Estandares de codigo y patrones del proyecto.",
-      "tokens_md": 609,
+      "tokens_md": 850,
       "entidades": []
     },
     {
       "subdominio": "decisiones",
       "doc": "decisiones.md",
       "resumen": "Atomo de MEMORY. Decisiones de arquitectura y producto persistentes.",
-      "tokens_md": 944,
+      "tokens_md": 1800,
       "entidades": []
     },
     {
       "subdominio": "riesgos",
       "doc": "riesgos.md",
       "resumen": "Atomo de MEMORY. Riesgos vigentes y mitigaciones.",
-      "tokens_md": 410,
+      "tokens_md": 450,
       "entidades": []
     },
     {
@@ -38,7 +38,7 @@
     }
   ],
   "total_docs": 5,
-  "total_tokens_md": 4201,
-  "actualizado": "2026-06-06T10:56:34.079143+00:00",
+  "total_tokens_md": 6521,
+  "actualizado": "2026-06-06T16:30:00.000000+00:00",
   "total_tokens_json": 177
 }
