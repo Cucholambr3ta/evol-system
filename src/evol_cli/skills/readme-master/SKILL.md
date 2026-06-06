@@ -35,7 +35,7 @@ Todo `README.md` generado debe contener, en orden estricto:
 1. **Hero Visual Atractivo:** Un bloque `<div align="center">` con el `<h1>` principal, y una sola línea hiper-enfocada (Focus Message) describiendo la propuesta de valor.
 2. **Badges Coloridos y Estéticos:** Uso de Shields.io con colores temáticos e íconos (`?logo=python&logoColor=white`) para denotar profesionalismo sin caer en la monotonía.
 3. **Tabla Comparativa (Problema vs Solución):** Una tabla limpia en HTML que contraste el enfoque tradicional vs el enfoque moderno del proyecto.
-4. **Core Features (Aha! Moments):** Títulos semánticos directos (para que los LLMs y humanos indexen rápido) seguidos de bloques de código Markdown ````bash`` o ````python`` ultracortos.
+4. **Core Features:** Títulos semánticos directos (para que los LLMs y humanos indexen rápido) seguidos de bloques de código Markdown ````bash`` o ````python`` ultracortos.
 5. **Arquitectura:** **Obligatorio un diagrama de arquitectura en Mermaid** (````mermaid`) que describa el sistema.
 6. **Instalación y Desinstalación:** Bloques de código copiables con pasos de ejecución y un apartado explícito para desinstalar.
 7. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información sin romper el ritmo de lectura.

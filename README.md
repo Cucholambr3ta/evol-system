@@ -49,7 +49,7 @@ La mayoría de frameworks de IA tienen más de 180 agentes permanentes en disco,
 
 ---
 
-## ❖ El Ecosistema "Aha! Moments"
+## ❖ Ecosistema Core
 
 ### 1. Memoria Local Persistente
 Busca decisiones pasadas y contexto sin tokens adicionales en el LLM.
@@ -138,10 +138,11 @@ Soporte "Zero-Config" vía comando <code>/evol</code> para:
   <li><a href="docs/constitucion.md">Constitución Evol-DD</a></li>
   <li><a href="AGENTS.md">Manifest de Agentes</a></li>
   <li><a href="docs/arquitectura/ARQUITECTURA.md">C4 Model</a></li>
+  <li><a href="docs/disciplinas/INDEX.md">Índice de Disciplinas</a></li>
 </ul>
 </details>
 
 ---
 
-## ❖ Contribución y Licencia
-Distribuido bajo la Licencia MIT. Las contribuciones son clave; asegúrate de respetar el GitFlow nativo al contribuir. Nuestro `pre-push` se encargará de verificar el estándar de documentación.
+## ❖ Licencia
+MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
