@@ -30,16 +30,15 @@ Esta skill genera y actualiza archivos `README.md` inyectando la calidad de dise
 ## Uso
 El agente evaluará el código base o la descripción entregada y reconstruirá el archivo `README.md` siguiendo estrictamente esta arquitectura:
 
-### 1. El Estándar 2026 (Minimalista y AI-Friendly)
+### 1. El Estándar Intermedio (Top 100 + Semántica)
 Todo `README.md` generado debe contener, en orden estricto:
-1. **Banner Adaptativo:** Un bloque HTML `<picture>` en el `<div align="center">` que soporte cambio automático entre tema claro y oscuro (mediante `prefers-color-scheme`).
-2. **Hero Minimalista y Focus Hook:** Inmediatamente después del banner, el `<h1>` y **una sola línea** hiper-enfocada (Focus Message) describiendo la propuesta de valor sin ruido visual.
-3. **Badges Monocromáticos:** Uso de Shields.io con el estilo `style=flat-square` y un color corporativo uniforme (ej. `#1e293b`) para denotar profesionalismo.
-4. **Tabla Comparativa (Problema vs Solución):** Una tabla limpia en HTML que contraste el enfoque tradicional vs el enfoque moderno del proyecto.
-5. **Core Features (AI-Friendly Snippets):** Títulos semánticos directos (para que los LLMs indexen rápido) seguidos de bloques de código Markdown ````bash`` o ````python`` ultracortos.
-6. **Arquitectura:** **Obligatorio un diagrama de arquitectura en Mermaid** (````mermaid`) que describa el sistema.
-7. **Instalación & Quick Start.**
-8. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información sin romper el minimalismo.
+1. **Hero Visual Atractivo:** Un bloque `<div align="center">` con el `<h1>` principal, y una sola línea hiper-enfocada (Focus Message) describiendo la propuesta de valor.
+2. **Badges Coloridos y Estéticos:** Uso de Shields.io con colores temáticos e íconos (`?logo=python&logoColor=white`) para denotar profesionalismo sin caer en la monotonía.
+3. **Tabla Comparativa (Problema vs Solución):** Una tabla limpia en HTML que contraste el enfoque tradicional vs el enfoque moderno del proyecto.
+4. **Core Features (Aha! Moments):** Títulos semánticos directos (para que los LLMs y humanos indexen rápido) seguidos de bloques de código Markdown ````bash`` o ````python`` ultracortos.
+5. **Arquitectura:** **Obligatorio un diagrama de arquitectura en Mermaid** (````mermaid`) que describa el sistema.
+6. **Instalación y Desinstalación:** Bloques de código copiables con pasos de ejecución y un apartado explícito para desinstalar.
+7. **Documentación Extendida / FAQ:** Uso de tags `<details>` y `<summary>` para esconder información sin romper el ritmo de lectura.
 
 ### 2. Storytelling: Adaptación del Relato
 Antes de escribir, el agente inferirá la naturaleza del repositorio:

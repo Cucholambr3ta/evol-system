@@ -1,37 +1,35 @@
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/abhisheknaiidu/awesome-github-profile-readme/master/assets/placeholder-dark.png">
-    <img alt="Evol-DD Banner" src="https://raw.githubusercontent.com/abhisheknaiidu/awesome-github-profile-readme/master/assets/placeholder-light.png" width="100%">
-  </picture>
-  
   <h1>Evol-DD</h1>
-  <p><b>Desarrollo agéntico local, persistente y extensivo en 7 IDEs.</b></p>
+  <p><b>El framework de desarrollo agéntico que aprende con cada proyecto que construye.</b></p>
   
   <p>
-    <img src="https://img.shields.io/pypi/v/evol-dd?color=1e293b&logo=pypi&logoColor=white&style=flat-square" alt="PyPI">
-    <img src="https://img.shields.io/badge/Python-3.10+-1e293b?logo=python&logoColor=white&style=flat-square" alt="Python">
-    <img src="https://img.shields.io/badge/License-MIT-1e293b?logo=opensourceinitiative&logoColor=white&style=flat-square" alt="MIT">
+    <img src="https://img.shields.io/pypi/v/evol-dd?color=blue&logo=pypi&logoColor=white" alt="PyPI Version">
+    <img src="https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white" alt="Python Version">
+    <img src="https://img.shields.io/badge/license-MIT-4CAF50?logo=opensourceinitiative&logoColor=white" alt="License">
+    <img src="https://img.shields.io/badge/branching-GitFlow-F05032?logo=git&logoColor=white" alt="GitFlow">
   </p>
 </div>
 
 <br/>
 
-Evol-DD elimina los servidores permanentes mediante **Model Context Protocol (MCP)** y **memoria local**. Está diseñado para equipos que necesitan agentes que recuerden el contexto entre sesiones, conviertan errores en lecciones arquitectónicas y corran nativamente dentro del IDE sin depender de plataformas cerradas.
+Evol-DD elimina los servidores permanentes mediante **Model Context Protocol (MCP)** y memoria local. Está diseñado para equipos que necesitan agentes que recuerden el contexto entre sesiones, conviertan errores en lecciones arquitectónicas y corran nativamente dentro del IDE sin depender de plataformas cerradas.
 
 ---
 
-## ❖ Por qué Evol-DD (Arquitectura vs Tradicional)
+## ❖ Por qué Evol-DD
+
+La mayoría de frameworks de IA tienen más de 180 agentes permanentes en disco, dependen de infraestructura compleja y repiten los mismos errores proyecto tras proyecto.
 
 <table>
   <thead>
     <tr>
-      <th>Enfoque Tradicional</th>
-      <th>Evol-DD (2026 Standard)</th>
+      <th>Problema Común</th>
+      <th>Solución Evol-DD</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>► 180+ Agentes pesados y fijos</td>
+      <td>► Agentes infinitos y pesados</td>
       <td><b>16 Core</b> + Agentes Efímeros bajo demanda.</td>
     </tr>
     <tr>
@@ -51,7 +49,7 @@ Evol-DD elimina los servidores permanentes mediante **Model Context Protocol (MC
 
 ---
 
-## ❖ Core Features (AI-Friendly Snippets)
+## ❖ El Ecosistema "Aha! Moments"
 
 ### 1. Memoria Local Persistente
 Busca decisiones pasadas y contexto sin tokens adicionales en el LLM.
@@ -76,8 +74,11 @@ python3 scripts/evol-agent-lifecycle.py create --name "auditor-sec" --expires-af
 
 ---
 
-## ❖ Quick Start & Instalación
+## ❖ Instalación y Desinstalación
 
+Requiere **Python 3.10+** y `pipx`.
+
+### Instalación Rápida
 ```bash
 # 1. Instalación Global (disponible en todos los IDEs vía pipx)
 pipx install evol-dd && evol
@@ -85,6 +86,18 @@ pipx install evol-dd && evol
 # 2. Inicializar tu repositorio
 evol init . --profile core
 ```
+
+### Desinstalación
+Si deseas retirar Evol-DD de tu sistema y de tus IDEs:
+```bash
+# Elimina el paquete global
+pipx uninstall evol-dd
+
+# Eliminar skills e integraciones locales de tus IDEs
+rm -rf ~/.claude/commands/evol*
+rm -rf ~/.gemini/skills/evol*
+```
+*(Nota: Tus datos de memoria y lecciones en los repositorios locales no se borran, ya que pertenecen a tu código fuente).*
 
 ---
 
@@ -102,7 +115,7 @@ graph TD
 
 ---
 
-## ❖ Ecosistema y Configuración
+## ❖ Documentación y Ecosistema (FAQ)
 
 <details>
 <summary><b>► Compatibilidad de IDEs</b></summary>
@@ -128,7 +141,7 @@ Soporte "Zero-Config" vía comando <code>/evol</code> para:
 </ul>
 </details>
 
-<div align="center">
-  <br/>
-  <p><i>Distribuido bajo la Licencia MIT. Respeta el GitFlow al contribuir.</i></p>
-</div>
+---
+
+## ❖ Contribución y Licencia
+Distribuido bajo la Licencia MIT. Las contribuciones son clave; asegúrate de respetar el GitFlow nativo al contribuir. Nuestro `pre-push` se encargará de verificar el estándar de documentación.
