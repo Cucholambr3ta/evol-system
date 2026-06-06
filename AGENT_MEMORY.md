@@ -29,6 +29,8 @@
 - Quiere que los planes incluyan: arquitectura, schema, hooks, tests, fuentes, orden de ejecucion
 - Trabaja en español, respuestas cortas y directas
 - No emojis en archivos del proyecto
+- Quiere una consistencia rigurosa en la documentación (0% drift en sidecars JSON) y validación inmediata contra el estándar en cada iteración.
+
 
 ## Notas
 

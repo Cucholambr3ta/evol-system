@@ -11,10 +11,10 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** F6-Retro — Update memory + preparar release EDMS
-- **Branch:** develop
-- **Ultimo hito:** Plan EDMS atomico creado (docs/plan-implementacion-edms.md, 720 lineas, 18 secciones). 15 mejoras investigadas (24 repos). ChromaDB + LadybugDB como stack base.
-- **Proximo paso:** Implementar Fase 1 del EDMS (evol_memory_store.py + ChromaDB + LadybugDB)
+- **Fase Evol-DD:** F6-Retro — Update memory + auditoría de documentación
+- **Branch:** feature/audit-docs
+- **Ultimo hito:** Auditoría completa de `docs/` finalizada. Sincronización al 100% de sidecars JSON (0 drifts) y mirroring a `src/evol_cli/docs/`. Fusión de profile JIT y auditor core en develop.
+- **Proximo paso:** Continuar con la implementación de EDMS.
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.3.3 (update-memory) → 0.4.0 → 0.5.0 (readme-master)
 - **EDMS:** En fase de disseno. Plan completo en `docs/plan-implementacion-edms.md`. Zero codigo escrito.
@@ -65,6 +65,18 @@
 ---
 
 ## Bitácora de Sesiones
+
+### Sesión 2026-06-06 — Auditoría de Documentación + Consistencia JSON + Mirroring
+
+- **Meta:** Fusionar rama fix/memory-runtime-init en develop, crear nueva rama de auditoría y asegurar la total consistencia y cumplimiento del estándar de documentación (sin emojis, sin drifts).
+- **Hitos:**
+  - Integración: Fusión limpia de `fix/memory-runtime-init` en `develop`. Rama de trabajo `feature/audit-docs` creada.
+  - Higienización: Eliminación de emojis residuales (👉) en `MANUAL_USUARIO.md`, logrando un 0% de emojis en todo el repositorio.
+  - Sincronización JSON: Sincronización completa de 66 documentos y 14 dominios de `docs/` con sus sidecars `.json` e índices `INDEX.json`. Se forzó recursividad en carpetas anidadas (`adr/` y `comandos/`). 0 drifts activos.
+  - Mirroring: Actualización y sincronización al 100% de la documentación y sidecars JSON en `src/evol_cli/docs/`.
+- **QA:** 104 pytest aprobados en verde. `validate-disciplinas.py --strict` al 100% OK.
+- **Estado:** Branch `feature/audit-docs`. Repositorio local e índices sincronizados al 100%.
+- **Próxima sesión:** Continuar con la implementación de EDMS.
 
 ### Sesión 2026-06-06 — EDMS Research + Plan Atómico + Update Memory
 

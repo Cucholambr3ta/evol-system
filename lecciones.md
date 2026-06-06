@@ -286,3 +286,11 @@ _(vacio)_
 **Causa raiz:** El framework usa la misma convencion de nombres para su scaffolding y su memoria (dogfooding).
 **Leccion:** Antes de borrar directorios en la raiz del framework que coincidan con output de scaffolding, verificar en `.gitignore` o historial si estan protegidos. El framework usa sus propias herramientas, esos directorios contienen memoria legitima.
 **Aplica a:** Mantenimiento del repositorio Evol-DD.
+
+### [HERRAMIENTAS] evol-doc-sync.py sync-all no es recursivo profundo — 2026-06-06
+**Contexto:** Sincronizando todos los sidecars `.json` en el directorio de documentación `docs/`.
+**Problema:** Varios archivos en subcarpetas de segundo nivel (como `docs/arquitectura/adr/` y `docs/usuario/comandos/`) reportaban drifts ya que sus sidecars no se creaban ni actualizaban.
+**Causa raíz:** El comando `sync-all` llama a `sync-folder` en las subcarpetas inmediatas del directorio raíz, pero `sync-folder` utiliza un patrón de globbing `*.md` no recursivo.
+**Lección:** Para sincronizar sidecars en subcarpetas de segundo nivel o más profundas, se debe ejecutar `evol-doc-sync.py sync-folder` de manera explícita en cada subcarpeta o extender el script para soportar recursividad profunda.
+**Aplica a:** Herramientas de documentación, scripts de mantenimiento.
+
