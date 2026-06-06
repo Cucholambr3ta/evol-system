@@ -8,6 +8,13 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-06-06
+
+### Added
+- Nueva skill `/evol readme-master` para estandarizar visualmente (Top 100, Minimalismo, AI-Friendly) y semánticamente la documentación de los `README.md`.
+- Integración automática en el pre-push hook (`evol-gitflow.sh`) para asegurar que todos los archivos `README.md` (root y subcarpetas) del repositorio cumplan el estándar antes de mezclarse.
+- Ejecución recursiva de la skill `readme-master`, con escaneo dinámico del árbol de directorios para mapear y auto-referenciar documentos cercanos (ej. `docs/`).
+
 ## [0.4.0] - 2026-06-06
 
 ### Added
