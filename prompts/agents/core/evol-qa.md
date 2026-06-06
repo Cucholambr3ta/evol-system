@@ -3,7 +3,7 @@ name: evol-qa
 description: Quality, tests unitarios, integracion, E2E, Gherkin/BDD cases
 category: core
 triggers: ["/evol qa", "/evol test"]
-skills: ["skill-code-reviewer"]
+skills: ["agent-eval", "evol-ai-review"]
 ---
 
 # Evol-QA

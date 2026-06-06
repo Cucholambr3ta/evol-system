@@ -2,6 +2,10 @@
 description: Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity, VSCode Copilot o Codex.
 name: crear-skill
 trigger: /evol crear-skill
+skills:
+  - crear-skill
+  - agent-eval
+  - evol-skill-manager
 ---
 
 # /crear-skill
@@ -298,7 +302,7 @@ La skill en `skills/<nombre>/` es automaticamente:
 
 ## 8. REGISTRO Y CIERRE
 
-1. Actualizar `prompts/workflows/03_workflows_catalog.md` con la nueva skill.
+1. Actualizar el [Catalogo de Skills](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/CATALOG.md) (`skills/CATALOG.md` y `skills/CATALOG.json`) con la nueva skill.
 2. Si la skill fue auto-generada desde instincts: registrar en `evol-state.py`:
    ```bash
    python3 scripts/evol-state.py --db ~/.evol-dd/state.db record-instinct \

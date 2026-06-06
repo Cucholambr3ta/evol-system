@@ -27,8 +27,8 @@
         "/evol builder"
       ],
       "skills": [
-        "skill-fractional-cto",
-        "skill-clean-code"
+        "crear-skill",
+        "readme-master"
       ],
       "ephemeral": false,
       "retired": null
@@ -44,7 +44,8 @@
         "/evol test"
       ],
       "skills": [
-        "skill-code-reviewer"
+        "agent-eval",
+        "evol-ai-review"
       ],
       "ephemeral": false,
       "retired": null
@@ -60,7 +61,7 @@
         "/evol security"
       ],
       "skills": [
-        "skill-shannon-secops"
+        "evol-sandbox"
       ],
       "ephemeral": false,
       "retired": null
@@ -146,7 +147,7 @@
         "/evol reviewer"
       ],
       "skills": [
-        "skill-code-reviewer"
+        "evol-ai-review"
       ],
       "ephemeral": false,
       "retired": null
@@ -175,7 +176,7 @@
         "/evol project"
       ],
       "skills": [
-        "skill-product-prioritizer"
+        "evol-grill-me"
       ],
       "ephemeral": false,
       "retired": null
@@ -233,6 +234,22 @@
         "/evol researcher"
       ],
       "skills": [],
+      "ephemeral": false,
+      "retired": null
+    },
+    {
+      "id": 17,
+      "name": "evol-auditor",
+      "description": "Sub-agente auditor por fase. Detecta gaps, incumplimientos de contratos (JSON sidecars, memoria, skills), puntos ciegos y registra lecciones antes de retirarse.",
+      "category": "core",
+      "file": "core/evol-auditor.md",
+      "triggers": [
+        "/evol audit",
+        "/evol auditor"
+      ],
+      "skills": [
+        "agent-eval"
+      ],
       "ephemeral": false,
       "retired": null
     }

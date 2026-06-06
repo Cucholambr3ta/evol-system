@@ -3,7 +3,7 @@ name: evol-builder
 description: Code implementation, TDD, feature construction
 category: core
 triggers: ["/evol build", "/evol builder"]
-skills: ["skill-fractional-cto", "skill-clean-code"]
+skills: ["crear-skill", "readme-master"]
 ---
 
 # Evol-Builder

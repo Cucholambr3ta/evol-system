@@ -194,6 +194,18 @@ cmd_sprint_close() {
     local script_dir
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     python3 "${script_dir}/evol-memory.py" --project="$(pwd)" sprint-close --sprint="$sprint" 2>/dev/null || true
+
+    log "Sincronizando sidecars JSON de documentacion..."
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
+
+    log "Actualizando catalogo de skills..."
+    python3 "${script_dir}/generate-catalog.py" 2>/dev/null || true
+
+    if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "registry\.json"; then
+      log "Cambios detectados en registry.json. Regenerando equipo.md..."
+      bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
+    fi
   fi
 
   git push -u origin "$current" 2>/dev/null || warn "No se pudo hacer push a origin."
@@ -206,6 +218,56 @@ cmd_sprint_close() {
     log "gh cli no disponible. PR manual requerida."
   fi
   log "Sprint $snum cerrado."
+}
+
+# ── release-close ──────────────────────────────────────────────────────────────────
+# Punto de integracion entre el flujo de Release y la Memoria Persistente.
+# Debe invocarse ANTES del tag git en todo release: evol-gitflow.sh release-close --version=X.Y.Z
+
+cmd_release_close() {
+  local version=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --version=*) version="${1#*=}"; shift ;;
+      *) err "Argumento desconocido: $1" ;;
+    esac
+  done
+  [ -n "$version" ] || err "--version requerido (ej: --version=0.5.0)"
+  ensure_git
+
+  log "Release-close v${version}: actualizando memoria persistente..."
+
+  if command -v python3 >/dev/null 2>&1; then
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    # 1. Generar atomos de sprint con el numero de version como identificador
+    python3 "${script_dir}/evol-memory.py" --project="$(pwd)" \
+      sprint-close --sprint="release-${version}" 2>/dev/null || true
+
+    # 2. Sincronizar el agregado MEMORY.md
+    python3 "${script_dir}/evol-memory.py" --project="$(pwd)" \
+      memory-split 2>/dev/null || true
+
+    # 3. Sincronizar sidecars JSON de documentacion
+    log "Sincronizando sidecars JSON de documentacion..."
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
+    python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
+
+    # 4. Actualizando catalogo de skills
+    log "Actualizando catalogo de skills..."
+    python3 "${script_dir}/generate-catalog.py" 2>/dev/null || true
+
+    # 5. Regenerar equipo.md
+    log "Regenerando equipo.md..."
+    bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
+
+    log "Memoria y documentacion actualizadas: acuerdos/memoria/, MEMORY.md, catalogos y sidecars sincronizados."
+  else
+    warn "python3 no disponible. Actualizar memoria manualmente con /update-memory."
+  fi
+
+  log "Release-close v${version}: OK. Proceder con: git tag -a v${version} -m 'Release v${version}'"
 }
 
 _create_pr() {
@@ -336,9 +398,10 @@ evol-gitflow.sh v${VERSION} — GitFlow automatizado para proyectos Evol-DD
 Uso: evol-gitflow.sh <subcomando> [opciones]
 
 Subcomandos:
-  setup         --mode=dev|collab [--remote=URL]
-  sprint-start  --sprint=NN --title=<titulo> [--type=feature|fix]
-  sprint-close  --sprint=NN
+  setup          --mode=dev|collab [--remote=URL]
+  sprint-start   --sprint=NN --title=<titulo> [--type=feature|fix]
+  sprint-close   --sprint=NN
+  release-close  --version=X.Y.Z   (actualiza memoria antes del tag)
   pre-push
   status
   --version
@@ -351,12 +414,13 @@ EOF
 }
 
 case "${1:-}" in
-  setup)        shift; cmd_setup "$@" ;;
-  sprint-start) shift; cmd_sprint_start "$@" ;;
-  sprint-close) shift; cmd_sprint_close "$@" ;;
-  pre-push)     shift; cmd_pre_push "$@" ;;
-  status)       shift; cmd_status "$@" ;;
-  --version|-v) echo "evol-gitflow.sh v${VERSION}" ;;
-  --help|-h|"") show_usage ;;
+  setup)          shift; cmd_setup "$@" ;;
+  sprint-start)   shift; cmd_sprint_start "$@" ;;
+  sprint-close)   shift; cmd_sprint_close "$@" ;;
+  release-close)  shift; cmd_release_close "$@" ;;
+  pre-push)       shift; cmd_pre_push "$@" ;;
+  status)         shift; cmd_status "$@" ;;
+  --version|-v)   echo "evol-gitflow.sh v${VERSION}" ;;
+  --help|-h|"")   show_usage ;;
   *) err "Subcomando desconocido: $1. Ver: evol-gitflow.sh --help" ;;
 esac

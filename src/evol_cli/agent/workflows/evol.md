@@ -2,6 +2,10 @@
 name: evol
 trigger: /evol
 description: Orquestador Principal Evol-DD. Pipeline de desarrollo agéntico de 6 fases con gate HMAC-SHA256, agentes core permanentes y efímeros bajo demanda. Usar cuando el usuario invoque /evol, quiera iniciar un proyecto, ejecutar una fase del pipeline, crear un agente, o necesite coordinar trabajo de desarrollo.
+skills:
+  - evol-compact
+  - evol-talk-compact
+  - evol-skill-manager
 ---
 
 # /evol — Orquestador Principal Evol-DD
@@ -20,6 +24,8 @@ Al recibir `/evol`, antes de cualquier accion:
 2. Leer `lecciones.md` — patrones aprendidos relevantes al contexto actual
 3. Leer `WORKING-CONTEXT.md` si existe — contexto vivo de la sesion
 4. Verificar fase activa via `evol gate status`
+5. Resolver dinamicamente los perfiles requeridos para la accion solicitada comparando `manifests/workflow-profiles.json` con `evol.profile.yml`. Si el perfil instalado es inferior, escalar automaticamente via `evol-init.sh --profile=<perfil> --upgrade` y configurar la variable `EVOL_HOOK_PROFILE` correspondiente.
+
 
 ---
 
@@ -89,6 +95,8 @@ Las 6 disciplinas sin cobertura previa tienen skill propia: `/evol ux-driven`, `
 
 ## Skills de razonamiento — integracion automatica en el pipeline
 
+Para ver el catalogo completo de skills disponibles en el sistema y sus triggers de activacion, consulte el [Catalogo de Skills](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/CATALOG.md).
+
 Estas skills no son fases; son herramientas de razonamiento que el orquestador
 **invoca automaticamente** en el punto del pipeline donde aportan valor. El agente
 las dispara sin que el usuario las pida explicitamente cuando se cumple el gatillo.
@@ -145,6 +153,8 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 /evol crear-skill        → crear nueva skill con loop iterativo de eval
 /evol crear-agente       → crear agente especializado
 /evol doctor             → diagnostico del entorno
+/evol-update             → actualizar el core global (pipx) y ver novedades
+/evol-update-project     → inyectar actualización del core al proyecto local
 /evol memory search X    → buscar en memoria conversacional
 /evol lessons search X   → buscar lecciones antes de decidir
 ```

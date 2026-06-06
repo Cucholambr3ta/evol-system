@@ -1,0 +1,177 @@
+{
+  "version": "1.0.0",
+  "skills": [
+    {
+      "name": "agent-eval",
+      "category": "quality-gate",
+      "trigger": "/eval",
+      "triggers": [
+        "/eval"
+      ],
+      "description": "Eval-harness para skills/agents/workflows Evol-DD. 4 grader types. Suite por skill.",
+      "file": "skills/agent-eval/SKILL.md"
+    },
+    {
+      "name": "crear-agente",
+      "category": "lifecycle",
+      "trigger": "/crear-agente",
+      "triggers": [
+        "/crear-agente",
+        "crear agente",
+        "nuevo agente",
+        "necesito un agente",
+        "agente para"
+      ],
+      "description": "",
+      "file": "skills/crear-agente/SKILL.md"
+    },
+    {
+      "name": "crear-skill",
+      "category": "growth",
+      "trigger": "/crear-skill",
+      "triggers": [
+        "/crear-skill",
+        "crear skill",
+        "nueva skill",
+        "quiero una skill",
+        "hazme una skill"
+      ],
+      "description": "Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity,",
+      "file": "skills/crear-skill/SKILL.md"
+    },
+    {
+      "name": "evol-ai-review",
+      "category": "quality-gate",
+      "trigger": "/ai-review",
+      "triggers": [
+        "/ai-review"
+      ],
+      "description": "Quality gate review using AI for nuanced assessment.",
+      "file": "skills/evol-ai-review/SKILL.md"
+    },
+    {
+      "name": "evol-compact",
+      "category": "context-engineering",
+      "trigger": "/compact",
+      "triggers": [
+        "/compact"
+      ],
+      "description": "Provider-agnostic context compaction. Reduce tokens preserving semantics.",
+      "file": "skills/evol-compact/SKILL.md"
+    },
+    {
+      "name": "evol-fact-check",
+      "category": "N/A",
+      "trigger": "fact-check",
+      "triggers": [
+        "fact-check",
+        "verifica esto",
+        "es verdad que",
+        "comprueba este claim",
+        "fuente confiable?",
+        "valida esta afirmación"
+      ],
+      "description": "Verificación de claims y detección de desinformación con pipeline de 11 pasos (SIFT + CRAAP + MFS scoring). Produce Fact-Check Card con veredicto, score de manipulación y componente educativo. Inspirado en petar-nauka/fact-check-skill.",
+      "file": "skills/evol-fact-check/SKILL.md"
+    },
+    {
+      "name": "evol-fs-context",
+      "category": "context-engineering",
+      "trigger": "/fs-context",
+      "triggers": [
+        "/fs-context"
+      ],
+      "description": "Filesystem-paradigm context curation. Treat large data as files mounted by agents.",
+      "file": "skills/evol-fs-context/SKILL.md"
+    },
+    {
+      "name": "evol-grill-me",
+      "category": "N/A",
+      "trigger": "grill me",
+      "triggers": [
+        "grill me",
+        "interrógate mi plan",
+        "stress-test",
+        "ponme a prueba",
+        "cuestioname",
+        "drill me"
+      ],
+      "description": "Interrogatorio implacable de planes y diseños hasta alcanzar comprensión compartida. Recorre cada rama del árbol de decisiones resolviendo dependencias una a una. Inspirado en mattpocock/skills grill-me (MIT).",
+      "file": "skills/evol-grill-me/SKILL.md"
+    },
+    {
+      "name": "evol-idea-refine",
+      "category": "N/A",
+      "trigger": "refina esta idea",
+      "triggers": [
+        "refina esta idea",
+        "help me refine",
+        "ideate on",
+        "trabaja mi idea",
+        "afina esto",
+        "desarrolla este concepto"
+      ],
+      "description": "Refinamiento de ideas brutas en conceptos accionables. Pipeline divergente→convergente en 3 fases (Expandir / Evaluar / Afilar). Produce one-pager Markdown con dirección recomendada y lista explícita de \"No Hacemos\". Inspirado en addyosmani/agent-skills idea-refine.",
+      "file": "skills/evol-idea-refine/SKILL.md"
+    },
+    {
+      "name": "evol-prompt-master",
+      "category": "N/A",
+      "trigger": "escribe un prompt para",
+      "triggers": [
+        "escribe un prompt para",
+        "write a prompt for",
+        "mejora este prompt",
+        "fix this prompt",
+        "optimiza para",
+        "adapta para",
+        "prompt para claude",
+        "prompt para cursor"
+      ],
+      "description": "Generación de prompts optimizados para 30+ herramientas de IA. Extracción de intención en 9 dimensiones, routing por tool-specific conventions, reglas hard sobre cuándo NO agregar CoT. Complementa /mejorar-prompt (Evol-DD workflows) con soporte multi-modelo y agentic tools. Inspirado en nidhinjs/prompt-master.",
+      "file": "skills/evol-prompt-master/SKILL.md"
+    },
+    {
+      "name": "evol-sandbox",
+      "category": "security",
+      "trigger": "/sandbox",
+      "triggers": [
+        "/sandbox"
+      ],
+      "description": "Provider-agnostic sandbox skill. Backends E2B, Daytona, Microsandbox, local docker, none.",
+      "file": "skills/evol-sandbox/SKILL.md"
+    },
+    {
+      "name": "evol-skill-manager",
+      "category": "lifecycle",
+      "trigger": "/skill",
+      "triggers": [
+        "/skill"
+      ],
+      "description": "Lifecycle management for skills (install, update, rollback, validate).",
+      "file": "skills/evol-skill-manager/SKILL.md"
+    },
+    {
+      "name": "evol-talk-compact",
+      "category": "compression",
+      "trigger": "/compact-talk",
+      "triggers": [
+        "/compact-talk"
+      ],
+      "description": "Compresion de output del orquestador Evol-DD. 3 niveles. Ahorro tokens ~50-75%.",
+      "file": "skills/evol-talk-compact/SKILL.md"
+    },
+    {
+      "name": "readme-master",
+      "category": "documentation",
+      "trigger": "/evol readme-master",
+      "triggers": [
+        "/evol readme-master",
+        "actualiza el readme",
+        "crea la documentación principal"
+      ],
+      "description": "Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.",
+      "file": "skills/readme-master/SKILL.md"
+    }
+  ]
+}

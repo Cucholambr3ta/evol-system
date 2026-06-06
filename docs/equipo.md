@@ -1,6 +1,6 @@
 # Equipo de Agentes
 
-Generado: 2026-06-02T07:11:29.056915
+Generado: 2026-06-06T04:44:06.178032
 
 ---
 
@@ -24,6 +24,7 @@ Generado: 2026-06-02T07:11:29.056915
 | 14 | `evol-analyst` | Impact analysis, metrics, blast radius |
 | 15 | `evol-agent-factory` | Creates ephemeral agents via guided interaction |
 | 16 | `evol-researcher` | Autonomous research (skills, methodologies, frameworks) |
+| 17 | `evol-auditor` | Sub-agente auditor por fase. Detecta gaps, incumplimientos de contratos (JSON sidecars, memoria, skills), puntos ciegos y registra lecciones antes de retirarse. |
 
 ## Ephemeral Agents
 
