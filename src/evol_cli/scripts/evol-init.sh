@@ -16,6 +16,7 @@ show_usage() {
     echo "  --list-profiles      Show available profiles"
     echo "  --explain=<profile>  Show modules for a profile"
     echo "  --dry-run            Show what would be installed without installing"
+    echo "  --upgrade            Only install missing files and merge modules into existing profile"
 }
 
 list_profiles() {
@@ -140,9 +141,10 @@ except Exception as e:
 install_files_for_module() {
     local module="$1"
     local dest="$2"
+    local upgrade="$3"
 
     python3 -c "
-import json, os
+import json, os, sys
 
 with open('$MODULES_MANIFEST') as f:
     data = json.load(f)
@@ -155,11 +157,14 @@ if not mod_data:
 
 src_dir = '$REPO_ROOT'
 dest_dir = '$dest'
+upgrade = '$upgrade' == 'true'
 
 for f in mod_data.get('files', []):
     src = os.path.join(src_dir, f)
     dst = os.path.join(dest_dir, f)
     if os.path.exists(src):
+        if upgrade and os.path.exists(dst):
+            continue
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         import shutil
         shutil.copy2(src, dst)
@@ -172,18 +177,30 @@ for d in mod_data.get('dirs', []):
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         import shutil
         if os.path.isdir(src):
-            shutil.copytree(src, dst, dirs_exist_ok=True)
-            print(f'  + {d}/*')
+            if upgrade:
+                for root, _, files in os.walk(src):
+                    for file in files:
+                        src_file = os.path.join(root, file)
+                        rel_path = os.path.relpath(src_file, src)
+                        dst_file = os.path.join(dst, rel_path)
+                        if not os.path.exists(dst_file):
+                            os.makedirs(os.path.dirname(dst_file), exist_ok=True)
+                            shutil.copy2(src_file, dst_file)
+                            print(f'  + {os.path.join(d, rel_path)}')
+            else:
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+                print(f'  + {d}/*')
 " 2>/dev/null
 }
 
 main() {
-    local upgrade=false
-    local profile_passed=false
+    local dest=""
     local profile="core"
-    local opt_mcp_servers=""
     local mode="pip"
     local dry_run=false
+    local upgrade=false
+    local profile_passed=false
+    local opt_mcp_servers=""
 
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -193,6 +210,7 @@ main() {
             --list-profiles) list_profiles; exit 0 ;;
             --explain=*) explain_profile "${1#*=}"; exit 0 ;;
             --dry-run) dry_run=true; shift ;;
+            --upgrade) upgrade=true; shift ;;
             --help) show_usage; exit 0 ;;
             -*) shift ;;
             *) dest="$1"; shift ;;
@@ -202,6 +220,24 @@ main() {
     if [ -z "$dest" ]; then
         show_usage
         exit 1
+    fi
+
+    if [ "$upgrade" = true ] && [ "$profile_passed" != true ] && [ -f "$dest/evol.profile.yml" ]; then
+        if command -v python3 >/dev/null 2>&1; then
+            local current_profile
+            current_profile=$(python3 -c "
+import sys
+try:
+    import yaml
+    with open('$dest/evol.profile.yml') as f:
+        data = yaml.safe_load(f) or {}
+    print(data.get('profile', 'core'))
+except:
+    print('core')
+" 2>/dev/null)
+            profile="${current_profile:-core}"
+            echo "[evol-init] Upgrade mode: Using existing profile '$profile'"
+        fi
     fi
 
     echo "[evol-init] Destination: $dest"
@@ -250,7 +286,7 @@ if '$profile' not in ids:
 
     for module in $modules; do
         echo "  Module: $module"
-        install_files_for_module "$module" "$dest"
+        install_files_for_module "$module" "." "$upgrade"
     done
 
     # Write active profile to evol.profile.yml
@@ -279,6 +315,8 @@ def resolve(profile_id, seen=None):
 modules = resolve('$profile')
 data = {}
 profile_path = os.path.join(os.getcwd(), 'evol.profile.yml')
+upgrade = '$upgrade' == 'true'
+
 if os.path.exists(profile_path):
     try:
         import yaml
@@ -287,8 +325,14 @@ if os.path.exists(profile_path):
     except:
         pass
 
-data['profile'] = '$profile'
-data['modules'] = modules
+if upgrade:
+    existing_modules = data.get('modules', [])
+    data['modules'] = list(set(existing_modules + modules))
+    if 'profile' not in data:
+        data['profile'] = '$profile'
+else:
+    data['profile'] = '$profile'
+    data['modules'] = modules
 
 with open(profile_path, 'w') as f:
     import yaml
@@ -393,6 +437,13 @@ print('[evol-init] MCP habilitado por defecto en evol.config.yml')
         git init
         git checkout -b main 2>/dev/null || true
         echo "[evol-init] git initialized with main branch"
+    fi
+
+    # Runtime dirs (ignorados por git — locales por diseno)
+    if [ ! -d memory ]; then
+        mkdir -p memory/raw
+        chmod 750 memory
+        echo "[evol-init] memory/ creado (runtime local, ignorado por git)."
     fi
 
     echo ""

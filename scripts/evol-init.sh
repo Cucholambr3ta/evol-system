@@ -439,6 +439,13 @@ print('[evol-init] MCP habilitado por defecto en evol.config.yml')
         echo "[evol-init] git initialized with main branch"
     fi
 
+    # Runtime dirs (ignorados por git — locales por diseno)
+    if [ ! -d memory ]; then
+        mkdir -p memory/raw
+        chmod 750 memory
+        echo "[evol-init] memory/ creado (runtime local, ignorado por git)."
+    fi
+
     echo ""
     echo "[evol-init] Bootstrap complete"
     echo ""
