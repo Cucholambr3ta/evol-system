@@ -490,6 +490,44 @@ def edms_stats():
     print("====================")
 
 
+# ── 4-Tier Consolidation commands ─────────────────────────────────────────────
+
+def edms_consolidate(from_tier, to_tier, project=".", max_items=50):
+    """Consolidate drawers from one tier to the next."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    count = store.consolidate_tier(from_tier, to_tier, project, max_items)
+    print(f"[evol-memory] Consolidated {count} items: {from_tier} -> {to_tier}")
+
+
+def edms_decay(project=".", days=30):
+    """Mark old items as decayed."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    count = store.decay_old_items(days)
+    print(f"[evol-memory] Decayed {count} items (threshold: {days} days)")
+
+
+def edms_tier_stats(project="."):
+    """Show tier statistics."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    stats = store.get_tier_stats(project)
+    print("=== Tier Stats ===")
+    for tier, count in stats.items():
+        print(f"  {tier}: {count}")
+    print("==================")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Memory Engine")
     # Arg global --project ANTES del subcomando
@@ -559,6 +597,17 @@ def main():
 
     p = sub.add_parser("edms-bootstrap", help="Import acuerdos/ into EDMS")
 
+    # 4-Tier consolidation commands
+    p = sub.add_parser("edms-consolidate", help="Consolidate tiers (raw->compressed->memory->knowledge)")
+    p.add_argument("from_tier", help="Source tier: raw|compressed|memory")
+    p.add_argument("to_tier", help="Target tier: compressed|memory|knowledge")
+    p.add_argument("--max", type=int, default=50, help="Max items to consolidate")
+
+    p = sub.add_parser("edms-decay", help="Mark old items as decayed")
+    p.add_argument("--days", type=int, default=30, help="Days threshold")
+
+    sub.add_parser("edms-tier-stats", help="Show tier statistics")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -614,6 +663,12 @@ def main():
         edms_bootstrap(project=args.project)
     elif args.cmd == "edms-stats":
         edms_stats()
+    elif args.cmd == "edms-consolidate":
+        edms_consolidate(args.from_tier, args.to_tier, args.project, args.max)
+    elif args.cmd == "edms-decay":
+        edms_decay(args.project, args.days)
+    elif args.cmd == "edms-tier-stats":
+        edms_tier_stats(args.project)
     else:
         parser.print_help()
 

@@ -401,3 +401,134 @@ class MemoryStore:
         if len(context) > 800:
             context = context[:797] + '...'
         return context
+
+    # ── 4-Tier Consolidation ──────────────────────────────────────────────
+
+    def consolidate_tier(self, from_tier: str, to_tier: str, project: str,
+                         max_items: int = 50) -> int:
+        """Consolidate drawers from one tier to the next.
+
+        Tiers: raw -> compressed -> memory -> knowledge
+
+        Returns:
+            Number of items consolidated
+        """
+        # Find items from source tier
+        results = self.search(
+            "",
+            project=project,
+            n_results=max_items,
+        )
+
+        # Filter by tier (using 'tipo' field with tier prefix)
+        source_items = [r for r in results if r['metadata'].get('tipo', '').startswith(from_tier)]
+
+        if not source_items:
+            return 0
+
+        consolidated = 0
+        for item in source_items:
+            meta = item['metadata'].copy()
+            meta['tipo'] = to_tier
+            meta['consolidated_from'] = from_tier
+            meta['consolidated_at'] = datetime.now().isoformat()
+
+            # For knowledge tier, add to graph
+            if to_tier == 'knowledge':
+                self._add_to_knowledge_graph(item['text'], meta)
+
+            self.index(item['text'], meta)
+            consolidated += 1
+
+        return consolidated
+
+    def _add_to_knowledge_graph(self, text: str, meta: dict):
+        """Extract entities and add to knowledge graph."""
+        # Simple entity extraction (can be enhanced with LLM)
+        proyecto = meta.get('proyecto', 'unknown')
+        tipo = meta.get('tipo', 'artefacto')
+
+        # Add project node if not exists
+        self.graph_add_node("Proyecto", {"name": proyecto})
+
+        # Add entity based on tipo
+        if tipo == 'decision':
+            entity_id = hashlib.sha256(text.encode()).hexdigest()[:12]
+            self.graph_add_node("Decision", {"text": text[:200], "fecha": meta.get('fecha', '')})
+            self.graph_add_relation(proyecto, "Genera", entity_id)
+        elif tipo == 'leccion':
+            entity_id = hashlib.sha256(text.encode()).hexdigest()[:12]
+            self.graph_add_node("Leccion", {"text": text[:200], "categoria": meta.get('fase', '')})
+            self.graph_add_relation(proyecto, "Genera", entity_id)
+
+    def decay_old_items(self, days_threshold: int = 30) -> int:
+        """Mark old items as decayed based on half-life per type.
+
+        Returns:
+            Number of items decayed
+        """
+        idx_file = self.memory_dir / 'local_index.json'
+        if not idx_file.exists():
+            return 0
+
+        with open(idx_file) as f:
+            idx = json.load(f)
+
+        now = datetime.now()
+        decayed = 0
+
+        for item in idx:
+            meta = item.get('metadata', {})
+            fecha_str = meta.get('fecha')
+            if not fecha_str:
+                continue
+
+            try:
+                fecha = datetime.fromisoformat(fecha_str)
+                days_old = (now - fecha).days
+            except (ValueError, TypeError):
+                continue
+
+            tipo = meta.get('tipo', 'artefacto')
+            half_life = _HALF_LIFE_DAYS.get(tipo, 30)
+
+            # Mark as decayed if older than 2x half-life
+            if days_old > half_life * 2:
+                meta['decayed'] = True
+                meta['decayed_at'] = now.isoformat()
+                decayed += 1
+
+        if decayed > 0:
+            with open(idx_file, 'w') as f:
+                json.dump(idx, f, indent=2, ensure_ascii=False)
+
+        return decayed
+
+    def get_tier_stats(self, project: str) -> dict:
+        """Get statistics per tier.
+
+        Returns:
+            Dict with tier counts
+        """
+        stats = {'raw': 0, 'compressed': 0, 'memory': 0, 'knowledge': 0, 'total': 0}
+
+        idx_file = self.memory_dir / 'local_index.json'
+        if not idx_file.exists():
+            return stats
+
+        with open(idx_file) as f:
+            idx = json.load(f)
+
+        for item in idx:
+            meta = item.get('metadata', {})
+            if meta.get('proyecto') != project:
+                continue
+
+            tipo = meta.get('tipo', 'artefacto')
+            for tier in stats:
+                if tipo.startswith(tier):
+                    stats[tier] += 1
+                    stats['total'] += 1
+                    break
+
+        return stats
