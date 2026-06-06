@@ -51,5 +51,8 @@ Antes de escribir, el agente inferirá la naturaleza del repositorio:
 - **Alineación HTML:** Para el Hero y badges, usar `<div align="center">`.
 - **Secciones Colapsables:** Todo bloque de configuración gigante o FAQs deben ir envueltos en `<details><summary><b>► Mostrar Detalle</b></summary><br>... </details>`.
 
-## Ejecución
-Cuando el usuario solicite la creación o actualización, primero analiza el `package.json`, `pyproject.toml`, o los archivos fuente clave para extraer la misión real del proyecto. Luego rediseña y escribe el archivo `README.md` en la raíz con el nuevo estilo en HTML y Markdown.
+## Ejecución Recursiva
+Cuando el usuario solicite la creación o actualización, el agente debe:
+1. Buscar los archivos `README.md` a actualizar (ya sea en la raíz, en una subcarpeta específica, o **todos** los READMEs del proyecto si se solicita de forma global).
+2. Analizar el código fuente adyacente para extraer la misión real de ese sub-módulo o proyecto.
+3. Rediseñar y escribir cada archivo `README.md` encontrado, aplicando el estándar estructural, HTML y Markdown de manera proporcional a su contexto local.

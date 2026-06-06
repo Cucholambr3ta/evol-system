@@ -288,10 +288,10 @@ _check_evol_artifacts_not_staged() {
 _check_readme_status() {
   local base_branch="develop"
   git rev-parse --verify develop >/dev/null 2>&1 || base_branch="main"
-  if git diff --name-only "$base_branch"...HEAD 2>/dev/null | grep -q "^README.md$"; then
-    log "README.md actualizado en esta rama."
+  if git diff --name-only "$base_branch"...HEAD 2>/dev/null | grep -i -q "README\.md$"; then
+    log "Archivos README.md actualizados en esta rama."
   else
-    warn "README.md sin cambios. Recomendacion: Ejecuta '/evol readme-master' para mantener estandar Top 100."
+    warn "Ningun README.md modificado. Recomendacion: Ejecuta '/evol readme-master' para mantener estandar Top 100 en el proyecto."
   fi
 }
 
