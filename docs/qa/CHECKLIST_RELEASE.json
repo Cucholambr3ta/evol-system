@@ -1,0 +1,24 @@
+{
+  "doc": "CHECKLIST_RELEASE.md",
+  "dominio": "qa",
+  "subdominio": "CHECKLIST_RELEASE",
+  "resumen": "```bash",
+  "secciones": [
+    "pre-release-gates",
+    "cut-release",
+    "post-release",
+    "rollback",
+    "comandos-rapidos"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 615,
+  "lineas": 144,
+  "checksum_md": "f1d6c21b867b4b05",
+  "actualizado": "2026-06-06T10:49:30.180010+00:00",
+  "tokens_json": 71
+}

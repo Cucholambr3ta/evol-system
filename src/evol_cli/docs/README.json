@@ -1,0 +1,21 @@
+{
+  "doc": "README.md",
+  "dominio": "docs",
+  "subdominio": "README",
+  "resumen": "Indice del directorio `docs/`. Cada subdirectorio cubre un area especifica del sistema.",
+  "secciones": [
+    "estructura",
+    "lectura-recomendada-por-rol"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 402,
+  "lineas": 37,
+  "checksum_md": "f10261c4573250b0",
+  "actualizado": "2026-06-06T10:49:30.192082+00:00",
+  "tokens_json": 78
+}

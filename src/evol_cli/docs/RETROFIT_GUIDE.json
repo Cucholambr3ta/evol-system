@@ -1,0 +1,28 @@
+{
+  "doc": "RETROFIT_GUIDE.md",
+  "dominio": "docs",
+  "subdominio": "RETROFIT_GUIDE",
+  "resumen": "Esta guia cubre la migracion de un proyecto existente de X-DD a Evol-DD. La migracion no es una actualizacion del mismo sistema: Evol-DD es un framework independiente con un modelo de agentes, naming,",
+  "secciones": [
+    "por-que-migrar",
+    "tabla-de-equivalencias-de-scripts",
+    "tabla-de-variables-de-entorno",
+    "cambio-de-trigger",
+    "cambios-en-registryjson",
+    "diferencias-en-gate-key",
+    "diferencias-en-adapters",
+    "pasos-de-migracion",
+    "diagrama-del-proceso-de-migracion"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2189,
+  "lineas": 224,
+  "checksum_md": "c79e4728a0f63e38",
+  "actualizado": "2026-06-06T10:49:30.194946+00:00",
+  "tokens_json": 138
+}

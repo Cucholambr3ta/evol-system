@@ -218,7 +218,7 @@ flowchart LR
     M4["Paso 4\nevol-adapt.sh all"]
     M5["Paso 5\nMigrar XDD_* → EVOL_*"]
     M6["Paso 6\nevol-doctor.sh PASS"]
-    EDD["Proyecto Evol-DD\nevol.profile.yml\n.evol/ gate-key local\n16+efimeros\nsin MCP"]
+    EDD["Proyecto Evol-DD\nevol.profile.yml\n.evol/ gate-key local\n16+efimeros\ncon MCP nativo"]
 
     XDD --> M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> EDD
 ```

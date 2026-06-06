@@ -1,0 +1,51 @@
+{
+  "dominio": "qa",
+  "docs": [
+    {
+      "subdominio": "CASOS_BORDE",
+      "doc": "CASOS_BORDE.md",
+      "resumen": "| ID | Escenario | Precondicion | Input | Resultado esperado | Prioridad |",
+      "tokens_md": 2756,
+      "entidades": []
+    },
+    {
+      "subdominio": "CASOS_GHERKIN",
+      "doc": "CASOS_GHERKIN.md",
+      "resumen": "| Regla | Limite | Razon |",
+      "tokens_md": 4727,
+      "entidades": []
+    },
+    {
+      "subdominio": "CHECKLIST_RELEASE",
+      "doc": "CHECKLIST_RELEASE.md",
+      "resumen": "```bash",
+      "tokens_md": 615,
+      "entidades": []
+    },
+    {
+      "subdominio": "MATRIZ_TRAZABILIDAD",
+      "doc": "MATRIZ_TRAZABILIDAD.md",
+      "resumen": "| Codigo | Descripcion | Test/Prueba | Script/Workflow | Estado |",
+      "tokens_md": 1037,
+      "entidades": []
+    },
+    {
+      "subdominio": "PLAN_QA",
+      "doc": "PLAN_QA.md",
+      "resumen": "Este documento define la estrategia de testing, los criterios de aceptacion, y los gates de calidad para el framework Evol-DD.",
+      "tokens_md": 3444,
+      "entidades": []
+    },
+    {
+      "subdominio": "REPORTE_QA",
+      "doc": "REPORTE_QA.md",
+      "resumen": "| Categoria | Total | Pendiente | Implementado | Ejecutado |",
+      "tokens_md": 1245,
+      "entidades": []
+    }
+  ],
+  "total_docs": 6,
+  "total_tokens_md": 13824,
+  "actualizado": "2026-06-06T10:49:30.182086+00:00",
+  "total_tokens_json": 225
+}

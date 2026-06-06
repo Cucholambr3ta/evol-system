@@ -1,0 +1,21 @@
+{
+  "doc": "FAQ.md",
+  "dominio": "usuario",
+  "subdominio": "FAQ",
+  "resumen": "Framework de desarrollo basado en agentes Evol-DD.",
+  "secciones": [
+    "qué-es-evol-dd",
+    "necesito-mcp"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 34,
+  "lineas": 7,
+  "checksum_md": "e94870e73067a4fb",
+  "actualizado": "2026-06-06T10:49:30.189144+00:00",
+  "tokens_json": 68
+}

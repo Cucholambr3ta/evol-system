@@ -1,0 +1,31 @@
+{
+  "doc": "THREATS.md",
+  "dominio": "seguridad",
+  "subdominio": "THREATS",
+  "resumen": "Este documento aplica la metodologia STRIDE para identificar, categorizar y mitigar amenazas en el framework Evol-DD.",
+  "secciones": [
+    "resumen",
+    "metodologia-stride",
+    "activos-del-sistema",
+    "matriz-de-amenazas",
+    "diagrama-de-flujo-de-amenazas",
+    "controles-de-seguridad-implementados",
+    "plan-de-remediacion",
+    "evaluacion-de-riesgo",
+    "registro-de-auditoria",
+    "compliance",
+    "monitoreo",
+    "testing-de-seguridad"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1933,
+  "lineas": 159,
+  "checksum_md": "7cd89aec1ff27629",
+  "actualizado": "2026-06-06T10:49:30.188137+00:00",
+  "tokens_json": 121
+}

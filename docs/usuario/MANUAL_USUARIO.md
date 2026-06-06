@@ -112,7 +112,7 @@ Los comandos del sistema son slash commands del IDE. Se escriben directamente en
 
 Debido a la extensa cantidad de comandos y flujos especializados (más de 89 workflows que cubren metodologías, agentes core, calidad y operaciones), la documentación de los triggers se mantiene bajo la doctrina de documentación atómica.
 
-👉 **[Ver el Catálogo Atómico de Comandos y Triggers](comandos/INDEX.md)**
+**[Ver el Catálogo Atómico de Comandos y Triggers](comandos/INDEX.md)**
 
 El catálogo está granularmente dividido en:
 - **PIPELINE**: Comandos de las 6 fases nucleares (briefing, spec, plan, build, qa, retro).

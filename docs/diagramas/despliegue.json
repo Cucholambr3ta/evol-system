@@ -1,0 +1,21 @@
+{
+  "doc": "despliegue.md",
+  "dominio": "diagramas",
+  "subdominio": "despliegue",
+  "resumen": "Diagrama de despliegue del sistema Evol-DD mostrando nodos, artefactos y flujos de datos.",
+  "secciones": [
+    "diagrama-de-despliegue",
+    "tabla-de-nodos-y-artefactos"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 765,
+  "lineas": 83,
+  "checksum_md": "0d27addf9e38718b",
+  "actualizado": "2026-06-06T10:49:30.144311+00:00",
+  "tokens_json": 82
+}

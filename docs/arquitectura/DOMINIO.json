@@ -1,0 +1,29 @@
+{
+  "doc": "DOMINIO.md",
+  "dominio": "arquitectura",
+  "subdominio": "DOMINIO",
+  "resumen": "Este documento describe el modelo de dominio de Evol-DD usando DDD (Domain-Driven Design). Define bounded contexts, entidades, value objects, agregados, servicios de dominio y eventos.",
+  "secciones": [
+    "resumen",
+    "bounded-contexts",
+    "entidades",
+    "value-objects",
+    "agregados",
+    "servicios-de-dominio",
+    "eventos-de-dominio",
+    "ubiquitous-language",
+    "repositorio",
+    "factory"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2633,
+  "lineas": 409,
+  "checksum_md": "ca021eccb7d08687",
+  "actualizado": "2026-06-06T10:49:30.143099+00:00",
+  "tokens_json": 121
+}

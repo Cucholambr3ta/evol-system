@@ -1,0 +1,80 @@
+{
+  "raiz": "docs",
+  "dominios": [
+    {
+      "dominio": "api",
+      "total_docs": 1,
+      "total_tokens_md": 3050
+    },
+    {
+      "dominio": "arquitectura",
+      "total_docs": 3,
+      "total_tokens_md": 9312
+    },
+    {
+      "dominio": "diagramas",
+      "total_docs": 3,
+      "total_tokens_md": 3305
+    },
+    {
+      "dominio": "disciplinas",
+      "total_docs": 31,
+      "total_tokens_md": 51483
+    },
+    {
+      "dominio": "domain",
+      "total_docs": 1,
+      "total_tokens_md": 32
+    },
+    {
+      "dominio": "features",
+      "total_docs": 0,
+      "total_tokens_md": 0
+    },
+    {
+      "dominio": "guias",
+      "total_docs": 3,
+      "total_tokens_md": 8130
+    },
+    {
+      "dominio": "operaciones",
+      "total_docs": 6,
+      "total_tokens_md": 7536
+    },
+    {
+      "dominio": "privacy",
+      "total_docs": 0,
+      "total_tokens_md": 0
+    },
+    {
+      "dominio": "profiles",
+      "total_docs": 1,
+      "total_tokens_md": 418
+    },
+    {
+      "dominio": "qa",
+      "total_docs": 6,
+      "total_tokens_md": 13824
+    },
+    {
+      "dominio": "requisitos",
+      "total_docs": 4,
+      "total_tokens_md": 9336
+    },
+    {
+      "dominio": "seguridad",
+      "total_docs": 5,
+      "total_tokens_md": 5469
+    },
+    {
+      "dominio": "usuario",
+      "total_docs": 2,
+      "total_tokens_md": 2807
+    }
+  ],
+  "total_dominios": 14,
+  "total_docs": 66,
+  "total_tokens_md": 114702,
+  "actualizado": "2026-06-06T10:49:30.197260+00:00",
+  "total_tokens_json": 196
+}

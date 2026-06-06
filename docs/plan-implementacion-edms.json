@@ -1,0 +1,56 @@
+{
+  "doc": "plan-implementacion-edms.md",
+  "dominio": "docs",
+  "subdominio": "plan-implementacion-edms",
+  "resumen": "**Objetivo:** Diseñar e implementar el subsistema de Memoria Nativa de Evol-DD usando ChromaDB (vector) + LadybugDB (graph/relacional), integrado al pipeline de 6 fases.",
+  "secciones": [
+    "arquitectura",
+    "15-mejoras-investigadas",
+    "schema-de-metadata-discipline-aware",
+    "knowledge-graph-ladybugdb",
+    "retrieval-híbrido-rrf-composite-scoring",
+    "privacy-stripping-antes-de-indexar",
+    "12-hooks-de-lifecycle",
+    "4-tier-consolidation-pipeline",
+    "handoff-entre-sesiones",
+    "team-memory-namespaces",
+    "bootstrap-de-historia",
+    "flujo-de-datos-completo",
+    "archivos-a-crearmodificar",
+    "dependencias",
+    "tests",
+    "orden-de-ejecucion",
+    "invariantes",
+    "fuentes"
+  ],
+  "entidades": [
+    "decision"
+  ],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [
+    "https://github.com/rohitg00/agentmemory",
+    "https://github.com/openmemoryteam/openmemory",
+    "https://github.com/letta-ai/letta",
+    "https://github.com/em-llm/em-llm",
+    "https://github.com/flowscript/flowscript",
+    "https://github.com/topoteretes/cognee",
+    "https://github.com/mem0ai/mem0",
+    "https://github.com/akitaonrails/ai-memory",
+    "https://github.com/deja-ai/deja",
+    "https://github.com/cortex-system/cortex",
+    "https://github.com/context-llemur/context-llemur",
+    "https://github.com/secure-memory-mcp/secure-memory-mcp",
+    "https://github.com/obsidian-mcp/obsidian-mcp",
+    "https://github.com/memory-palace/mcp-memory-palace",
+    "https://github.com/chroma-core/chroma",
+    "https://github.com/LadybugDB/ladybug"
+  ],
+  "tokens_md": 5057,
+  "lineas": 720,
+  "checksum_md": "5d039019e836a06a",
+  "actualizado": "2026-06-06T10:49:30.194078+00:00",
+  "tokens_json": 260
+}

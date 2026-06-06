@@ -21,6 +21,17 @@
 - Commits pequenos y frecuente
 - Gates en CI: pytest, shell, security, eval
 
+## Preferencias descubiertas
+
+- Quiere planes atomicos (un solo markdown por plan), no dispersion en multiples archivos
+- Quiere research-first: investigar repos de referencia antes de implementar
+- Quiere resultado de investigacion como plan accionable, no solo analisis
+- Quiere que los planes incluyan: arquitectura, schema, hooks, tests, fuentes, orden de ejecucion
+- Trabaja en español, respuestas cortas y directas
+- No emojis en archivos del proyecto
+
 ## Notas
 
-_(agregar preferencias especificas del proyecto aqui)_
+- Framework: Evol-DD
+- GitFlow: main + develop + feature/*
+- Docs: DOC_STANDARD.md — Mermaid obligatorio, 0 emojis, trazabilidad REQ-NNN

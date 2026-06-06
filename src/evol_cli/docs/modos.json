@@ -1,0 +1,23 @@
+{
+  "doc": "modos.md",
+  "dominio": "docs",
+  "subdominio": "modos",
+  "resumen": "Memoria Persistente instalado y activo (CLI only).",
+  "secciones": [
+    "memoria-persistente",
+    "modo-base",
+    "modo-memoria-conversacional-opt-in",
+    "detección"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 177,
+  "lineas": 40,
+  "checksum_md": "7c6d57bc7f5c0760",
+  "actualizado": "2026-06-06T10:49:30.191837+00:00",
+  "tokens_json": 77
+}

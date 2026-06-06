@@ -1,0 +1,28 @@
+{
+  "doc": "constitucion.md",
+  "dominio": "docs",
+  "subdominio": "constitucion",
+  "resumen": "Ley suprema del sistema. Toda instruccion, script, agente y proceso debe",
+  "secciones": [
+    "art-1-filtro-de-ambiguedad-y-neutralidad",
+    "art-2-gated-pipeline",
+    "art-3-preservacion-de-contexto-flight-recorder",
+    "art-4-ingenieria-de-ciclo-de-vida",
+    "art-5-consultoria-de-dominio",
+    "art-6-orquestacion-multi-agente-y-delegacion",
+    "art-7-protocolo-git-gitflow",
+    "art-8-estandar-de-ingenieria",
+    "art-9-pipeline-evol-dd-6-fases"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1198,
+  "lineas": 162,
+  "checksum_md": "231b9322c60b88a9",
+  "actualizado": "2026-06-06T10:49:30.190614+00:00",
+  "tokens_json": 118
+}

@@ -1,0 +1,24 @@
+{
+  "doc": "GLOSARIO.md",
+  "dominio": "requisitos",
+  "subdominio": "GLOSARIO",
+  "resumen": "Este documento define el vocabulario unificado (Ubiquitous Language) del dominio de Evol-DD. Todos los artefactos deben usar estos terminos consistentemente.",
+  "secciones": [
+    "resumen",
+    "terminos-core",
+    "acronimos",
+    "terminos-deprecados",
+    "extension-del-glosario"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2041,
+  "lineas": 449,
+  "checksum_md": "fe6d74c5e2914760",
+  "actualizado": "2026-06-06T10:49:30.184070+00:00",
+  "tokens_json": 101
+}

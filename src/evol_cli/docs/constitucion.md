@@ -152,4 +152,11 @@ Briefing  →  Spec  →  Plan  →  Build  →  QA  →  Retro
 | **QA** | Codigo | `docs/qa/REPORTE_QA.md` | Gate HMAC |
 | **Retro** | QA | `memoria.md` + `lecciones.md` actualizados | Leccion registrada |
 
+El sistema integra **31 disciplinas *-Driven Development*** (9 base + 22 extendidas activables por
+caso de uso) como capas sobre estas 6 fases. El registro canonico, con la fase, el ejecutor y las
+fuentes de respaldo de cada disciplina, reside en [`docs/disciplinas/INDEX.md`](./disciplinas/INDEX.md).
+Cada proyecto declara en `evol.profile.yml` (bloque `methodologies:`) el subconjunto que aplica; el
+orquestador inyecta solo esas capas en su fase correspondiente. Toda ficha de disciplina y todo
+documento producto de investigacion web cita el link de su fuente (DOC_STANDARD 1.7).
+
 El sistema aprende de cada retro y actualiza sus instinctos.

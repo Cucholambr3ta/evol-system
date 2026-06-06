@@ -1,0 +1,32 @@
+{
+  "dominio": "guias",
+  "docs": [
+    {
+      "subdominio": "CONTRIBUCION",
+      "doc": "CONTRIBUCION.md",
+      "resumen": "Esta guia define el proceso completo para contribuir al framework: desde la creacion de una branch hasta el merge al trunk. Cubre GitFlow, conventional commits, requisitos de PR, y los tres tipos prin",
+      "tokens_md": 2481,
+      "entidades": []
+    },
+    {
+      "subdominio": "ONBOARDING",
+      "doc": "ONBOARDING.md",
+      "resumen": "Evol-DD es un framework CLI agéntico de desarrollo. Este documento cubre los cinco pasos necesarios para tener un entorno funcional desde cero hasta el primer ciclo de trabajo completo.",
+      "tokens_md": 2894,
+      "entidades": [
+        "hints"
+      ]
+    },
+    {
+      "subdominio": "TROUBLESHOOTING",
+      "doc": "TROUBLESHOOTING.md",
+      "resumen": "Esta guia cubre los errores mas frecuentes en Evol-DD, su causa raiz y los pasos de verificacion para confirmar que la solucion fue efectiva. Los errores estan ordenados por subsistema.",
+      "tokens_md": 2755,
+      "entidades": []
+    }
+  ],
+  "total_docs": 3,
+  "total_tokens_md": 8130,
+  "actualizado": "2026-06-06T10:49:30.173055+00:00",
+  "total_tokens_json": 211
+}

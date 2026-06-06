@@ -1,0 +1,22 @@
+{
+  "doc": "ADR-0001.md",
+  "dominio": "adr",
+  "subdominio": "ADR-0001",
+  "resumen": "**Fecha**: YYYY-MM-DD",
+  "secciones": [
+    "contexto",
+    "decisión",
+    "consecuencias"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 40,
+  "lineas": 14,
+  "checksum_md": "3c9e96ea993771c4",
+  "actualizado": "2026-06-06T10:49:39.006014+00:00",
+  "tokens_json": 64
+}

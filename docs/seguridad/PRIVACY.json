@@ -1,0 +1,26 @@
+{
+  "doc": "PRIVACY.md",
+  "dominio": "seguridad",
+  "subdominio": "PRIVACY",
+  "resumen": "Revision: 2026-06-02",
+  "secciones": [
+    "principio-general",
+    "inventario-de-datos-personales-y-sensibles",
+    "transmision-de-datos-a-terceros",
+    "datos-de-terceros-procesados-por-el-framework",
+    "retencion-y-ciclo-de-vida",
+    "derechos-del-usuario",
+    "contacto"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1283,
+  "lineas": 85,
+  "checksum_md": "4c10092555a37a2d",
+  "actualizado": "2026-06-06T10:49:30.187101+00:00",
+  "tokens_json": 89
+}

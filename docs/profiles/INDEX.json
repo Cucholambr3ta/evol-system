@@ -1,0 +1,16 @@
+{
+  "dominio": "profiles",
+  "docs": [
+    {
+      "subdominio": "README",
+      "doc": "README.md",
+      "resumen": "Profiles are predefined sets of modules that determine what Evol-DD installs in a project.",
+      "tokens_md": 418,
+      "entidades": []
+    }
+  ],
+  "total_docs": 1,
+  "total_tokens_md": 418,
+  "actualizado": "2026-06-06T10:49:30.176871+00:00",
+  "total_tokens_json": 59
+}

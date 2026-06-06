@@ -1,0 +1,26 @@
+{
+  "doc": "DOC_STANDARD.md",
+  "dominio": "docs",
+  "subdominio": "DOC_STANDARD",
+  "resumen": "Ley unica de formato y granularidad para todo artefacto de documentacion generado por",
+  "secciones": [
+    "principios-inquebrantables",
+    "secciones-minimas-por-artefacto",
+    "definition-of-done-por-documento",
+    "verificacion-automatizada-gate-tier-1",
+    "aplicabilidad",
+    "protocolo-worker-auditor-para-documentacion",
+    "par-jsonmd-para-ahorro-de-tokens"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 3165,
+  "lineas": 349,
+  "checksum_md": "2ac9376f7cdb468e",
+  "actualizado": "2026-06-06T10:49:30.195902+00:00",
+  "tokens_json": 108
+}

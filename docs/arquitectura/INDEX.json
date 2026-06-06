@@ -1,0 +1,30 @@
+{
+  "dominio": "arquitectura",
+  "docs": [
+    {
+      "subdominio": "ARQUITECTURA",
+      "doc": "ARQUITECTURA.md",
+      "resumen": "Evol-DD es un framework de desarrollo agentico con 16 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.",
+      "tokens_md": 4042,
+      "entidades": []
+    },
+    {
+      "subdominio": "DECISIONES",
+      "doc": "DECISIONES.md",
+      "resumen": "- Status: Accepted",
+      "tokens_md": 2637,
+      "entidades": []
+    },
+    {
+      "subdominio": "DOMINIO",
+      "doc": "DOMINIO.md",
+      "resumen": "Este documento describe el modelo de dominio de Evol-DD usando DDD (Domain-Driven Design). Define bounded contexts, entidades, value objects, agregados, servicios de dominio y eventos.",
+      "tokens_md": 2633,
+      "entidades": []
+    }
+  ],
+  "total_docs": 3,
+  "total_tokens_md": 9312,
+  "actualizado": "2026-06-06T10:49:30.143288+00:00",
+  "total_tokens_json": 164
+}

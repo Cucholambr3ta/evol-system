@@ -1,0 +1,26 @@
+{
+  "doc": "DR_PLAN.md",
+  "dominio": "operaciones",
+  "subdominio": "DR_PLAN",
+  "resumen": "Revision: 2026-06-02 | Propietario: equipo de desarrollo del proyecto | Alcance: framework Evol-DD y proyectos que lo usan",
+  "secciones": [
+    "objetivos-de-recuperacion",
+    "activos-criticos",
+    "escenario-1-maquina-del-usuario-perdida-o-inutilizable",
+    "escenario-2-repositorio-remoto-corrupto-o-eliminado",
+    "escenario-3-gate-key-perdida-o-comprometida",
+    "escenario-4-statedb-corrupto-o-datos-inconsistentes",
+    "plan-de-backup-recomendado"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2169,
+  "lineas": 242,
+  "checksum_md": "cbbcb3bbbe99b3d5",
+  "actualizado": "2026-06-06T10:49:30.173881+00:00",
+  "tokens_json": 122
+}

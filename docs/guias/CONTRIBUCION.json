@@ -1,0 +1,33 @@
+{
+  "doc": "CONTRIBUCION.md",
+  "dominio": "guias",
+  "subdominio": "CONTRIBUCION",
+  "resumen": "Esta guia define el proceso completo para contribuir al framework: desde la creacion de una branch hasta el merge al trunk. Cubre GitFlow, conventional commits, requisitos de PR, y los tres tipos prin",
+  "secciones": [
+    "flujo-gitflow",
+    "conventional-commits",
+    "requisitos-de-pr",
+    "como-añadir-un-workflow",
+    "como-añadir-un-agente-core",
+    "mision",
+    "reglas-de-operacion",
+    "limites",
+    "contexto-de-trabajo",
+    "activacion",
+    "como-añadir-una-skill",
+    "code-review-checklist"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": [
+      "docs/qa/MATRIZ_TRAZABILIDAD.md"
+    ]
+  },
+  "fuentes": [],
+  "tokens_md": 2481,
+  "lineas": 395,
+  "checksum_md": "aaf8abd092b077dc",
+  "actualizado": "2026-06-06T10:49:30.170487+00:00",
+  "tokens_json": 144
+}

@@ -1,0 +1,25 @@
+{
+  "doc": "evol-dd_Integration_Guide.md",
+  "dominio": "docs",
+  "subdominio": "evol-dd_Integration_Guide",
+  "resumen": "Evol-DD es un sistema independiente construido desde cero con decisiones arquitectónicas orientadas a la escalabilidad, la seguridad por diseño (SecDD) y la autonomía de agentes sin dependencias exter",
+  "secciones": [
+    "patrones-arquitectónicos-base",
+    "principios-fundamentales-del-pipeline",
+    "arquitectura-de-ciclo-de-vida-de-agentes",
+    "modelo-de-memoria-contextual",
+    "diagrama-funcional-del-ecosistema",
+    "cobertura-de-disciplinas--driven-development"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1148,
+  "lineas": 105,
+  "checksum_md": "30ceae97bde75ff1",
+  "actualizado": "2026-06-06T10:49:30.191622+00:00",
+  "tokens_json": 134
+}

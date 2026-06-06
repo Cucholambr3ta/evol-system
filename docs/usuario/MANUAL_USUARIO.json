@@ -1,0 +1,27 @@
+{
+  "doc": "MANUAL_USUARIO.md",
+  "dominio": "usuario",
+  "subdominio": "MANUAL_USUARIO",
+  "resumen": "Evol-DD es un framework de desarrollo que integra un equipo de agentes especializados directamente en tu entorno de trabajo. En lugar de usar herramientas separadas para planificar, escribir codigo, r",
+  "secciones": [
+    "que-es-evol-dd",
+    "los-cuatro-superpoderes-del-sistema",
+    "ciclo-de-trabajo-tipico",
+    "cómo-hablar-con-el-sistema",
+    "como-leer-la-memoria-al-inicio-de-sesion",
+    "como-revisar-lecciones-antes-de-tomar-una-decision",
+    "como-crear-un-agente-especializado-para-una-tarea",
+    "glosario-de-terminos-clave"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2773,
+  "lineas": 234,
+  "checksum_md": "ed8be20baad78dd0",
+  "actualizado": "2026-06-06T10:49:30.189913+00:00",
+  "tokens_json": 142
+}

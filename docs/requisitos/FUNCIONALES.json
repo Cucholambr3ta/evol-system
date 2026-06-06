@@ -1,0 +1,33 @@
+{
+  "doc": "FUNCIONALES.md",
+  "dominio": "requisitos",
+  "subdominio": "FUNCIONALES",
+  "resumen": "Este documento especifica los requisitos funcionales del framework Evol-DD organizados por feature.",
+  "secciones": [
+    "resumen",
+    "convenciones",
+    "req-001-bootstrap-de-proyecto",
+    "req-002-ciclo-de-vida-de-agentes-efimeros",
+    "req-003-registro-de-agentes-registry",
+    "req-004-gate-keeper-hmac-sha256",
+    "req-005-pipeline-de-6-fases",
+    "req-006-16-agentes-core",
+    "req-007-sistema-de-memoria",
+    "req-008-hooks-event-driven",
+    "req-009-auto-evolucion-de-skills",
+    "req-010-evaluacion-y-calidad",
+    "req-011-instalacion-y-perfiles",
+    "matriz-de-trazabilidad"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 3313,
+  "lineas": 400,
+  "checksum_md": "ec6f2d372445a2c9",
+  "actualizado": "2026-06-06T10:49:30.183105+00:00",
+  "tokens_json": 137
+}

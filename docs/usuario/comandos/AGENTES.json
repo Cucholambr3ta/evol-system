@@ -1,0 +1,18 @@
+{
+  "doc": "AGENTES.md",
+  "dominio": "comandos",
+  "subdominio": "AGENTES",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **AGENTES**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 132,
+  "lineas": 22,
+  "checksum_md": "078fe3feaa6d27e2",
+  "actualizado": "2026-06-06T10:49:39.036503+00:00",
+  "tokens_json": 70
+}

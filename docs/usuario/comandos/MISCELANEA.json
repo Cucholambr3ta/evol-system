@@ -1,0 +1,18 @@
+{
+  "doc": "MISCELANEA.md",
+  "dominio": "comandos",
+  "subdominio": "MISCELANEA",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **MISCELANEA**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 458,
+  "lineas": 142,
+  "checksum_md": "9a746d8e4c58321f",
+  "actualizado": "2026-06-06T10:49:39.038135+00:00",
+  "tokens_json": 72
+}

@@ -1,0 +1,21 @@
+{
+  "doc": "CASOS_BORDE.md",
+  "dominio": "qa",
+  "subdominio": "CASOS_BORDE",
+  "resumen": "| ID | Escenario | Precondicion | Input | Resultado esperado | Prioridad |",
+  "secciones": [
+    "tabla-de-casos",
+    "escenarios-gherkin"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2756,
+  "lineas": 210,
+  "checksum_md": "0bd02a09fcb90016",
+  "actualizado": "2026-06-06T10:49:30.177620+00:00",
+  "tokens_json": 79
+}

@@ -1,0 +1,36 @@
+{
+  "doc": "ARQUITECTURA.md",
+  "dominio": "arquitectura",
+  "subdominio": "ARQUITECTURA",
+  "resumen": "Evol-DD es un framework de desarrollo agentico con 16 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.",
+  "secciones": [
+    "resumen-ejecutivo",
+    "vision-general",
+    "componentes-principales",
+    "apendice-estructura-de-directorios"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": [
+      "ARQUITECTURA.md",
+      "DOMINIO.md",
+      "FUNCIONALES.md",
+      "NO_FUNCIONALES.md",
+      "GLOSARIO.md",
+      "CASOS_GHERKIN.md",
+      "MATRIZ_TRAZABILIDAD.md",
+      "THREATS.md",
+      "SECURITY_CONTROLS.md",
+      "RUNBOOK.md",
+      "memoria.md",
+      "lecciones.md"
+    ]
+  },
+  "fuentes": [],
+  "tokens_md": 4042,
+  "lineas": 496,
+  "checksum_md": "9668faaa914bcdc6",
+  "actualizado": "2026-06-06T10:49:30.140810+00:00",
+  "tokens_json": 147
+}

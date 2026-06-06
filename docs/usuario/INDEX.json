@@ -1,0 +1,23 @@
+{
+  "dominio": "usuario",
+  "docs": [
+    {
+      "subdominio": "FAQ",
+      "doc": "FAQ.md",
+      "resumen": "Framework de desarrollo basado en agentes Evol-DD.",
+      "tokens_md": 34,
+      "entidades": []
+    },
+    {
+      "subdominio": "MANUAL_USUARIO",
+      "doc": "MANUAL_USUARIO.md",
+      "resumen": "Evol-DD es un framework de desarrollo que integra un equipo de agentes especializados directamente en tu entorno de trabajo. En lugar de usar herramientas separadas para planificar, escribir codigo, r",
+      "tokens_md": 2773,
+      "entidades": []
+    }
+  ],
+  "total_docs": 2,
+  "total_tokens_md": 2807,
+  "actualizado": "2026-06-06T10:49:30.190052+00:00",
+  "total_tokens_json": 113
+}

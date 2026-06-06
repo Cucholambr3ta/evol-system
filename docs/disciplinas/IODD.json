@@ -26,9 +26,9 @@
     "https://learn.microsoft.com/en-us/azure/well-architected/framework/devops/design-iac",
     "https://github.com/opentofu/opentofu"
   ],
-  "tokens_md": 1319,
+  "tokens_md": 1322,
   "lineas": 152,
-  "checksum_md": "07cc0950c540f1e2",
-  "actualizado": "2026-06-05T08:14:06.465741+00:00",
+  "checksum_md": "1b3c0b62e7e70e7c",
+  "actualizado": "2026-06-06T10:49:30.156910+00:00",
   "tokens_json": 142
 }

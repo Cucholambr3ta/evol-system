@@ -1,0 +1,30 @@
+{
+  "doc": "TAG_STRATEGY.md",
+  "dominio": "operaciones",
+  "subdominio": "TAG_STRATEGY",
+  "resumen": "All tags follow `v<MAJOR>.<MINOR>.<PATCH>` (semver).",
+  "secciones": [
+    "tag-format",
+    "when-to-tag",
+    "no-tag-without-gates",
+    "tag-annotation",
+    "added",
+    "changed",
+    "fixed",
+    "tag-lifecycle",
+    "ci-enforcement",
+    "signed-tags",
+    "referencing-tags-in-code"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 332,
+  "lineas": 62,
+  "checksum_md": "a2f0fc6c4a66fbe5",
+  "actualizado": "2026-06-06T10:49:30.175816+00:00",
+  "tokens_json": 94
+}

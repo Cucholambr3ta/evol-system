@@ -1,0 +1,18 @@
+{
+  "doc": "PIPELINE.md",
+  "dominio": "comandos",
+  "subdominio": "PIPELINE",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **PIPELINE**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 527,
+  "lineas": 62,
+  "checksum_md": "ad6e7922b2ad2a86",
+  "actualizado": "2026-06-06T10:49:39.038785+00:00",
+  "tokens_json": 71
+}

@@ -1,0 +1,26 @@
+{
+  "doc": "SECURITY_PERMISSIONS.md",
+  "dominio": "docs",
+  "subdominio": "SECURITY_PERMISSIONS",
+  "resumen": "This document defines the file-system permission policy for the Evol-DD framework.",
+  "secciones": [
+    "overview",
+    "policy-by-file-type",
+    "enforcement",
+    "group-writable-risk",
+    "creating-sensitive-runtime-files",
+    "python-reference",
+    "cigates"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 521,
+  "lineas": 68,
+  "checksum_md": "463e6f352828e467",
+  "actualizado": "2026-06-06T10:49:30.196215+00:00",
+  "tokens_json": 96
+}

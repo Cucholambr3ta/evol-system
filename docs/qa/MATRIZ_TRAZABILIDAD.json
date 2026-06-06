@@ -1,0 +1,25 @@
+{
+  "doc": "MATRIZ_TRAZABILIDAD.md",
+  "dominio": "qa",
+  "subdominio": "MATRIZ_TRAZABILIDAD",
+  "resumen": "| Codigo | Descripcion | Test/Prueba | Script/Workflow | Estado |",
+  "secciones": [
+    "estado-de-implementacion",
+    "estados",
+    "cobertura-actual",
+    "gates-de-calidad",
+    "requisitos-no-funcionales",
+    "artefactos-de-trazabilidad"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1037,
+  "lineas": 84,
+  "checksum_md": "ff6e237f659d8a82",
+  "actualizado": "2026-06-06T10:49:30.180428+00:00",
+  "tokens_json": 92
+}

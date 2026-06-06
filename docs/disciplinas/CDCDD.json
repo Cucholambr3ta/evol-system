@@ -26,9 +26,9 @@
     "https://risingwave.com/blog/cdc-stream-processing-the-complete-guide-2026/",
     "https://github.com/debezium/debezium"
   ],
-  "tokens_md": 1288,
+  "tokens_md": 1290,
   "lineas": 151,
-  "checksum_md": "78d30bb4a9a39e5a",
-  "actualizado": "2026-06-05T08:14:06.459739+00:00",
-  "tokens_json": 145
+  "checksum_md": "23d8ecd1048dc21d",
+  "actualizado": "2026-06-06T10:49:30.150471+00:00",
+  "tokens_json": 146
 }

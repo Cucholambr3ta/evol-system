@@ -1,0 +1,23 @@
+{
+  "doc": "SECURITY_CONTROLS.md",
+  "dominio": "seguridad",
+  "subdominio": "SECURITY_CONTROLS",
+  "resumen": "Revision: 2026-06-02",
+  "secciones": [
+    "tabla-de-controles-implementados",
+    "cobertura-por-capa",
+    "exclusiones-de-alcance",
+    "referencias"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1112,
+  "lineas": 55,
+  "checksum_md": "b7ea5cd3644e7b5d",
+  "actualizado": "2026-06-06T10:49:30.187538+00:00",
+  "tokens_json": 75
+}

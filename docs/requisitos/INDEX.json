@@ -1,0 +1,37 @@
+{
+  "dominio": "requisitos",
+  "docs": [
+    {
+      "subdominio": "FUNCIONALES",
+      "doc": "FUNCIONALES.md",
+      "resumen": "Este documento especifica los requisitos funcionales del framework Evol-DD organizados por feature.",
+      "tokens_md": 3313,
+      "entidades": []
+    },
+    {
+      "subdominio": "GLOSARIO",
+      "doc": "GLOSARIO.md",
+      "resumen": "Este documento define el vocabulario unificado (Ubiquitous Language) del dominio de Evol-DD. Todos los artefactos deben usar estos terminos consistentemente.",
+      "tokens_md": 2041,
+      "entidades": []
+    },
+    {
+      "subdominio": "NO_FUNCIONALES",
+      "doc": "NO_FUNCIONALES.md",
+      "resumen": "Este documento especifica los requisitos no funcionales del framework Evol-DD.",
+      "tokens_md": 2574,
+      "entidades": []
+    },
+    {
+      "subdominio": "RESTRICCIONES",
+      "doc": "RESTRICCIONES.md",
+      "resumen": "Este documento especifica las restricciones tecnicas, dependencias externas y suposiciones del proyecto.",
+      "tokens_md": 1408,
+      "entidades": []
+    }
+  ],
+  "total_docs": 4,
+  "total_tokens_md": 9336,
+  "actualizado": "2026-06-06T10:49:30.186580+00:00",
+  "total_tokens_json": 189
+}

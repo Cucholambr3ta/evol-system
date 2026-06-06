@@ -1,6 +1,16 @@
 {
   "dominio": "domain",
-  "docs": [],
-  "total_docs": 0,
-  "total_tokens_md": 0
+  "docs": [
+    {
+      "subdominio": "UBIQUITOUS_LANGUAGE",
+      "doc": "UBIQUITOUS_LANGUAGE.md",
+      "resumen": "Glosario del dominio. Vocabulario obligatorio.",
+      "tokens_md": 32,
+      "entidades": []
+    }
+  ],
+  "total_docs": 1,
+  "total_tokens_md": 32,
+  "actualizado": "2026-06-06T10:49:30.169453+00:00",
+  "total_tokens_json": 51
 }

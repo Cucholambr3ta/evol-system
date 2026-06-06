@@ -1,0 +1,32 @@
+{
+  "doc": "IDE_SETUP.md",
+  "dominio": "docs",
+  "subdominio": "IDE_SETUP",
+  "resumen": "Guia de configuracion del adaptador `evol-adapt.sh` para los 7 IDEs soportados. El adaptador copia los workflows de `.agent/workflows/` al directorio nativo de cada IDE, con soporte MCP integrado exte",
+  "secciones": [
+    "tabla-resumen",
+    "prerequisitos",
+    "verificación-mcp",
+    "claude-code",
+    "opencode",
+    "cursor",
+    "windsurf",
+    "vscode-copilot",
+    "antigravity",
+    "codex",
+    "personalizacion-del-trigger",
+    "dry-run",
+    "diagrama-de-flujo-del-adaptador"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1800,
+  "lineas": 367,
+  "checksum_md": "5368e611ef1bdf44",
+  "actualizado": "2026-06-06T10:49:30.197165+00:00",
+  "tokens_json": 134
+}

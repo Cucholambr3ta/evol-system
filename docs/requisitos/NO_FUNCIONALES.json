@@ -1,0 +1,37 @@
+{
+  "doc": "NO_FUNCIONALES.md",
+  "dominio": "requisitos",
+  "subdominio": "NO_FUNCIONALES",
+  "resumen": "Este documento especifica los requisitos no funcionales del framework Evol-DD.",
+  "secciones": [
+    "resumen",
+    "convenciones",
+    "nfr-001-rendimiento-tiempo-de-inicializacion",
+    "nfr-002-rendimiento-tiempo-de-bootstrap",
+    "nfr-003-disponibilidad-modo-base",
+    "nfr-004-seguridad-con-mcp",
+    "nfr-005-seguridad-sin-secrets",
+    "nfr-006-portabilidad-rutas-relativas",
+    "nfr-007-mantenibilidad-max-lineas-funcion",
+    "nfr-008-observabilidad-traces-ndjson",
+    "nfr-009-disponibilidad-modo-memory-opt-in",
+    "nfr-010-seguridad-supply-chain-scan",
+    "nfr-011-rendimiento-gate-validation",
+    "nfr-012-escalabilidad-max-agentes-concurrentes",
+    "nfr-013-compatibilidad-python-version",
+    "nfr-014-compatibilidad-ides-soportados",
+    "nfr-015-seguridad-gitflow-enforcement",
+    "matriz-resumen"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2574,
+  "lineas": 487,
+  "checksum_md": "e2952e0295d5219b",
+  "actualizado": "2026-06-06T10:49:30.185757+00:00",
+  "tokens_json": 166
+}

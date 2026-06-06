@@ -1,0 +1,29 @@
+{
+  "doc": "GATE.md",
+  "dominio": "docs",
+  "subdominio": "GATE",
+  "resumen": "The gate is an approval system using HMAC-SHA256 signatures with a tamper-evident chain. Every approval entry is signed and chained via `previous_hash`, enabling detection of log tampering.",
+  "secciones": [
+    "overview",
+    "architecture",
+    "payload-schema",
+    "chain-integrity",
+    "signing",
+    "commands",
+    "permissions",
+    "fail-closed-behavior",
+    "security-properties",
+    "negative-test-coverage"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 589,
+  "lineas": 88,
+  "checksum_md": "a13efc8b935a3d65",
+  "actualizado": "2026-06-06T10:49:30.191189+00:00",
+  "tokens_json": 122
+}

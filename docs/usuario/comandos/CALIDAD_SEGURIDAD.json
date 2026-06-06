@@ -1,0 +1,18 @@
+{
+  "doc": "CALIDAD_SEGURIDAD.md",
+  "dominio": "comandos",
+  "subdominio": "CALIDAD_SEGURIDAD",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **CALIDAD_SEGURIDAD**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 671,
+  "lineas": 126,
+  "checksum_md": "2a4799cb4b730f69",
+  "actualizado": "2026-06-06T10:49:39.036979+00:00",
+  "tokens_json": 74
+}

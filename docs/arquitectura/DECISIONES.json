@@ -1,0 +1,27 @@
+{
+  "doc": "DECISIONES.md",
+  "dominio": "arquitectura",
+  "subdominio": "DECISIONES",
+  "resumen": "- Status: Accepted",
+  "secciones": [
+    "adr-001-arquitectura-cli-first",
+    "adr-002-eliminar-mcp-completamente",
+    "adr-003-gitflow-como-estrategia-git-por-defecto",
+    "adr-004-gate-key-por-proyecto-no-global",
+    "adr-005-16-agentes-core-permanentes-efimeros-ilimitados",
+    "adr-006-motor-de-memoria-conversacional-nativo",
+    "adr-007-motor-de-lecciones-con-ciclo-de-mejora-continua",
+    "adr-008-growth-engine-como-capacidad-core-crear-skill-crear-agente"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2637,
+  "lineas": 199,
+  "checksum_md": "30b51ac86d47abee",
+  "actualizado": "2026-06-06T10:49:30.141927+00:00",
+  "tokens_json": 115
+}

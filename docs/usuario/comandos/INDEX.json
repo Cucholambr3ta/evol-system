@@ -1,0 +1,65 @@
+{
+  "dominio": "comandos",
+  "docs": [
+    {
+      "subdominio": "AGENTES",
+      "doc": "AGENTES.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **AGENTES**.",
+      "tokens_md": 132,
+      "entidades": []
+    },
+    {
+      "subdominio": "CALIDAD_SEGURIDAD",
+      "doc": "CALIDAD_SEGURIDAD.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **CALIDAD_SEGURIDAD**.",
+      "tokens_md": 671,
+      "entidades": []
+    },
+    {
+      "subdominio": "DISCIPLINAS",
+      "doc": "DISCIPLINAS.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **DISCIPLINAS**.",
+      "tokens_md": 866,
+      "entidades": []
+    },
+    {
+      "subdominio": "MCP",
+      "doc": "MCP.md",
+      "resumen": "**Módulo:** `mcp-manager`",
+      "tokens_md": 304,
+      "entidades": []
+    },
+    {
+      "subdominio": "MISCELANEA",
+      "doc": "MISCELANEA.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **MISCELANEA**.",
+      "tokens_md": 458,
+      "entidades": []
+    },
+    {
+      "subdominio": "OPERACIONES",
+      "doc": "OPERACIONES.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **OPERACIONES**.",
+      "tokens_md": 658,
+      "entidades": []
+    },
+    {
+      "subdominio": "PIPELINE",
+      "doc": "PIPELINE.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **PIPELINE**.",
+      "tokens_md": 527,
+      "entidades": []
+    },
+    {
+      "subdominio": "UTILIDADES",
+      "doc": "UTILIDADES.md",
+      "resumen": "Listado granular de todos los triggers pertenecientes al dominio **UTILIDADES**.",
+      "tokens_md": 1236,
+      "entidades": []
+    }
+  ],
+  "total_docs": 8,
+  "total_tokens_md": 4852,
+  "actualizado": "2026-06-06T10:49:39.039368+00:00",
+  "total_tokens_json": 292
+}

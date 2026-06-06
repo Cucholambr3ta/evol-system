@@ -1,0 +1,18 @@
+{
+  "doc": "UTILIDADES.md",
+  "dominio": "comandos",
+  "subdominio": "UTILIDADES",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **UTILIDADES**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1236,
+  "lineas": 174,
+  "checksum_md": "2a1b48ace839348e",
+  "actualizado": "2026-06-06T10:49:39.039263+00:00",
+  "tokens_json": 72
+}

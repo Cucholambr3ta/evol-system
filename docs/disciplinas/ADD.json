@@ -26,9 +26,9 @@
     "https://aws.amazon.com/blogs/architecture/master-architecture-decision-records-adrs-best-practices-for-effective-decision-making/",
     "https://github.com/npryce/adr-tools"
   ],
-  "tokens_md": 1365,
+  "tokens_md": 1367,
   "lineas": 152,
-  "checksum_md": "720fa12dc9cc7dc7",
-  "actualizado": "2026-06-05T08:14:06.456334+00:00",
-  "tokens_json": 145
+  "checksum_md": "9d826a4769e199da",
+  "actualizado": "2026-06-06T10:49:30.146849+00:00",
+  "tokens_json": 146
 }

@@ -1,0 +1,30 @@
+{
+  "dominio": "diagramas",
+  "docs": [
+    {
+      "subdominio": "componentes",
+      "doc": "componentes.md",
+      "resumen": "Diagrama de componentes nivel C4 del sistema Evol-DD.",
+      "tokens_md": 1415,
+      "entidades": []
+    },
+    {
+      "subdominio": "despliegue",
+      "doc": "despliegue.md",
+      "resumen": "Diagrama de despliegue del sistema Evol-DD mostrando nodos, artefactos y flujos de datos.",
+      "tokens_md": 765,
+      "entidades": []
+    },
+    {
+      "subdominio": "flujo-datos",
+      "doc": "flujo-datos.md",
+      "resumen": "Diagramas de secuencia para los cuatro flujos principales del sistema.",
+      "tokens_md": 1125,
+      "entidades": []
+    }
+  ],
+  "total_docs": 3,
+  "total_tokens_md": 3305,
+  "actualizado": "2026-06-06T10:49:30.145335+00:00",
+  "total_tokens_json": 125
+}

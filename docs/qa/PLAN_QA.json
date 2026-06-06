@@ -1,0 +1,28 @@
+{
+  "doc": "PLAN_QA.md",
+  "dominio": "qa",
+  "subdominio": "PLAN_QA",
+  "resumen": "Este documento define la estrategia de testing, los criterios de aceptacion, y los gates de calidad para el framework Evol-DD.",
+  "secciones": [
+    "resumen",
+    "estrategia-de-testing",
+    "casos-de-prueba",
+    "matriz-de-cobertura",
+    "gates-de-calidad",
+    "entorno-de-testing",
+    "responsabilidades",
+    "entregables",
+    "metricas-de-calidad"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 3444,
+  "lineas": 529,
+  "checksum_md": "b4659d542683ed41",
+  "actualizado": "2026-06-06T10:49:30.181456+00:00",
+  "tokens_json": 110
+}

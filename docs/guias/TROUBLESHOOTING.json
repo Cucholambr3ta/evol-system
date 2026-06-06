@@ -1,0 +1,21 @@
+{
+  "doc": "TROUBLESHOOTING.md",
+  "dominio": "guias",
+  "subdominio": "TROUBLESHOOTING",
+  "resumen": "Esta guia cubre los errores mas frecuentes en Evol-DD, su causa raiz y los pasos de verificacion para confirmar que la solucion fue efectiva. Los errores estan ordenados por subsistema.",
+  "secciones": [
+    "tabla-de-errores",
+    "detalles-y-soluciones"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2755,
+  "lineas": 447,
+  "checksum_md": "405c3e671c715096",
+  "actualizado": "2026-06-06T10:49:30.172882+00:00",
+  "tokens_json": 105
+}

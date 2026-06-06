@@ -11,11 +11,13 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** PUBLICADO EN PYPI — v0.5.0 activa en produccion
-- **Ultimo hito:** Integrada skill readme-master, diseño Top 100 y hooks recursivos pre-push.
-- **Proximo paso:** Construir memoria persistente nativa (ChromaDB + LadybugDB).
+- **Fase Evol-DD:** F6-Retro — Update memory + preparar release EDMS
+- **Branch:** develop
+- **Ultimo hito:** Plan EDMS atomico creado (docs/plan-implementacion-edms.md, 720 lineas, 18 secciones). 15 mejoras investigadas (24 repos). ChromaDB + LadybugDB como stack base.
+- **Proximo paso:** Implementar Fase 1 del EDMS (evol_memory_store.py + ChromaDB + LadybugDB)
 - **PyPI:** https://pypi.org/project/evol-dd/
 - **Versiones publicadas:** 0.1.0 → 0.3.3 (update-memory) → 0.4.0 → 0.5.0 (readme-master)
+- **EDMS:** En fase de disseno. Plan completo en `docs/plan-implementacion-edms.md`. Zero codigo escrito.
 
 ## Decisiones Arquitectónicas Clave
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
@@ -63,6 +65,21 @@
 ---
 
 ## Bitácora de Sesiones
+
+### Sesión 2026-06-06 — EDMS Research + Plan Atómico + Update Memory
+
+- **Meta:** Investigar repositorios de referencia de memoria para agentes, dissenar plan EDMS atomico, y actualizar memoria.
+- **Hitos:**
+  - Investigacion completa: 24 repositorios analizados (OpenMemory, agentmemory, Letta, EM-LLM, FlowScript, cognee, mem0, ai-memory, Deja, Cortex, Secure Memory MCP, MemPalace, etc.)
+  - 15 mejoras identificadas: RRF fusion, 4-tier consolidation, 5-sector classification, composite scoring, causal chains, handoff, privacy stripping, citation provenance, Bayesian surprise, session viewer, 12 hooks, self-editing, team namespaces, bootstrap, discipline-aware schema.
+  - Plan atomico creado: `docs/plan-implementacion-edms.md` (720 lineas, 18 secciones).
+  - Decision: ChromaDB + LadybugDB en DB global `~/.evol/memory/`, no per-project.
+  - Decision: Discipline-aware schema como diferenciador unico (31 disciplinas como filtro).
+  - GitNexus eliminado del framework (commit 6214375, 17 archivos, -435 lineas).
+  - Memoria actualizada: atomos, lecciones, bitacora.
+- **QA:** Todos los atomos de memoria sincronizados, MEMORY.md regenerado via memory-split.
+- **Estado:** Branch develop. Plan EDMS completo, zero codigo escrito. ChromaDB/LadybugDB no instalados.
+- **Proxima sesion:** Implementar Fase 1 EDMS (evol_memory_store.py + ChromaDB + LadybugDB).
 
 ### Sesión 2026-06-06 — Fix Rebrand Residual, MemPalace Removal & v0.3.3
 

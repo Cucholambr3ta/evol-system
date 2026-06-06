@@ -1,0 +1,18 @@
+{
+  "doc": "RUNBOOK.md",
+  "dominio": "operaciones",
+  "subdominio": "RUNBOOK",
+  "resumen": "Revision: 2026-06-02",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 2027,
+  "lineas": 282,
+  "checksum_md": "a2eb24215da6aa9a",
+  "actualizado": "2026-06-06T10:49:30.175549+00:00",
+  "tokens_json": 59
+}

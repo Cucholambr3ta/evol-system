@@ -1,0 +1,18 @@
+{
+  "doc": "DISCIPLINAS.md",
+  "dominio": "comandos",
+  "subdominio": "DISCIPLINAS",
+  "resumen": "Listado granular de todos los triggers pertenecientes al dominio **DISCIPLINAS**.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 866,
+  "lineas": 118,
+  "checksum_md": "0f497d431256cb93",
+  "actualizado": "2026-06-06T10:49:39.037400+00:00",
+  "tokens_json": 72
+}

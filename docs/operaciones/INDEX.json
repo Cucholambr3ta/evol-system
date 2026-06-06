@@ -1,0 +1,51 @@
+{
+  "dominio": "operaciones",
+  "docs": [
+    {
+      "subdominio": "DR_PLAN",
+      "doc": "DR_PLAN.md",
+      "resumen": "Revision: 2026-06-02 | Propietario: equipo de desarrollo del proyecto | Alcance: framework Evol-DD y proyectos que lo usan",
+      "tokens_md": 2169,
+      "entidades": []
+    },
+    {
+      "subdominio": "MONITORING",
+      "doc": "MONITORING.md",
+      "resumen": "Revision: 2026-06-02",
+      "tokens_md": 1493,
+      "entidades": []
+    },
+    {
+      "subdominio": "RELEASE_PROCESS",
+      "doc": "RELEASE_PROCESS.md",
+      "resumen": "The canonical version source is `VERSION` at the repo root.",
+      "tokens_md": 871,
+      "entidades": []
+    },
+    {
+      "subdominio": "RUNBOOK",
+      "doc": "RUNBOOK.md",
+      "resumen": "Revision: 2026-06-02",
+      "tokens_md": 2027,
+      "entidades": []
+    },
+    {
+      "subdominio": "TAG_STRATEGY",
+      "doc": "TAG_STRATEGY.md",
+      "resumen": "All tags follow `v<MAJOR>.<MINOR>.<PATCH>` (semver).",
+      "tokens_md": 332,
+      "entidades": []
+    },
+    {
+      "subdominio": "UPGRADE_GUIDE",
+      "doc": "UPGRADE_GUIDE.md",
+      "resumen": "Esta guía documenta el proceso de actualización de Evol-DD. Existen tres escenarios dependiendo del estado actual de tu proyecto y del framework.",
+      "tokens_md": 644,
+      "entidades": []
+    }
+  ],
+  "total_docs": 6,
+  "total_tokens_md": 7536,
+  "actualizado": "2026-06-06T10:49:30.176271+00:00",
+  "total_tokens_json": 227
+}

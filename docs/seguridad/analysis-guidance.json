@@ -1,0 +1,22 @@
+{
+  "doc": "analysis-guidance.md",
+  "dominio": "seguridad",
+  "subdominio": "analysis-guidance",
+  "resumen": "Use this guidance to prioritize security findings by real adversarial impact,",
+  "secciones": [
+    "decision-framework",
+    "priority-queue",
+    "analyst-loop"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 430,
+  "lineas": 49,
+  "checksum_md": "893a9620d99d4e87",
+  "actualizado": "2026-06-06T10:49:30.188414+00:00",
+  "tokens_json": 82
+}

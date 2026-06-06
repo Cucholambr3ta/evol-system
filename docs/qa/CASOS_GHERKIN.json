@@ -1,0 +1,29 @@
+{
+  "doc": "CASOS_GHERKIN.md",
+  "dominio": "qa",
+  "subdominio": "CASOS_GHERKIN",
+  "resumen": "| Regla | Limite | Razon |",
+  "secciones": [
+    "reglas-de-escritura-doc-standard",
+    "feat-001-bootstrap-de-proyecto",
+    "feat-002-ciclo-de-vida-de-agente-efimero",
+    "feat-003-gate-keeper-hmac-sha256",
+    "feat-004-pipeline-de-6-fases",
+    "feat-005-memoria-conversacional",
+    "feat-006-sistema-de-lecciones-aprendidas",
+    "feat-007-ide-adapters-y-adaptacion",
+    "feat-008-auto-evolucion-de-skills",
+    "matriz-de-trazabilidad-completa"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 4727,
+  "lineas": 666,
+  "checksum_md": "ee4e3e165fbc487f",
+  "actualizado": "2026-06-06T10:49:30.179532+00:00",
+  "tokens_json": 115
+}

@@ -265,3 +265,24 @@ _(vacio)_
 **Causa raiz:** El bundle browser de Mermaid es mas estricto que `mmdc` CLI, que tolera (1)(2) y despista. `\n` no es salto valido; caracteres especiales sin comillas desincronizan el lexer.
 **Leccion:** Salto = `<br/>` (nunca `\n`); label con `() / — ' "` va entre comillas dobles, incluido `subgraph ID["..."]`. Verificar con el engine del consumidor, no solo CLI. Barrido: extraer cada bloque ```mermaid``` y renderizar 1 a 1; el que no produce SVG es el culpable.
 **Aplica a:** Todo doc Mermaid en Evol-DD y proyectos generados.
+
+### [ARQUITECTURA] Research-first antes de implementar subsistemas complejos — 2026-06-06
+**Contexto:** Diseno del subsistema de memoria persistente (EDMS) para Evol-DD.
+**Problema:** Se estaba dissenando desde cero sin consultar como lo resuelven otros sistemas. Riesgo de reinventar la rueda o miss patrones probados.
+**Causa raiz:** Impaciencia por implementar. Se salto la fase de investigacion.
+**Leccion:** Antes de implementar un subsistema complejo (memoria, auth, orquestacion), investigar al menos 10 repositorios de referencia. Documentar mejoras en un plan atomico antes de escribir codigo. El research revelo 15 mejoras que no estaban en el disseno inicial (RRF fusion, 4-tier consolidation, causal chains, privacy stripping, discipline-aware schema, etc.).
+**Aplica a:** Cualquier subsistema nuevo del framework.
+
+### [ARQUITECTURA] Plan atomico como SSoT de disseno — 2026-06-06
+**Contexto:** El plan EDMS estaba disperso en multiples conversaciones y archivos.
+**Problema:** No existia un solo archivo que contuviera todo el disseno. Informacion fragmentada dificultaba la implementacion.
+**Causa raiz:** Diseno iterativo sin consolidar en un punto unico de verdad.
+**Leccion:** Los planes de implementacion se guardan como archivos markdown atomicos en `docs/plan-*.md`. Un solo archivo por plan con todas las secciones (arquitectura, schema, hooks, tests, fuentes). NO en memoria.md, NO en AGENTS.md, NO en conversaciones.
+**Aplica a:** Todo plan de implementacion nuevo.
+
+### [PROCESO] Distinguir scaffolding del framework vs memoria del proyecto — 2026-06-06
+**Contexto:** Limpiando archivos no deseados de la raiz del repositorio.
+**Problema:** Se elimino `acuerdos/` asumiendo que era scaffolding, cuando era memoria legitima del proyecto.
+**Causa raiz:** El framework usa la misma convencion de nombres para su scaffolding y su memoria (dogfooding).
+**Leccion:** Antes de borrar directorios en la raiz del framework que coincidan con output de scaffolding, verificar en `.gitignore` o historial si estan protegidos. El framework usa sus propias herramientas, esos directorios contienen memoria legitima.
+**Aplica a:** Mantenimiento del repositorio Evol-DD.

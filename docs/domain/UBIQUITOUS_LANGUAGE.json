@@ -1,0 +1,18 @@
+{
+  "doc": "UBIQUITOUS_LANGUAGE.md",
+  "dominio": "domain",
+  "subdominio": "UBIQUITOUS_LANGUAGE",
+  "resumen": "Glosario del dominio. Vocabulario obligatorio.",
+  "secciones": [],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 32,
+  "lineas": 6,
+  "checksum_md": "c16a9d44a1526945",
+  "actualizado": "2026-06-06T10:49:30.169326+00:00",
+  "tokens_json": 66
+}

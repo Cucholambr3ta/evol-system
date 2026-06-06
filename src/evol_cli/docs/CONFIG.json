@@ -1,0 +1,24 @@
+{
+  "doc": "CONFIG.md",
+  "dominio": "docs",
+  "subdominio": "CONFIG",
+  "resumen": "El archivo `evol.config.yml` es la fuente unica de configuracion del framework.",
+  "secciones": [
+    "schema-real",
+    "secciones",
+    "perfil-evolprofileyml",
+    "relacion-con-manifests",
+    "rutas-absolutas-prohibidas"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 525,
+  "lineas": 121,
+  "checksum_md": "769b45634b2bcbf9",
+  "actualizado": "2026-06-06T10:49:30.196524+00:00",
+  "tokens_json": 87
+}

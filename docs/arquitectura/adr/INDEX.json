@@ -1,0 +1,23 @@
+{
+  "dominio": "adr",
+  "docs": [
+    {
+      "subdominio": "ADR-0001",
+      "doc": "ADR-0001.md",
+      "resumen": "**Fecha**: YYYY-MM-DD",
+      "tokens_md": 40,
+      "entidades": []
+    },
+    {
+      "subdominio": "ADR-0003",
+      "doc": "ADR-0003.md",
+      "resumen": "**Estado:** Aceptado",
+      "tokens_md": 304,
+      "entidades": []
+    }
+  ],
+  "total_docs": 2,
+  "total_tokens_md": 344,
+  "actualizado": "2026-06-06T10:49:39.006579+00:00",
+  "total_tokens_json": 65
+}

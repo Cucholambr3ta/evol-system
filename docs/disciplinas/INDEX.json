@@ -5,222 +5,222 @@
       "subdominio": "A11yDD",
       "doc": "A11yDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1239,
+      "tokens_md": 1242,
       "entidades": []
     },
     {
       "subdominio": "ADD",
       "doc": "ADD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1365,
+      "tokens_md": 1367,
       "entidades": []
     },
     {
       "subdominio": "APIVDD",
       "doc": "APIVDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1282,
+      "tokens_md": 1285,
       "entidades": []
     },
     {
       "subdominio": "ATDD",
       "doc": "ATDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2405,
+      "tokens_md": 2408,
       "entidades": []
     },
     {
       "subdominio": "BDD",
       "doc": "BDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2645,
+      "tokens_md": 2648,
       "entidades": []
     },
     {
       "subdominio": "CCDD",
       "doc": "CCDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1222,
+      "tokens_md": 1224,
       "entidades": []
     },
     {
       "subdominio": "CDCDD",
       "doc": "CDCDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1288,
+      "tokens_md": 1290,
       "entidades": []
     },
     {
       "subdominio": "CHAOS",
       "doc": "CHAOS.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1283,
+      "tokens_md": 1286,
       "entidades": []
     },
     {
       "subdominio": "COMPLIANCE",
       "doc": "COMPLIANCE.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1362,
+      "tokens_md": 1364,
       "entidades": []
     },
     {
       "subdominio": "DDD",
       "doc": "DDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2756,
+      "tokens_md": 2760,
       "entidades": []
     },
     {
       "subdominio": "DebtBudgetDD",
       "doc": "DebtBudgetDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1289,
+      "tokens_md": 1291,
       "entidades": []
     },
     {
       "subdominio": "DeprecationDD",
       "doc": "DeprecationDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1285,
+      "tokens_md": 1287,
       "entidades": []
     },
     {
       "subdominio": "EDA",
       "doc": "EDA.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1341,
+      "tokens_md": 1344,
       "entidades": []
     },
     {
       "subdominio": "ESDD",
       "doc": "ESDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1372,
+      "tokens_md": 1374,
       "entidades": []
     },
     {
       "subdominio": "FDD",
       "doc": "FDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2312,
+      "tokens_md": 2314,
       "entidades": []
     },
     {
       "subdominio": "IODD",
       "doc": "IODD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1319,
+      "tokens_md": 1322,
       "entidades": []
     },
     {
       "subdominio": "MDD",
       "doc": "MDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1250,
+      "tokens_md": 1253,
       "entidades": []
     },
     {
       "subdominio": "ODD_API",
       "doc": "ODD_API.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1402,
+      "tokens_md": 1405,
       "entidades": []
     },
     {
       "subdominio": "ODD_OBS",
       "doc": "ODD_OBS.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1262,
+      "tokens_md": 1264,
       "entidades": []
     },
     {
       "subdominio": "PDD",
       "doc": "PDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1236,
+      "tokens_md": 1239,
       "entidades": []
     },
     {
       "subdominio": "PIPELINE-DRIVEN",
       "doc": "PIPELINE-DRIVEN.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1275,
+      "tokens_md": 1278,
       "entidades": []
     },
     {
       "subdominio": "PrivacyDD",
       "doc": "PrivacyDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1356,
+      "tokens_md": 1358,
       "entidades": []
     },
     {
       "subdominio": "RDD",
       "doc": "RDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1229,
+      "tokens_md": 1231,
       "entidades": []
     },
     {
       "subdominio": "SDD",
       "doc": "SDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2365,
+      "tokens_md": 2367,
       "entidades": []
     },
     {
       "subdominio": "SLODRIVEN",
       "doc": "SLODRIVEN.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1270,
+      "tokens_md": 1273,
       "entidades": []
     },
     {
       "subdominio": "STDD",
       "doc": "STDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2546,
+      "tokens_md": 2548,
       "entidades": []
     },
     {
       "subdominio": "SecDD",
       "doc": "SecDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2396,
+      "tokens_md": 2398,
       "entidades": []
     },
     {
       "subdominio": "TDD",
       "doc": "TDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2553,
+      "tokens_md": 2556,
       "entidades": []
     },
     {
       "subdominio": "THREAT-DRIVEN",
       "doc": "THREAT-DRIVEN.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-04 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 2839,
+      "tokens_md": 2841,
       "entidades": []
     },
     {
       "subdominio": "UDD",
       "doc": "UDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1372,
+      "tokens_md": 1374,
       "entidades": []
     },
     {
       "subdominio": "UXDD",
       "doc": "UXDD.md",
       "resumen": "**Version:** 1.0 | **Fecha:** 2026-06-05 | **Gobernanza:** Constitucion Evol-DD v1.5",
-      "tokens_md": 1289,
+      "tokens_md": 1292,
       "entidades": []
     }
   ],
   "total_docs": 31,
-  "total_tokens_md": 51405,
-  "actualizado": "2026-06-05T21:11:36.320121+00:00",
-  "total_tokens_json": 1093
+  "total_tokens_md": 51483,
+  "actualizado": "2026-06-06T10:49:30.168882+00:00",
+  "total_tokens_json": 1104
 }

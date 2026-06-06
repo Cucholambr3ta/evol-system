@@ -1,6 +1,6 @@
 # Modos de Operación
 
-## Modo COMPLETO
+## Memoria Persistente
 
 Memoria Persistente instalado y activo (CLI only).
 

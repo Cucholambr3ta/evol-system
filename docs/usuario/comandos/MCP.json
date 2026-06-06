@@ -1,0 +1,23 @@
+{
+  "doc": "MCP.md",
+  "dominio": "comandos",
+  "subdominio": "MCP",
+  "resumen": "**Módulo:** `mcp-manager`",
+  "secciones": [
+    "evol-mcpsh-list",
+    "evol-mcpsh-add-name-cmd-args",
+    "evol-mcpsh-remove-name",
+    "evol-mcpsh-status"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 304,
+  "lineas": 32,
+  "checksum_md": "65a413aae3ab8755",
+  "actualizado": "2026-06-06T10:49:39.037789+00:00",
+  "tokens_json": 72
+}

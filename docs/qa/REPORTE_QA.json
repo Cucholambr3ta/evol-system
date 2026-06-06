@@ -1,0 +1,30 @@
+{
+  "doc": "REPORTE_QA.md",
+  "dominio": "qa",
+  "subdominio": "REPORTE_QA",
+  "resumen": "| Categoria | Total | Pendiente | Implementado | Ejecutado |",
+  "secciones": [
+    "resumen-general",
+    "requisitos-funcionales",
+    "gates-de-calidad",
+    "scripts-del-sistema",
+    "agentes-core",
+    "workflows",
+    "skills",
+    "eval-suites",
+    "hallazgos-conocidos",
+    "caminos-de-prueba",
+    "criterios-de-release"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 1245,
+  "lineas": 138,
+  "checksum_md": "6c4d833caa760919",
+  "actualizado": "2026-06-06T10:49:30.181969+00:00",
+  "tokens_json": 102
+}

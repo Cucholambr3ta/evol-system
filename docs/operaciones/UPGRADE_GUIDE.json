@@ -1,0 +1,23 @@
+{
+  "doc": "UPGRADE_GUIDE.md",
+  "dominio": "operaciones",
+  "subdominio": "UPGRADE_GUIDE",
+  "resumen": "Esta guía documenta el proceso de actualización de Evol-DD. Existen tres escenarios dependiendo del estado actual de tu proyecto y del framework.",
+  "secciones": [
+    "escenario-a-proyectos-existentes-upgrade-regular",
+    "escenario-b-proyectos-nuevos-fresh-init",
+    "escenario-c-re-inicialización-forzada-upgrade-manual",
+    "migración-desde-x-dd"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 644,
+  "lineas": 57,
+  "checksum_md": "1c6cb5c8f3885ba2",
+  "actualizado": "2026-06-06T10:49:30.176147+00:00",
+  "tokens_json": 112
+}

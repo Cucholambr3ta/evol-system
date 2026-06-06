@@ -1,0 +1,31 @@
+{
+  "doc": "RELEASE_PROCESS.md",
+  "dominio": "operaciones",
+  "subdominio": "RELEASE_PROCESS",
+  "resumen": "The canonical version source is `VERSION` at the repo root.",
+  "secciones": [
+    "version-single-source-of-truth",
+    "gitflow-branches",
+    "tag-strategy",
+    "release-checklist",
+    "upgrade-notes",
+    "added",
+    "changed",
+    "fixed",
+    "version-bump-script",
+    "no-tag-without-gates",
+    "hotfix-process",
+    "como-los-consumidores-del-framework-se-actualizan"
+  ],
+  "entidades": [],
+  "trazabilidad": {
+    "origen": [],
+    "relacionados": []
+  },
+  "fuentes": [],
+  "tokens_md": 871,
+  "lineas": 139,
+  "checksum_md": "f24b335f4a502020",
+  "actualizado": "2026-06-06T10:49:30.174868+00:00",
+  "tokens_json": 109
+}
