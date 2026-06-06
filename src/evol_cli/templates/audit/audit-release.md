@@ -14,7 +14,7 @@
 | # | Item | Veredicto | Descripcion |
 |---|------|-----------|-------------|
 | F1 | `pytest tests/ -v` paso al 100% | `[ ]` | Exit code 0 |
-| F2 | `validate-registry.py --strict` sin errores | `[ ]` | 17 core agents OK |
+| F2 | `validate-registry.py --strict` sin errores | `[ ]` | 18 core agents OK |
 | F3 | `evol-shield.py audit --ci --no-write` con 0 violations | `[ ]` | |
 | F4 | `evol-eval.py validate --all` OK | `[ ]` | |
 | F5 | `gitleaks detect` sin secretos | `[ ]` | |

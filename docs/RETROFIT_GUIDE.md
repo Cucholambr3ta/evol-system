@@ -7,7 +7,7 @@ Esta guia cubre la migracion de un proyecto existente de X-DD a Evol-DD. La migr
 | Dimension | X-DD | Evol-DD |
 |---|---|---|
 | Dependencia de MCP | Si, varios servidores MCP | Con MCP Nativo. CLI-first, stdlib-first |
-| Agentes permanentes | ~180 en registry global | 16 core + efimeros por ciclo de vida |
+| Agentes permanentes | ~180 en registry global | 18 core + efimeros por ciclo de vida |
 | GitFlow | Opcional, trunk-based por defecto | GitFlow como comportamiento por defecto |
 | Memoria nativa | ReMe (Apache-2.0) como opt-in | Motor nativo en `scripts/evol-memory.py` |
 | Agentes efimeros | No hay soporte formal | `evol-agent-lifecycle.py` con ciclo completo (crear, retirar, archivar) |

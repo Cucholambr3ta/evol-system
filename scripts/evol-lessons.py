@@ -374,6 +374,68 @@ def extract(messages_file, auto=False):
         for c in candidates[:5]:
             print(f"  - {c['pattern'][:100]}...")
 
+def verify_applied(sprint, as_json=False):
+    """Verify which pending lessons were applied in a sprint.
+
+    Checks if lesson keywords appear in sprint artifacts (lecciones, memoria).
+    """
+    import re as _re
+    lessons = parse_lessons()
+    pending = [l for l in lessons if l.get("estado") != "aplicado"]
+
+    applied = []
+    still_pending = []
+
+    evidence_dirs = [
+        f"acuerdos/lecciones/sprint-{sprint}.md",
+        f"acuerdos/memoria/sprint-{sprint}.md",
+    ]
+
+    for lesson in pending:
+        title_lower = lesson["title"].lower()
+        keywords = [w for w in _re.findall(r'\w+', title_lower) if len(w) > 4]
+
+        found_evidence = None
+        for evidence_file in evidence_dirs:
+            if not os.path.exists(evidence_file):
+                continue
+            try:
+                content = open(evidence_file).read().lower()
+                if any(kw in content for kw in keywords):
+                    found_evidence = f"Keyword '{keywords[0]}' found in {evidence_file}"
+                    break
+            except Exception:
+                continue
+
+        if found_evidence:
+            applied.append({"title": lesson["title"], "category": lesson["category"], "evidence": found_evidence})
+        else:
+            still_pending.append(lesson)
+
+    if as_json:
+        print(json.dumps({
+            "sprint": sprint,
+            "applied": len(applied),
+            "still_pending": len(still_pending),
+            "details": applied,
+        }, indent=2))
+    else:
+        print(f"VERIFY APPLIED — Sprint {sprint}")
+        print(f"  Aplicadas: {len(applied)}")
+        print(f"  Pendientes: {len(still_pending)}")
+        if applied:
+            print("\n  APLICADAS:")
+            for a in applied:
+                print(f"    [{a['category']}] {a['title']}")
+                print(f"      Evidencia: {a['evidence']}")
+        if still_pending:
+            print("\n  PENDIENTES:")
+            for s in still_pending:
+                print(f"    [{s['category']}] {s['title']}")
+
+    return {"applied": applied, "pending": still_pending}
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Lessons Engine")
     sub = parser.add_subparsers(dest="cmd")
@@ -417,6 +479,10 @@ def main():
     p.add_argument("--messages", required=True)
     p.add_argument("--auto", action="store_true")
 
+    p = sub.add_parser("verify-applied", help="Verify which pending lessons were applied in a sprint")
+    p.add_argument("--sprint", type=int, required=True)
+    p.add_argument("--json", action="store_true")
+
     args = parser.parse_args()
 
     if args.cmd == "add":
@@ -442,6 +508,8 @@ def main():
         gc()
     elif args.cmd == "extract":
         extract(args.messages, args.auto)
+    elif args.cmd == "verify-applied":
+        verify_applied(args.sprint, args.json)
     else:
         parser.print_help()
 

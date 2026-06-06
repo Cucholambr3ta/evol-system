@@ -115,6 +115,55 @@ def init_db():
         )
     """)
     
+    # Compliance tables (Phase 6 — Auditor de Cumplimiento)
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS phase_compliance (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sprint INTEGER,
+            phase TEXT NOT NULL,
+            agent TEXT,
+            artifacts_expected TEXT,
+            artifacts_found TEXT,
+            artifacts_count INTEGER DEFAULT 0,
+            gate_signed BOOLEAN DEFAULT FALSE,
+            violations INTEGER DEFAULT 0,
+            blocked BOOLEAN DEFAULT FALSE,
+            block_reason TEXT,
+            lessons_pending INTEGER DEFAULT 0,
+            lessons_applied INTEGER DEFAULT 0,
+            duration_seconds REAL,
+            timestamp TEXT DEFAULT (datetime('now'))
+        )
+    """)
+    
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS violation_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            compliance_id INTEGER,
+            severity TEXT NOT NULL,
+            rule TEXT NOT NULL,
+            description TEXT NOT NULL,
+            action_taken TEXT,
+            timestamp TEXT DEFAULT (datetime('now')),
+            FOREIGN KEY (compliance_id) REFERENCES phase_compliance(id)
+        )
+    """)
+    
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS lesson_tracking (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            lesson_title TEXT NOT NULL,
+            lesson_category TEXT,
+            sprint_registered INTEGER,
+            sprint_verified INTEGER,
+            status TEXT DEFAULT 'pendiente',
+            verified_at TIMESTAMP,
+            applied_at TIMESTAMP,
+            evidence TEXT,
+            timestamp TEXT DEFAULT (datetime('now'))
+        )
+    """)
+    
     conn.commit()
     conn.close()
     logger.info("Database initialized at %s", get_state_db())
@@ -171,7 +220,7 @@ def stats():
     """Show database stats."""
     conn = get_db()
     c = conn.cursor()
-    tables = ["instincts", "instinct_sessions", "sprints", "orchestrations", "evolutions", "agent_lifecycle", "research_proposals"]
+    tables = ["instincts", "instinct_sessions", "sprints", "orchestrations", "evolutions", "agent_lifecycle", "research_proposals", "phase_compliance", "violation_log", "lesson_tracking"]
     result = {}
     for t in tables:
         c.execute(f"SELECT COUNT(*) as cnt FROM {t}")

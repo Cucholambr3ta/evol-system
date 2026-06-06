@@ -28,7 +28,7 @@ Antes de construir cualquier cosa, debes entender estas diferencias, porque defi
 
 X-DD tiene ~180 agentes permanentes en disco. Eso genera sobrecarga de contexto y dificulta el mantenimiento.
 
-Evol-DD tiene **17 agentes core permanentes**. Para cualquier labor especializada que exceda esos 17, el sistema crea un **agente efímero**: existe mientras se necesita, se retira cuando termina su tarea, y su conocimiento queda indexado en Memoria Persistente para poder ser recuperado en el futuro sin recrearlo desde cero.
+Evol-DD tiene **18 agentes core permanentes**. Para cualquier labor especializada que exceda esos 18, el sistema crea un **agente efímero**: existe mientras se necesita, se retira cuando termina su tarea, y su conocimiento queda indexado en Memoria Persistente para poder ser recuperado en el futuro sin recrearlo desde cero.
 
 ### 2. Integración Nativa MCP
 
@@ -143,9 +143,9 @@ El sistema se instala exactamente igual que X-DD en su versión pre-release 0.2:
 
 ## Arquitectura del sistema
 
-### Los 17 agentes core permanentes
+### Los 18 agentes core permanentes
 
-**Criterio formal core vs efimero:** un agente es core si tiene responsabilidad sobre el estado del sistema (gobernanza, arquitectura, seguridad, orquestacion) — independientemente del dominio del proyecto. Un agente es candidato a efimero si su responsabilidad es exclusivamente sobre el dominio del proyecto activo (ej: marketing-seo-specialist, data-pipeline-analyst). Los 17 agentes core nunca se retiran porque el sistema no puede funcionar sin ellos.
+**Criterio formal core vs efimero:** un agente es core si tiene responsabilidad sobre el estado del sistema (gobernanza, arquitectura, seguridad, orquestacion) — independientemente del dominio del proyecto. Un agente es candidato a efimero si su responsabilidad es exclusivamente sobre el dominio del proyecto activo (ej: marketing-seo-specialist, data-pipeline-analyst). Los 18 agentes core nunca se retiran porque el sistema no puede funcionar sin ellos.
 
 Estos agentes viven en `prompts/agents/core/` y nunca se retiran. Son el núcleo inmutable del sistema:
 
@@ -165,6 +165,7 @@ Estos agentes viven en `prompts/agents/core/` y nunca se retiran. Son el núcleo
 14. `evol-analyst` — Análisis de impacto, métricas, blast radius
 15. `evol-agent-factory` — Crea agentes efímeros de forma guiada e interactiva
 16. `evol-researcher` — Investigación autónoma de mejoras (skills, metodologías, frameworks)
+17. `evol-compliance-auditor` — Compliance auditor: verifica pipeline phases, detecta violaciones, genera sprint reports.
 
 ### Contrato de agent.template.md (base de todos los agentes efímeros)
 
@@ -198,7 +199,7 @@ created_at: {{ISO8601}}
 ```
 
 **Distincion factory vs orchestrator:**
-- `evol-agent-factory`: decide SI crear un agente efimero y lo crea (invoca evol-agent-lifecycle.py create). Criterio de decision: la tarea requiere un rol especializado que ninguno de los 17 agentes core cubre.
+- `evol-agent-factory`: decide SI crear un agente efimero y lo crea (invoca evol-agent-lifecycle.py create). Criterio de decision: la tarea requiere un rol especializado que ninguno de los 18 agentes core cubre.
 - `evol-orchestrator`: decide COMO coordinar agentes ya existentes (core o efimeros). No crea agentes — los invoca.
 No se solapan: factory = creacion, orchestrator = coordinacion.
 
@@ -837,7 +838,7 @@ Modulos requeridos (en TODOS los perfiles sin excepcion):
 - `continuous-memory` (required en todos): `scripts/evol-memory.py` + hooks + docs — memoria conversacional persistente. En todos los perfiles porque el sistema aprende desde la primera sesion.
 
 Modulos opcionales:
-- `agents-core`: 17 agentes core + registry + schemas
+- `agents-core`: 18 agentes core + registry + schemas
 - `hooks-runtime`: sistema de hooks + schemas
 - `gate-keeper`: evol-gate.py + docs/GATE.md
 - `platform-configs`: configs IDE generadas
@@ -1205,7 +1206,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 10. Scripts de instalacion y diagnostico: `evol-doctor.sh` (con check de residuos X-DD + Memoria Persistente discovery en PATHs no-standard), `evol-init.sh`, `evol-start.sh`, `evol-global-install.sh`
 11. `evol-adapt.sh` — 7 IDEs con soporte MCP
 12. Manifests: `schemas/`, `install-modules.json`, `install-profiles.json`
-13. 17 agentes core (`prompts/agents/core/`) + `registry.json` + `registry.schema.json`
+13. 18 agentes core (`prompts/agents/core/`) + `registry.json` + `registry.schema.json`
 14. Skills del sistema (`skills/`) con SKILL.md de cada una
 15. 56 Workflows en `.agent/workflows/` con trigger `/evol` y referencia a DOC_STANDARD.md
 16. Sistema de hooks (hooks.json + scripts/) incluyendo pre:commit:gitflow
@@ -1574,7 +1575,7 @@ Paso 0 del build (antes de cualquier otra cosa):
 | C2 | "Evoluciona autonomamente" vs aprobacion humana | Filosofia central aclarada: evolucion asistida, no autonoma |
 | C3 | Gate key global vs aislamiento criptografico | Key por proyecto; comando `--from-global` para bootstrap |
 
-| C5 | 16 core vs factory+efimeros | Criterio formal: core = responsabilidad sobre estado del sistema |
+| C5 | 18 core vs factory+efimeros | Criterio formal: core = responsabilidad sobre estado del sistema |
 
 ### Vacios resueltos
 

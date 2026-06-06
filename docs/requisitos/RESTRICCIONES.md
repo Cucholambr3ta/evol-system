@@ -149,7 +149,7 @@ Una sesion comienza cuando el agente recibe la primera instruccion del usuario y
 
 ### C03: Agentes core nunca se retiran
 
-**Constraint:** Los 17 agentes core son permanentes y nunca pueden ser retireados.
+**Constraint:** Los 18 agentes core son permanentes y nunca pueden ser retireados.
 
 **Razon:** Responsabilidad sobre estado del sistema.
 

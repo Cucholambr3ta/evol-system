@@ -273,6 +273,27 @@ def sprint_close(sprint, project=".", memoria_content=None, lecciones_content=No
     _regen_memory_aggregate(mem_dir)
     print("[evol-memory] ✓ acuerdos/memoria/ atomos (decisiones/convenciones/riesgos) + MEMORY.md regenerado.")
 
+    # Compliance: verify lessons + generate report
+    compliance_script = Path(project) / "scripts" / "evol-compliance.py"
+    lessons_script = Path(project) / "scripts" / "evol-lessons.py"
+    if compliance_script.exists():
+        import subprocess
+        print(f"[evol-memory] Verificando compliance del sprint {s}...")
+        try:
+            subprocess.run(
+                [sys.executable, str(lessons_script), "verify-applied", "--sprint", str(s)],
+                cwd=str(project), capture_output=True, timeout=30
+            )
+            subprocess.run(
+                [sys.executable, str(compliance_script), "report", "--sprint", str(s)],
+                cwd=str(project), capture_output=True, timeout=30
+            )
+            report_path = acuerdos / "auditoria" / f"compliance-sprint-{s}.md"
+            if report_path.exists():
+                print(f"[evol-memory] ✓ Compliance report: {report_path}")
+        except Exception as e:
+            print(f"[evol-memory] WARN: Compliance report failed: {e}")
+
 
 # ── MEMORY.md atomico ──────────────────────────────────────────────────────────
 

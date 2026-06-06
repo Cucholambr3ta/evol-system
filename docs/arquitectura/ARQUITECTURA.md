@@ -2,7 +2,7 @@
 
 ## Resumen Ejecutivo
 
-Evol-DD es un framework de desarrollo agentico con 17 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.
+Evol-DD es un framework de desarrollo agentico con 18 agentes core permanentes y agentes efimeros dinamicos. El sistema acumula conocimiento y propone mejoras con cada proyecto que construye.
 
 **Filosofia central:** Evolucion asistida, no autonoma. El sistema descubre, propone y registra; un humano aprueba antes de cualquier cambio.
 
@@ -362,7 +362,7 @@ A partir de la version 0.5.0, el framework implementa resolucion dinamica de per
 |--------|-------------|
 | core | Scripts, templates, CLAUDE.md, AGENTS.md, constitucion.md |
 | workflows-core | .agent/workflows/ + prompts/workflows/ |
-| agents-core | 17 agentes core + registry + schemas |
+| agents-core | 18 agentes core + registry + schemas |
 | hooks-runtime | Sistema de hooks + schemas |
 | gate-keeper | evol-gate.py + docs/GATE.md |
 | ci-runtime | GitHub Actions + pre-commit |
@@ -425,7 +425,7 @@ graph LR
 | ADR | Decision | Fecha | Estado | Referencia |
 |-----|----------|-------|--------|------------|
 | ADR-0001 | GitFlow como defecto (main + develop + feature/*) | 2026-06-02 | ACTIVO | Constitucion Art. 7 |
-| ADR-0002 | 17 agentes core permanentes + efimeros dinamicos | 2026-06-02 | ACTIVO | PROMPT.md lineas 146-167 |
+| ADR-0002 | 18 agentes core permanentes + efimeros dinamicos | 2026-06-02 | ACTIVO | PROMPT.md lineas 146-167 |
 | ADR-0003 | Con MCP en ningun archivo (zero tolerance) | 2026-06-02 | ACTIVO | PROMPT.md lineas 33-35 |
 | ADR-0004 | Gate key por proyecto (.evol/.gate-key) | 2026-06-02 | ACTIVO | Anexo A |
 | ADR-0005 | SHA-256 integrity en snapshots de agentes | 2026-06-02 | ACTIVO | Anexo B.2 |
@@ -482,7 +482,7 @@ evol-dd/
 │   ├── qa/                   # QA_REPORT.md (por shield)
 │   └── traces/               # Session replay NDJSON (roadmap)
 ├── prompts/agents/
-│   ├── core/                 # 17 agentes core
+│   ├── core/                 # 18 agentes core
 │   ├── ephemeral/            # Agentes dinamicos
 │   └── registry.json         # Registro unificado
 ├── scripts/                  # 25 scripts (23 + 2 helpers)

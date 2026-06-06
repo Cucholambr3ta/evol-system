@@ -129,7 +129,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - GitFlow branching strategy with develop/main/release process
 - HMAC-signed gate protocol for approval workflow
 - Memoria Persistente memory integration for agent context persistence
-- Agent registry with 17 core agents and ephemeral agent lifecycle
+- Agent registry with 18 core agents and ephemeral agent lifecycle
 - Eval harness with structural, behavioral, output_match, pass_at_k graders
 - Security shield with secret detection and config auditing
 - Skills supply chain with quarantine, pinning, and secret scanning

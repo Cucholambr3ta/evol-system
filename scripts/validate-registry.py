@@ -84,7 +84,7 @@ def main():
     print(f"[REGISTRY] {core_count} core agents (expected: 17)")
 
     if core_count != 17:
-        print("[REGISTRY] FAIL: Expected 17 core agents")
+        print("[REGISTRY] FAIL: Expected 18 core agents")
         if strict:
             sys.exit(1)
 

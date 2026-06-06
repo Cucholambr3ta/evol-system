@@ -11,7 +11,7 @@ Esta guía documenta los pilares arquitectónicos que permiten su integración f
 | Dimensión | Enfoque en Evol-DD |
 |---|---|
 | **Integración Nativa MCP** | Soporte profundo para el Model Context Protocol (MCP). Permite extensibilidad ilimitada al estandarizar la conexión con herramientas externas y memorias contextuales. |
-| **Escala de Agentes** | 17 agentes core permanentes (registrados en `AGENTS.md`) + agentes efímeros gestionados por ciclo de vida (`evol-agent-lifecycle.py`). |
+| **Escala de Agentes** | 18 agentes core permanentes (registrados en `AGENTS.md`) + agentes efímeros gestionados por ciclo de vida (`evol-agent-lifecycle.py`). |
 | **Flujo de Código** | GitFlow estructurado e integrado (`main`, `develop`, `feat/`, `fix/`, `release/`). Validaciones strictas en hooks de pre-commit y gates. |
 | **Aislamiento Criptográfico** | Scope de Gate Key estrictamente local por proyecto (`.evol/.gate-key`). Aprobaciones auditables mediante HMAC-SHA256 (`.evol/.gate-log.jsonl`). |
 | **Memoria Nativa** | Motor nativo de memoria (`scripts/evol-memory.py`) sin bases de datos externas obligatorias. Invocación automatizada mediante hooks de ciclo de vida. |

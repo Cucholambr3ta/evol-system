@@ -51,7 +51,7 @@
       ]
     },
     "agents-core": {
-      "description": "17 core agents, registry and schemas.",
+      "description": "18 core agents, registry and schemas.",
       "dirs": [
         "prompts/agents/core/",
         "prompts/agents/registry.json",
