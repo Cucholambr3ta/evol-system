@@ -57,8 +57,8 @@ evol init /path/to/project --profile core
 
 ## Modos de operación
 
-- **COMPLETO**: MemPalace activo, búsqueda semántica
-- **BASE**: Sin MemPalace, funciona completamente
+- **COMPLETO**: Memoria Persistente activo, búsqueda semántica
+- **BASE**: Sin Memoria Persistente, funciona completamente
 
 ## Actualizacion
 

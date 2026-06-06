@@ -38,14 +38,14 @@
 - NO compartir información sensible
 - SI documentar progreso en `memoria.md`
 - SI registrar lecciones aprendidas en `lecciones.md`
-- SI usar MemPalace para persistir conocimiento
+- SI usar Memoria Persistente para persistir conocimiento
 
 ## Cierre de sesión
 
 Al completar o retire:
 
 1. Resumir resultado de la tarea
-2. Registrar conocimiento en MemPalace: `mempalace add [resumen] --tags [tags]`
+2. Registrar conocimiento en Memoria Persistente: `Memoria Persistente add [resumen] --tags [tags]`
 3. Escribir decisiones clave en `memoria.md`
 4. Si hay lección nueva, agregar a `lecciones.md`
 5. Ejecutar `python3 scripts/evol-agent-lifecycle.py retire {{agent_name}}`

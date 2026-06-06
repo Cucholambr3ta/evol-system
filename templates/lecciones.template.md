@@ -1,6 +1,6 @@
 # lecciones.md — Aprendizajes Acumulados
 
-> Lecciones aprendidas del proyecto. Indexado por MemPalace. Consultado por agentes antes de proponer soluciones para evitar repetir errores (Constitución Art. 9).
+> Lecciones aprendidas del proyecto. Indexado por Memoria Persistente. Consultado por agentes antes de proponer soluciones para evitar repetir errores (Constitución Art. 9).
 > Actualizado vía `/cierre-fase` al final de cada fase.
 
 ## Formato

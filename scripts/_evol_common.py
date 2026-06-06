@@ -39,18 +39,7 @@ def get_logger(name="evol"):
 
 logger = get_logger()
 
-# === MemPalace safe wrapper ===
-def mempalace_safe(*args, fallback=None):
-    """Call mempalace CLI if available, else return fallback."""
-    try:
-        result = subprocess.run(["mempalace"] + list(args), capture_output=True, text=True, timeout=30)
-        if result.returncode == 0:
-            return result.stdout.strip()
-        return fallback
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return fallback
-
-# === Tool discovery ===
+# === Memoria Persistente safe wrapper ===
 def find_tool(tool_name, extra_paths=None):
     """Find tool in PATH + extra_paths. Returns path or None."""
     import shutil
@@ -63,8 +52,8 @@ def find_tool(tool_name, extra_paths=None):
             return found
     return None
 
-def find_mempalace():
-    """Find mempalace in standard locations."""
+def find_Memoria Persistente():
+    """Find Memoria Persistente in standard locations."""
     locations = [
         os.environ.get("PATH", ""),
         os.path.expanduser("~/.local/bin"),
@@ -73,7 +62,7 @@ def find_mempalace():
         ".venv/bin",
     ]
     for loc in locations:
-        found = find_tool("mempalace", [loc])
+        found = find_tool("Memoria Persistente", [loc])
         if found:
             return found
     return None

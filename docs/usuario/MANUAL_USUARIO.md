@@ -16,7 +16,7 @@ Evol-DD no reemplaza al desarrollador. Lo asiste con un equipo que nunca olvida,
 
 El sistema mantiene un registro vivo del proyecto llamado `memoria.md`. Cada sesion de trabajo comienza leyendo ese archivo para retomar exactamente donde se dejo. No es necesario re-explicar el contexto, los acuerdos tomados ni los problemas abiertos. La memoria persiste entre sesiones, entre dias y entre miembros del equipo.
 
-Para proyectos que necesitan continuidad semantica profunda, el sistema puede activar MemPalace: un motor de busqueda sobre el codigo y la documentacion del proyecto que permite encontrar patrones, precedentes y decisiones relevantes con una pregunta en lenguaje natural.
+Para proyectos que necesitan continuidad semantica profunda, el sistema puede activar Memoria Persistente: un motor de busqueda sobre el codigo y la documentacion del proyecto que permite encontrar patrones, precedentes y decisiones relevantes con una pregunta en lenguaje natural.
 
 ### 2. Lecciones
 
@@ -229,6 +229,6 @@ Los agentes efimeros tienen restricciones: no pueden modificar archivos de gober
 | **Agente core** | Uno de los 16 especialistas permanentes del sistema. Nunca se retiran. Cubren: arquitectura, implementacion, calidad, seguridad, operaciones, documentacion, dominio, UX, datos, revision, orquestacion, PM, release, analisis, factory y research. |
 | **Agente efimero** | Especialista temporal creado para una tarea concreta. Se retira al terminar pero su conocimiento persiste para recall. |
 | **Skill** | Capacidad reutilizable del sistema definida como workflow con casos de prueba propios. Se crean, evaluan y mejoran iterativamente. |
-| **Modo COMPLETO** | Estado del sistema cuando MemPalace esta instalado y activo. Habilita indexacion semantica, recall automatico y extraccion de patrones. |
-| **Modo BASE** | Estado del sistema sin MemPalace. El pipeline completo funciona. La continuidad semantica se maneja manualmente via `memoria.md`. |
+| **Memoria Persistente** | Estado del sistema cuando Memoria Persistente esta instalado y activo. Habilita indexacion semantica, recall automatico y extraccion de patrones. |
+| **Modo BASE** | Estado del sistema sin Memoria Persistente. El pipeline completo funciona. La continuidad semantica se maneja manualmente via `memoria.md`. |
 | **Perfil** | Conjunto predefinido de modulos que determina las capacidades instaladas en el proyecto. Los perfiles van de `minimal` a `full`, con opciones especializadas como `security` y `research`. |

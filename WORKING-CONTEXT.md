@@ -21,7 +21,7 @@
 ## Proximo paso
 
 1. ~~Construir `evol-agent` en otro PC con `/evol`~~ (Despriorizado / Cerrado).
-2. **Resolver Advertencia [HIGH]**: Excluir explícitamente `.evol/` de la indexación de MemPalace en la configuración.
+2. **Resolver Advertencia [HIGH]**: Excluir explícitamente `.evol/` de la indexación de Memoria Persistente en la configuración.
 3. **Merge & Release v0.3.3**: Mergear `feature/upgrade-gaps` a develop y lanzar nueva versión a PyPI con los workflows de actualización.
 
 ## Resumen del sistema (post-build completo)

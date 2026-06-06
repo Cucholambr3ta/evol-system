@@ -1,8 +1,8 @@
 # Modos de Operación
 
-## Modo COMPLETO
+## Memoria Persistente
 
-MemPalace instalado y activo (CLI only).
+Memoria Persistente instalado y activo (CLI only).
 
 Aporta:
 - Indexación semántica del codebase
@@ -12,7 +12,7 @@ Aporta:
 
 ## Modo BASE
 
-Sin MemPalace. Pipeline completo funcional.
+Sin Memoria Persistente. Pipeline completo funcional.
 
 Lo que se pierde:
 - Continuidad semántica (suplir con memoria.md)

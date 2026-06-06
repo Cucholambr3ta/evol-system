@@ -203,13 +203,13 @@ check_source_dirs_tracked() {
     done
 }
 
-check_mempalace_safe() {
-    emit "INFO" "MemPalace" "Checking MemPalace safe indexing config..."
+check_Memoria Persistente_safe() {
+    emit "INFO" "Memoria Persistente" "Checking Memoria Persistente safe indexing config..."
 
     local config_files=(
-        "mempalace.yaml"
-        ".mempalace/config.yaml"
-        "mempalace.yml"
+        "Memoria Persistente.yaml"
+        ".Memoria Persistente/config.yaml"
+        "Memoria Persistente.yml"
         "evol.config.yml"
     )
 
@@ -222,25 +222,25 @@ check_mempalace_safe() {
     done
 
     if [ -z "$found_config" ]; then
-        emit "INFO" "MemPalace" "No MemPalace config found, skipping index check"
+        emit "INFO" "Memoria Persistente" "No Memoria Persistente config found, skipping index check"
         return
     fi
 
-    emit "INFO" "MemPalace" "Checking $found_config for safe indexing..."
+    emit "INFO" "Memoria Persistente" "Checking $found_config for safe indexing..."
 
     if grep -qE '^\s*paths?:\s*\.' "$REPO_ROOT/$found_config" 2>/dev/null; then
-        emit "HIGH" "MemPalace" "Config uses broad '.' indexing, may index runtime state" "$found_config"
+        emit "HIGH" "Memoria Persistente" "Config uses broad '.' indexing, may index runtime state" "$found_config"
     fi
 
     local excluded_dirs=".evol/ .xdd/ .git/ dialog/ tool_result/ memory/raw/"
     for excl in $excluded_dirs; do
         if grep -qE "(exclude|ignore|skip).*['\"]?${excl}" "$REPO_ROOT/$found_config" 2>/dev/null; then
-            emit "OK" "MemPalace" "Config excludes $excl" "$found_config"
+            emit "OK" "Memoria Persistente" "Config excludes $excl" "$found_config"
         fi
     done
 
     if grep -qF '.evol/' "$REPO_ROOT/$found_config" && ! grep -qE "exclude|ignore" "$REPO_ROOT/$found_config" 2>/dev/null; then
-        emit "HIGH" "MemPalace" "Config references .evol/ without exclusion" "$found_config"
+        emit "HIGH" "Memoria Persistente" "Config references .evol/ without exclusion" "$found_config"
     fi
 }
 
@@ -351,10 +351,10 @@ check_dependencies() {
         emit "CRITICAL" "Dependencies" "python3 not found"
     fi
 
-    if command -v mempalace >/dev/null 2>&1; then
-        emit "OK" "Dependencies" "mempalace CLI detected"
+    if command -v Memoria Persistente >/dev/null 2>&1; then
+        emit "OK" "Dependencies" "Memoria Persistente CLI detected"
     else
-        emit "LOW" "Dependencies" "mempalace not in PATH (optional)"
+        emit "LOW" "Dependencies" "Memoria Persistente not in PATH (optional)"
     fi
 }
 
@@ -409,7 +409,7 @@ main() {
     check_scripts_executable
     check_sensitive_permissions
     check_source_dirs_tracked
-    check_mempalace_safe
+    check_Memoria Persistente_safe
     check_entrypoints
     check_dependencies
     check_legacy_artifacts

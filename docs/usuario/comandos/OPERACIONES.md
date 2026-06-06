@@ -53,10 +53,10 @@ Gestión de respuesta crítica a incidentes y hotfixes en producción.
 ---
 
 ### `/evol mem`
-**Archivo:** `.agent/workflows/mempalace-sync.md`
+**Archivo:** `.agent/workflows/Memoria Persistente-sync.md`
 
 **Descripción:**
-Sincroniza el proyecto activo con MemPalace. Ejecutar al inicio de sesion para cargar contexto semantico, o al cierre para persistir cambios. Activa Modo COMPLETO — el agente recuerda el proyecto, lecciones y patrones previos sin que el usuario repita contexto. Usar cuando el usuario diga "sincroniza memoria", "indexa MemPalace", "/evol mem", o quiera activar continuidad semantica entre sesiones.
+Sincroniza el proyecto activo con Memoria Persistente. Ejecutar al inicio de sesion para cargar contexto semantico, o al cierre para persistir cambios. Activa Memoria Persistente — el agente recuerda el proyecto, lecciones y patrones previos sin que el usuario repita contexto. Usar cuando el usuario diga "sincroniza memoria", "indexa Memoria Persistente", "/evol mem", o quiera activar continuidad semantica entre sesiones.
 
 ---
 

@@ -28,11 +28,11 @@ Antes de construir cualquier cosa, debes entender estas diferencias, porque defi
 
 X-DD tiene ~180 agentes permanentes en disco. Eso genera sobrecarga de contexto y dificulta el mantenimiento.
 
-Evol-DD tiene **16 agentes core permanentes**. Para cualquier labor especializada que exceda esos 16, el sistema crea un **agente efímero**: existe mientras se necesita, se retira cuando termina su tarea, y su conocimiento queda indexado en MemPalace y GitNexus para poder ser recuperado en el futuro sin recrearlo desde cero.
+Evol-DD tiene **16 agentes core permanentes**. Para cualquier labor especializada que exceda esos 16, el sistema crea un **agente efímero**: existe mientras se necesita, se retira cuando termina su tarea, y su conocimiento queda indexado en Memoria Persistente para poder ser recuperado en el futuro sin recrearlo desde cero.
 
 ### 2. Sin MCP en absoluto
 
-X-DD usa un servidor MCP propio y MemPalace en modo MCP. Evol-DD no usa MCP de ningún tipo — sin servidor MCP, sin protocolo de red MCP, sin configuracion de servidor en ningún IDE. MemPalace se usa exclusivamente en modo CLI (`mempalace index`, `mempalace search`) como herramienta local, no como servidor. Ningún adapter IDE debe generar configuración MCP.
+X-DD usa un servidor MCP propio y Memoria Persistente en modo MCP. Evol-DD no usa MCP de ningún tipo — sin servidor MCP, sin protocolo de red MCP, sin configuracion de servidor en ningún IDE. Memoria Persistente se usa exclusivamente en modo CLI (`Memoria Persistente index`, `Memoria Persistente search`) como herramienta local, no como servidor. Ningún adapter IDE debe generar configuración MCP.
 
 ### 3. Auto-generación de skills
 
@@ -220,7 +220,7 @@ python3 scripts/evol-agent-lifecycle.py create \
 Esto:
 - Genera `prompts/agents/ephemeral/<timestamp>-marketing-seo-specialist.md` desde `templates/agent.template.md`
 - Registra en `registry.json` con flags `ephemeral: true`, `expires_after`, `created_for_task`
-- Indexa en MemPalace: `mempalace index --path prompts/agents/ephemeral/`
+- Indexa en Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
 - Indexa en GitNexus si `EVOL_GITNEXUS=1`
 
 **Retirar:**
@@ -231,7 +231,7 @@ Esto:
 - Elimina el archivo `.md` del filesystem
 - Actualiza registry: `retired: true`, `retired_at`, `sessions_used`
 - Archiva snapshot completo en `.evol/agents/retired/<name>.json` (prompt + metadata + sessions)
-- MemPalace retiene el conocimiento indexado (no lo borra)
+- Memoria Persistente retiene el conocimiento indexado (no lo borra)
 - GitNexus retiene el índice (para recall futuro)
 
 **Recuperar:**
@@ -239,11 +239,11 @@ Esto:
 python3 scripts/evol-agent-lifecycle.py recall "marketing-seo-specialist"
 ```
 Esto:
-- Busca en `.evol/agents/retired/` y MemPalace
+- Busca en `.evol/agents/retired/` y Memoria Persistente
 - Reconstruye el `.md` y re-registra con `recalled: true`, `recalled_at`
 - Disponible sin necesidad de crearlo desde cero
 
-**Nota sobre calidad del recall:** el recall semantico (contexto de por que el agente tomo decisiones, que aprendio) requiere que MemPalace haya indexado el agente ANTES de ser retirado. Si MemPalace no estaba activo al momento del `retire`, el recall recupera solo el snapshot JSON (prompt + metadata) — no el conocimiento semantico. El snapshot JSON siempre esta disponible; el contexto semantico es adicional y condicional. `evol-agent-lifecycle.py recall` debe reportar explicitamente si el recall es "completo" (JSON + semantico) o "basico" (solo JSON).
+**Nota sobre calidad del recall:** el recall semantico (contexto de por que el agente tomo decisiones, que aprendio) requiere que Memoria Persistente haya indexado el agente ANTES de ser retirado. Si Memoria Persistente no estaba activo al momento del `retire`, el recall recupera solo el snapshot JSON (prompt + metadata) — no el conocimiento semantico. El snapshot JSON siempre esta disponible; el contexto semantico es adicional y condicional. `evol-agent-lifecycle.py recall` debe reportar explicitamente si el recall es "completo" (JSON + semantico) o "basico" (solo JSON).
 
 ### Auto-generación de skills (evol-evolve)
 
@@ -371,7 +371,7 @@ evol-dd/
 │   ├── evol-brand.sh
 │   ├── evol-update.py
 │   ├── evol-global-install.sh
-│   ├── _evol_common.py         ← utilidades compartidas (mempalace_safe, etc.)
+│   ├── _evol_common.py         ← utilidades compartidas (Memoria Persistente_safe, etc.)
 │   ├── lint-workflows.sh
 │   ├── validate-registry.py
 │   ├── generate-equipo.sh
@@ -432,9 +432,9 @@ Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mi
 - Variables de opt-out: `EVOL_NO_ADAPT`, `EVOL_NO_HOOKS`, `EVOL_NO_GITHOOK`, `EVOL_NO_BRAND`, `EVOL_NO_GATE_INIT`
 
 **`evol-start.sh`** — Arranca el sistema
-- Inicia MemPalace en modo CLI: `mempalace index --wing evol-dd --path .`
+- Inicia Memoria Persistente en modo CLI: `Memoria Persistente index --wing evol-dd --path .`
 - NO arranca ningún servidor MCP
-- Carga contexto de la última sesión: `mempalace search "last_session"`
+- Carga contexto de la última sesión: `Memoria Persistente search "last_session"`
 
 **`evol-adapt.sh`** — Genera configs IDE (copia real, NUNCA symlinks)
 - Soporta targets: `claude-code`, `opencode`, `cursor`, `windsurf`, `vscode-copilot`, `antigravity`, `codex`, `all`
@@ -444,7 +444,7 @@ Estos scripts tienen equivalentes probados en X-DD. Debes construirlos con el mi
 - Modo seco: `evol-adapt.sh <target> --dry-run`
 
 **`evol-doctor.sh`** — Diagnóstico del entorno
-- Verifica dependencias: git, Python 3.10+, MemPalace CLI, Node (opcional para GitNexus)
+- Verifica dependencias: git, Python 3.10+, Memoria Persistente CLI, Node (opcional para GitNexus)
 - Verifica estructura del proyecto: directorios requeridos, archivos core
 - Reporta warnings sin bloquear (salvo errores críticos)
 - Flag `--json` para output estructurado
@@ -501,16 +501,16 @@ Comandos:
 - `create --name NAME --task DESCRIPTION [--expires-after DAYS]`
   - Genera `.md` desde `templates/agent.template.md`
   - Registra en registry.json con `ephemeral: true`
-  - Indexa MemPalace: `mempalace index --path prompts/agents/ephemeral/`
+  - Indexa Memoria Persistente: `Memoria Persistente index --path prompts/agents/ephemeral/`
   - Indexa GitNexus si `EVOL_GITNEXUS=1`: `npx gitnexus analyze`
 - `invoke NAME` — activa el agente para la sesión actual
 - `retire NAME`
   - Elimina `.md`
   - Actualiza registry: `retired: true`, `retired_at`, `sessions_used`
   - Archiva en `.evol/agents/retired/<name>.json` (snapshot: prompt + metadata + sessions)
-  - MemPalace y GitNexus retienen el índice
+  - Memoria Persistente retienen el índice
 - `recall NAME`
-  - Busca en `.evol/agents/retired/` y MemPalace
+  - Busca en `.evol/agents/retired/` y Memoria Persistente
   - Reconstruye `.md` y re-registra con `recalled: true`
 - `list [--ephemeral] [--retired] [--all]`
 
@@ -524,7 +524,7 @@ Comandos:
   - Registra propuesta en tabla `evolutions` (status: proposed)
   - Requiere aprobación humana antes de activar
 - `status` — cuántos instincts candidatos hay
-- `approve CLUSTER_ID` — aprueba propuesta, indexa MemPalace y GitNexus
+- `approve CLUSTER_ID` — aprueba propuesta, indexa Memoria Persistente
 - `invalidate INSTINCT_ID [--reason TEXTO]` — marca instinct como invalido (anti-patron detectado); reduce confidence a 0 y agrega flag `invalidated: true`. Previene que decisiones incorrectas repetidas se promuevan a skills.
 - `rollback SKILL_NAME` — revierte una skill auto-generada ya aprobada: desactiva el SKILL.md, marca la evolucion como `rolled_back`, preserva el archivo en `skills/<nombre>/.retired/` para auditoria.
 
@@ -565,7 +565,7 @@ Nota arquitectonica: `evol-lessons suggest-fix` llama a este script internamente
 
 ## Modos de operacion del sistema
 
-Evol-DD opera en dos modos segun la disponibilidad de MemPalace. El modo es auto-detectado
+Evol-DD opera en dos modos segun la disponibilidad de Memoria Persistente. El modo es auto-detectado
 por `evol-start.sh` y `evol-doctor.sh`. Documentar en `docs/modos.md`.
 
 ### Protocolo de jerarquia de los 3 sistemas de memoria
@@ -574,15 +574,15 @@ Los tres sistemas son complementarios con roles distintos. En caso de informacio
 
 1. **`memoria.md`** — verdad del proyecto. Estado de fases, decisiones arquitectonicas, hitos. Escrito por el agente. Nunca sobreescrito por otro sistema.
 2. **`AGENT_MEMORY.md` + `memory/`** — contexto de sesion del agente. Preferencias, patrones, reflexiones. Complementa memoria.md, no la reemplaza.
-3. **MemPalace** — busqueda semantica sobre el codebase. Recupera contexto relevante por query, no por cronologia.
+3. **Memoria Persistente** — busqueda semantica sobre el codebase. Recupera contexto relevante por query, no por cronologia.
 
-Ningun sistema sobreescribe a otro. Si divergen, el agente los trata como fuentes distintas: memoria.md para decisiones de proyecto, AGENT_MEMORY.md para estilo de trabajo, MemPalace para encontrar codigo/docs relevantes.
+Ningun sistema sobreescribe a otro. Si divergen, el agente los trata como fuentes distintas: memoria.md para decisiones de proyecto, AGENT_MEMORY.md para estilo de trabajo, Memoria Persistente para encontrar codigo/docs relevantes.
 
 **Definicion de "sesion":** una sesion comienza cuando el agente recibe la primera instruccion del usuario y termina cuando el usuario cierra la interaccion o el agente ejecuta el hook Stop. Una sesion puede abarcar multiples tareas del mismo dia. El journal `memory/YYYY-MM-DD.md` puede tener N sesiones si el usuario abre y cierra varias veces en el mismo dia — cada sesion añade una seccion nueva al journal, no lo sobreescribe.
 
-### Modo Completo
+### Memoria Persistente
 
-MemPalace instalado y activo (CLI only — `mempalace index`, `mempalace search`).
+Memoria Persistente instalado y activo (CLI only — `Memoria Persistente index`, `Memoria Persistente search`).
 Aporta continuidad semantica automatica entre sesiones: el agente "recuerda" el proyecto,
 lecciones y patrones detectados sin que el usuario repita contexto.
 
@@ -594,7 +594,7 @@ Lo que aporta sobre Modo Base:
 
 ### Modo Base
 
-Sin MemPalace. El pipeline Evol-DD funciona completamente — todos los workflows, todos los
+Sin Memoria Persistente. El pipeline Evol-DD funciona completamente — todos los workflows, todos los
 agentes, el Gated Pipeline de 6 fases, las lecciones acumuladas (manual) y los gates
 HMAC siguen disponibles. Instalacion en menos de 2 minutos.
 
@@ -630,7 +630,7 @@ Estructura de archivos generada en cada proyecto:
 
 Agregar a `.gitignore` del proyecto: `dialog/` y `tool_result/`.
 
-| Aspecto | MemPalace | Memoria conversacional |
+| Aspecto | Memoria Persistente | Memoria conversacional |
 |---------|-----------|------------------------|
 | Que indexa | Archivos del repo | Conversaciones del agente |
 | Busqueda | RAG codebase | BM25 sobre historial |
@@ -753,7 +753,7 @@ Variables de entorno para extract/suggest-fix:
 
 ### Modo GitNexus (opt-in)
 
-Siempre opt-in (`EVOL_GITNEXUS=1`). Separado del modo MemPalace. Licencia PolyForm-NC —
+Siempre opt-in (`EVOL_GITNEXUS=1`). Separado del modo Memoria Persistente. Licencia PolyForm-NC —
 incompatible con uso comercial. Activar solo en proyectos no-comerciales. Documentado en
 `docs/gitnexus-optin.md`.
 
@@ -787,7 +787,7 @@ Flags: `--pip-mode`, `--legacy`. Auto-detect via `importlib.metadata`.
 
 ```bash
 evol-doctor           # human: [Modo operativo] COMPLETO / BASE
-evol-doctor --json    # machine: "mempalace_mode": "complete" | "base"
+evol-doctor --json    # machine: "Memoria Persistente_mode": "complete" | "base"
 evol-start            # imprime modo al arrancar
 ```
 
@@ -805,7 +805,7 @@ Hooks requeridos:
 | `pre:edit:config-protection` | PreToolUse | strict | Bloquea edición de configs sin justificación |
 | `pre:write:doc-file-warning` | PreToolUse | standard+ | Advierte .md fuera de rutas canónicas |
 | `pre:tool:temporal-awareness` | PreToolUse | standard+ | Inyecta contexto del sprint activo |
-| `post:edit:mempalace-index` | PostToolUse | minimal+ | Re-indexa MemPalace vía CLI (async) |
+| `post:edit:Memoria Persistente-index` | PostToolUse | minimal+ | Re-indexa Memoria Persistente vía CLI (async) |
 | `post:bash:pr-logger` | PostToolUse | standard+ | Loguea URL de PR tras `gh pr create` |
 | `post:write:auto-organize` | PostToolUse | standard+ | Mueve docs canónicos a rutas correctas |
 | `session:start:context-load` | SessionStart | standard+ | Carga última memoria.md + WORKING-CONTEXT |
@@ -1051,7 +1051,7 @@ La constitución es el documento de gobernanza supremo. Debe contener estos 9 ar
 3. **Preservación de contexto (Flight Recorder)** — Leer `memoria.md` al abrir cualquier proyecto. Toda sesión termina registrando hitos en `memoria.md`.
 4. **Ingeniería de ciclo de vida** — Legibilidad y modularidad extrema. Logging y auditoría propuestos junto con funcionalidad de negocio.
 5. **Consultoría de dominio** — El sistema actúa como consultor proactivo, no como ejecutor pasivo.
-6. **Orquestación multi-agente y delegación** — `/evol` puede instanciar agentes core o crear agentes efímeros. Agentes efímeros son ciudadanos de primera clase: su ciclo de vida completo (crear/retirar/recall) es protocolo, no excepción. El conocimiento de agentes retirados persiste en MemPalace y GitNexus.
+6. **Orquestación multi-agente y delegación** — `/evol` puede instanciar agentes core o crear agentes efímeros. Agentes efímeros son ciudadanos de primera clase: su ciclo de vida completo (crear/retirar/recall) es protocolo, no excepción. El conocimiento de agentes retirados persiste en Memoria Persistente.
 7. **Protocolo Git (GitFlow)** — Evol-DD usa GitFlow como defecto (distinto a X-DD que usa trunk-based). `main` siempre desplegable. `develop` = integracion continua. Feature branches `feature/*` → merge a `develop` via PR. Releases via `release/vX.Y.Z`. Hotfixes via `hotfix/*` → merge a `main` + `develop`. Trunk-based es el opt-in. Conventional Commits obligatorios en todos los branches.
 8. **Estándar de ingeniería** — Menos de 10 líneas: directo. Más de 20 líneas: ciclo Diseño→Plan→TDD→Ejecución→Revisión. Calidad sobre velocidad.
 9. **Pipeline Evol-DD (6 fases)** — Briefing → Spec → Plan → Build → QA → Retro. Cada fase produce artefactos verificables. El sistema aprende de cada retro y actualiza sus instincts.
@@ -1064,7 +1064,7 @@ La constitución es el documento de gobernanza supremo. Debe contener estos 9 ar
 
 ```yaml
 evol_version: 0.1.0-dev
-mempalace:
+Memoria Persistente:
   enabled: true
   mode: cli                    # IMPORTANTE: cli only, sin MCP
   default_wing: evol-dd
@@ -1181,11 +1181,11 @@ El schema debe soportar los siguientes campos para agentes efímeros (además de
 
 El sistema está correctamente construido cuando:
 
-1. `evol-doctor.sh` reporta 0 errores críticos y detecta MemPalace CLI disponible
+1. `evol-doctor.sh` reporta 0 errores críticos y detecta Memoria Persistente CLI disponible
 2. `evol-init.sh /tmp/test-project --profile core` instala el proyecto sin errores y no genera ninguna referencia a MCP en los archivos instalados
 3. `evol-adapt.sh all` genera configs para los 7 IDEs y ningún archivo generado contiene la palabra "mcp" en contexto de configuración de servidor
-4. `python3 scripts/evol-agent-lifecycle.py create --name "test-agent" --task "prueba"` crea el archivo `.md`, lo registra en registry.json, e indexa MemPalace
-5. `python3 scripts/evol-agent-lifecycle.py retire "test-agent"` elimina el `.md`, archiva el snapshot en `.evol/agents/retired/`, y MemPalace retiene el conocimiento
+4. `python3 scripts/evol-agent-lifecycle.py create --name "test-agent" --task "prueba"` crea el archivo `.md`, lo registra en registry.json, e indexa Memoria Persistente
+5. `python3 scripts/evol-agent-lifecycle.py retire "test-agent"` elimina el `.md`, archiva el snapshot en `.evol/agents/retired/`, y Memoria Persistente retiene el conocimiento
 6. `python3 scripts/evol-agent-lifecycle.py recall "test-agent"` reconstruye el agente desde el archivo retired
 7. `python3 scripts/evol-evolve.py sync-community --dry-run` lista skills de GitHub sin errores
 8. `python3 scripts/evol-researcher.py run --scope system` genera `RESEARCH.md` con propuestas
@@ -1210,8 +1210,8 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 
 7. Templates criticos: `agent.template.md`, `working-context.template.md`, `memoria.template.md`, `lecciones.template.md`
 8. Scripts de infraestructura base: `evol-state.py`, `evol-provider.py`, `evol-gate.py`, `evol-flow.py`
-9. `_evol_common.py` — utilidades compartidas incluyendo `mempalace_safe()` para degradacion elegante
-10. Scripts de instalacion y diagnostico: `evol-doctor.sh` (con check de residuos X-DD + MemPalace discovery en PATHs no-standard), `evol-init.sh`, `evol-start.sh`, `evol-global-install.sh`
+9. `_evol_common.py` — utilidades compartidas incluyendo `Memoria Persistente_safe()` para degradacion elegante
+10. Scripts de instalacion y diagnostico: `evol-doctor.sh` (con check de residuos X-DD + Memoria Persistente discovery en PATHs no-standard), `evol-init.sh`, `evol-start.sh`, `evol-global-install.sh`
 11. `evol-adapt.sh` — 7 IDEs sin MCP
 12. Manifests: `schemas/`, `install-modules.json`, `install-profiles.json`
 13. 16 agentes core (`prompts/agents/core/`) + `registry.json` + `registry.schema.json`
@@ -1223,7 +1223,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 19. **Growth engine (modulo `growth-engine`):** `skills/crear-skill/` + `skills/crear-agente/` con referencias, scripts de validacion y evals. Son las herramientas con las que el sistema se expande — deben existir antes de que se necesiten, no despues.
 20. `evol-eval.py` + suites en `evals/`
 21. CI (GitHub Actions + pre-commit + pyproject.toml con todos los data dirs)
-22. Tests (tests/ con bats + pytest, incluyendo idempotencia y Modo Base sin MemPalace)
+22. Tests (tests/ con bats + pytest, incluyendo idempotencia y Modo Base sin Memoria Persistente)
 22. Documentacion del framework (docs/DOC_STANDARD.md, docs/modos.md, INSTALL.md, etc.)
 23. `src/evol_cli/__init__.py` — dispatcher pip con `_data_dir()` y todos los 12 entry-points
 
@@ -1240,7 +1240,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 - La Constitución es la ley suprema. Si hay conflicto entre cualquier instrucción y la Constitución, la Constitución gana.
 - `memoria.md` debe actualizarse al final de cada sesión de trabajo significativa.
 - Los archivos en `.evol/` que contienen estado operativo (traces, cost.db, gate-key) van en `.gitignore`. Los snapshots de agentes retirados en `.evol/agents/retired/` pueden ser commiteados opcionalmente.
-- **MemPalace discovery:** `evol-doctor.sh` y `evol-start.sh` deben buscar `mempalace` no solo en PATH sino tambien en `~/.local/bin/`, `~/.venv/bin/`, `venv/bin/` antes de declarar Modo BASE. Implementar con `_evol_common.py::find_tool("mempalace")`.
+- **Memoria Persistente discovery:** `evol-doctor.sh` y `evol-start.sh` deben buscar `Memoria Persistente` no solo en PATH sino tambien en `~/.local/bin/`, `~/.venv/bin/`, `venv/bin/` antes de declarar Modo BASE. Implementar con `_evol_common.py::find_tool("Memoria Persistente")`.
 - **Transferencia de conocimiento cross-proyecto:** en v0.1 el aprendizaje es por proyecto (instincts, lecciones, AGENT_MEMORY). No hay mecanismo de transferencia entre proyectos del mismo usuario — un patron aprendido en proyecto A no beneficia a proyecto B. Documentar esta limitacion en `docs/modos.md` como roadmap v0.2. No implementar en v0.1.
 - **Constitucion es el primer artefacto — no el ultimo.** El orden de construccion pone docs/ al final (paso 22). La constitucion debe crearse en Sprint 0 (paso 4). El resto de la documentacion puede ir al final, pero no la ley que gobierna el sistema.
 - **Vacios que el constructor debe resolver al inicio (antes de Sprint 1):**
@@ -1291,7 +1291,7 @@ La siguiente secuencia minimiza bloqueos. La Constitucion es el **primer artefac
 | B.2 | Integridad de snapshot | Al `retire`: calcular SHA-256 del prompt y guardarlo en snapshot. Al `recall`: recomputar y comparar — abortar si difiere (flag `--force` para override). Campo: `prompt_sha256` en `.evol/agents/retired/<name>.json`. |
 | B.2b | Contenido del snapshot | Prompt completo + metadata + SHA-256 + log de cada invocación (timestamp, tarea). Campo `invocation_log: [{timestamp, task}]` en el JSON. |
 | B.3 | Supply-chain skills | Antes de instalar: `gitleaks` (secrets) + `semgrep` (patrones peligrosos) sobre la skill descargada. Pin por **commit SHA** (no branch/tag móvil). SHA guardado en registry. Comando: `evol-evolve update-skill NAME` para actualizar explícitamente. |
-| B.4 | Degradación sin MemPalace/GitNexus | Si `mempalace`/`npx gitnexus` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `mempalace_safe()` en `scripts/_evol_common.py`. |
+| B.4 | Degradación sin Memoria Persistente/GitNexus | Si `Memoria Persistente`/`npx gitnexus` no están en PATH: warning + continuar. Snapshot local `.evol/agents/retired/<name>.json` es fuente mínima para recall. Nunca crashear. Wrapper `Memoria Persistente_safe()` en `scripts/_evol_common.py`. |
 | B.5 | Regla anti-MCP verificable | Regla `no_mcp_config` en `evol-shield.py`: falla si artefacto generado contiene `mcpServers`/`mcp.json`/servidor MCP. Step CI con grep. |
 | B.6 | Idempotencia install | Tests bats: correr `evol-init` dos veces, verificar no-duplicación de hooks en `~/.claude/settings.json`. Archivo: `tests/test_init_idempotent.bats`. |
 | B.9 | Perfil lean sin global | `evol-init lean` **falla con error claro** si wrapper global no existe: `"lean requiere evol-global-install.sh ejecutado primero"`. Sin degradación silenciosa. |
@@ -1478,7 +1478,7 @@ no existe. El hook `session:start:context-load` lo lee al arrancar. Formato:
 `schemas/` contiene JSON schemas de manifests e igual que X-DD:
 `install-modules.schema.json`, `install-profiles.schema.json`, `install-components.schema.json`,
 `hooks.schema.json`, `evol.config.schema.json`. Poblado en el paso de manifests.
-Mantener en `index_paths` de MemPalace — tiene contenido util para validacion.
+Mantener en `index_paths` de Memoria Persistente — tiene contenido util para validacion.
 
 ### I.8 — Entry-points pip (CERRADO)
 
@@ -1529,7 +1529,7 @@ Ademas: archivo `.evol-mcp-exclude` para casos legitimos futuros (si aplica).
 
 El agente constructor define los fixtures y assertions al implementar los tests. Comportamiento
 esperado documentado aqui para orientar:
-- Modo Base: con `mempalace` fuera del PATH, `evol doctor` reporta "Modo BASE" (exit 0) y
+- Modo Base: con `Memoria Persistente` fuera del PATH, `evol doctor` reporta "Modo BASE" (exit 0) y
   `evol init` no crashea. Criterio de exito: `PATH="" evol-doctor.sh | grep "Modo BASE"`.
 - Supply-chain: skill de prueba con secreto embebido (`SUPERSECRET=abc123`) debe fallar el
   scan. Skill limpia debe pasar. Exit codes: 0 = OK, 1 = fallo de seguridad.
@@ -1584,7 +1584,7 @@ Paso 0 del build (antes de cualquier otra cosa):
 | C1 | Art.7 trunk-based vs GitFlow | Art. 7 actualizado: GitFlow como defecto en Evol-DD |
 | C2 | "Evoluciona autonomamente" vs aprobacion humana | Filosofia central aclarada: evolucion asistida, no autonoma |
 | C3 | Gate key global vs aislamiento criptografico | Key por proyecto; comando `--from-global` para bootstrap |
-| C4 | "Sin MCP" vs MemPalace como dep externa | Aclarado: sin MCP server/protocolo; MemPalace es CLI tool local |
+| C4 | "Sin MCP" vs Memoria Persistente como dep externa | Aclarado: sin MCP server/protocolo; Memoria Persistente es CLI tool local |
 | C5 | 16 core vs factory+efimeros | Criterio formal: core = responsabilidad sobre estado del sistema |
 
 ### Vacios resueltos

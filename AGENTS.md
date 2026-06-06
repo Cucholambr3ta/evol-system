@@ -93,7 +93,7 @@ Run `scripts/generate-equipo.sh` to regenerate it after any registry change.
 
 Ephemeral agents are first-class citizens. Their lifecycle (create / invoke / retire /
 recall) is protocol, not exception. When an ephemeral agent retires, its knowledge
-persists in MemPalace and GitNexus (if active) for future recall without rebuilding
+persists in Memoria Persistente and GitNexus (if active) for future recall without rebuilding
 from scratch.
 
 Ephemeral agents cannot modify governance files (constitution, gate, hooks) and

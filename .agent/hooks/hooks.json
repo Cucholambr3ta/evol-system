@@ -3,10 +3,10 @@
   "profiles": {
     "minimal": [
       {
-        "id": "post:edit:mempalace-index",
+        "id": "post:edit:Memoria Persistente-index",
         "event": "PostToolUse",
         "enabled": true,
-        "script": "post-edit-mempalace-index.sh",
+        "script": "post-edit-Memoria Persistente-index.sh",
         "trigger": "edit"
       }
     ],

@@ -214,10 +214,10 @@ hooks:
     - strict
   default_profile: standard
   hooks:
-    - id: post:edit:mempalace-index
+    - id: post:edit:Memoria Persistente-index
       event: PostToolUse
       trigger: edit
-      script: post-edit-mempalace-index.sh
+      script: post-edit-Memoria Persistente-index.sh
     - id: pre:bash:dangerous-command
       event: PreToolUse
       trigger: bash
@@ -297,7 +297,7 @@ optional_dependencies:
     - python3 (>=3.10)
     - bats (for shell tests)
   optional_tools:
-    - mempalace (for memory indexing)
+    - Memoria Persistente (for memory indexing)
     - gitleaks (for secret scanning)
     - semgrep (for static analysis)
 
