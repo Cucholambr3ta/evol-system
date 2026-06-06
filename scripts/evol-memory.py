@@ -410,51 +410,166 @@ def edms_graph_traverse(node_id, depth=2):
 
 
 def edms_bootstrap(project="."):
-    """Import acuerdos/ files into EDMS."""
+    """Import existing project state into EDMS (idempotent).
+
+    Detects and imports:
+    1. acuerdos/**/*.md (existing documentation)
+    2. Legacy memory files (memoria.md, lecciones.md, AGENT_MEMORY.md)
+    3. Git history (recent commits, branches, tags)
+    4. Project metadata (pyproject.toml, package.json, etc.)
+    5. Graph nodes (Proyecto, Disciplinas, Sprints)
+    """
     store = _get_store()
     if not store:
         print("[evol-memory] EDMS no disponible.")
         return
 
-    acuerdos = Path(project) / "acuerdos"
-    if not acuerdos.exists():
-        print(f"[evol-memory] {acuerdos} no existe.")
-        return
+    project_path = Path(project).resolve()
+    project_name = project_path.name
+    stats = {'acuerdos': 0, 'legacy': 0, 'git': 0, 'graph': 0}
 
-    count = 0
-    for md_file in sorted(acuerdos.rglob("*.md")):
-        if md_file.name == "README.md":
-            continue
+    # 1. Create Proyecto node in graph
+    store.graph_add_node("Proyecto", {
+        "name": project_name,
+        "path": str(project_path),
+        "bootstrapped_at": datetime.now().isoformat(),
+    })
+    stats['graph'] += 1
 
-        content = md_file.read_text(encoding="utf-8")
-        if len(content.strip()) < 20:
-            continue
+    # 2. Import acuerdos/**/*.md
+    acuerdos = project_path / "acuerdos"
+    if acuerdos.exists():
+        for md_file in sorted(acuerdos.rglob("*.md")):
+            if md_file.name == "README.md":
+                continue
 
-        # Auto-detect metadata from path
-        rel = md_file.relative_to(acuerdos)
-        parts = rel.parts
+            content = md_file.read_text(encoding="utf-8")
+            if len(content.strip()) < 20:
+                continue
 
-        meta = {"proyecto": Path(project).resolve().name, "source_file": str(rel)}
+            rel = md_file.relative_to(acuerdos)
+            parts = rel.parts
 
-        if "memoria" in parts:
-            meta["tipo"] = "decision"
-            meta["fase"] = "Retro"
-        elif "lecciones" in parts:
-            meta["tipo"] = "leccion"
-            meta["fase"] = "QA"
-        elif "research" in parts:
-            meta["tipo"] = "artefacto"
-            meta["fase"] = "Spec"
-        elif "discovery" in parts:
-            meta["tipo"] = "artefacto"
-            meta["fase"] = "Briefing"
-        else:
-            meta["tipo"] = "artefacto"
+            meta = {"proyecto": project_name, "source_file": str(rel)}
 
-        store.index(content, meta)
-        count += 1
+            if "memoria" in parts:
+                meta["tipo"] = "decision"
+                meta["fase"] = "Retro"
+            elif "lecciones" in parts:
+                meta["tipo"] = "leccion"
+                meta["fase"] = "QA"
+            elif "research" in parts:
+                meta["tipo"] = "artefacto"
+                meta["fase"] = "Spec"
+            elif "discovery" in parts:
+                meta["tipo"] = "artefacto"
+                meta["fase"] = "Briefing"
+            else:
+                meta["tipo"] = "artefacto"
 
-    print(f"[evol-memory] ✓ {count} archivos indexados desde {acuerdos}/")
+            store.index(content, meta)
+            stats['acuerdos'] += 1
+
+    # 3. Import legacy memory files
+    legacy_files = {
+        'memoria.md': ('decision', 'Retro'),
+        'lecciones.md': ('leccion', 'QA'),
+        'AGENT_MEMORY.md': ('resumen', 'Retro'),
+    }
+
+    for filename, (tipo, fase) in legacy_files.items():
+        legacy_path = project_path / filename
+        if legacy_path.exists():
+            content = legacy_path.read_text(encoding="utf-8")
+            if len(content.strip()) > 20:
+                # Split by sections if file is large
+                sections = content.split('\n## ')
+                for i, section in enumerate(sections):
+                    if i == 0 and not section.strip().startswith('#'):
+                        section = '# ' + section
+                    if len(section.strip()) > 20:
+                        meta = {
+                            "proyecto": project_name,
+                            "tipo": tipo,
+                            "fase": fase,
+                            "source_file": filename,
+                            "section_index": i,
+                        }
+                        store.index(section, meta)
+                        stats['legacy'] += 1
+
+    # 4. Import git history (recent commits)
+    try:
+        import subprocess
+        result = subprocess.run(
+            ['git', 'log', '--oneline', '-20', '--format=%h|%s|%ad', '--date=short'],
+            capture_output=True, text=True, cwd=str(project_path), timeout=5
+        )
+        if result.returncode == 0:
+            for line in result.stdout.strip().split('\n'):
+                if '|' in line:
+                    parts = line.split('|', 2)
+                    if len(parts) >= 2:
+                        commit_hash, message = parts[0], parts[1]
+                        meta = {
+                            "proyecto": project_name,
+                            "tipo": "artefacto",
+                            "fase": "Build",
+                            "source_file": f"git:{commit_hash}",
+                            "commit_hash": commit_hash,
+                        }
+                        store.index(f"Commit {commit_hash}: {message}", meta)
+                        stats['git'] += 1
+
+        # Import branches
+        result = subprocess.run(
+            ['git', 'branch', '-a', '--format=%(refname:short)'],
+            capture_output=True, text=True, cwd=str(project_path), timeout=5
+        )
+        if result.returncode == 0:
+            for branch in result.stdout.strip().split('\n'):
+                branch = branch.strip()
+                if branch and not branch.startswith('origin/'):
+                    store.graph_add_node("Branch", {"name": branch})
+                    store.graph_add_relation(project_name, "TIENE", branch)
+                    stats['graph'] += 1
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        pass  # Git not available or too slow
+
+    # 5. Detect disciplines from project files
+    disciplines_map = {
+        'pyproject.toml': 'DDD',
+        'package.json': 'DDD',
+        'Dockerfile': 'DevDD',
+        'docker-compose.yml': 'DevDD',
+        '.github/workflows': 'DevDD',
+        'tests/': 'TDD',
+        'docs/': 'DocDD',
+        'SECURITY.md': 'SecDD',
+        'openapi': 'APIDD',
+    }
+
+    for pattern, discipline in disciplines_map.items():
+        matches = list(project_path.rglob(pattern))
+        if matches:
+            store.graph_add_node("Disciplina", {"name": discipline})
+            store.graph_add_relation(project_name, "DEFINE", discipline)
+            stats['graph'] += 1
+
+    # 6. Create Sprint nodes for existing sprints
+    sprints_dir = acuerdos / "sprints"
+    if sprints_dir.exists():
+        for sprint_file in sprints_dir.glob("sprint-*.md"):
+            sprint_num = sprint_file.stem.replace("sprint-", "")
+            store.graph_add_node("Sprint", {"number": sprint_num, "status": "closed"})
+            store.graph_add_relation(project_name, "TIENE", f"sprint-{sprint_num}")
+            stats['graph'] += 1
+
+    # Summary
+    total = sum(stats.values())
+    print(f"[evol-memory] ✓ Bootstrap completado: {total} items")
+    print(f"  acuerdos: {stats['acuerdos']}, legacy: {stats['legacy']}, "
+          f"git: {stats['git']}, graph: {stats['graph']}")
 
 
 def edms_stats():

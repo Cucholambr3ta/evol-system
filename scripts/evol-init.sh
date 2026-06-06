@@ -435,6 +435,13 @@ print('[evol-init] MCP habilitado por defecto en evol.config.yml')
         echo "[evol-init] memory/ creado (runtime local, ignorado por git)."
     fi
 
+    # EDMS bootstrap: import existing project state into memory
+    if command -v python3 &>/dev/null && [ -f scripts/evol-memory.py ]; then
+        echo "[evol-init] Running EDMS bootstrap..."
+        python3 scripts/evol-memory.py --project="." edms-bootstrap 2>/dev/null || \
+            echo "[evol-init] EDMS bootstrap skipped (not critical)"
+    fi
+
     echo ""
     echo "[evol-init] Bootstrap complete"
     echo ""
