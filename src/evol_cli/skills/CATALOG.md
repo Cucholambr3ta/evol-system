@@ -4,14 +4,14 @@ Este catalogo de skills representa la memoria procedal y de razonamiento de Evol
 
 ## Indice de Categorias
 
-- Context Engineering (Ingenieria de Contexto)
-- Quality Gate (Puertas de Calidad)
-- Growth (Crecimiento del Sistema)
-- Compression (Compresion de Datos y Tokens)
-- Security (Seguridad)
-- Lifecycle (Ciclo de Vida)
-- Research (Investigacion)
-- Documentation (Documentacion)
+- N/A
+- Compression
+- Context Engineering
+- Documentation
+- Growth
+- Lifecycle
+- Quality Gate
+- Security
 
 ---
 
@@ -19,58 +19,60 @@ Este catalogo de skills representa la memoria procedal y de razonamiento de Evol
 
 | Nombre | Categoria | Trigger Principal | Descripcion |
 |--------|-----------|-------------------|-------------|
-| [agent-eval](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/agent-eval/SKILL.md) | quality-gate | `/eval` | Eval-harness para skills/agents/workflows de Evol-DD. |
-| [crear-agente](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-agente/SKILL.md) | growth | `/crear-agente` | Crea nuevos agentes permanentes o efimeros desde cero. |
-| [crear-skill](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-skill/SKILL.md) | growth | `/crear-skill` | Crea nuevas skills desde cero con loop iterativo de evaluacion. |
-| [evol-ai-review](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-ai-review/SKILL.md) | quality-gate | `/ai-review` | Calidad de codigo y evaluacion matizada mediante IA como juez. |
-| [evol-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-compact/SKILL.md) | context-engineering | `/compact` | Compresion de contexto independiente del proveedor de LLM. |
-| [evol-fact-check](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fact-check/SKILL.md) | research | `fact-check` | Pipeline de 11 pasos (SIFT + CRAAP + MFS) para verificar afirmaciones. |
-| [evol-fs-context](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fs-context/SKILL.md) | context-engineering | `/fs-context` | Paradigma de sistema de archivos para manejar grandes volumenes de datos. |
-| [evol-grill-me](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-grill-me/SKILL.md) | research | `grill me` | Interrogatorio tecnico exhaustivo y validacion de supuestos. |
-| [evol-idea-refine](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-idea-refine/SKILL.md) | research | `refina esta idea` | Refinamiento divergente-convergente para convertir ideas en propuestas. |
-| [evol-prompt-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-prompt-master/SKILL.md) | productivity | `escribe un prompt para` | Optimizacion de prompts para mas de 30 herramientas de IA externas. |
-| [evol-sandbox](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-sandbox/SKILL.md) | security | `/sandbox` | Entornos de ejecucion aislados (E2B, Daytona, Docker, etc.). |
-| [evol-skill-manager](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-skill-manager/SKILL.md) | lifecycle | `/skill` | Gestion del ciclo de vida de las skills (instalacion, rollbacks). |
-| [evol-talk-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-talk-compact/SKILL.md) | compression | `/compact-talk` | Compresion y ahorro de tokens en la comunicacion del orquestador. |
-| [readme-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/readme-master/SKILL.md) | documentation | `/evol readme-master` | Auditoria y creacion de README.md de alta calidad visual. |
+| [agent-eval](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/agent-eval/SKILL.md) | quality-gate | `/eval` | Eval-harness para skills/agents/workflows Evol-DD. 4 grader types. Suite por skill. |
+| [crear-agente](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-agente/SKILL.md) | lifecycle | `/crear-agente` |  |
+| [crear-skill](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-skill/SKILL.md) | growth | `/crear-skill` | Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity, |
+| [evol-ai-review](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-ai-review/SKILL.md) | quality-gate | `/ai-review` | Quality gate review using AI for nuanced assessment. |
+| [evol-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-compact/SKILL.md) | context-engineering | `/compact` | Provider-agnostic context compaction. Reduce tokens preserving semantics. |
+| [evol-fact-check](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fact-check/SKILL.md) | N/A | `fact-check` | Verificación de claims y detección de desinformación con pipeline de 11 pasos (SIFT + CRAAP + MFS scoring). Produce Fact-Check Card con veredicto, score de manipulación y componente educativo. Inspirado en petar-nauka/fact-check-skill. |
+| [evol-fs-context](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fs-context/SKILL.md) | context-engineering | `/fs-context` | Filesystem-paradigm context curation. Treat large data as files mounted by agents. |
+| [evol-grill-me](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-grill-me/SKILL.md) | N/A | `grill me` | Interrogatorio implacable de planes y diseños hasta alcanzar comprensión compartida. Recorre cada rama del árbol de decisiones resolviendo dependencias una a una. Inspirado en mattpocock/skills grill-me (MIT). |
+| [evol-idea-refine](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-idea-refine/SKILL.md) | N/A | `refina esta idea` | Refinamiento de ideas brutas en conceptos accionables. Pipeline divergente→convergente en 3 fases (Expandir / Evaluar / Afilar). Produce one-pager Markdown con dirección recomendada y lista explícita de "No Hacemos". Inspirado en addyosmani/agent-skills idea-refine. |
+| [evol-prompt-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-prompt-master/SKILL.md) | N/A | `escribe un prompt para` | Generación de prompts optimizados para 30+ herramientas de IA. Extracción de intención en 9 dimensiones, routing por tool-specific conventions, reglas hard sobre cuándo NO agregar CoT. Complementa /mejorar-prompt (Evol-DD workflows) con soporte multi-modelo y agentic tools. Inspirado en nidhinjs/prompt-master. |
+| [evol-sandbox](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-sandbox/SKILL.md) | security | `/sandbox` | Provider-agnostic sandbox skill. Backends E2B, Daytona, Microsandbox, local docker, none. |
+| [evol-skill-manager](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-skill-manager/SKILL.md) | lifecycle | `/skill` | Lifecycle management for skills (install, update, rollback, validate). |
+| [evol-talk-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-talk-compact/SKILL.md) | compression | `/compact-talk` | Compresion de output del orquestador Evol-DD. 3 niveles. Ahorro tokens ~50-75%. |
+| [readme-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/readme-master/SKILL.md) | documentation | `/evol readme-master` | Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios. |
 
 ---
 
 ## Detalle por Categoria
 
-### Context Engineering
+### N/A
 
-- **[evol-fs-context](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fs-context/SKILL.md)**: Evita saturar el contexto de la conversacion montando archivos extensos en memoria o procesandolos en streams de datos.
-- **[evol-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-compact/SKILL.md)**: Aplica tecnicas sistematicas de reduccion de tokens de conversacion eliminando redundancias y compactando texto sin perder semantica.
-
-### Quality Gate
-
-- **[agent-eval](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/agent-eval/SKILL.md)**: Harness de evaluacion continua para asegurar el comportamiento correcto de agentes y flujos. Soporta grading estructural, conductual e IA.
-- **[evol-ai-review](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-ai-review/SKILL.md)**: Evaluacion de alto nivel por parte de un LLM que actua como juez para auditar decisiones de diseño y codigo.
-
-### Growth
-
-- **[crear-agente](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-agente/SKILL.md)**: Agiliza la creacion de nuevos agentes core o efimeros, asegurando el cumplimiento de la estructura definida en prompts y su registro automatico.
-- **[crear-skill](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-skill/SKILL.md)**: Proporciona un loop completo de creacion, evaluacion contra benchmarks y distribucion de skills para multiples IDEs.
-
-### Research
-
-- **[evol-fact-check](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fact-check/SKILL.md)**: Metodologia rigurosa para auditar claims y documentacion externa a fin de evitar la integracion de desinformacion.
-- **[evol-grill-me](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-grill-me/SKILL.md)**: Stress-testing de planes y decisiones tecnicas que fuerza al agente a validar supuestos ocultos.
-- **[evol-idea-refine](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-idea-refine/SKILL.md)**: Estructuracion de ideas abstractas en documentos "one-pager" claros con foco en que no hacer.
-
-### Security
-
-- **[evol-sandbox](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-sandbox/SKILL.md)**: Provisionamiento y ejecucion de comandos e implementaciones en entornos seguros y aislados para proteger la maquina anfitriona.
-
-### Lifecycle
-
-- **[evol-skill-manager](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-skill-manager/SKILL.md)**: Gestiona la instalacion, actualizacion, desinstalacion y rollback de skills dentro de la arquitectura del framework.
+- **[evol-fact-check](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fact-check/SKILL.md)**: Verificación de claims y detección de desinformación con pipeline de 11 pasos (SIFT + CRAAP + MFS scoring). Produce Fact-Check Card con veredicto, score de manipulación y componente educativo. Inspirado en petar-nauka/fact-check-skill.
+- **[evol-grill-me](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-grill-me/SKILL.md)**: Interrogatorio implacable de planes y diseños hasta alcanzar comprensión compartida. Recorre cada rama del árbol de decisiones resolviendo dependencias una a una. Inspirado en mattpocock/skills grill-me (MIT).
+- **[evol-idea-refine](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-idea-refine/SKILL.md)**: Refinamiento de ideas brutas en conceptos accionables. Pipeline divergente→convergente en 3 fases (Expandir / Evaluar / Afilar). Produce one-pager Markdown con dirección recomendada y lista explícita de "No Hacemos". Inspirado en addyosmani/agent-skills idea-refine.
+- **[evol-prompt-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-prompt-master/SKILL.md)**: Generación de prompts optimizados para 30+ herramientas de IA. Extracción de intención en 9 dimensiones, routing por tool-specific conventions, reglas hard sobre cuándo NO agregar CoT. Complementa /mejorar-prompt (Evol-DD workflows) con soporte multi-modelo y agentic tools. Inspirado en nidhinjs/prompt-master.
 
 ### Compression
 
-- **[evol-talk-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-talk-compact/SKILL.md)**: Modulo especifico para compactar el output enviado a traves de logs y chats del orquestador central, optimizando costos.
+- **[evol-talk-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-talk-compact/SKILL.md)**: Compresion de output del orquestador Evol-DD. 3 niveles. Ahorro tokens ~50-75%.
+
+### Context Engineering
+
+- **[evol-compact](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-compact/SKILL.md)**: Provider-agnostic context compaction. Reduce tokens preserving semantics.
+- **[evol-fs-context](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-fs-context/SKILL.md)**: Filesystem-paradigm context curation. Treat large data as files mounted by agents.
 
 ### Documentation
 
-- **[readme-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/readme-master/SKILL.md)**: Sincroniza la documentacion del proyecto principal y del framework con estandares visuales de la comunidad de codigo abierto.
+- **[readme-master](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/readme-master/SKILL.md)**: Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.
+
+### Growth
+
+- **[crear-skill](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-skill/SKILL.md)**: Crea nuevas skills para Evol-DD desde cero con loop iterativo de eval. Mejora skills existentes. Optimiza la descripcion del frontmatter para mejor triggering. Genera evals cuantitativos y cualitativos. Porta la skill a los 7 IDEs via evol-adapt.sh. Usar cuando el usuario quiera crear una skill nueva, mejorar una existente, testear una skill, o necesite que una capacidad este disponible como trigger en Claude Code, Cursor, Windsurf, OpenCode, Antigravity,
+
+### Lifecycle
+
+- **[crear-agente](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/crear-agente/SKILL.md)**: 
+- **[evol-skill-manager](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-skill-manager/SKILL.md)**: Lifecycle management for skills (install, update, rollback, validate).
+
+### Quality Gate
+
+- **[agent-eval](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/agent-eval/SKILL.md)**: Eval-harness para skills/agents/workflows Evol-DD. 4 grader types. Suite por skill.
+- **[evol-ai-review](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-ai-review/SKILL.md)**: Quality gate review using AI for nuanced assessment.
+
+### Security
+
+- **[evol-sandbox](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/evol-sandbox/SKILL.md)**: Provider-agnostic sandbox skill. Backends E2B, Daytona, Microsandbox, local docker, none.
+

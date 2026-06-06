@@ -199,6 +199,9 @@ cmd_sprint_close() {
     python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
     python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
 
+    log "Actualizando catalogo de skills..."
+    python3 "${script_dir}/generate-catalog.py" 2>/dev/null || true
+
     if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "registry\.json"; then
       log "Cambios detectados en registry.json. Regenerando equipo.md..."
       bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
@@ -251,11 +254,15 @@ cmd_release_close() {
     python3 "${script_dir}/evol-doc-sync.py" sync-folder docs/ 2>/dev/null || true
     python3 "${script_dir}/evol-doc-sync.py" sync-folder acuerdos/ 2>/dev/null || true
 
-    # 4. Regenerar equipo.md
+    # 4. Actualizando catalogo de skills
+    log "Actualizando catalogo de skills..."
+    python3 "${script_dir}/generate-catalog.py" 2>/dev/null || true
+
+    # 5. Regenerar equipo.md
     log "Regenerando equipo.md..."
     bash "${script_dir}/generate-equipo.sh" 2>/dev/null || true
 
-    log "Memoria y documentacion actualizadas: acuerdos/memoria/, MEMORY.md y sidecars sincronizados."
+    log "Memoria y documentacion actualizadas: acuerdos/memoria/, MEMORY.md, catalogos y sidecars sincronizados."
   else
     warn "python3 no disponible. Actualizar memoria manualmente con /update-memory."
   fi
