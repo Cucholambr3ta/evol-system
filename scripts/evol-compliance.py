@@ -320,6 +320,16 @@ def cmd_verify_applied(args):
 
     conn = get_db()
     c = conn.cursor()
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS lesson_tracking (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            lesson_title TEXT NOT NULL,
+            sprint_verified INTEGER NOT NULL,
+            status TEXT NOT NULL DEFAULT 'pendiente',
+            verified_at TEXT NOT NULL,
+            evidence TEXT
+        )
+    """)
     for a in applied:
         c.execute("""
             INSERT INTO lesson_tracking (lesson_title, sprint_verified, status, verified_at, evidence)

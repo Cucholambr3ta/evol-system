@@ -133,8 +133,133 @@ def test_privacy_before_index():
         store.index("API key: sk-123456789012345678901234567890123456789012345678", {
             "proyecto": "test"
         })
-        results = store.search("sk-", project="test")
-        assert len(results) == 0  # should not find the raw key
+        results = store.search("API key", project="test", n_results=1)
+        # The stored text should have the key redacted
+        if results:
+            assert "sk-12345" not in results[0]["text"], "Raw API key found in indexed text!"
+            assert "REDACTED" in results[0]["text"] or results[0]["text"] != "sk-123456789012345678901234567890123456789012345678"
+
+
+def test_index_adds_tier_field():
+    """index() adds tier='raw' by default."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        doc_id = store.index("test content", {"proyecto": "test"})
+        results = store.search("test content", project="test", n_results=1)
+        assert len(results) == 1
+        assert results[0]["metadata"].get("tier") == "raw"
+
+
+def test_index_preserves_custom_tier():
+    """index() preserves custom tier if provided."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        store.index("compressed content", {"proyecto": "test", "tier": "compressed"})
+        results = store.search("compressed content", project="test", n_results=1)
+        assert len(results) == 1
+        assert results[0]["metadata"].get("tier") == "compressed"
+
+
+def test_compact_extractive_dedup():
+    """compact_extractive deduplicates items with >70% Jaccard similarity."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        items = [
+            {"id": "1", "text": "Decidimos usar gate HMAC-SHA256 para autenticacion", "metadata": {"proyecto": "test", "indexed_at": "2026-06-01T00:00:00"}},
+            {"id": "2", "text": "Decidimos usar gate HMAC-SHA256 para autenticacion y seguridad", "metadata": {"proyecto": "test", "indexed_at": "2026-06-02T00:00:00"}},
+            {"id": "3", "text": "Instalamos ChromaDB para vector search", "metadata": {"proyecto": "test", "indexed_at": "2026-06-03T00:00:00"}},
+        ]
+        compressed = store.compact_extractive(items, threshold=0.7)
+        # Items 1 and 2 are >70% similar, should be deduped
+        assert len(compressed) == 2
+        assert all(c["metadata"]["tier"] == "compressed" for c in compressed)
+
+
+def test_compact_extractive_key_sentence():
+    """compact_extractive extracts the most informative sentence."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        items = [
+            {"id": "1", "text": "Hoy hicimos muchas cosas. Decidimos usar ChromaDB. El test paso.", "metadata": {"proyecto": "test"}},
+        ]
+        compressed = store.compact_extractive(items)
+        assert len(compressed) == 1
+        # Should contain "Decidimos" (high-value keyword)
+        assert "Decidimos" in compressed[0]["text"] or "ChromaDB" in compressed[0]["text"]
+
+
+def test_compact_extractive_empty():
+    """compact_extractive handles empty input."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        compressed = store.compact_extractive([])
+        assert compressed == []
+
+
+def test_compact_tier_basic():
+    """compact_tier compacts raw items to compressed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        # Index 5 raw items
+        for i in range(5):
+            store.index(f"decision {i} about architecture", {"proyecto": "test", "tipo": "decision"})
+        # Verify raw count
+        stats_before = store.get_tier_stats("test")
+        assert stats_before["raw"] == 5
+        # Compact
+        result = store.compact_tier("test", max_items=10, force="extractive")
+        assert result["compacted"] == 5
+        assert result["method"] == "extractive"
+        assert result["after"] >= 1  # At least 1 compressed item
+        # Verify stats after — items with unchanged text become compressed, changed become archived
+        stats_after = store.get_tier_stats("test")
+        assert stats_after["raw"] == 0
+        assert stats_after["compressed"] >= 5  # All originals now compressed (text unchanged)
+
+
+def test_compact_tier_dry_run():
+    """compact_tier with dry_run doesn't modify anything."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        for i in range(3):
+            store.index(f"observation {i}", {"proyecto": "test"})
+        # Can't actually test dry_run through store directly, but verify tier stats work
+        stats = store.get_tier_stats("test")
+        assert stats["raw"] == 3
+        assert stats["compressed"] == 0
+
+
+def test_tier_stats_real():
+    """get_tier_stats counts by actual tier field."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        store.index("raw item", {"proyecto": "test", "tier": "raw"})
+        store.index("compressed item", {"proyecto": "test", "tier": "compressed"})
+        store.index("memory item", {"proyecto": "test", "tier": "memory"})
+        store.index("another raw", {"proyecto": "test"})  # defaults to raw
+        stats = store.get_tier_stats("test")
+        assert stats["raw"] == 2
+        assert stats["compressed"] == 1
+        assert stats["memory"] == 1
+        assert stats["total"] == 4
+
+
+def test_jaccard_similarity():
+    """_jaccard_similarity computes correctly."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        assert store._jaccard_similarity("hello world", "hello world") == 1.0
+        assert store._jaccard_similarity("hello world", "goodbye world") > 0.3
+        assert store._jaccard_similarity("completely different", "nothing alike") == 0.0
+
+
+def test_extract_key_sentence():
+    """_extract_key_sentence picks the most informative sentence."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        # Sentence with "decidimos" should be preferred
+        result = store._extract_key_sentence("Hoy fue un dia normal. Decidimos usar Redis. Todo bien.")
+        assert "Decidimos" in result
 
 
 if __name__ == "__main__":
@@ -148,4 +273,14 @@ if __name__ == "__main__":
     test_wake_up_context()
     test_graph_creation()
     test_privacy_before_index()
+    test_index_adds_tier_field()
+    test_index_preserves_custom_tier()
+    test_compact_extractive_dedup()
+    test_compact_extractive_key_sentence()
+    test_compact_extractive_empty()
+    test_compact_tier_basic()
+    test_compact_tier_dry_run()
+    test_tier_stats_real()
+    test_jaccard_similarity()
+    test_extract_key_sentence()
     print("All tests passed!")

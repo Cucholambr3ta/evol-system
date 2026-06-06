@@ -703,6 +703,40 @@ def edms_tier_stats(project="."):
     print("==================")
 
 
+def edms_compact(project=".", max_items=50, dry_run=False, force=None):
+    """Compact raw items into compressed tier using LLM or extractive fallback."""
+    store = _get_store()
+    if not store:
+        print("[evol-memory] EDMS no disponible.")
+        return
+
+    # Show stats before
+    stats_before = store.get_tier_stats(project)
+    raw_before = stats_before.get('raw', 0)
+
+    if raw_before == 0:
+        print("[evol-memory] No raw items to compact.")
+        return
+
+    if dry_run:
+        print(f"[evol-memory] DRY RUN — would compact {raw_before} raw items")
+        print(f"  Method: {'LLM' if force == 'llm' else 'extractive' if force == 'extractive' else 'auto'}")
+        return
+
+    # Get provider
+    provider = get_provider()
+    result = store.compact_tier(project, max_items, provider, force)
+
+    # Show stats after
+    stats_after = store.get_tier_stats(project)
+
+    print(f"[evol-memory] Compact complete")
+    print(f"  Method: {result['method']}")
+    print(f"  Raw before: {raw_before} → After: {stats_after.get('raw', 0)}")
+    print(f"  Compressed: {result['after']}")
+    print(f"  Archived: {result['compacted']}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Memory Engine")
     # Arg global --project ANTES del subcomando
@@ -782,6 +816,11 @@ def main():
     p.add_argument("--days", type=int, default=30, help="Days threshold")
 
     sub.add_parser("edms-tier-stats", help="Show tier statistics")
+
+    p = sub.add_parser("edms-compact", help="Compact raw items into compressed tier (LLM or extractive)")
+    p.add_argument("--max", type=int, default=50, help="Max items to compact")
+    p.add_argument("--dry-run", action="store_true", help="Show what would be compacted without doing it")
+    p.add_argument("--force", choices=["llm", "extractive"], default=None, help="Force compaction method")
 
     # FlowScript query commands
     p = sub.add_parser("edms-why", help="WHY: Find causes for a decision")
@@ -866,6 +905,11 @@ def main():
         edms_decay(args.project, args.days)
     elif args.cmd == "edms-tier-stats":
         edms_tier_stats(args.project)
+    elif args.cmd == "edms-compact":
+        edms_compact(
+            project=args.project, max_items=args.max,
+            dry_run=args.dry_run, force=args.force,
+        )
     elif args.cmd == "edms-why":
         results = store.query_why(args.text) if store else []
         print(json.dumps(results, indent=2, ensure_ascii=False) if results else "No causes found")

@@ -15,10 +15,19 @@ import hashlib
 import json
 import os
 import re
+import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
+
+# ── Auto-detect project venv ───────────────────────────────────────────────────
+_VENV_PYTHON = Path(__file__).resolve().parent.parent / ".venv" / "bin" / "python3"
+if _VENV_PYTHON.exists() and sys.executable != str(_VENV_PYTHON):
+    try:
+        import chromadb  # noqa: F401
+    except ImportError:
+        os.execv(str(_VENV_PYTHON), [str(_VENV_PYTHON)] + sys.argv)
 
 # ── Optional imports with fallback ─────────────────────────────────────────────
 
@@ -182,6 +191,10 @@ class MemoryStore:
             meta['fecha'] = datetime.now().strftime('%Y-%m-%d')
         meta['indexed_at'] = datetime.now().isoformat()
 
+        # Ensure tier field exists
+        if 'tier' not in meta:
+            meta['tier'] = 'raw'
+
         # Auto-update graph based on metadata
         self._auto_update_graph(clean_text, meta)
 
@@ -312,7 +325,12 @@ class MemoryStore:
             filters['sprint'] = sprint
 
         if CHROMA_AVAILABLE and self._chroma_collection:
-            where = filters if filters else None
+            if len(filters) == 1:
+                where = filters
+            elif len(filters) > 1:
+                where = {"$and": [{k: v} for k, v in filters.items()]}
+            else:
+                where = None
             results = self._chroma_collection.query(
                 query_texts=[clean_query],
                 n_results=n_results,
@@ -486,15 +504,26 @@ class MemoryStore:
         Returns:
             Number of items consolidated
         """
-        # Find items from source tier
-        results = self.search(
-            "",
-            project=project,
-            n_results=max_items,
-        )
-
-        # Filter by tier (using 'tipo' field with tier prefix)
-        source_items = [r for r in results if r['metadata'].get('tipo', '').startswith(from_tier)]
+        if CHROMA_AVAILABLE and self._chroma_collection:
+            where_filter = {"$and": [
+                {"tier": from_tier},
+                {"proyecto": project}
+            ]}
+            results = self._chroma_collection.get(
+                where=where_filter,
+                limit=max_items
+            )
+            source_items = []
+            if results and results['ids']:
+                for i, doc_id in enumerate(results['ids']):
+                    source_items.append({
+                        'id': doc_id,
+                        'text': results['documents'][i],
+                        'metadata': results['metadatas'][i] if results['metadatas'] else {},
+                    })
+        else:
+            results = self.search("", project=project, n_results=max_items)
+            source_items = [r for r in results if r['metadata'].get('tier') == from_tier]
 
         if not source_items:
             return 0
@@ -502,7 +531,7 @@ class MemoryStore:
         consolidated = 0
         for item in source_items:
             meta = item['metadata'].copy()
-            meta['tipo'] = to_tier
+            meta['tier'] = to_tier
             meta['consolidated_from'] = from_tier
             meta['consolidated_at'] = datetime.now().isoformat()
 
@@ -540,6 +569,42 @@ class MemoryStore:
         Returns:
             Number of items decayed
         """
+        if CHROMA_AVAILABLE and self._chroma_collection:
+            results = self._chroma_collection.get(limit=10000)
+            if not results or not results['ids']:
+                return 0
+
+            now = datetime.now()
+            decayed = 0
+            for i, doc_id in enumerate(results['ids']):
+                meta = results['metadatas'][i]
+                # Skip already archived/decayed items
+                if meta.get('tier') == 'archived' or meta.get('decayed'):
+                    continue
+                fecha_str = meta.get('fecha')
+                if not fecha_str:
+                    continue
+                try:
+                    fecha = datetime.fromisoformat(fecha_str)
+                    days_old = (now - fecha).days
+                except (ValueError, TypeError):
+                    continue
+
+                tipo = meta.get('tipo', 'artefacto')
+                half_life = _HALF_LIFE_DAYS.get(tipo, 30)
+
+                if days_old > half_life * 2:
+                    meta['decayed'] = True
+                    meta['decayed_at'] = now.isoformat()
+                    self._chroma_collection.update(
+                        ids=[doc_id],
+                        metadatas=[meta]
+                    )
+                    decayed += 1
+
+            return decayed
+
+        # Fallback: local JSON index
         idx_file = self.memory_dir / 'local_index.json'
         if not idx_file.exists():
             return 0
@@ -552,6 +617,8 @@ class MemoryStore:
 
         for item in idx:
             meta = item.get('metadata', {})
+            if meta.get('tier') == 'archived' or meta.get('decayed'):
+                continue
             fecha_str = meta.get('fecha')
             if not fecha_str:
                 continue
@@ -565,7 +632,6 @@ class MemoryStore:
             tipo = meta.get('tipo', 'artefacto')
             half_life = _HALF_LIFE_DAYS.get(tipo, 30)
 
-            # Mark as decayed if older than 2x half-life
             if days_old > half_life * 2:
                 meta['decayed'] = True
                 meta['decayed_at'] = now.isoformat()
@@ -583,7 +649,18 @@ class MemoryStore:
         Returns:
             Dict with tier counts
         """
-        stats = {'raw': 0, 'compressed': 0, 'memory': 0, 'knowledge': 0, 'total': 0}
+        stats = {'raw': 0, 'compressed': 0, 'memory': 0, 'knowledge': 0, 'archived': 0, 'total': 0}
+
+        if CHROMA_AVAILABLE and self._chroma_collection:
+            where_filter = {"proyecto": project}
+            results = self._chroma_collection.get(where=where_filter, limit=10000)
+            if results and results['metadatas']:
+                for meta in results['metadatas']:
+                    tier = meta.get('tier', 'raw')
+                    if tier in stats:
+                        stats[tier] += 1
+                    stats['total'] += 1
+            return stats
 
         idx_file = self.memory_dir / 'local_index.json'
         if not idx_file.exists():
@@ -597,14 +674,230 @@ class MemoryStore:
             if meta.get('proyecto') != project:
                 continue
 
-            tipo = meta.get('tipo', 'artefacto')
-            for tier in stats:
-                if tipo.startswith(tier):
-                    stats[tier] += 1
-                    stats['total'] += 1
-                    break
+            tier = meta.get('tier', 'raw')
+            if tier in stats:
+                stats[tier] += 1
+            stats['total'] += 1
 
         return stats
+
+    # ── Compaction (LLM + extractive fallback) ─────────────────────────────
+
+    @staticmethod
+    def _jaccard_similarity(s1: str, s2: str) -> float:
+        """Jaccard similarity between two strings."""
+        set1 = set(s1.lower().split())
+        set2 = set(s2.lower().split())
+        if not set1 or not set2:
+            return 0.0
+        return len(set1 & set2) / len(set1 | set2)
+
+    @staticmethod
+    def _extract_key_sentence(text: str) -> str:
+        """Extract the most informative sentence from a text."""
+        import re as _re
+        sentences = _re.split(r'[.!?]\s+', text.strip())
+        if not sentences:
+            return text[:200]
+
+        HIGH_VALUE = [
+            'decidimos', 'decisión', 'decision', 'lesson', 'lección', 'riesgo',
+            'problema', 'causa', 'solución', 'implementar', 'configurar',
+            'instalar', 'bug', 'fix', 'error', 'bloquea', 'critical',
+        ]
+
+        scored = []
+        for s in sentences:
+            s = s.strip()
+            if not s:
+                continue
+            score = sum(1 for kw in HIGH_VALUE if kw in s.lower())
+            scored.append((score, s))
+
+        if not scored:
+            return text[:200]
+
+        best = max(scored, key=lambda x: x[0])
+        return best[1][:300]
+
+    def compact_extractive(self, items: list[dict], threshold: float = 0.7) -> list[dict]:
+        """Extractive compression: dedup by Jaccard + key sentence extraction.
+
+        Args:
+            items: list of dicts with 'text' and 'metadata' keys
+            threshold: Jaccard similarity threshold for dedup (0-1)
+
+        Returns:
+            List of compressed items with tier='compressed'
+        """
+        if not items:
+            return []
+
+        # Step 1: Dedup by Jaccard similarity (keep most recent)
+        unique = [items[0]]
+        for item in items[1:]:
+            text = item['text']
+            is_dup = False
+            for existing in unique:
+                sim = self._jaccard_similarity(text, existing['text'])
+                if sim > threshold:
+                    # Keep the more recent one
+                    if item.get('metadata', {}).get('indexed_at', '') > existing.get('metadata', {}).get('indexed_at', ''):
+                        unique.remove(existing)
+                        unique.append(item)
+                    is_dup = True
+                    break
+            if not is_dup:
+                unique.append(item)
+
+        # Step 2: Key sentence extraction
+        compressed = []
+        for item in unique:
+            summary = self._extract_key_sentence(item['text'])
+            meta = item.get('metadata', {}).copy()
+            meta['tier'] = 'compressed'
+            meta['compact_method'] = 'extractive'
+            meta['compact_at'] = datetime.now().isoformat()
+            meta['original_id'] = item.get('id', '')
+            compressed.append({'text': summary, 'metadata': meta})
+
+        return compressed
+
+    def compact_tier(self, project: str, max_items: int = 50,
+                     provider=None, force: str | None = None) -> dict:
+        """Compact raw items into compressed tier.
+
+        Args:
+            project: project name to filter
+            max_items: max items to compact in one run
+            provider: LLM provider (from evol-provider.py). None = auto-detect.
+            force: 'llm' or 'extractive' to force a method. None = auto.
+
+        Returns:
+            dict with stats: {method, before, after, compacted, skipped}
+        """
+        # Get raw items
+        if CHROMA_AVAILABLE and self._chroma_collection:
+            where_filter = {"$and": [
+                {"tier": "raw"},
+                {"proyecto": project}
+            ]}
+            results = self._chroma_collection.get(where=where_filter, limit=max_items)
+            raw_items = []
+            if results and results['ids']:
+                for i, doc_id in enumerate(results['ids']):
+                    raw_items.append({
+                        'id': doc_id,
+                        'text': results['documents'][i],
+                        'metadata': results['metadatas'][i] if results['metadatas'] else {},
+                    })
+        else:
+            raw_items = self.search("", project=project, n_results=max_items)
+            raw_items = [r for r in raw_items if r['metadata'].get('tier') == 'raw']
+
+        if not raw_items:
+            return {'method': 'none', 'before': 0, 'after': 0, 'compacted': 0, 'skipped': 0}
+
+        # Decide method
+        use_llm = False
+        if force == 'llm':
+            use_llm = True
+        elif force == 'extractive':
+            use_llm = False
+        elif provider is not None:
+            use_llm = getattr(provider, '__class__', type).__name__ != 'MockProvider'
+        # Default: extractive (safe fallback)
+
+        if use_llm:
+            compressed = self._compact_with_llm(raw_items, provider, project)
+        else:
+            compressed = self.compact_extractive(raw_items)
+
+        # Index compressed items first
+        for c in compressed:
+            self.index(c['text'], c['metadata'])
+
+        # Archive originals that were replaced (different text = new doc_id)
+        compacted = 0
+        for item in raw_items:
+            if CHROMA_AVAILABLE and self._chroma_collection:
+                compressed_text = None
+                for c in compressed:
+                    if c.get('metadata', {}).get('original_id') == item['id']:
+                        compressed_text = c['text']
+                        break
+
+                if compressed_text and compressed_text != item['text']:
+                    # Text changed → archive original (new doc_id was created)
+                    meta = item['metadata'].copy()
+                    meta['tier'] = 'archived'
+                    meta['archived_at'] = datetime.now().isoformat()
+                    self._chroma_collection.update(
+                        ids=[item['id']],
+                        metadatas=[meta]
+                    )
+                else:
+                    # Text unchanged → just update tier to compressed
+                    meta = item['metadata'].copy()
+                    meta['tier'] = 'compressed'
+                    meta['compact_method'] = 'extractive'
+                    meta['compact_at'] = datetime.now().isoformat()
+                    self._chroma_collection.update(
+                        ids=[item['id']],
+                        metadatas=[meta]
+                    )
+            compacted += 1
+
+        return {
+            'method': 'llm' if use_llm else 'extractive',
+            'before': len(raw_items),
+            'after': len(compressed),
+            'compacted': compacted,
+            'skipped': len(raw_items) - compacted,
+        }
+
+    def _compact_with_llm(self, items: list[dict], provider, project: str) -> list[dict]:
+        """LLM-based compaction: summarize batches of raw items."""
+        BATCH_SIZE = 10
+        all_compressed = []
+
+        for i in range(0, len(items), BATCH_SIZE):
+            batch = items[i:i + BATCH_SIZE]
+
+            # Build prompt
+            observations = []
+            for idx, item in enumerate(batch):
+                observations.append(f"[{idx + 1}] {item['text'][:500]}")
+
+            prompt = (
+                "Eres un motor de compresión de memoria técnica de un proyecto de software.\n"
+                "Recibe observaciones raw de un proyecto. Comprime cada batch en un resumen conciso que preserve:\n"
+                "- Decisiones clave (qué se decidió y por qué)\n"
+                "- Hechos relevantes (qué existe, qué cambió)\n"
+                "- Lecciones aprendidas\n"
+                "- Riesgos activos\n\n"
+                "NO incluyas metadata irrelevante (hashes, timestamps exactos) ni texto duplicado.\n"
+                "Output: un solo párrafo por batch, máximo 300 caracteres.\n\n"
+                "Observaciones:\n" + "\n".join(observations)
+            )
+
+            try:
+                result = provider.complete(prompt, max_tokens=300)
+                summary = result.get('content', '') if isinstance(result, dict) else str(result)
+            except Exception:
+                # Fallback to extractive for this batch
+                compressed = self.compact_extractive(batch)
+                all_compressed.extend(compressed)
+                continue
+
+            meta = batch[0]['metadata'].copy()
+            meta['tier'] = 'compressed'
+            meta['compact_method'] = 'llm'
+            meta['compact_at'] = datetime.now().isoformat()
+            meta['batch_size'] = len(batch)
+            all_compressed.append({'text': summary[:500], 'metadata': meta})
+
+        return all_compressed
 
     # ── FlowScript Queries (6 types) ──────────────────────────────────────
 
