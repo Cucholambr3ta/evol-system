@@ -229,6 +229,45 @@ def sprint_close(sprint, project=".", memoria_content=None, lecciones_content=No
     _update_lecciones_index(les_dir / "INDEX.md", s, today)
     print(f"[evol-memory] ✓ acuerdos/lecciones/INDEX.md actualizado.")
 
+    # Update knowledge graph with sprint node
+    store = _get_store()
+    if store:
+        project_name = Path(project).resolve().name
+        sprint_id = f"sprint-{s}"
+
+        # Add sprint node
+        store.graph_add_node("Sprint", {
+            "number": s,
+            "status": "closed",
+            "fecha_cierre": today,
+        })
+
+        # Add relations
+        store.graph_add_relation(project_name, "TIENE", sprint_id)
+
+        # Index sprint files into EDMS
+        if sprint_mem.exists():
+            content = sprint_mem.read_text(encoding="utf-8")
+            if len(content.strip()) > 20:
+                store.index(content, {
+                    "proyecto": project_name,
+                    "tipo": "resumen",
+                    "fase": "Retro",
+                    "sprint": s,
+                })
+
+        if sprint_les.exists():
+            content = sprint_les.read_text(encoding="utf-8")
+            if len(content.strip()) > 20:
+                store.index(content, {
+                    "proyecto": project_name,
+                    "tipo": "leccion",
+                    "fase": "QA",
+                    "sprint": s,
+                })
+
+        print(f"[evol-memory] ✓ Grafo actualizado: {sprint_id}")
+
     # MEMORY.md atomico: 3 atomos + agregado generado (ADR atomicidad)
     _ensure_memory_atoms(mem_dir)
     _regen_memory_aggregate(mem_dir)

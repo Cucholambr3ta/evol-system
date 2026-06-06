@@ -182,6 +182,9 @@ class MemoryStore:
             meta['fecha'] = datetime.now().strftime('%Y-%m-%d')
         meta['indexed_at'] = datetime.now().isoformat()
 
+        # Auto-update graph based on metadata
+        self._auto_update_graph(clean_text, meta)
+
         if CHROMA_AVAILABLE and self._chroma_collection:
             doc_id = hashlib.sha256(clean_text.encode()).hexdigest()[:16]
             self._chroma_collection.upsert(
@@ -193,6 +196,76 @@ class MemoryStore:
 
         # Fallback: write to local JSON index
         return self._index_local(clean_text, meta)
+
+    def _auto_update_graph(self, text: str, meta: dict):
+        """Auto-update knowledge graph based on indexed content metadata."""
+        proyecto = meta.get('proyecto', 'unknown')
+        tipo = meta.get('tipo', 'artefacto')
+        fase = meta.get('fase', '')
+        sprint = meta.get('sprint')
+        disciplinas = meta.get('disciplinas', [])
+        agente = meta.get('agente')
+
+        # Ensure project node exists
+        self.graph_add_node("Proyecto", {"name": proyecto})
+
+        # Add discipline nodes and relations
+        if isinstance(disciplinas, str):
+            disciplinas = [d.strip() for d in disciplinas.split(',')]
+        for disc in disciplinas:
+            if disc:
+                self.graph_add_node("Disciplina", {"name": disc})
+                self.graph_add_relation(proyecto, "DEFINE", disc)
+
+        # Add sprint node and relation
+        if sprint:
+            sprint_id = f"sprint-{sprint}"
+            self.graph_add_node("Sprint", {"number": sprint, "status": "active"})
+            self.graph_add_relation(proyecto, "TIENE", sprint_id)
+
+        # Add entity based on tipo
+        entity_id = hashlib.sha256(text.encode()).hexdigest()[:12]
+
+        if tipo == 'decision':
+            self.graph_add_node("Decision", {
+                "text": text[:200],
+                "fecha": meta.get('fecha', ''),
+                "agente": agente or 'unknown',
+            })
+            self.graph_add_relation(proyecto, "Genera", entity_id)
+            if sprint:
+                self.graph_add_relation(f"sprint-{sprint}", "Genera", entity_id)
+            for disc in disciplinas:
+                if disc:
+                    self.graph_add_relation(entity_id, "AFECTA", disc)
+
+        elif tipo == 'leccion':
+            self.graph_add_node("Leccion", {
+                "text": text[:200],
+                "categoria": fase,
+                "agente": agente or 'unknown',
+            })
+            self.graph_add_relation(proyecto, "Genera", entity_id)
+            if sprint:
+                self.graph_add_relation(f"sprint-{sprint}", "Genera", entity_id)
+            for disc in disciplinas:
+                if disc:
+                    self.graph_add_relation(entity_id, "APLICA_A", disc)
+
+        elif tipo == 'riesgo':
+            self.graph_add_node("Riesgo", {
+                "text": text[:200],
+                "status": meta.get('status', 'activo'),
+            })
+            self.graph_add_relation(proyecto, "Genera", entity_id)
+
+        elif tipo == 'handoff':
+            self.graph_add_node("Handoff", {
+                "timestamp": datetime.now().isoformat(),
+                "prose_digest": text[:200],
+            })
+            if sprint:
+                self.graph_add_relation(f"sprint-{sprint}", "Cierra", entity_id)
 
     def _index_local(self, text: str, meta: dict) -> str:
         idx_file = self.memory_dir / 'local_index.json'
