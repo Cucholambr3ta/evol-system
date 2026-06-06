@@ -143,14 +143,26 @@ Calidad sobre velocidad. Cada fase produce artefactos verificables.
 Briefing  →  Spec  →  Plan  →  Build  →  QA  →  Retro
 ```
 
-| Fase | Entrada | Salida | Gate |
-|------|---------|--------|------|
-| **Briefing** | Solicitud del usuario | `BRIEFING.md` | Art. 1 (ambigüedad) |
-| **Spec** | `BRIEFING.md` | `SPEC.md` + `docs/requisitos/` | Artefactos completos |
-| **Plan** | `SPEC.md` | `PLAN.md` + `CASOS_GHERKIN.md` | Gherkin verificable |
-| **Build** | `PLAN.md` | Codigo + `docs/diagramas/` | Tests en verde |
-| **QA** | Codigo | `docs/qa/REPORTE_QA.md` | Gate HMAC |
-| **Retro** | QA | `memoria.md` + `lecciones.md` actualizados | Leccion registrada |
+| Fase | Trigger | Entrada | Salida (ruta real) | Gate |
+|------|---------|---------|-------------------|------|
+| **0.5. Idea** | `/evol idea` | Solicitud del usuario | `acuerdos/idea/<atomos>.md` + `acuerdos/idea/INDEX.md` | Art. 1 (ambiguedad) |
+| **0.7. Discovery** | `/evol discovery` | `acuerdos/idea/INDEX.md` | `acuerdos/discovery/<tema>/investigacion.md` + `investigacion-validada.md` | Fuentes citadas |
+| **1. Briefing** | `/evol briefing` | `acuerdos/discovery/INDEX.md` | `acuerdos/idea/` (14 atomos D01-D14) + `acuerdos/design/` (3 tokens) + `acuerdos/wireframes/` (N html) | 14 atomos + design aprobado |
+| **2. Spec** | `/evol doc-granular` | `acuerdos/idea/` completo | `acuerdos/proyecto/<dominio>/<subdominio>.md` + `acuerdos/research/<dominio>/` | Worker != auditor, 80+ lineas, Mermaid, Gherkin |
+| **3. Plan** | `/evol historias` | `acuerdos/proyecto/INDEX.md` + `acuerdos/wireframes/` | `acuerdos/historia-usuario-N/` (4 artefactos) + `acuerdos/sprints/INDEX.md` | Gherkin verificable |
+| **4. Build** | `/evol build` | Historias de usuario | Codigo + `acuerdos/memoria/sprint-NN.md` | Tests en verde |
+| **5. QA** | `/evol qa` | Codigo | `docs/qa/REPORTE_QA.md` + `acuerdos/memoria/sprint-NN.md` | Shield 0 CRITICAL |
+| **6. Retro** | `/evol retro` | QA | `acuerdos/memoria/sprint-NN.md` + `acuerdos/lecciones/sprint-NN.md` + `memoria.md` + `lecciones.md` | Leccion registrada |
+
+### Mapeo: Input del usuario → Workflow → Ruta de salida
+
+| Tipo de input | Workflow a ejecutar | Ruta de salida |
+|---------------|--------------------|----|
+| Idea vaga ("quiero hacer X") | `/evol idea` + `/evol discovery` | `acuerdos/idea/` + `acuerdos/discovery/` |
+| Prompt de investigacion con links | `/evol doc-granular` (PASO 1) | `acuerdos/research/<dominio>/<nombre>/` |
+| "Implementar feature X" | Verificar fase actual del pipeline | Segun fase |
+| "Cerrar sprint" | `/evol retro` | `acuerdos/memoria/` + `acuerdos/lecciones/` |
+| "Actualizar memoria" | `/update-memory` | `acuerdos/memoria/` atomos + MEMORY.md |
 
 El sistema integra **31 disciplinas *-Driven Development*** (9 base + 22 extendidas activables por
 caso de uso) como capas sobre estas 6 fases. El registro canonico, con la fase, el ejecutor y las

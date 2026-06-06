@@ -380,32 +380,21 @@ print('[evol-init] MCP habilitado por defecto en evol.config.yml')
     fi
 
     # Estructura /acuerdos (cero deuda tecnica — base del briefing arbol 16 dimensiones)
-    if [ ! -d ./acuerdos ]; then
-        mkdir -p acuerdos/idea acuerdos/discovery acuerdos/research acuerdos/design \
-                 acuerdos/wireframes acuerdos/proyecto \
-                 acuerdos/memoria acuerdos/lecciones
-        printf "# Idea\n\nIdea decantada en atomos (por /evol idea). 1 atomo por tema/proyecto/link.\n" \
-            > acuerdos/idea/README.md
-        printf "# Discovery\n\nResearch PRE-briefing: investigacion por tema para ENTENDER la idea\n(por /evol discovery). Distinto de research/ (post-briefing, como construir).\n" \
-            > acuerdos/discovery/README.md
-        printf "# INDEX — Idea decantada\n\n> Solicitud del usuario decantada en atomos. Cada uno dispara discovery.\n\n| Atomo | Tema | Fuente | Artefacto discovery |\n|-------|------|--------|---------------------|\n" \
-            > acuerdos/idea/INDEX.md
-        printf "# INDEX — Discovery\n\n> Que entendio el agente de la idea, tras investigar cada tema.\n\n| Tema | Que es | Que aporta | Decision sugerida |\n|------|--------|-----------|-------------------|\n" \
-            > acuerdos/discovery/INDEX.md
-        printf "# Research\n\nInvestigacion por dominio tecnico POST-briefing: como construir cada dominio\n(en doc-granular). Distinto de discovery/ (pre-briefing, entender la idea).\n" \
-            > acuerdos/research/README.md
-        printf "# Design System\n\ntokens.md + components.md + assets.md (Dimension 15 del briefing).\n" \
-            > acuerdos/design/README.md
-        printf "# Wireframes\n\nHTML aprobado por pantalla (Dimension 16). Regla de diseno inmutable.\n" \
-            > acuerdos/wireframes/README.md
-        printf "# Proyecto\n\nN documentos granulares por dominio tecnico (generados post-briefing).\n" \
-            > acuerdos/proyecto/README.md
-        printf "# Memoria por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" \
-            > acuerdos/memoria/README.md
-        printf "# Lecciones por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" \
-            > acuerdos/lecciones/README.md
-        echo "[evol-init] acuerdos/ creado (7 subcarpetas — base para /evol briefing)."
-    fi
+    # Backfill idempotente: crea subdirectorios faltantes sin borrar existentes
+    mkdir -p acuerdos/idea acuerdos/discovery acuerdos/research acuerdos/design \
+             acuerdos/wireframes acuerdos/proyecto \
+             acuerdos/memoria acuerdos/lecciones
+    [ -f acuerdos/idea/README.md ] || printf "# Idea\n\nIdea decantada en atomos (por /evol idea). 1 atomo por tema/proyecto/link.\n" > acuerdos/idea/README.md
+    [ -f acuerdos/discovery/README.md ] || printf "# Discovery\n\nResearch PRE-briefing: investigacion por tema para ENTENDER la idea\n(por /evol discovery). Distinto de research/ (post-briefing, como construir).\n" > acuerdos/discovery/README.md
+    [ -f acuerdos/idea/INDEX.md ] || printf "# INDEX — Idea decantada\n\n> Solicitud del usuario decantada en atomos. Cada uno dispara discovery.\n\n| Atomo | Tema | Fuente | Artefacto discovery |\n|-------|------|--------|---------------------|\n" > acuerdos/idea/INDEX.md
+    [ -f acuerdos/discovery/INDEX.md ] || printf "# INDEX — Discovery\n\n> Que entendio el agente de la idea, tras investigar cada tema.\n\n| Tema | Que es | Que aporta | Decision sugerida |\n|------|--------|-----------|-------------------|\n" > acuerdos/discovery/INDEX.md
+    [ -f acuerdos/research/README.md ] || printf "# Research\n\nInvestigacion por dominio tecnico POST-briefing: como construir cada dominio\n(en doc-granular). Distinto de discovery/ (pre-briefing, entender la idea).\n" > acuerdos/research/README.md
+    [ -f acuerdos/design/README.md ] || printf "# Design System\n\ntokens.md + components.md + assets.md (Dimension 15 del briefing).\n" > acuerdos/design/README.md
+    [ -f acuerdos/wireframes/README.md ] || printf "# Wireframes\n\nHTML aprobado por pantalla (Dimension 16). Regla de diseno inmutable.\n" > acuerdos/wireframes/README.md
+    [ -f acuerdos/proyecto/README.md ] || printf "# Proyecto\n\nN documentos granulares por dominio tecnico (generados post-briefing).\n" > acuerdos/proyecto/README.md
+    [ -f acuerdos/memoria/README.md ] || printf "# Memoria por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" > acuerdos/memoria/README.md
+    [ -f acuerdos/lecciones/README.md ] || printf "# Lecciones por Sprint\n\nGenerados con: evol-memory --project=. sprint-close --sprint=NN\n" > acuerdos/lecciones/README.md
+    echo "[evol-init] acuerdos/ verificado (8 subcarpetas — base para /evol briefing)."
 
     # MEMORY.md atomico: 3 atomos + agregado (idempotente)
     mkdir -p acuerdos/memoria acuerdos/lecciones

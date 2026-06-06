@@ -74,6 +74,7 @@
   - Higienización: Eliminación de emojis residuales (👉) en `MANUAL_USUARIO.md`, logrando un 0% de emojis en todo el repositorio.
   - Sincronización JSON: Sincronización completa de 66 documentos y 14 dominios de `docs/` con sus sidecars `.json` e índices `INDEX.json`. Se forzó recursividad en carpetas anidadas (`adr/` y `comandos/`). 0 drifts activos.
   - Mirroring: Actualización y sincronización al 100% de la documentación y sidecars JSON en `src/evol_cli/docs/`.
+  - Clarificación y Memoria: Se actualizaron las convenciones respecto a la inmutabilidad criptográfica de las transiciones del pipeline (HMAC) y el aislamiento por diseño del andamiaje local (`acuerdos/`).
 - **QA:** 104 pytest aprobados en verde. `validate-disciplinas.py --strict` al 100% OK.
 - **Estado:** Branch `feature/audit-docs`. Repositorio local e índices sincronizados al 100%.
 - **Próxima sesión:** Continuar con la implementación de EDMS.

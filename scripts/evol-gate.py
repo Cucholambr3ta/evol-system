@@ -125,9 +125,79 @@ def _check_discipline(phase):
         return [f"[discipline-check] error: {e}"]
 
 
+# ── Phase artifact validation ──────────────────────────────────────────────────
+
+_PHASE_ARTIFACTS = {
+    "briefing": {
+        "dirs": ["acuerdos/idea", "acuerdos/design", "acuerdos/wireframes"],
+        "min_files": {"acuerdos/idea": 14},
+        "desc": "14 atomos en acuerdos/idea/ + design/ + wireframes/",
+    },
+    "spec": {
+        "dirs": ["acuerdos/proyecto"],
+        "min_files": {"acuerdos/proyecto": 1},
+        "desc": "al menos 1 documento en acuerdos/proyecto/<dominio>/",
+    },
+    "plan": {
+        "dirs": ["acuerdos/historia-usuario-1", "acuerdos/sprints"],
+        "min_files": {},
+        "desc": "historias de usuario en acuerdos/historia-usuario-N/",
+    },
+}
+
+
+def _validate_phase_artifacts(phase):
+    """Valida que los artefactos de la fase existan antes de aprobar.
+
+    Retorna lista de errores (vacia = OK).
+    """
+    phase_l = str(phase).lower().strip()
+    # Buscar match parcial (ej. "briefing" matchea "briefing", "b1-briefing", etc.)
+    matched = None
+    for key in _PHASE_ARTIFACTS:
+        if key in phase_l:
+            matched = key
+            break
+    if not matched:
+        return []  # fase sin validacion de artefactos (build, qa, retro, etc.)
+
+    spec = _PHASE_ARTIFACTS[matched]
+    errors = []
+    project = get_data_dir()
+
+    for d in spec["dirs"]:
+        dir_path = os.path.join(project, d)
+        if not os.path.isdir(dir_path):
+            errors.append(f"Fase '{phase}': falta directorio {d}/")
+
+    for d, min_n in spec.get("min_files", {}).items():
+        dir_path = os.path.join(project, d)
+        if os.path.isdir(dir_path):
+            md_count = len([f for f in os.listdir(dir_path) if f.endswith(".md")])
+            if md_count < min_n:
+                errors.append(
+                    f"Fase '{phase}': {d}/ tiene {md_count} archivos .md, "
+                    f"se requieren al menos {min_n}"
+                )
+
+    if errors:
+        errors.append(
+            f"Artefactos esperados para fase '{phase}': {spec['desc']}"
+        )
+    return errors
+
+
 def approve(phase, approver="human", action="approved"):
     """Record approval in log with chain integrity."""
     _enforce_grill_before_plan(phase)
+    # Validate phase artifacts exist (skip for phases without artifact rules)
+    artifact_errors = _validate_phase_artifacts(phase)
+    if artifact_errors:
+        logger.error(f"BLOQUEADO: artefactos faltantes para fase '{phase}':")
+        for e in artifact_errors:
+            logger.error(f"  - {e}")
+        import sys as _sys
+        _sys.exit(1)
     # Discipline checks (opt-in: EVOL_DISCIPLINE=1)
     disc_errors = _check_discipline(phase)
     if disc_errors:

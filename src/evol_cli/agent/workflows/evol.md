@@ -26,19 +26,55 @@ Al recibir `/evol`, antes de cualquier accion:
 4. Verificar fase activa via `evol gate status`
 5. Resolver dinamicamente los perfiles requeridos para la accion solicitada comparando `manifests/workflow-profiles.json` con `evol.profile.yml`. Si el perfil instalado es inferior, escalar automaticamente via `evol-init.sh --profile=<perfil> --upgrade` y configurar la variable `EVOL_HOOK_PROFILE` correspondiente.
 
+---
+
+## Pre-flight del Orquestador — Routing de Input
+
+Al recibir `/evol` con un input del usuario, el orquestador DEBE:
+
+### 1. Detectar tipo de input
+
+| Tipo de input | Workflow a ejecutar | Ruta de salida |
+|---------------|--------------------|----|
+| Idea vaga ("quiero hacer X", "necesito un sistema para Y") | `/evol idea` + `/evol discovery` | `acuerdos/idea/` + `acuerdos/discovery/` |
+| Prompt de investigacion con links/referencias | `/evol doc-granular` (PASO 1: investiga) | `acuerdos/research/<dominio>/<nombre>/` |
+| "Implementar feature X" | Verificar fase actual del pipeline | Segun fase (ver tabla abajo) |
+| "Cerrar sprint" | `/evol retro` | `acuerdos/memoria/` + `acuerdos/lecciones/` |
+| "Actualizar memoria" | `/update-memory` | `acuerdos/memoria/` atomos + MEMORY.md |
+| Comando de fase (`/evol briefing`, `/evol build`, etc.) | Workflow correspondiente | Segun fase |
+
+### 2. Verificar prerrequisitos de la fase
+
+Si el usuario solicita una fase especifica, verificar que los artefactos de la fase anterior existen:
+
+| Fase solicitada | Prerrequisito | ABORT si falta |
+|----------------|---------------|----------------|
+| Briefing | `acuerdos/discovery/INDEX.md` | "Ejecutar `/evol idea` + `/evol discovery` primero" |
+| Spec (doc-granular) | `acuerdos/idea/` con 14 atomos | "Ejecutar `/evol briefing` primero" |
+| Plan (historias) | `acuerdos/proyecto/INDEX.md` | "Ejecutar `/evol doc-granular` primero" |
+| Build | Historias de usuario en `acuerdos/historia-usuario-N/` | "Ejecutar `/evol historias` primero" |
+| QA | Codigo implementado | "Ejecutar `/evol build` primero" |
+| Retro | QA completado | "Ejecutar `/evol qa` primero" |
+
+### 3. Si el input no matchea ningun workflow
+
+ABORT con mensaje: "Input no reconocido. Usar `/evol idea` para iniciar un proyecto, o `/evol briefing` si ya tienes idea + discovery."
+
 
 ---
 
 ## Fases del Pipeline (Art. 9)
 
-| Fase | Trigger | Produce | Gate |
-|------|---------|---------|------|
-| 1. Briefing | `/evol briefing` | `BRIEFING.md` | Aprobacion humana |
-| 2. Spec | `/evol spec` | `SPEC.md` + `docs/requisitos/` | Aprobacion humana |
-| 3. Plan | `/evol plan` | `PLAN.md` + `CASOS_GHERKIN.md` | Aprobacion humana |
-| 4. Build | `/evol build` | Codigo + `docs/diagramas/` | Tests verdes |
-| 5. QA | `/evol qa` | `docs/qa/REPORTE_QA.md` | Shield 0 CRITICAL |
-| 6. Retro | `/evol retro` | `lecciones.md` actualizado | Cierre formal |
+| Fase | Trigger | Produce (ruta real) | Gate |
+|------|---------|---------------------|------|
+| 0.5. Idea | `/evol idea` | `acuerdos/idea/<atomos>.md` + `INDEX.md` | Art. 1 (ambiguedad) |
+| 0.7. Discovery | `/evol discovery` | `acuerdos/discovery/<tema>/investigacion.md` | Fuentes citadas |
+| 1. Briefing | `/evol briefing` | `acuerdos/idea/` (14 atomos) + `acuerdos/design/` + `acuerdos/wireframes/` | 14 atomos + design aprobado |
+| 2. Spec | `/evol doc-granular` | `acuerdos/proyecto/<dominio>/<subdominio>.md` + `acuerdos/research/` | Worker != auditor, 80+ lineas |
+| 3. Plan | `/evol historias` | `acuerdos/historia-usuario-N/` + `acuerdos/sprints/INDEX.md` | Gherkin verificable |
+| 4. Build | `/evol build` | Codigo + `acuerdos/memoria/sprint-NN.md` | Tests en verde |
+| 5. QA | `/evol qa` | `docs/qa/REPORTE_QA.md` + `acuerdos/memoria/sprint-NN.md` | Shield 0 CRITICAL |
+| 6. Retro | `/evol retro` | `acuerdos/memoria/sprint-NN.md` + `acuerdos/lecciones/sprint-NN.md` + `memoria.md` + `lecciones.md` | Leccion registrada |
 
 Cada fase requiere `"APROBADO"` explicito del usuario antes de avanzar (Art. 2).
 
