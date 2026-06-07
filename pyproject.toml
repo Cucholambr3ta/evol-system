@@ -36,10 +36,12 @@ memory = [
     "chromadb>=0.4.0",
 ]
 graph = [
+    "ladybug>=0.17.0",
     "networkx>=3.0",
 ]
 full = [
     "chromadb>=0.4.0",
+    "ladybug>=0.17.0",
     "networkx>=3.0",
 ]
 

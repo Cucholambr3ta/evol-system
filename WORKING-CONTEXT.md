@@ -14,9 +14,11 @@
 
 | Commit | Descripcion |
 |--------|-------------|
+| `b8d80d9` | docs(memoria): sync acuerdos post-publish — PyPI 0.6.0, fix duplicates, new risks |
+| `588cf17` | docs(memoria): update acuerdos — decisions, risks, conventions post-v0.6.0 |
+| `58ea5c5` | docs(context): update WORKING-CONTEXT.md to v0.6.0 — EDMS complete, feature/edms-ui branch |
 | `2cdaca0` | docs(edms-ui): add stack reference for UI development |
 | `174cfd0` | Merge feature/edms-memory-system into develop — EDMS + Compliance + Orchestration + Installer v0.6.0 |
-| `b6b288c` | feat(edms): add edms-compact, cross-platform installer, graph dependency |
 
 ## Proximo paso
 
@@ -45,7 +47,7 @@
 - Compliance auditor: 3 capas (hooks + workflow + sprint-end)
 - Orchestration engine: 5 patterns built-in, SQLite recording
 - 18 core agents (registry.json)
-- EDMS: ChromaDB + NetworkX + stdlib fallback (auto-detect venv)
+- EDMS: ChromaDB + LadybugDB + stdlib fallback (auto-detect venv)
 - 4-tier consolidation: raw→compressed→memory→knowledge→archived
-- Optional deps: `memory` (chromadb), `graph` (networkx), `full` (both)
+- Optional deps: `memory` (chromadb), `graph` (ladybug + networkx), `full` (all)
 - Cross-platform installer: `install.sh` (curl|bash)

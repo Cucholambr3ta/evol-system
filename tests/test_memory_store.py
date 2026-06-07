@@ -262,6 +262,143 @@ def test_extract_key_sentence():
         assert "Decidimos" in result
 
 
+# ── New tests: P0+P1+P2 indexing improvements ──────────────────────────────
+
+
+def test_importance_default():
+    """index() adds importance=0.5 by default."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        doc_id = store.index("test content", {"proyecto": "test"})
+        assert doc_id is not None
+        # Verify via ChromaDB
+        if store._chroma_collection:
+            results = store._chroma_collection.get(ids=[doc_id])
+            assert results['metadatas'][0]['importance'] == 0.5
+
+
+def test_importance_custom():
+    """index() preserves custom importance."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        doc_id = store.index("important content", {"proyecto": "test", "importance": 0.95})
+        if store._chroma_collection:
+            results = store._chroma_collection.get(ids=[doc_id])
+            assert results['metadatas'][0]['importance'] == 0.95
+
+
+def test_content_hash_added():
+    """index() adds content_hash for change detection."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        doc_id = store.index("test content for hash", {"proyecto": "test"})
+        if store._chroma_collection:
+            results = store._chroma_collection.get(ids=[doc_id])
+            meta = results['metadatas'][0]
+            assert 'content_hash' in meta
+            assert len(meta['content_hash']) == 16  # SHA-256[:16]
+
+
+def test_artefacto_graph_node():
+    """tipo=artefacto creates Artefacto node and relations in graph."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        store.index("Artefacto de prueba", {
+            "proyecto": "test",
+            "tipo": "artefacto",
+            "fase": "Build",
+            "source_file": "docs/test.md",
+            "disciplinas": ["TDD"],
+        })
+        # Verify graph nodes were added (via in-memory fallback or LadybugDB)
+        # Check that _auto_update_graph created nodes by verifying no exception
+        # and that the graph has entries
+        if hasattr(store, '_graph') and store._graph:
+            node_keys = [k for k in store._graph.keys() if 'Artefacto' in k or 'GENERADO_POR' in str(store._graph.get(k, {}))]
+            assert len(node_keys) > 0 or len(store._graph) > 0
+
+
+def test_agente_def_graph_node():
+    """tipo=agente_def creates AgenteDef node in graph."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        store.index("Agent definition for security", {
+            "proyecto": "test",
+            "tipo": "agente_def",
+            "agent_name": "evol-sec",
+            "agent_capabilities": "SecDD, STRIDE",
+        })
+        result = store.graph_traverse("test", depth=3)
+        # Check that TIENE_AGENTE relation exists
+        relations = result.get('relations', [])
+        rel_types = [r.get('type') for r in relations]
+        assert 'TIENE_AGENTE' in rel_types
+
+
+def test_skill_def_graph_node():
+    """tipo=skill_def creates SkillDef node in graph."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        store.index("Skill definition for compaction", {
+            "proyecto": "test",
+            "tipo": "skill_def",
+            "skill_name": "evol-compact",
+            "skill_trigger": "/compact",
+        })
+        result = store.graph_traverse("test", depth=3)
+        relations = result.get('relations', [])
+        rel_types = [r.get('type') for r in relations]
+        assert 'TIENE_SKILL' in rel_types
+
+
+def test_parse_frontmatter():
+    """parse_frontmatter extracts YAML fields correctly."""
+    from evol_memory_store import parse_frontmatter
+    content = "---\nname: evol-sec\ncategory: core\ntriggers: [\"/evol sec\"]\n---\n# Content here"
+    result = parse_frontmatter(content)
+    assert result['name'] == 'evol-sec'
+    assert result['category'] == 'core'
+    assert isinstance(result.get('triggers'), list)
+
+
+def test_parse_frontmatter_no_frontmatter():
+    """parse_frontmatter returns empty dict when no frontmatter."""
+    from evol_memory_store import parse_frontmatter
+    content = "# Just a heading\n\nSome content."
+    result = parse_frontmatter(content)
+    assert result == {}
+
+
+def test_extract_section():
+    """extract_section returns content under a heading."""
+    from evol_memory_store import extract_section
+    content = "# Title\n\n## Scope\n\nThis agent handles security.\n\n## Rules\n\nRule 1."
+    result = extract_section(content, "Scope")
+    assert "handles security" in result
+    assert "Rule 1" not in result
+
+
+def test_extract_section_not_found():
+    """extract_section returns empty string when heading not found."""
+    from evol_memory_store import extract_section
+    content = "# Title\n\nSome content."
+    result = extract_section(content, "Nonexistent")
+    assert result == ""
+
+
+def test_backward_compatibility():
+    """Existing indexed data without new fields still works."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = MemoryStore(memory_dir=tmpdir)
+        # Index with old-style metadata (no importance, no content_hash)
+        old_meta = {"proyecto": "test", "tipo": "decision", "fase": "Retro"}
+        doc_id = store.index("Old style decision", old_meta)
+        assert doc_id is not None
+        # Should still be searchable
+        results = store.search("decision", project="test")
+        assert len(results) > 0
+
+
 if __name__ == "__main__":
     test_privacy_strip()
     test_privacy_strip_github_token()

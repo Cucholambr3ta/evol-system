@@ -25,6 +25,14 @@ def _get_store():
     except ImportError:
         return None
 
+def _get_frontmatter_helpers():
+    """Lazy import of parse_frontmatter and extract_section."""
+    try:
+        from evol_memory_store import parse_frontmatter, extract_section
+        return parse_frontmatter, extract_section
+    except ImportError:
+        return None, None
+
 def load():
     """Load session context (SessionStart hook)."""
     print("=== Memory Load ===")
@@ -625,6 +633,88 @@ def edms_bootstrap(project="."):
             store.graph_add_relation(project_name, "TIENE", f"sprint-{sprint_num}")
             stats['graph'] += 1
 
+    # 7. Index root governance docs
+    parse_fm, extract_sec = _get_frontmatter_helpers()
+    ROOT_GOVERNANCE = {
+        'README.md': ('artefacto', 'Briefing', 0.8),
+        'AGENTS.md': ('artefacto', 'Briefing', 0.9),
+        'SECURITY.md': ('artefacto', 'Build', 0.85),
+        'CHANGELOG.md': ('resumen', 'Retro', 0.7),
+        'INSTALL.md': ('artefacto', 'Build', 0.7),
+        'CONTRIBUTING.md': ('artefacto', 'Build', 0.6),
+        'WORKING-CONTEXT.md': ('artefacto', 'Build', 0.85),
+        'docs/constitucion.md': ('decision', 'Briefing', 1.0),
+        'docs/GATE.md': ('artefacto', 'Build', 0.8),
+        'docs/modos.md': ('artefacto', 'Briefing', 0.7),
+    }
+
+    for filename, (tipo, fase, importance) in ROOT_GOVERNANCE.items():
+        fpath = project_path / filename
+        if fpath.exists():
+            content = fpath.read_text(encoding="utf-8")
+            if len(content.strip()) > 20:
+                sections = content.split('\n## ')
+                for i, section in enumerate(sections):
+                    if i == 0 and not section.strip().startswith('#'):
+                        section = '# ' + section
+                    if len(section.strip()) > 20:
+                        meta = {
+                            "proyecto": project_name,
+                            "tipo": tipo,
+                            "fase": fase,
+                            "source_file": filename,
+                            "section_index": i,
+                            "importance": importance,
+                        }
+                        store.index(section, meta)
+                        stats['acuerdos'] += 1
+
+    # 8. Index agent definitions
+    AGENT_DIR = project_path / 'prompts' / 'agents' / 'core'
+    if AGENT_DIR.exists():
+        for agent_file in sorted(AGENT_DIR.glob('*.md')):
+            content = agent_file.read_text(encoding="utf-8")
+            if len(content.strip()) < 20:
+                continue
+            frontmatter = parse_fm(content) if parse_fm else {}
+            meta = {
+                "proyecto": project_name,
+                "tipo": "agente_def",
+                "fase": "Briefing",
+                "source_file": str(agent_file.relative_to(project_path)),
+                "agent_name": frontmatter.get('name', agent_file.stem),
+                "agent_category": frontmatter.get('category', ''),
+                "agent_triggers": json.dumps(frontmatter.get('triggers', [])),
+                "agent_capabilities": extract_sec(content, 'Scope') if extract_sec else '',
+                "importance": 0.9,
+                "layer": "awareness",
+            }
+            store.index(content, meta)
+            stats['acuerdos'] += 1
+
+    # 9. Index skill definitions
+    SKILL_DIR = project_path / '.agents' / 'skills'
+    if SKILL_DIR.exists():
+        for skill_file in sorted(SKILL_DIR.rglob('SKILL.md')):
+            content = skill_file.read_text(encoding="utf-8")
+            if len(content.strip()) < 20:
+                continue
+            frontmatter = parse_fm(content) if parse_fm else {}
+            meta = {
+                "proyecto": project_name,
+                "tipo": "skill_def",
+                "fase": "Briefing",
+                "source_file": str(skill_file.relative_to(project_path)),
+                "skill_name": frontmatter.get('name', skill_file.parent.name),
+                "skill_category": frontmatter.get('category', ''),
+                "skill_trigger": frontmatter.get('trigger', ''),
+                "skill_description": frontmatter.get('description', ''),
+                "importance": 0.85,
+                "layer": "awareness",
+            }
+            store.index(content, meta)
+            stats['acuerdos'] += 1
+
     # Summary
     total = sum(stats.values())
     print(f"[evol-memory] ✓ Bootstrap completado: {total} items")
@@ -657,7 +747,7 @@ def edms_stats():
         print(f"Local index: {local_count} drawers")
 
     # Graph stats
-    if store._ladybug_client if hasattr(store, '_ladybug_client') else False:
+    if hasattr(store, '_lbug_conn') and store._lbug_conn is not None:
         print("LadybugDB: available")
     else:
         print(f"Graph (in-memory): {len(store._graph)} entries")

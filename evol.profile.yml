@@ -1,3 +1,4 @@
+aesthetic_profile: enterprise-minimal
 brand:
   color: '#7C3AED'
   name: Evol-DD
@@ -66,3 +67,23 @@ profile: custom
 stacks: []
 trigger: evol
 version: 1
+
+edms_indexing:
+  enabled: true
+  root_governance:
+    - README.md
+    - AGENTS.md
+    - SECURITY.md
+    - CHANGELOG.md
+    - INSTALL.md
+    - CONTRIBUTING.md
+    - WORKING-CONTEXT.md
+    - docs/constitucion.md
+    - docs/GATE.md
+    - docs/modos.md
+  index_agents: true
+  index_skills: true
+  index_git_commits: true
+  index_git_commits_count: 20
+  reindex_on_content_change: true
+  max_chunk_lines: 100

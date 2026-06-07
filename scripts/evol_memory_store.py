@@ -11,6 +11,7 @@ Usage:
     results = store.search("gate HMAC", project="evol-dd")
 """
 
+import base64
 import hashlib
 import json
 import os
@@ -38,7 +39,7 @@ except ImportError:
     CHROMA_AVAILABLE = False
 
 try:
-    import ladybugdb
+    import ladybug as lb
     LADYBUG_AVAILABLE = True
 except ImportError:
     LADYBUG_AVAILABLE = False
@@ -60,6 +61,56 @@ def privacy_strip(text: str) -> str:
     for pattern, replacement in _PRIVACY_PATTERNS:
         text = pattern.sub(replacement, text)
     return text
+
+
+# ── Frontmatter / Section helpers ──────────────────────────────────────────────
+
+
+def parse_frontmatter(content: str) -> dict:
+    """Extract YAML frontmatter from markdown content.
+
+    Returns dict with frontmatter fields, or empty dict if none found.
+    """
+    if not content.startswith('---'):
+        return {}
+    end = content.find('---', 3)
+    if end == -1:
+        return {}
+    yaml_text = content[3:end].strip()
+    result = {}
+    for line in yaml_text.split('\n'):
+        if ':' in line:
+            key, _, value = line.partition(':')
+            key = key.strip()
+            value = value.strip()
+            if value.startswith('[') and value.endswith(']'):
+                # Parse simple YAML list
+                items = [v.strip().strip('"').strip("'") for v in value[1:-1].split(',') if v.strip()]
+                result[key] = items
+            else:
+                result[key] = value.strip('"').strip("'")
+    return result
+
+
+def extract_section(content: str, header: str) -> str:
+    """Extract a section from markdown by heading text.
+
+    Returns the section content (without the heading), or empty string.
+    """
+    lines = content.split('\n')
+    in_section = False
+    section_lines = []
+    header_level = 0
+    for line in lines:
+        if line.strip().startswith('#') and header.lower() in line.lower():
+            in_section = True
+            header_level = len(line) - len(line.lstrip('#'))
+            continue
+        if in_section:
+            if line.strip().startswith('#') and (len(line) - len(line.lstrip('#'))) <= header_level:
+                break
+            section_lines.append(line)
+    return '\n'.join(section_lines).strip()
 
 
 # ── RRF Fusion ────────────────────────────────────────────────────────────────
@@ -160,8 +211,18 @@ class MemoryStore:
         )
 
     def _init_ladybug(self):
-        ladybug_path = str(self.memory_dir / 'ladybugdb')
-        self._ladybug_client = ladybugdb.Client(path=ladybug_path)
+        ladybug_path = str(self.memory_dir / 'ladybug.lbug')
+        self._lbug_db = lb.Database(ladybug_path)
+        self._lbug_conn = lb.Connection(self._lbug_db)
+        # Create schema if not exists
+        self._lbug_conn.execute(
+            "CREATE NODE TABLE IF NOT EXISTS MemoryNode("
+            "name STRING PRIMARY KEY, type STRING, properties STRING)"
+        )
+        self._lbug_conn.execute(
+            "CREATE REL TABLE IF NOT EXISTS MemoryRel("
+            "FROM MemoryNode TO MemoryNode, relation STRING)"
+        )
 
     def _load_graph(self):
         """Load graph from disk (fallback when LadybugDB not available)."""
@@ -194,6 +255,13 @@ class MemoryStore:
         # Ensure tier field exists
         if 'tier' not in meta:
             meta['tier'] = 'raw'
+
+        # Ensure importance field exists
+        if 'importance' not in meta:
+            meta['importance'] = 0.5
+
+        # Content hash for change detection
+        meta['content_hash'] = hashlib.sha256(clean_text.encode()).hexdigest()[:16]
 
         # Auto-update graph based on metadata
         self._auto_update_graph(clean_text, meta)
@@ -279,6 +347,41 @@ class MemoryStore:
             })
             if sprint:
                 self.graph_add_relation(f"sprint-{sprint}", "Cierra", entity_id)
+
+        elif tipo == 'artefacto':
+            source_file = meta.get('source_file', '')
+            self.graph_add_node("Artefacto", {
+                "name": text[:80],
+                "text": text[:200],
+                "source_file": source_file,
+                "fase": fase,
+                "importance": meta.get('importance', 0.5),
+            })
+            self.graph_add_relation(proyecto, "GENERADO_POR", entity_id)
+            if sprint:
+                self.graph_add_relation(f"sprint-{sprint}", "GENERADO_POR", entity_id)
+            if source_file:
+                self.graph_add_node("File", {"name": source_file})
+                self.graph_add_relation(entity_id, "REFERENCIA", source_file)
+            for disc in disciplinas:
+                if disc:
+                    self.graph_add_relation(entity_id, "DEFINE", disc)
+
+        elif tipo == 'agente_def':
+            agent_name = meta.get('agent_name', text[:80])
+            self.graph_add_node("AgenteDef", {
+                "name": agent_name,
+                "capabilities": meta.get('agent_capabilities', ''),
+            })
+            self.graph_add_relation(proyecto, "TIENE_AGENTE", agent_name)
+
+        elif tipo == 'skill_def':
+            skill_name = meta.get('skill_name', text[:80])
+            self.graph_add_node("SkillDef", {
+                "name": skill_name,
+                "trigger": meta.get('skill_trigger', ''),
+            })
+            self.graph_add_relation(proyecto, "TIENE_SKILL", skill_name)
 
     def _index_local(self, text: str, meta: dict) -> str:
         idx_file = self.memory_dir / 'local_index.json'
@@ -400,7 +503,13 @@ class MemoryStore:
         node_id = properties.get('name', hashlib.sha256(json.dumps(properties).encode()).hexdigest()[:12])
 
         if LADYBUG_AVAILABLE:
-            self._ladybug_client.add_node(node_type, properties)
+            props_json = json.dumps(properties, ensure_ascii=False)
+            props_b64 = base64.b64encode(props_json.encode()).decode()
+            self._lbug_conn.execute(
+                "MERGE (n:MemoryNode {name: $name}) "
+                "SET n.type = $type, n.properties = $props",
+                parameters={"name": node_id, "type": node_type, "props": props_b64}
+            )
             return node_id
 
         # Fallback: in-memory dict
@@ -416,7 +525,12 @@ class MemoryStore:
             True if successful
         """
         if LADYBUG_AVAILABLE:
-            self._ladybug_client.add_relation(source_id, relation_type, target_id)
+            self._lbug_conn.execute(
+                "MATCH (a:MemoryNode), (b:MemoryNode) "
+                "WHERE a.name = $src AND b.name = $tgt "
+                "CREATE (a)-[:MemoryRel {relation: $rel}]->(b)",
+                parameters={"src": source_id, "tgt": target_id, "rel": relation_type}
+            )
             return True
 
         # Fallback: in-memory dict
@@ -433,7 +547,40 @@ class MemoryStore:
             Subgraph as dict with nodes and relations
         """
         if LADYBUG_AVAILABLE:
-            return self._ladybug_client.traverse(node_id, depth)
+            result = self._lbug_conn.execute(
+                "MATCH (n:MemoryNode)-[r:MemoryRel*1.." + str(depth) + "]-(m:MemoryNode) "
+                "WHERE n.name = $start "
+                "RETURN DISTINCT m.name, m.type, m.properties",
+                parameters={"start": node_id}
+            )
+            nodes = []
+            for row in result:
+                props = {}
+                if row[2]:
+                    try:
+                        props = json.loads(base64.b64decode(row[2]).decode())
+                    except Exception:
+                        props = {}
+                nodes.append({
+                    'name': row[0],
+                    'type': row[1],
+                    'properties': props
+                })
+            # Also get direct relations
+            rel_result = self._lbug_conn.execute(
+                "MATCH (a:MemoryNode)-[r:MemoryRel]->(b:MemoryNode) "
+                "WHERE a.name = $start "
+                "RETURN a.name, r.relation, b.name",
+                parameters={"start": node_id}
+            )
+            relations = []
+            for row in rel_result:
+                relations.append({
+                    'source': row[0],
+                    'type': row[1],
+                    'target': row[2]
+                })
+            return {'nodes': nodes, 'relations': relations}
 
         # Fallback: in-memory traversal
         visited = set()
@@ -454,6 +601,23 @@ class MemoryStore:
         for n in nodes:
             pass  # collect node details
         return {'nodes': nodes, 'relations': relations}
+
+    def _backfill_graph(self):
+        """One-time: create graph nodes for existing artefacto records that lack them."""
+        if not (CHROMA_AVAILABLE and self._chroma_collection):
+            return
+        results = self._chroma_collection.get(
+            where={"tipo": "artefacto"},
+            include=["metadatas", "documents"]
+        )
+        if not results or not results['ids']:
+            return
+        count = 0
+        for doc_id, doc, meta in zip(results['ids'], results['documents'], results['metadatas']):
+            if doc and meta:
+                self._auto_update_graph(doc, meta)
+                count += 1
+        return count
 
     # ── Wake-up context ───────────────────────────────────────────────────
 

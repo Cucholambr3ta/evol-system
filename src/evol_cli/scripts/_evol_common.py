@@ -56,7 +56,7 @@ def find_memory_db():
     """Busca ejecutable de memoria persistente en PATH y directorios locales comunes."""
     paths_to_check = [
         "chromadb",
-        "ladybugdb",
+        "lbug",
         os.path.expanduser("~/.local/bin/chromadb"),
         os.path.expanduser("~/.venv/bin/chromadb"),
         "venv/bin/chromadb",
