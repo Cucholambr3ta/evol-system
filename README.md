@@ -51,12 +51,30 @@ La mayoría de frameworks de IA tienen más de 180 agentes permanentes en disco,
 
 ## ❖ Ecosistema Core
 
-### 1. Memoria Local Persistente
-Busca decisiones pasadas y contexto sin tokens adicionales en el LLM.
+### 1. Memory Architecture v2.0
+Multi-layer memory system with verbatim storage, hybrid retrieval, and temporal validity.
 
 ```bash
+# Index memories with verbatim storage
+python3 scripts/evol-memory.py index --add "decisión arquitectónica sobre la BD"
+
+# Hybrid search (vector + BM25 + graph)
 python3 scripts/evol-memory.py search "decisión arquitectónica sobre la BD"
+
+# Verify memory integrity
+python3 scripts/evol-memory.py edms-verify
+
+# Check for contradictions
+python3 scripts/evol-compliance.py check-contradictions
 ```
+
+**Features:**
+- Verbatim storage (append-only, SHA-256 dedup)
+- Hybrid retrieval (BM25 + vector + graph, RRF fusion)
+- Temporal validity windows (valid_from/valid_to)
+- Evidence contracts for all results
+- Reflection, dreaming, and forgetting engines
+- Zero external dependencies (stdlib-only core)
 
 ### 2. Motor de Lecciones
 Automatiza que el agente nunca repita el mismo error técnico.
@@ -98,6 +116,32 @@ rm -rf ~/.claude/commands/evol*
 rm -rf ~/.gemini/skills/evol*
 ```
 *(Nota: Tus datos de memoria y lecciones en los repositorios locales no se borran, ya que pertenecen a tu código fuente).*
+
+---
+
+## ❖ Code Graph Indexer
+
+Evol-DD includes a **Tree-sitter-based code graph indexer** for impact analysis, process tracing, and incremental git-based updates.
+
+```bash
+# Full project index
+python3 scripts/evol_code_indexer.py index
+
+# Impact analysis
+python3 scripts/evol_code_indexer.py impact MemoryStore --depth=3
+
+# Process tracing
+python3 scripts/evol_code_indexer.py trace session_start
+
+# Stats
+python3 scripts/evol_code_indexer.py stats
+```
+
+**Features:**
+- Tree-sitter mandatory parsing (Python, JavaScript, TypeScript)
+- Incremental indexing via git diff
+- Blast radius computation for safe refactoring
+- Separate LadybugDB instance (`evol_dd_codigo.lbug`)
 
 ---
 

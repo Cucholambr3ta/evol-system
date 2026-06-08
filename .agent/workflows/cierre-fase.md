@@ -1,12 +1,12 @@
 ---
-description: Ejecucion del cierre formal de una fase de desarrollo y actualizacion de la Memoria Viva de Evol-DD.
+description: Ejecucion del cierre formal de una fase de desarrollo y actualizacion de la Memoria Viva de Evol-DD con Memory v2.0.
 name: cierre-fase
 trigger: /evol cierre-fase
 ---
 # /evol cierre-fase
 
-**ID:** FLUJO-CIERRE | **Version:** 1.4 | **Agente:** Architect & QA-Reviewer
-**Mision:** Certificar el exito de la fase y asegurar la persistencia del conocimiento (Learning Loop).
+**ID:** FLUJO-CIERRE | **Version:** 1.5 | **Agente:** Architect & QA-Reviewer
+**Mision:** Certificar el exito de la fase y asegurar la persistencia del conocimiento (Learning Loop) con Memory v2.0.
 
 ## 0. CHECKS BLOQUEANTES
 
@@ -51,6 +51,18 @@ Ejecuta ANTES de pasar a Seccion 1:
 - Si ya existe: append directo con las lecciones del sprint.
 - **Backward compat:** tambien appendear a `lecciones.md` root.
 
+### 2.1 Memory v2.0: Store Lessons
+```bash
+# Almacenar lecciones en verbatim store
+python3 scripts/evol-memory.py edms-store "$(cat acuerdos/lecciones/sprint-NN.md)" --tipo leccion
+
+# Extraer entidades de lecciones
+python3 scripts/evol-memory.py edms-extract "$(cat acuerdos/lecciones/sprint-NN.md)"
+
+# Crear relaciones entre lecciones
+python3 scripts/evol-memory.py edms-link "$(cat acuerdos/lecciones/sprint-NN.md)"
+```
+
 ## 3. ACTUALIZACION DE MANIFIESTOS
 
 - **`acuerdos/memoria/sprint-NN.md`** — log del sprint (hitos, bloqueos, proxima sesion):
@@ -63,6 +75,18 @@ Ejecuta ANTES de pasar a Seccion 1:
 - **`acuerdos/memoria/` atomos** — editar decisiones.md / convenciones.md / riesgos.md (NO MEMORY.md, es agregado generado).
 - **`acuerdos/lecciones/INDEX.md`** — actualizado automaticamente por sprint-close.
 - **`memoria.md` root** — mantener por backward compat: appendear resumen del sprint.
+
+### 3.1 Memory v2.0: Store Sprint
+```bash
+# Almacenar sprint en verbatim store
+python3 scripts/evol-memory.py edms-store "$(cat acuerdos/memoria/sprint-NN.md)" --tipo sprint
+
+# Extraer entidades del sprint
+python3 scripts/evol-memory.py edms-extract "$(cat acuerdos/memoria/sprint-NN.md)"
+
+# Detectar conflictos
+python3 scripts/evol-memory.py edms-conflicts
+```
 
 ## 4. CERTIFICACION DE CALIDAD
 

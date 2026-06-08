@@ -8,6 +8,81 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-06-07
+
+### Added
+- **Memory v2.0 Integration**: Integrated MemoryV2 into evol-memory.py with 12 new CLI commands:
+  - `edms-store`: Verbatim storage
+  - `edms-extract`: Entity extraction
+  - `edms-link`: Auto-linking
+  - `edms-hybrid-search`: Hybrid search (vector + BM25 + graph)
+  - `edms-entity`: Get entity by name
+  - `edms-entity-relations`: Get entity relations
+  - `edms-verify`: Verify item integrity
+  - `edms-v2-stats`: v2 memory statistics
+  - `edms-reflection`: Run reflection engine
+  - `edms-dreaming`: Run dreaming engine
+  - `edms-forget`: Run forgetting engine
+  - `edms-conflicts`: Detect conflicts
+
+### Changed
+- `evol-memory.py`: Integrated MemoryV2 with lazy import, added v2 CLI commands and handlers.
+- `.agent/workflows/update-memory.md`: Added v2 integration (verbatim storage, entity extraction, auto-linking, conflict detection).
+- `.agent/workflows/cierre-fase.md`: Added v2 integration (verbatim storage of lessons, entity extraction, conflict detection).
+- `.agent/workflows/update-context.md`: Added v2 hybrid search, entity context, and evidence contracts.
+- `.agent/hooks/scripts/post-edit-memory-index.sh`: Added v2 integration (verbatim storage, entity extraction, auto-linking).
+
+### Fixed
+- `evol-memory.py`: Fixed syntax error with duplicate else statement.
+- `evol-memory.py`: Fixed `list_all` → `list_items` for v2 command handlers.
+
+## [0.7.0] - 2026-06-07
+
+### Added
+- **Memory Architecture v2.0**: Multi-layer memory system with 18 components (~4600 lines, 137 tests, 0 external dependencies).
+  - **Phase 1**: VerbatimStore (append-only, SHA-256 dedup), EntityExtractor (8 types, 6 relationships), AutoLinker (zero-LLM, 7 link patterns), EntityStore (temporal validity), MemoryV2 compat layer.
+  - **Phase 2**: BM25Retriever (BM25 Okapi stdlib), Evidence contracts, GraphExpander (BFS query expansion), HybridRetriever (RRF fusion).
+  - **Phase 3**: ReflectionEngine (patterns, trends, evolutions), DreamingEngine (sprint-aware sessions), ForgettingEngine (TTL-based), ConflictDetector (contradictions, inconsistencies).
+  - **Phase 4**: AgentFile format, RelationalIntelligence, MemoryAPI (stdlib HTTP), MigrationTool.
+- **52 Discipline Skills**: 9 base + 22 extended + 3 domain advisors + 4 game-inspired + 14 transfer skills covering all *-Driven Development disciplines.
+- **Real-time Monitoring**: NDJSON traces, SSE server, state machine, agent loop detection (all stdlib).
+- **Code Graph Indexer**: Tree-sitter-based code analysis with separate LadybugDB graph.
+- **137 new tests** across 8 test suites.
+
+### Changed
+- `README.md`: Updated Memory section to describe v2.0.
+- `AGENTS.md`: Added `evol_memory_v2/` to scripts table.
+- `docs/arquitectura/ARQUITECTURA.md`: Updated memory system section with v2.0 components and directory structure.
+
+## [0.6.3] - 2026-06-07
+
+### Added
+- **Code Graph Indexer**: Tree-sitter-based code analysis with separate LadybugDB graph (`evol_dd_codigo.lbug`). Parses Python and JavaScript/TypeScript to extract symbols (functions, classes, methods), imports, and call relationships.
+- **Impact Analysis CLI**: `edms-impact <symbol>` and `edms-trace <entry>` subcommands in `evol-memory.py` for blast radius analysis and execution flow tracing.
+- **Compliance Impact Check**: `evol-compliance check-impact` command analyzes changed files and reports risk level with affected symbols.
+- **Code Graph CLI**: `evol code-indexer {index|query|graph|impact|trace|stats}` entry point.
+- **MemoryStore Code Integration**: New methods `index_code()`, `code_impact()`, `code_trace()`, `code_query()`, `code_stats()` in MemoryStore class.
+- **Incremental Indexing**: Git-based change detection (`.evol/.last-code-index-commit`) for efficient partial re-indexing.
+- **New Dependencies**: `tree-sitter>=0.23.0`, `tree-sitter-python`, `tree-sitter-javascript`, `tree-sitter-typescript` in optional `[code]` extra.
+- **17 new tests** for code indexer, impact analysis, and process tracing.
+
+### Changed
+- `pyproject.toml`: Version bumped to 0.6.3. Added `[code]` optional dependency group.
+- `evol_cli/__init__.py`: Added `code-indexer` entry point and `code_indexer()` function.
+- `evol-memory.py`: Added `edms-impact`, `edms-trace`, `edms-code-query`, `edms-code-stats`, `edms-code-index` subcommands.
+- `evol-compliance.py`: Added `check-impact` command for pre-commit impact analysis.
+- `AGENTS.md`: Added `evol-code-indexer.py` to scripts table.
+- `README.md`: Added Code Graph Indexer section with usage examples.
+- `docs/arquitectura/ARQUITECTURA.md`: Added Code Graph Indexer component (Section 5).
+- `docs/operaciones/UPGRADE_GUIDE.md`: Added `[code]` dependency installation instructions.
+- `docs/edms-ui-STACK.md`: Added Code Graph API routes (pending implementation).
+
+### Added
+- `docs/adr/ADR-0009-code-graph-indexer.md`: Architecture decision record for code graph indexer.
+- `skills/code-indexer/SKILL.md`: User-facing skill documentation for code graph tools.
+- `.agent/workflows/code-indexer.md`: Workflow documentation for code graph indexer.
+- `scripts/evol_traces.py`: Added `emit_code_index()`, `emit_code_impact()`, `emit_code_trace()` dedicated emitters.
+
 ## [0.6.0] - 2026-06-06
 
 ### Added

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evol-DD Memory Engine — Conversational memory + EDMS (ChromaDB/LadybugDB)."""
+"""Evol-DD Memory Engine — Conversational memory + EDMS (ChromaDB/LadybugDB) + Memory v2.0."""
 import os, sys, json, time, argparse, re
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -32,6 +32,16 @@ def _get_frontmatter_helpers():
         return parse_frontmatter, extract_section
     except ImportError:
         return None, None
+
+# ── Memory v2.0 integration ───────────────────────────────────────────────────
+
+def _get_v2():
+    """Lazy import of MemoryV2 with fallback."""
+    try:
+        from evol_memory_v2.compat import MemoryV2
+        return MemoryV2()
+    except ImportError:
+        return None
 
 def load():
     """Load session context (SessionStart hook)."""
@@ -715,11 +725,26 @@ def edms_bootstrap(project="."):
             store.index(content, meta)
             stats['acuerdos'] += 1
 
+    # 10. Index code files into code graph
+    try:
+        from evol_code_indexer import index_project, CodeGraph
+        code_graph = CodeGraph(store.memory_dir)
+        code_stats = index_project(project_path, incremental=False, graph=code_graph)
+        stats['code_graph'] = code_stats.get('files_indexed', 0)
+        print(f"  Code graph: {code_stats['files_indexed']} files, "
+              f"{code_stats['symbols_found']} symbols, "
+              f"{code_stats['relations_found']} relations")
+    except ImportError:
+        print("  Code graph: evol_code_indexer not available (install with: pip install evol-dd[code])")
+    except Exception as e:
+        print(f"  Code graph: error during indexing ({e})")
+
     # Summary
     total = sum(stats.values())
     print(f"[evol-memory] ✓ Bootstrap completado: {total} items")
     print(f"  acuerdos: {stats['acuerdos']}, legacy: {stats['legacy']}, "
-          f"git: {stats['git']}, graph: {stats['graph']}")
+          f"git: {stats['git']}, graph: {stats['graph']}, "
+          f"code_graph: {stats.get('code_graph', 0)}")
 
 
 def edms_stats():
@@ -934,6 +959,65 @@ def main():
     p = sub.add_parser("edms-agent-context", help="Get agent-specific context")
     p.add_argument("--agent", required=True, help="Agent ID")
 
+    # Code graph commands
+    p = sub.add_parser("edms-impact", help="Analyze blast radius of a symbol")
+    p.add_argument("symbol", help="Symbol name to analyze")
+    p.add_argument("--max-depth", type=int, default=3, help="Max depth for impact analysis")
+
+    p = sub.add_parser("edms-trace", help="Trace execution flow from entry point")
+    p.add_argument("entry", help="Entry point symbol")
+    p.add_argument("--max-depth", type=int, default=5, help="Max depth for trace")
+
+    p = sub.add_parser("edms-code-query", help="Query a code symbol")
+    p.add_argument("symbol", help="Symbol name to query")
+
+    p = sub.add_parser("edms-code-stats", help="Show code graph statistics")
+
+    p = sub.add_parser("edms-code-index", help="Index code files into code graph")
+    p.add_argument("--path", default=".", help="Project root path")
+    p.add_argument("--full", action="store_true", help="Force full re-index")
+
+    # Memory v2.0 commands
+    p = sub.add_parser("edms-store", help="Store verbatim text (v2)")
+    p.add_argument("text", help="Text to store verbatim")
+    p.add_argument("--tipo", default="artefacto", help="Tipo: decision|leccion|convencion|riesgo|artefacto")
+    p.add_argument("--importance", type=float, default=0.5, help="Importance 0-1")
+
+    p = sub.add_parser("edms-extract", help="Extract entities and relationships (v2)")
+    p.add_argument("text", help="Text to extract from")
+
+    p = sub.add_parser("edms-link", help="Create auto-links from text (v2)")
+    p.add_argument("text", help="Text to create links from")
+
+    p = sub.add_parser("edms-hybrid-search", help="Hybrid search (v2: vector+BM25+graph)")
+    p.add_argument("query", help="Search query")
+    p.add_argument("--top-k", type=int, default=10, help="Max results")
+    p.add_argument("--no-evidence", action="store_true", help="Skip evidence contracts")
+
+    p = sub.add_parser("edms-entity", help="Get entity by name (v2)")
+    p.add_argument("name", help="Entity name")
+    p.add_argument("--type", default=None, help="Entity type filter")
+
+    p = sub.add_parser("edms-entity-relations", help="Get entity relations (v2)")
+    p.add_argument("name", help="Entity name")
+
+    p = sub.add_parser("edms-verify", help="Verify item integrity (v2)")
+    p.add_argument("item_id", help="Item ID to verify")
+
+    p = sub.add_parser("edms-v2-stats", help="Show v2 memory statistics (v2)")
+
+    p = sub.add_parser("edms-reflection", help="Run reflection engine (v2)")
+    p.add_argument("--sprint", default=None, help="Sprint to analyze")
+
+    p = sub.add_parser("edms-dreaming", help="Run dreaming engine (v2)")
+    p.add_argument("--sprint", default=None, help="Sprint context")
+
+    p = sub.add_parser("edms-forget", help="Run forgetting engine (v2)")
+    p.add_argument("--dry-run", action="store_true", help="Show what would be forgotten")
+    p.add_argument("--max", type=int, default=10, help="Max items to forget")
+
+    p = sub.add_parser("edms-conflicts", help="Detect conflicts (v2)")
+
     args = parser.parse_args()
 
     if args.cmd == "load":
@@ -1033,6 +1117,241 @@ def main():
             print(ctx)
         else:
             print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-impact":
+        store = _get_store()
+        if store:
+            result = store.code_impact(args.symbol, max_depth=args.max_depth)
+            if "error" in result:
+                print(f"[evol-memory] {result['error']}")
+            else:
+                print(f"\nImpact Analysis: {args.symbol}")
+                print("=" * 40)
+                if result["depths"]:
+                    for d in result["depths"]:
+                        print(f"\nDepth {d['depth']}: {d['count']} caller(s)")
+                        for caller in d["callers"]:
+                            print(f"  - {caller}")
+                    print(f"\nTotal affected: {result['total_affected']} symbol(s)")
+                else:
+                    print("No callers found.")
+        else:
+            print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-trace":
+        store = _get_store()
+        if store:
+            result = store.code_trace(args.entry, max_depth=args.max_depth)
+            if "error" in result:
+                print(f"[evol-memory] {result['error']}")
+            else:
+                print(f"\nExecution Trace: {args.entry}")
+                print("=" * 40)
+                if result["steps"]:
+                    for i, step in enumerate(result["steps"], 1):
+                        indent = "  " * step["depth"]
+                        print(f"{i}. {indent}{step['symbol']}")
+                else:
+                    print("No trace found.")
+        else:
+            print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-code-query":
+        store = _get_store()
+        if store:
+            results = store.code_query(args.symbol)
+            if results:
+                print(json.dumps(results, indent=2, ensure_ascii=False))
+            else:
+                print(f"[evol-memory] Symbol not found: {args.symbol}")
+        else:
+            print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-code-stats":
+        store = _get_store()
+        if store:
+            stats = store.code_stats()
+            if "error" in stats:
+                print(f"[evol-memory] {stats['error']}")
+            else:
+                print(f"\nCode Graph Statistics")
+                print("=" * 40)
+                print(f"Total nodes: {stats['total_nodes']}")
+                print(f"Total relations: {stats['total_relations']}")
+                if stats["node_types"]:
+                    print("\nNode types:")
+                    for t, count in sorted(stats["node_types"].items(), key=lambda x: -x[1]):
+                        print(f"  {t}: {count}")
+                if stats["relation_types"]:
+                    print("\nRelation types:")
+                    for t, count in sorted(stats["relation_types"].items(), key=lambda x: -x[1]):
+                        print(f"  {t}: {count}")
+        else:
+            print("[evol-memory] EDMS no disponible.")
+    elif args.cmd == "edms-code-index":
+        store = _get_store()
+        if store:
+            from pathlib import Path
+            result = store.index_code(args.path, incremental=not args.full)
+            if "error" in result:
+                print(f"[evol-memory] {result['error']}")
+            else:
+                print(f"\n[evol-memory] Code indexing complete:")
+                print(f"  Files indexed: {result['files_indexed']}")
+                print(f"  Symbols found: {result['symbols_found']}")
+                print(f"  Relations found: {result['relations_found']}")
+                print(f"  Errors: {result['errors']}")
+    # ── Memory v2.0 command handlers ───────────────────────────────────────────
+    elif args.cmd == "edms-store":
+        v2 = _get_v2()
+        if v2:
+            metadata = {"tipo": args.tipo, "importance": args.importance}
+            item_id = v2.store(args.text, metadata)
+            print(f"[evol-memory] v2 stored: {item_id}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-extract":
+        v2 = _get_v2()
+        if v2:
+            result = v2.extract(args.text)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-link":
+        v2 = _get_v2()
+        if v2:
+            links = v2.link(args.text)
+            if links:
+                print(f"[evol-memory] v2 created {len(links)} links:")
+                for link in links:
+                    print(f"  {link['from_text']} --[{link['relation']}]--> {link['to_text']}")
+            else:
+                print("[evol-memory] No links created.")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-hybrid-search":
+        v2 = _get_v2()
+        if v2:
+            results = v2.hybrid_search(args.query, args.top_k, include_evidence=not args.no_evidence)
+            if results:
+                print(f"\n[v2] Hybrid Search Results: {len(results)}")
+                print("=" * 40)
+                for i, r in enumerate(results, 1):
+                    print(f"\n[{i}] {r.doc_id} (score={r.score:.3f})")
+                    print(f"    Source: {r.evidence.source if r.evidence else 'unknown'}")
+                    print(f"    Text: {r.text[:100]}...")
+            else:
+                print("[evol-memory] No results found.")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-entity":
+        v2 = _get_v2()
+        if v2:
+            entity = v2.get_entity(args.name, args.type)
+            if entity:
+                print(json.dumps(entity, indent=2, ensure_ascii=False))
+            else:
+                print(f"[evol-memory] Entity not found: {args.name}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-entity-relations":
+        v2 = _get_v2()
+        if v2:
+            relations = v2.get_entity_relations(args.name)
+            if relations:
+                print(f"\n[v2] Relations for {args.name}: {len(relations)}")
+                for rel in relations:
+                    print(f"  --[{rel['relation']}]--> {rel['target']}")
+            else:
+                print(f"[evol-memory] No relations found for: {args.name}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-verify":
+        v2 = _get_v2()
+        if v2:
+            result = v2.verify_integrity(args.item_id)
+            if result.get("valid"):
+                print(f"[evol-memory] v2 integrity OK: {args.item_id}")
+            else:
+                print(f"[evol-memory] v2 integrity FAILED: {result.get('error')}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-v2-stats":
+        v2 = _get_v2()
+        if v2:
+            stats = v2.stats()
+            print(json.dumps(stats, indent=2, ensure_ascii=False))
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-reflection":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.reflection import ReflectionEngine
+            reflection = ReflectionEngine(v2._verbatim)
+            # Get all memories for reflection
+            memories = v2._verbatim.list_items()
+            result = reflection.analyze(memories)
+            print(f"\n[v2] Reflection Results:")
+            print(f"  Patterns: {len(result.get('patterns', []))}")
+            print(f"  Trends: {len(result.get('trends', []))}")
+            print(f"  Evolutions: {len(result.get('evolutions', []))}")
+            for pattern in result.get("patterns", []):
+                print(f"    Pattern: {pattern}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-dreaming":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.dreaming import DreamingEngine
+            dreaming = DreamingEngine()
+            # Get memories for dreaming
+            memories = v2._verbatim.list_items()
+            # Convert to MemoryItem format for dreaming engine
+            from evol_memory_v2.reflection import MemoryItem
+            memory_items = []
+            for mem in memories:
+                item = MemoryItem(
+                    id=mem.get("id", ""),
+                    text=mem.get("verbatim", ""),
+                    metadata=mem.get("metadata", {}),
+                    created_at=mem.get("created_at", ""),
+                )
+                memory_items.append(item)
+            # Run dreaming
+            insights = dreaming.dream(memory_items, sprint_id=args.sprint)
+            print(f"\n[v2] Dreaming session completed:")
+            print(f"  Memories processed: {len(memory_items)}")
+            print(f"  Insights generated: {len(insights)}")
+            for insight in insights[:5]:  # Show top 5
+                print(f"    - {insight.insight_type}: {insight.summary}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-forget":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.forgetting import ForgettingEngine
+            forgetting = ForgettingEngine(v2._verbatim)
+            if args.dry_run:
+                candidates = forgetting.get_candidates()
+                print(f"\n[v2] Dry run: {len(candidates)} items would be forgotten")
+                for item in candidates[:args.max]:
+                    print(f"  - {item['id']}: {item.get('reason', 'TTL expired')}")
+            else:
+                result = forgetting.run(max_forget=args.max)
+                print(f"[evol-memory] v2 forgot {result['forgotten']} items")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-conflicts":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.conflict_detector import ConflictDetector
+            detector = ConflictDetector(v2._verbatim)
+            memories = v2._verbatim.list_items()
+            conflicts = detector.detect_all(memories)
+            if conflicts:
+                print(f"\n[v2] Conflicts detected: {len(conflicts)}")
+                for conflict in conflicts:
+                    print(f"  - {conflict['type']}: {conflict['description']}")
+            else:
+                print("[evol-memory] No conflicts detected.")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
     else:
         parser.print_help()
 

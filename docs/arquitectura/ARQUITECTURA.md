@@ -193,7 +193,22 @@ Los snapshots en `.evol/agents/retired/` contienen:
 |-----------|---------|-----------|
 | 1 | memoria.md | Verdad del proyecto. Estado de fases, decisiones, hitos. Nunca sobreescrito por otro. |
 | 2 | AGENT_MEMORY.md + memory/ | Contexto de sesion. Preferencias, patrones, reflexiones. Complementa, no reemplaza. |
-| 3 | Memoria Persistente | Busqueda semantica sobre el codebase. Recupera contexto relevante por query. |
+| 3 | Memory Architecture v2.0 | Multi-layer memory with verbatim storage, hybrid retrieval, and temporal validity. |
+
+**Memory Architecture v2.0:**
+
+| Componente | Descripcion |
+|-----------|-------------|
+| VerbatimStore | Append-only storage with SHA-256 dedup and versioned updates |
+| EntityExtractor | Rule-based entity extraction (8 types, 6 relationship types) |
+| AutoLinker | Zero-LLM relationship builder (7 link patterns) |
+| EntityStore | Centralized entity storage with temporal validity windows |
+| BM25Retriever | BM25 Okapi stdlib retrieval (inverted index, TF-IDF scoring) |
+| HybridRetriever | RRF fusion combining vector + BM25 + graph search |
+| ReflectionEngine | Cluster by topic, detect patterns, trends, and evolutions |
+| DreamingEngine | Sprint-aware session management and batch processing |
+| ForgettingEngine | TTL-based forgetting with grace period and dry-run mode |
+| ConflictDetector | Predicate contradictions, temporal inconsistencies, factual conflicts |
 
 **Protocolo de sesion:**
 
@@ -201,7 +216,49 @@ Los snapshots en `.evol/agents/retired/` contienen:
 2. Trabajo — Consultar lecciones antes de proponer (Art. 9)
 3. `stop` — Actualizar memoria.md + journal + GC tool_result/
 
-### 5. Pipeline de 6 Fases
+### 5. Code Graph Indexer
+
+**Componente:** `scripts/evol_code_indexer.py`
+
+**Funcion:** Indexacion de codigo fuente via Tree-sitter para analisis de impacto y trazado de procesos.
+
+| Capa | Componente | Descripcion |
+|------|-----------|-------------|
+| Parser | Tree-sitter | Parsing incremental, soporta Python/JS/TS |
+| Graph DB | LadybugDB (`evol_dd_codigo.lbug`) | Grafo de codigo separado del conocimiento |
+| Fallback | JSON (`code_graph.json`) | Sin dependencias externas |
+
+**Nodos del grafo:**
+
+| Tipo | Descripcion |
+|------|-------------|
+| File | Archivo fuente (.py, .js, .ts, .tsx) |
+| Module | Modulo o paquete |
+| Symbol | Funcion, clase o metodo |
+| Test | Funcion o clase de test |
+| Commit | Commit de git |
+| Branch | Rama de git |
+
+**Relaciones del grafo:**
+
+| Relacion | Descripcion |
+|----------|-------------|
+| IMPORTS | Archivo importa modulo |
+| CALLS | Funcion llama a funcion |
+| EXTENDS | Clase extiende clase |
+| CONTAINS | Archivo contiene symbolo |
+| EXPORTS | Archivo exporta symbolo |
+| TESTS | Test testing funcion |
+| MODIFIES | Commit modifica archivo |
+| BLAME | Commit blame de archivo |
+
+**Integracion:**
+- `edms_bootstrap()` step 10: indexacion incremental
+- `post-commit-code-index.sh`: indexacion post-commit
+- `session-start-context-load.sh`: estadisticas en wake-up
+- `pre-phase-compliance-check.sh`: impacto en fases Build/QA
+
+### 6. Pipeline de 6 Fases
 
 ```mermaid
 stateDiagram-v2
@@ -313,6 +370,17 @@ graph LR
 | evol-orchestrate.py | Multi-agent runtime | ThreadPoolExecutor |
 | evol-agent-lifecycle.py | Agentes efimeros | Memoria Persistente |
 | evol-memory.py | Memoria conversacional | stdlib |
+| evol_memory_v2/ | Memory Architecture v2.0 | stdlib (0 new dependencies) |
+| evol_memory_v2/store.py | VerbatimStore: append-only, SHA-256 dedup | stdlib |
+| evol_memory_v2/extractor.py | EntityExtractor: 8 types, 6 relationships | stdlib |
+| evol_memory_v2/auto_linker.py | AutoLinker: zero-LLM relationship builder | stdlib |
+| evol_memory_v2/entity_store.py | EntityStore: centralized entities with temporal validity | stdlib |
+| evol_memory_v2/bm25_retriever.py | BM25Retriever: BM25 Okapi stdlib | stdlib |
+| evol_memory_v2/hybrid_retriever.py | HybridRetriever: RRF fusion | stdlib |
+| evol_memory_v2/reflection.py | ReflectionEngine: patterns, trends, evolutions | stdlib |
+| evol_memory_v2/dreaming.py | DreamingEngine: sprint-aware sessions | stdlib |
+| evol_memory_v2/forgetting.py | ForgettingEngine: TTL-based forgetting | stdlib |
+| evol_memory_v2/conflict_detector.py | ConflictDetector: contradictions, inconsistencies | stdlib |
 | evol-lessons.py | Lecciones aprendidas | stdlib, fuzzy dedup |
 | evol-evolve.py | Auto-generacion skills | instincts, clustering |
 | evol-researcher.py | Investigacion autonoma | GitHub API |
@@ -485,12 +553,25 @@ evol-dd/
 │   ├── core/                 # 18 agentes core
 │   ├── ephemeral/            # Agentes dinamicos
 │   └── registry.json         # Registro unificado
-├── scripts/                  # 25 scripts (23 + 2 helpers)
-├── skills/                   # 9 skills
+├── scripts/
+│   ├── evol_memory_v2/       # Memory Architecture v2.0
+│   │   ├── __init__.py
+│   │   ├── store.py          # VerbatimStore
+│   │   ├── extractor.py      # EntityExtractor
+│   │   ├── auto_linker.py    # AutoLinker
+│   │   ├── entity_store.py   # EntityStore
+│   │   ├── bm25_retriever.py # BM25Retriever
+│   │   ├── hybrid_retriever.py # HybridRetriever
+│   │   ├── reflection.py     # ReflectionEngine
+│   │   ├── dreaming.py       # DreamingEngine
+│   │   ├── forgetting.py     # ForgettingEngine
+│   │   └── conflict_detector.py # ConflictDetector
+│   └── evol-memory.py        # Main memory CLI
+├── skills/                   # 52 discipline + 18 core skills
 ├── evals/                    # 7 eval suites
 ├── templates/                # 8 templates
-├── schemas/                  # 2 schemas (registry.schema.json + hooks.schema.json)
+├── schemas/                  # 2 schemas
 ├── docs/                     # Documentacion
-├── manifests/                # 3 JSON manifests (profiles, modules, components)
-└── tests/                    # pytest + bats (5 test files)
+├── manifests/                # 3 JSON manifests
+└── tests/                    # pytest + bats
 ```
