@@ -109,10 +109,38 @@ compatible_with:
 - Mantener SKILL.md bajo 500 lineas
 - Description "un poco agresiva" — mejor overtrigger que undertrigger
 
+## CSO — Claude Search Optimization (description que dispara, no que resume)
+
+La `description` del frontmatter es lo unico que el agente lee para decidir si
+carga la skill. Optimizarla para **triggering**, no para resumir el workflow.
+
+- Describe CONDICIONES de activacion ("usar cuando el usuario quiera X"), no el
+  procedimiento interno. Si la description detalla el workflow, el agente puede
+  seguir la description en vez de leer el SKILL.md completo.
+- Tercera persona, orientada a gatillos. Incluir sinonimos y triggers naturales.
+- Maximo util ~1024 caracteres; concision > exhaustividad.
+
+Inspirado en obra/superpowers (writing-skills).
+
+## RED-GREEN-REFACTOR (escribir skills es TDD aplicado a procesos)
+
+Ninguna skill se da por buena sin un test que falle primero. El loop de eval
+(paso 5) se formaliza asi:
+
+1. **RED** — correr 2-3 escenarios de presion SIN la skill; documentar las
+   racionalizaciones/errores exactos que comete el baseline.
+2. **GREEN** — escribir la skill minima que resuelve esos fallos especificos.
+3. **REFACTOR** — re-testear; identificar nuevas racionalizaciones; agregar
+   contras explicitas; repetir hasta que sea a prueba de balas.
+
+Inspirado en obra/superpowers (writing-skills): "no skill deploys without a
+failing test first".
+
 ## Criterio de calidad
 
-- Benchmark iter-1: with-skill supera baseline en >= 30pp
-- Description: recall >= 0.85, precision >= 0.85
+- Test primero (RED): baseline documentado antes de escribir la skill
+- Benchmark iter-1: with-skill supera baseline en >= 30pp (GREEN)
+- Description CSO: recall >= 0.85, precision >= 0.85 (condiciones, no workflow)
 - 0 emojis en body, seccion `## Limites` presente
 
 ## Limites

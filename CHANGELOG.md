@@ -31,6 +31,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - `.agent/workflows/cierre-fase.md`: Added v2 integration (verbatim storage of lessons, entity extraction, conflict detection).
 - `.agent/workflows/update-context.md`: Added v2 hybrid search, entity context, and evidence contracts.
 - `.agent/hooks/scripts/post-edit-memory-index.sh`: Added v2 integration (verbatim storage, entity extraction, auto-linking).
+- `src/evol_cli/skills/`: Added all 70 skills to pip package (was 17, now 70).
 
 ### Fixed
 - `evol-memory.py`: Fixed syntax error with duplicate else statement.
