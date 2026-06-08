@@ -37,5 +37,15 @@ cat > "$HANDOFF_FILE" << EOF
 }
 EOF
 
+# Index handoff into EDMS
+if command -v python3 &>/dev/null; then
+    TEXT=$(cat "$HANDOFF_FILE")
+    python3 scripts/evol-memory.py --project="$PROJECT" edms-index "$TEXT" --tipo=handoff --agent="hook:session-end" 2>/dev/null || true
+    
+    # v2: Verbatim storage + entity extraction
+    python3 scripts/evol-memory.py edms-store "$TEXT" --tipo=handoff 2>/dev/null || true
+    python3 scripts/evol-memory.py edms-extract "$TEXT" 2>/dev/null || true
+fi
+
 echo "[hook] Handoff marker created: $HANDOFF_FILE"
 exit 0

@@ -30,6 +30,16 @@ else
   python3 "$SCRIPTS_DIR/evol-memory.py" --project "$PROJECT_DIR" summarize &
 fi
 
+# v2: Store session summary in verbatim store
+if [ -f "memoria.md" ]; then
+  TEXT=$(head -c 2000 memoria.md 2>/dev/null)
+  if [ -n "$TEXT" ]; then
+    python3 "$SCRIPTS_DIR/evol-memory.py" edms-store "$TEXT" --tipo=sesion 2>/dev/null || true
+    python3 "$SCRIPTS_DIR/evol-memory.py" edms-extract "$TEXT" 2>/dev/null || true
+    python3 "$SCRIPTS_DIR/evol-memory.py" edms-link "$TEXT" 2>/dev/null || true
+  fi
+fi
+
 # gc de tool_result/ vencidos (async, en background)
 python3 "$SCRIPTS_DIR/evol-memory.py" --project "$PROJECT_DIR" gc &
 

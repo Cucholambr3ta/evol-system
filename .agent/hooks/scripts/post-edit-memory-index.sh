@@ -19,6 +19,35 @@ if [[ "$EDITED_FILE" =~ \.($CODE_EXTENSIONS)$ ]]; then
     exit 0
 fi
 
+# ── Root memory files indexing ──────────────────────────────────────────
+ROOT_FILES="WORKING-CONTEXT.md|memoria.md|lecciones.md|AGENT_MEMORY.md"
+if [[ "$EDITED_FILE" =~ ^($ROOT_FILES)$ ]]; then
+    if command -v python3 &>/dev/null; then
+        # Extract tipo from filename
+        TIPO="contexto"
+        case "$EDITED_FILE" in
+            WORKING-CONTEXT.md) TIPO="contexto" ;;
+            memoria.md) TIPO="bitacora" ;;
+            lecciones.md) TIPO="leccion" ;;
+            AGENT_MEMORY.md) TIPO="preferencia" ;;
+        esac
+
+        TEXT=$(head -c 2000 "$EDITED_FILE" 2>/dev/null)
+        if [ -n "$TEXT" ]; then
+            # v1: Index root memory file
+            python3 scripts/evol-memory.py --project="$PROJECT" edms-index "$TEXT" --tipo="$TIPO" --agent="hook:post-edit" 2>/dev/null
+
+            # v2: Verbatim storage + entity extraction + auto-linking
+            python3 scripts/evol-memory.py edms-store "$TEXT" --tipo="$TIPO" 2>/dev/null
+            python3 scripts/evol-memory.py edms-extract "$TEXT" 2>/dev/null
+            python3 scripts/evol-memory.py edms-link "$TEXT" 2>/dev/null
+
+            echo "{\"indexed\": \"$EDITED_FILE\", \"tipo\": \"$TIPO\", \"v2\": true}" > "$EDMS_INDEX_FILE"
+        fi
+    fi
+    exit 0
+fi
+
 # ── Acuerdos file indexing ────────────────────────────────────────────────
 if [[ "$EDITED_FILE" == acuerdos/*.md && "$EDITED_FILE" == *.md ]]; then
     if command -v python3 &>/dev/null; then

@@ -35,10 +35,18 @@ EOF
 
     # Index into EDMS if available
     if command -v python3 &>/dev/null; then
+        TEXT=$(cat "$LESSON_FILE")
+        
+        # v1: Index lesson
         python3 scripts/evol-memory.py --project="$PROJECT" edms-index \
             "Failure: exit code $EXIT_CODE, command: ${COMMAND:-unknown}" \
             --tipo=leccion \
             --agent="hook:failure-capture" 2>/dev/null
+
+        # v2: Verbatim storage + entity extraction + auto-linking
+        python3 scripts/evol-memory.py edms-store "$TEXT" --tipo=leccion 2>/dev/null
+        python3 scripts/evol-memory.py edms-extract "$TEXT" 2>/dev/null
+        python3 scripts/evol-memory.py edms-link "$TEXT" 2>/dev/null
     fi
 
     echo "[hook] Failure captured: $LESSON_FILE"
