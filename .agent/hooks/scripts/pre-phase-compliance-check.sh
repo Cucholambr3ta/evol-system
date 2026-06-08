@@ -53,6 +53,17 @@ with open('acuerdos/sprints/INDEX.json') as f:
     if echo "$RESULT" | grep -q "WARN:"; then
         echo "[evol-hook] COMPLIANCE WARN: $RESULT" >&2
     fi
+
+    # Code impact check for Build (4) and QA (5) phases
+    if [ "$PHASE" = "4" ] || [ "$PHASE" = "5" ]; then
+        if [ -f "scripts/evol-compliance.py" ]; then
+            IMPACT_RESULT=$(python3 scripts/evol-compliance.py check-impact --json 2>&1 || echo '{"error":"unavailable"}')
+            RISK=$(echo "$IMPACT_RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('risk','LOW'))" 2>/dev/null || echo "LOW")
+            if [ "$RISK" = "HIGH" ]; then
+                echo "[evol-hook] CODE IMPACT HIGH: Run full test suite before proceeding" >&2
+            fi
+        fi
+    fi
 fi
 
 exit 0

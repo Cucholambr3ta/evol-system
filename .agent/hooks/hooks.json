@@ -52,6 +52,13 @@
         "description": "Load memoria.md + EDMS wake-up context (~170 tokens)"
       },
       {
+        "id": "session:start:memory-dreaming",
+        "event": "SessionStart",
+        "enabled": true,
+        "script": "session-start-memory-dreaming.sh",
+        "description": "Run dreaming engine to consolidate recent memories"
+      },
+      {
         "id": "stop:git-check",
         "event": "Stop",
         "enabled": true,
@@ -97,6 +104,14 @@
         "script": "post-phase-record-metrics.sh",
         "trigger": "bash",
         "description": "Record phase metrics for sprint reports"
+      },
+      {
+        "id": "post:commit:code-index",
+        "event": "PostToolUse",
+        "enabled": true,
+        "script": "post-commit-code-index.sh",
+        "trigger": "bash",
+        "description": "Incremental code graph index after git commit"
       }
     ],
     "strict": [
@@ -150,6 +165,13 @@
         "enabled": true,
         "script": "session-end-compliance-report.sh",
         "description": "Generate compliance report + verify lessons applied at sprint end"
+      },
+      {
+        "id": "session:end:memory-persistence",
+        "event": "SessionEnd",
+        "enabled": true,
+        "script": "session-end-memory-persistence.sh",
+        "description": "Run v2 memory persistence engines (reflection, dreaming, forgetting, conflicts)"
       }
     ]
   },
