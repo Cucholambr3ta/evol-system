@@ -3,10 +3,10 @@
 const { execSync } = require('child_process');
 const path = require('path');
 
-const scriptPath = path.join(__dirname, '..', 'scripts', 'evol-flow.py');
+const scriptsDir = path.join(__dirname, '..', 'scripts');
 
 try {
-  execSync(`python3 "${scriptPath}" ${process.argv.slice(2).join(' ')}`, {
+  execSync(`PYTHONPATH=${scriptsDir} python3 -c "from evol_cli import main; main()" flow ${process.argv.slice(2).join(' ')}`, {
     stdio: 'inherit',
     shell: true
   });
