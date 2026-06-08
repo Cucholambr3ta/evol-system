@@ -60,6 +60,20 @@
       "file": "skills/evol-compact/SKILL.md"
     },
     {
+      "name": "evol-context7",
+      "category": "research",
+      "trigger": "/context7",
+      "triggers": [
+        "/context7",
+        "use context7",
+        "docs actualizadas de",
+        "documentacion de la libreria",
+        "como se usa la api de"
+      ],
+      "description": "Inyeccion de documentacion version-specific y actualizada de librerias/frameworks al contexto del agente via Context7 (MCP server o CLI ctx7). Elimina APIs alucinadas, ejemplos obsoletos y respuestas genericas cuando se trabaja con versiones nuevas fuera del knowledge cutoff. Usar al fijar contratos de",
+      "file": "skills/evol-context7/SKILL.md"
+    },
+    {
       "name": "evol-fact-check",
       "category": "N/A",
       "trigger": "fact-check",
@@ -73,6 +87,22 @@
       ],
       "description": "Verificación de claims y detección de desinformación con pipeline de 11 pasos (SIFT + CRAAP + MFS scoring). Produce Fact-Check Card con veredicto, score de manipulación y componente educativo. Inspirado en petar-nauka/fact-check-skill.",
       "file": "skills/evol-fact-check/SKILL.md"
+    },
+    {
+      "name": "evol-frontend-design",
+      "category": "growth",
+      "trigger": "/frontend-design",
+      "triggers": [
+        "/frontend-design",
+        "disena la ui",
+        "construye el dashboard",
+        "mejora el diseno",
+        "build a component",
+        "design the page",
+        "wireframe"
+      ],
+      "description": "Diseno de interfaces frontend production-grade que evitan la estetica generica de \"AI slop\". Fase de design-thinking ANTES de codear, sistema de design tokens, y dos perfiles esteticos seleccionables (bold / enterprise-minimal) via evol.profile.yml. Usar cuando se construye UI, componentes, paginas, dashboards,",
+      "file": "skills/evol-frontend-design/SKILL.md"
     },
     {
       "name": "evol-fs-context",
@@ -132,6 +162,21 @@
       "file": "skills/evol-prompt-master/SKILL.md"
     },
     {
+      "name": "evol-remotion",
+      "category": "growth",
+      "trigger": "/remotion",
+      "triggers": [
+        "/remotion",
+        "anima esto",
+        "crea un video",
+        "transicion animada",
+        "motion design",
+        "demo animada"
+      ],
+      "description": "Creacion programatica de motion y video en React con Remotion (useCurrentFrame, interpolate, Sequence). Es la capa de diseno dinamico/animado del toolkit de diseno de Evol-DD, complementaria a evol-frontend-design (estatica). Usar al construir UI con animacion, transiciones, reveals, hero animations, demos de",
+      "file": "skills/evol-remotion/SKILL.md"
+    },
+    {
       "name": "evol-sandbox",
       "category": "security",
       "trigger": "/sandbox",
@@ -172,6 +217,18 @@
       ],
       "description": "Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.",
       "file": "skills/readme-master/SKILL.md"
+    },
+    {
+      "name": "revision-release",
+      "category": "release",
+      "trigger": "/revision-release",
+      "triggers": [
+        "/revision-release",
+        "revisar release",
+        "preparar release"
+      ],
+      "description": "Revisión completa del proyecto: analiza historial de GitHub desde el último release, identifica mejoras, verifica métodos de instalación (curl, pipx, npm) y arma el paquete instalador.",
+      "file": "skills/revision-release/SKILL.md"
     }
   ]
 }

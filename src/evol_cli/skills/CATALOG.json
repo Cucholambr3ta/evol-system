@@ -217,6 +217,18 @@
       ],
       "description": "Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.",
       "file": "skills/readme-master/SKILL.md"
+    },
+    {
+      "name": "revision-release",
+      "category": "release",
+      "trigger": "/revision-release",
+      "triggers": [
+        "/revision-release",
+        "revisar release",
+        "preparar release"
+      ],
+      "description": "Revisión completa del proyecto: analiza historial de GitHub desde el último release, identifica mejoras, verifica métodos de instalación (curl, pipx, npm) y arma el paquete instalador.",
+      "file": "skills/revision-release/SKILL.md"
     }
   ]
 }
