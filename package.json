@@ -1,0 +1,49 @@
+{
+  "name": "evol-dd",
+  "version": "0.6.3",
+  "description": "Evol-DD: Multi-agent system for professional software engineering",
+  "keywords": [
+    "multi-agent",
+    "software-engineering",
+    "tdd",
+    "ci-cd",
+    "memory-system"
+  ],
+  "author": "Cucholambr3ta",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cucholambr3ta/evol-system.git"
+  },
+  "bin": {
+    "evol": "bin/evol.js",
+    "evol-gate": "bin/evol-gate.js",
+    "evol-eval": "bin/evol-eval.js",
+    "evol-flow": "bin/evol-flow.js",
+    "evol-provider": "bin/evol-provider.js",
+    "evol-shield": "bin/evol-shield.js",
+    "evol-orchestrate": "bin/evol-orchestrate.js",
+    "evol-agent": "bin/evol-agent.js",
+    "evol-evolve": "bin/evol-evolve.js",
+    "evol-research": "bin/evol-research.js",
+    "evol-memory": "bin/evol-memory.js",
+    "evol-lessons": "bin/evol-lessons.js",
+    "evol-code-indexer": "bin/evol-code-indexer.js",
+    "evol-profile": "bin/evol-profile.js",
+    "evol-install-global": "bin/evol-install-global.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "src/evol_cli/",
+    "docs/",
+    "acuerdos/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

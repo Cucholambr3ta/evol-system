@@ -8,6 +8,13 @@ and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **npm Installation Method**: Added `package.json` for npm installation support.
+  - Wrapper scripts in `bin/` for all 15 CLI commands.
+  - Install via `npm install -g evol-dd` or from source.
+  - `install.sh` now supports `--method=node` for npm installation.
+  - Update via `npm update -g evol-dd`.
+
 ## [0.7.1] - 2026-06-07
 
 ### Added

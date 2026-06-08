@@ -19,21 +19,26 @@ PROFILE="developer"
 DRY_RUN=0
 
 # ── Parse args ────────────────────────────────────────────────────────────────
+METHOD="auto"  # auto, python, node
+
 for arg in "$@"; do
     case "$arg" in
         --no-ide)      NO_IDE=1 ;;
         --dry-run)     DRY_RUN=1 ;;
         --profile=*)   PROFILE="${arg#*=}" ;;
+        --method=*)    METHOD="${arg#*=}" ;;
         --help|-h)
             echo "Usage: install.sh [OPTIONS]"
             echo ""
             echo "Options:"
             echo "  --no-ide          Skip IDE trigger installation"
             echo "  --profile=NAME    Installation profile (default: developer)"
+            echo "  --method=METHOD   Installation method: auto, python, node"
             echo "  --dry-run         Show what would be done without doing it"
             echo "  --help, -h        Show this help"
             echo ""
             echo "Profiles: minimal, core, developer, security, research, full, lean"
+            echo "Methods:  auto (prefer python), python (pipx), node (npm)"
             exit 0
             ;;
     esac
@@ -159,53 +164,83 @@ fi
 # ── Step 3: Detect/Install pipx ──────────────────────────────────────────────
 step 3 "Ensuring pipx"
 
-if command -v pipx &>/dev/null; then
-    success "pipx detected: $(command -v pipx)"
-else
-    warn "pipx not found"
-    if [[ "$DRY_RUN" -eq 1 ]]; then
-        info "[dry-run] Would install pipx"
+# Check if we should use node instead
+USE_NODE=0
+if [[ "$METHOD" == "node" ]] || [[ "$METHOD" == "auto" ]] && ! command -v pipx &>/dev/null && command -v node &>/dev/null; then
+    USE_NODE=1
+fi
+
+if [[ "$USE_NODE" -eq 0 ]]; then
+    if command -v pipx &>/dev/null; then
+        success "pipx detected: $(command -v pipx)"
     else
-        info "Installing pipx..."
-        "$python_cmd" -m pip install --user pipx 2>/dev/null || "$python_cmd" -m pip install pipx
-        "$python_cmd" -m pipx ensurepath 2>/dev/null || true
-
-        # Ensure pipx is in PATH for this session
-        export PATH="$HOME/.local/bin:$HOME/.local/pipx/venvs:$PATH"
-
-        if command -v pipx &>/dev/null; then
-            success "pipx installed"
+        warn "pipx not found"
+        if [[ "$DRY_RUN" -eq 1 ]]; then
+            info "[dry-run] Would install pipx"
         else
-            error "pipx installation failed"
-            error "Try: python3 -m pip install --user pipx"
-            exit 1
+            info "Installing pipx..."
+            "$python_cmd" -m pip install --user pipx 2>/dev/null || "$python_cmd" -m pip install pipx
+            "$python_cmd" -m pipx ensurepath 2>/dev/null || true
+
+            # Ensure pipx is in PATH for this session
+            export PATH="$HOME/.local/bin:$HOME/.local/pipx/venvs:$PATH"
+
+            if command -v pipx &>/dev/null; then
+                success "pipx installed"
+            else
+                error "pipx installation failed"
+                error "Try: python3 -m pip install --user pipx"
+                exit 1
+            fi
         fi
     fi
+else
+    info "Using node (npm) for installation"
 fi
 
 # ── Step 4: Install evol-dd ──────────────────────────────────────────────────
-step 4 "Installing evol-dd[full]"
+if [[ "$USE_NODE" -eq 0 ]]; then
+    step 4 "Installing evol-dd[full] (pipx)"
 
-EXTRAS="memory,graph"
-info "Installing with extras: $EXTRAS"
+    EXTRAS="memory,graph"
+    info "Installing with extras: $EXTRAS"
 
-if [[ "$DRY_RUN" -eq 1 ]]; then
-    info "[dry-run] Would run: pipx install evol-dd[$EXTRAS]"
-else
-    # Remove existing installation if present
-    pipx uninstall evol-dd 2>/dev/null || true
-
-    pipx install "evol-dd[$EXTRAS]" --force 2>&1 || {
-        warn "pipx install with extras failed, trying pip..."
-        "$python_cmd" -m pip install --user "evol-dd[$EXTRAS]"
-    }
-
-    # Verify installation
-    if command -v evol &>/dev/null || pipx list 2>/dev/null | grep -q evol-dd; then
-        success "evol-dd installed"
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+        info "[dry-run] Would run: pipx install evol-dd[$EXTRAS]"
     else
-        warn "evol-dd installed but 'evol' command not in PATH"
-        info "You may need to add ~/.local/bin to your PATH"
+        # Remove existing installation if present
+        pipx uninstall evol-dd 2>/dev/null || true
+
+        pipx install "evol-dd[$EXTRAS]" --force 2>&1 || {
+            warn "pipx install with extras failed, trying pip..."
+            "$python_cmd" -m pip install --user "evol-dd[$EXTRAS]"
+        }
+
+        # Verify installation
+        if command -v evol &>/dev/null || pipx list 2>/dev/null | grep -q evol-dd; then
+            success "evol-dd installed"
+        else
+            warn "evol-dd installed but 'evol' command not in PATH"
+            info "You may need to add ~/.local/bin to your PATH"
+        fi
+    fi
+else
+    step 4 "Installing evol-dd (npm)"
+
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+        info "[dry-run] Would run: npm install -g evol-dd"
+    else
+        npm install -g evol-dd 2>&1 || {
+            warn "npm install failed, trying from source..."
+            npm install -g . 2>&1
+        }
+
+        if command -v evol &>/dev/null; then
+            success "evol-dd installed via npm"
+        else
+            warn "evol-dd installed but 'evol' command not in PATH"
+            info "You may need to add ~/.npm-global/bin to your PATH"
+        fi
     fi
 fi
 
@@ -274,6 +309,11 @@ echo ""
 info "Docs:"
 echo "  https://github.com/Cucholambr3ta/evol-system#readme"
 echo ""
-info "Update:"
-echo "  pipx upgrade evol-dd"
+if [[ "$USE_NODE" -eq 0 ]]; then
+    info "Update:"
+    echo "  pipx upgrade evol-dd"
+else
+    info "Update:"
+    echo "  npm update -g evol-dd"
+fi
 echo ""
