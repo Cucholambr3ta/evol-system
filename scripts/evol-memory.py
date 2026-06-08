@@ -1282,17 +1282,25 @@ def main():
     elif args.cmd == "edms-reflection":
         v2 = _get_v2()
         if v2:
-            from evol_memory_v2.reflection import ReflectionEngine
+            from evol_memory_v2.reflection import ReflectionEngine, MemoryItem
             reflection = ReflectionEngine(v2._verbatim)
             # Get all memories for reflection
             memories = v2._verbatim.list_items()
-            result = reflection.analyze(memories)
+            # Convert to MemoryItem format
+            memory_items = []
+            for mem in memories:
+                item = MemoryItem(
+                    id=mem.get("id", ""),
+                    text=mem.get("verbatim", ""),
+                    metadata=mem.get("metadata", {}),
+                    created_at=mem.get("created_at", ""),
+                )
+                memory_items.append(item)
+            insights = reflection.reflect(memory_items)
             print(f"\n[v2] Reflection Results:")
-            print(f"  Patterns: {len(result.get('patterns', []))}")
-            print(f"  Trends: {len(result.get('trends', []))}")
-            print(f"  Evolutions: {len(result.get('evolutions', []))}")
-            for pattern in result.get("patterns", []):
-                print(f"    Pattern: {pattern}")
+            print(f"  Insights generated: {len(insights)}")
+            for insight in insights[:10]:  # Show top 10
+                print(f"    - {insight.insight_type}: {insight.summary}")
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
     elif args.cmd == "edms-dreaming":
@@ -1325,16 +1333,20 @@ def main():
     elif args.cmd == "edms-forget":
         v2 = _get_v2()
         if v2:
-            from evol_memory_v2.forgetting import ForgettingEngine
-            forgetting = ForgettingEngine(v2._verbatim)
+            from evol_memory_v2.forgetting import ForgettingEngine, ForgettingPolicy
+            policy = ForgettingPolicy(max_forget_per_run=args.max, dry_run=args.dry_run)
+            forgetting = ForgettingEngine(policy)
+            # Get all memories
+            memories = v2._verbatim.list_items()
+            # Find candidates
+            candidates = forgetting.find_candidates(memories)
             if args.dry_run:
-                candidates = forgetting.get_candidates()
                 print(f"\n[v2] Dry run: {len(candidates)} items would be forgotten")
                 for item in candidates[:args.max]:
-                    print(f"  - {item['id']}: {item.get('reason', 'TTL expired')}")
+                    print(f"  - {item.id}: {item.reason}")
             else:
-                result = forgetting.run(max_forget=args.max)
-                print(f"[evol-memory] v2 forgot {result['forgotten']} items")
+                forgotten = forgetting.forget(candidates[:args.max])
+                print(f"[evol-memory] v2 forgot {len(forgotten)} items")
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
     elif args.cmd == "edms-conflicts":
@@ -1343,7 +1355,7 @@ def main():
             from evol_memory_v2.conflict_detector import ConflictDetector
             detector = ConflictDetector(v2._verbatim)
             memories = v2._verbatim.list_items()
-            conflicts = detector.detect_all(memories)
+            conflicts = detector.detect(memories)
             if conflicts:
                 print(f"\n[v2] Conflicts detected: {len(conflicts)}")
                 for conflict in conflicts:
