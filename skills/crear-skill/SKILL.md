@@ -109,10 +109,38 @@ compatible_with:
 - Mantener SKILL.md bajo 500 lineas
 - Description "un poco agresiva" — mejor overtrigger que undertrigger
 
+## CSO — Claude Search Optimization (description que dispara, no que resume)
+
+La `description` del frontmatter es lo unico que el agente lee para decidir si
+carga la skill. Optimizarla para **triggering**, no para resumir el workflow.
+
+- Describe CONDICIONES de activacion ("usar cuando el usuario quiera X"), no el
+  procedimiento interno. Si la description detalla el workflow, el agente puede
+  seguir la description en vez de leer el SKILL.md completo.
+- Tercera persona, orientada a gatillos. Incluir sinonimos y triggers naturales.
+- Maximo util ~1024 caracteres; concision > exhaustividad.
+
+Inspirado en obra/superpowers (writing-skills).
+
+## RED-GREEN-REFACTOR (escribir skills es TDD aplicado a procesos)
+
+Ninguna skill se da por buena sin un test que falle primero. El loop de eval
+(paso 5) se formaliza asi:
+
+1. **RED** — correr 2-3 escenarios de presion SIN la skill; documentar las
+   racionalizaciones/errores exactos que comete el baseline.
+2. **GREEN** — escribir la skill minima que resuelve esos fallos especificos.
+3. **REFACTOR** — re-testear; identificar nuevas racionalizaciones; agregar
+   contras explicitas; repetir hasta que sea a prueba de balas.
+
+Inspirado en obra/superpowers (writing-skills): "no skill deploys without a
+failing test first".
+
 ## Criterio de calidad
 
-- Benchmark iter-1: with-skill supera baseline en >= 30pp
-- Description: recall >= 0.85, precision >= 0.85
+- Test primero (RED): baseline documentado antes de escribir la skill
+- Benchmark iter-1: with-skill supera baseline en >= 30pp (GREEN)
+- Description CSO: recall >= 0.85, precision >= 0.85 (condiciones, no workflow)
 - 0 emojis en body, seccion `## Limites` presente
 
 ## Limites
@@ -120,3 +148,43 @@ compatible_with:
 - No crea agentes (usar `crear-agente` para eso)
 - No modifica skills core del sistema
 - No genera MCP servers
+
+
+## Memory Integration
+
+This skill integrates with the EDMS (Evol-DD Memory System) for persistent knowledge management.
+
+### Memory Commands
+
+After completing the main task, execute these commands to persist knowledge:
+
+```bash
+# Store decisions made during this task
+python3 scripts/evol-memory.py edms-store "$(cat acuerdos/memoria/decisiones.md)" --tipo decision
+
+# Extract entities from the work done
+python3 scripts/evol-memory.py edms-extract "$(cat WORKING-CONTEXT.md)"
+
+# Create relationships between entities
+python3 scripts/evol-memory.py edms-link "$(cat WORKING-CONTEXT.md)"
+
+# Detect any contradictions with existing knowledge
+python3 scripts/evol-memory.py edms-conflicts
+```
+
+### What to Store
+
+- **Decisions**: Architecture choices, design patterns, technology selections
+- **Entities**: Components, services, modules, dependencies
+- **Relationships**: How components interact, data flows, dependencies
+- **Lessons**: What worked, what didn't, improvements for next time
+
+### Memory File Updates
+
+Update these files with task-specific knowledge:
+
+1. `acuerdos/memoria/decisiones.md` - Record key decisions
+2. `acuerdos/memoria/convenciones.md` - Update conventions if needed
+3. `acuerdos/memoria/riesgos.md` - Note any new risks identified
+4. `WORKING-CONTEXT.md` - Update with current state
+5. `memoria.md` - Log the activity in the flight recorder
