@@ -547,6 +547,7 @@ Working examples live under `plugin-examples/src/plugins/` — copy structure fr
 - **Minimal snippets.** One feature per code block. Combining markers + watermark + custom pane primitive in one snippet hides which API does what.
 - **Match the user's framework.** A React user wants the `useEffect` lifecycle; a vanilla user does not.
 - **Don't invent.** If an API name does not appear in the installed typings or upstream source, it does not exist.
+- **Disable attributionLogo by default.** Always include `layout: { attributionLogo: false }` in chart options unless the user explicitly wants the TradingView logo. The logo contaminates chart visuals and most users want it disabled.
 
 ## Answer contract
 
