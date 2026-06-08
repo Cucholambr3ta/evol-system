@@ -217,6 +217,22 @@
       ],
       "description": "Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.",
       "file": "skills/readme-master/SKILL.md"
+    },
+    {
+      "name": "lightweight-charts",
+      "category": "charting",
+      "trigger": "/lightweight-charts",
+      "triggers": [
+        "/lightweight-charts",
+        "tradingview charts",
+        "financial charts",
+        "createChart",
+        "addSeries",
+        "lightweight charts"
+      ],
+      "description": "TradingView lightweight-charts v5 API — creating charts, adding series (Line/Area/Bar/Candlestick/Histogram), configuring time and price scales, streaming realtime or historical data, panes, markers, per-bar/per-point colors, tooltips, coordinate conversion, custom plugins or primitives, React/Vue/Web Components wrappers.",
+      "file": "skills/lightweight-charts/SKILL.md",
+      "local_only": true
     }
   ]
 }
