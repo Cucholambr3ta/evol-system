@@ -302,3 +302,107 @@ _(vacio)_
 **Aplica a:** Todo agente creando artefactos en Evol-DD.
 **Fix aplicado:** Wireframes movidos a `acuerdos/design/wireframes/`.
 
+### [HERRAMIENTAS] LadybugDB Cypher: parameters como dict, no como list — 2026-06-06
+**Contexto:** Integrando LadybugDB como graph database principal en EDMS.
+**Problema:** Queries Cypher con `parameters=["name", "value"]` fallaban con `Expected ['any'] but got ['string']`. LadybugDB espera parameters como dict `{"name": "value"}`.
+**Causa raíz:** Documentación de LadybugDB ambigua; ejemplos de otros graph DBs (Neo4j) usan listas.
+**Lección:** LadybugDB `conn.run(query, parameters={"key": "value"})` — parameters SIEMPRE como dict. Query usa `$key` syntax, no `{key}` ni positional.
+**Aplica a:** Todo código que use LadybugDB Cypher queries.
+**Fix aplicado:** Reescritas todas las queries en `evol_memory_store.py` para usar dict parameters.
+
+### [HERRAMIENTAS] Base64 encoding para properties en graph databases — 2026-06-06
+**Contexto:** Almacenando propiedades JSON en nodos de LadybugDB.
+**Problema:** `properties STRING` con valor `'{"key": "value"}'` causaba parse errors — LadybugDB interpreta strings JSON como Cypher map literals.
+**Causa raíz:** LadybugDB parser confunde JSON strings con Cypher maps. `"{a: 1}"` se interpreta como `{a: 1}` (map), no como string literal.
+**Lección:** Almacenar properties como `base64.b64encode(json.dumps(props).encode()).decode()`. Decode al leer: `json.loads(base64.b64decode(encoded).decode())`. Patron general: cualquier string que pueda parecer un map Cypher debe codificarse antes de almacenar.
+**Aplica a:** Todo schema de graph database con campo STRING que almacene JSON.
+**Fix aplicado:** `_upsert_graph_node()` y `query_graph()` en `evol_memory_store.py` usan base64 encoding/decoding.
+
+### [HERRAMIENTAS] MERGE vs CREATE para nodos con PRIMARY KEY — 2026-06-06
+**Contexto:** Creando nodos en LadybugDB desde `edms-index` y `edms-bootstrap`.
+**Problema:** `CREATE (n:MemoryNode {name: $name, ...})` fallaba con `Duplicate node name` cuando el nodo ya existía. `edms-index` puede indexar el mismo archivo múltiples veces.
+**Causa raíz:** LadybugDB enforcea UNIQUE en PRIMARY KEY. `CREATE` no verifica existencia previa.
+**Lección:** Usar `MERGE` para nodos (verifica existencia + crea si falta). `CREATE` solo para relaciones (no tienen PRIMARY KEY). Patron: `MERGE (n:MemoryNode {name: $name}) SET n.type = $type, n.properties = $props`.
+**Aplica a:** Todo código que cree nodos en graph databases con PRIMARY KEY.
+**Fix aplicado:** `_upsert_graph_node()` usa `MERGE ... SET` en vez de `CREATE`.
+
+### [PROCESO] EDMS debe ser leído, no solo escrito — 2026-06-06
+**Contexto:** EDMS se implementó como capa de indexación pero nunca se consultaba durante la ejecución del pipeline.
+**Problema:** Las herramientas `edms-search`, `edms-why`, `edms-tensions`, `edms-blocked`, `edms-whatif`, `edms-alternatives` existían pero nadie las llamaba. El agente `/evol` solo leía archivos planos (memoria.md, lecciones.md).
+**Causa raíz:** La Constitución Art. 3 fue diseñada antes de EDMS — solo referenciaba archivos planos. El workflow `evol.md` no incluía queries EDMS en su protocolo de inicio.
+**Lección:** EDMS debe ser consultado activamente al inicio de cada sesión: `edms-wake-up` (resumen), `edms-blocked` (riesgos bloqueantes), `edms-tensions` (conflictos), `edms-search` con el topic del usuario (decisiones relacionadas). Budget: ~570 tokens.
+**Aplica a:** Todo agente que use EDMS como fuente de memoria.
+**Fix aplicado:** Actualizado `session-start-context-load.sh` (hook), `evol.md` (workflow), `constitucion.md` (Art. 3).
+
+### [ARQUITECTURA] Real-time monitoring: stdlib-first para zero dependencies — 2026-06-06
+**Contexto:** Diseñando sistema de monitoreo en tiempo real para EDMS (graph live-update, project state, loop detection).
+**Problema:** FastAPI no estaba en las dependencias del proyecto. Agregarlo como dependencia para un SSE server sería overkill.
+**Causa raíz:** Se asumió que FastAPI era necesario para SSE, pero http.server stdlib es suficiente para un servidor unidireccional.
+**Lección:** Para SSE simple (server→client), `http.server` stdlib + threading es suficiente. FastAPI solo es necesario si se necesita routing complejo, middleware, o WebSocket. El patrón: `http.server.HTTPServer` + `BaseHTTPRequestHandler` + `threading.Thread(daemon=True)` para background worker. 0 dependencias externas.
+**Aplica a:** Cualquier servicio de streaming simple en Evol-DD.
+**Fix aplicado:** `evol_sse_server.py` usa http.server stdlib.
+
+### [ARQUITECTURA] NDJSON append-only para trazas concurrentes — 2026-06-06
+**Contexto:** Implementando emisión de eventos para monitoreo en tiempo real.
+**Problema:** Múltiples procesos (hooks, memory_store, SSE server) pueden escribir/leer traces simultáneamente.
+**Causa raíz:** Archivos JSON normales no son seguros para escritura concurrente (dirty reads).
+**Lección:** NDJSON (un JSON por línea, append-only) es el formato correcto para traces concorrentes. Nunca modificar líneas existentes. Rotación por tamaño (10MB) con renaming secuencial. El reader tracking offsets por archivo para solo leer líneas nuevas.
+**Aplica a:** Todo sistema de logging/tracing que múltiples procesos escriban.
+**Fix aplicado:** `evol_traces.py` usa NDJSON append-only con offset tracking.
+
+### [HERRAMIENTAS] Loop detection: sliding window + threshold — 2026-06-06
+**Contexto:** Implementando detección de loops de agente para evitar sobreconsumo de tokens.
+**Problema:** Un agente en loop ejecuta la misma acción repetidamente sin detección.
+**Causa raíz:** No había mecanismo de vigilancia sobre la frecuencia de acciones de agentes.
+**Lección:** Sliding window (5min) + threshold (3 veces misma acción) es suficiente para detectar loops. Almacenar acciones por `agent:project` key. Severity scaling: warning (3-4 veces), critical (5+). Persistir alertas en JSON para auditoría post-mortem.
+**Aplica a:** Cualquier sistema con agentes autónomos que consuman tokens.
+**Fix aplicado:** `evol_loop_detector.py` con window=300s, threshold=3, critical=5.
+
+### [PROCESO] Cross-env sync: leer archivos, no re-indexar EDMS — 2026-06-06
+**Contexto:** Trabajando en 2+ IDEs/máquinas sobre el mismo proyecto, cada entorno tiene su EDMS local (ChromaDB + LadybugDB) que no se sincroniza.
+**Problema:** El agente en IDE 2 no sabe qué hizo el agente en IDE 1, porque EDMS es local.
+**Causa raíz:** EDMS (ChromaDB + LadybugDB) no es git-tracked. Los átomos (decisiones, convenciones, riesgos) sí se sincronizan vía git, pero el agente no los lee automáticamente al cambiar de entorno.
+**Lección:** Para sync cross-environment, la solución más simple es un workflow `/update-context` que lea los 8 archivos de memoria (que sí son git-tracked) y presente un resumen al agente. No necesita re-indexar EDMS — los archivos planos son la fuente de verdad. El hook `session:start:context-load` ya hace esto parcialmente, pero `/update-context` lo hace de forma explícita y completa.
+**Aplica a:** Cualquier proyecto donde se trabaje con múltiples IDEs/máquinas.
+**Fix aplicado:** Workflow `.agent/workflows/update-context.md` creado.
+
+### [ARQUITECTURA] Adoptar filosofía MemPalace: híbrido verbatim + consolidación — 2026-06-07
+**Contexto:** Queremos mejorar la recuperación de memoria de Evol-DD usando ideas de MemPalace.
+**Problema:** EDMS actual pierde información original al comprimir en 4 tiers, no tiene temporal windows, y no detecta contradicciones.
+**Causa raíz:** La filosofía de Evol-DD es "consolidar y comprimir", pero MemPalace demuestra que "almacenar verbatim" da mejor recuperación (96.6% R@5).
+**Lección:** El mejor enfoque es híbrido: mantener consolidación 4 tiers de Evol-DD + agregar capa verbatim permanente + temporal windows + contradiction detection. No mutually exclusive.
+**Aplica a:** Cualquier sistema de memoria que quiera balance entre compresión y fidelidad.
+**Fix implementado:** 3 fases: (1) temporal windows en LadybugDB, (2) memory stack L0+L1, (3) contradiction detection.
+
+
+### [PROCESO] Verificar implementación existente antes de ejecutar plan guardado — 2026-06-08
+**Contexto:** Plan `mellow-knitting-codd.md` (canvas neural-net knowledge-graph en dashboard) quedó pendiente de una sesión anterior. Al retomarlo, se procedió a insertar el HTML/CSS del plan directamente.
+**Problema:** El plan ya había sido implementado en una sesión previa (`initGraphMini()` en script.js + card en index.html), generándose un bloque duplicado con IDs colisionando (`#graph-canvas-mini`, `.select-mini` repetidos).
+**Causa raíz:** Los planes guardados (`~/.claude/plans/`) no se marcan como completados automáticamente — quedan "pendientes" en el contexto aunque el trabajo ya se haya hecho en otra sesión/commit.
+**Lección:** Antes de ejecutar un plan retomado tras compactación, hacer `grep` de los identificadores clave (IDs de canvas, nombres de función, clases CSS) en los archivos objetivo. Si ya existen, el plan está completo — solo falta verificar con `git diff --stat` que no hay drift.
+**Aplica a:** Cualquier sesión que retome un plan de `~/.claude/plans/` después de compactación de contexto.
+**Fix aplicado:** Detectado el duplicado antes de commit, revertido con `head -n` truncation; `git diff --stat` confirmó 0 cambios netos.
+
+### [BUG] edms-conflicts crashea: VerbatimStore not iterable — 2026-06-08
+**Contexto:** Ejecutando `/update-memory` → `edms-conflicts` para detectar contradicciones tras actualizar átomos.
+**Problema:** `TypeError: 'VerbatimStore' object is not iterable` en `conflict_detector.py:140`, dentro de `_detect_predicate_contradictions` → `is_negative = any(...)`.
+**Causa raíz:** `detect(memories)` recibe un `VerbatimStore` en vez de una lista/iterable de memorias — mismatch de firma entre el caller (`evol-memory.py:1358`) y lo que el detector espera iterar.
+**Lección:** `ConflictDetector.detect()` necesita recibir `memories` ya materializado como lista (p.ej. `list(store.all())` o equivalente), no el store completo. Bug pre-existente, no introducido en esta sesión.
+**Aplica a:** Cualquier llamada a `edms-conflicts` o uso directo de `ConflictDetector.detect()`.
+**Fix pendiente:** Revisar firma de `detect()` en `scripts/evol_memory_v2/conflict_detector.py:93-140` y el call site en `evol-memory.py:1358` — convertir store a iterable antes de pasar.
+
+### [ARQUITECTURA] Memoria derivada no debe re-alimentar su propio generador — 2026-06-13
+**Contexto:** Implementando forecasting (Gap 1 EDMS): dreaming consolida memorias y, en Phase 3, emite predicciones que se persisten como atomos `type=prediction` via VerbatimStore.
+**Problema:** Re-ejecutar `edms-dreaming` producia predicciones "nuevas" cada vez (idempotencia rota). `list_items()` devuelve TODOS los atomos — incluidas las predicciones de corridas anteriores — que volvian a entrar como input de forecasting, generando texto distinto y por tanto hashes distintos.
+**Causa raiz:** Loop de retroalimentacion: la salida derivada (prediction/thought) se mezclaba con las memorias fuente al re-alimentar el motor que la produjo.
+**Leccion:** Cualquier memoria DERIVADA (prediccion, thought, insight) debe excluirse del conjunto que alimenta al motor que la genera. En EDMS: filtrar `tipo in {prediction, thought}` antes de pasar memorias a `dream()`. Asi forecasting solo razona sobre memorias primarias y re-ejecutar es idempotente (0 nuevas). La investigacion ya lo anticipaba ("evitar feedback-loop") — confirmado en implementacion.
+**Aplica a:** Forecasting, thought-capture, y cualquier consolidacion futura que escriba atomos que luego relea por `list_items()`.
+**Fix aplicado:** `evol-memory.py` edms-dreaming filtra `_DERIVED = {"prediction","thought"}` del input. Dedup adicional por content-hash via `read_by_hash` antes de contar "nuevas". Verificado: run1=2 nuevas, run2/3=0.
+
+### [PROCESO] observe_decision_pattern devuelve referencia viva, no snapshot — 2026-06-13
+**Contexto:** Test de UserModelStore (Gap 3) comparaba confidence antes/despues de anadir 2da evidencia: `p1=observe(...); p2=observe(...); assert p2.confidence > p1.confidence`.
+**Problema:** `assert 0.99 > 0.99` — fallaba. `p1` y `p2` apuntaban al MISMO dict (la entrada almacenada, mutada in-place), asi que `p1["confidence"]` ya valia 0.99 tras la 2da llamada.
+**Causa raiz:** El metodo retorna la entrada viva del modelo por diseno (eficiencia interna); `get()` si devuelve copia profunda para callers externos.
+**Leccion:** Cuando un metodo muta y retorna la misma estructura interna, los tests deben snapshotear escalares (`conf1 = p1["confidence"]`) antes de la siguiente mutacion, no retener referencias al dict.
+**Aplica a:** Tests de cualquier store con mutacion in-place que retorne la entrada modificada.
+**Fix aplicado:** Snapshot de `conf1, fixed1` antes de la 2da observacion en `test_memory_v2_user_model.py`.

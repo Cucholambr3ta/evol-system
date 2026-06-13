@@ -11,12 +11,13 @@
 - **Repositorio:** https://github.com/Cucholambr3ta/evol-system.git
 
 ## Estado Actual
-- **Fase Evol-DD:** EDMS Implementado — Todas las fases completadas
-- **Branch:** feature/edms-memory-system (pushed)
-- **Ultimo hito:** EDMS Fase 1-5 completadas. MemoryStore con ChromaDB + LadybugDB + fallback. 6 subcomandos CLI. 4 hooks de lifecycle. 4-tier consolidation. FlowScript queries. Team memory namespaces. 10/10 tests pasando.
-- **Proximo paso:** Merge a develop, Fase 6 (observabilidad), o continuar con otras tareas.
+- **Fase Evol-DD:** EDMS + Real-Time Monitoring Implementado
+- **Branch:** feature/edms-ui
+- **Version:** 0.6.3
+- **Ultimo hito:** EDMS Memory v2 — 5 gaps implementados (investigacion elagente vs EDMS). Forecasting (predictive memories), thought-capture, user-model dialectico (Honcho), señal temporal en retrieval, dreaming_log auditable. 3 commits (`6f42cc0`, `6d7f188`, `9c426df`), 247 tests verdes (+50), stdlib-first. Nuevos modulos: `forecasting.py`, `thought.py`, `user_model.py`. Nuevos subcomandos: `edms-dream-log`, `edms-predictions`, `edms-thought(s)`, `edms-user-model`. Investigacion en `acuerdos/research/memory-v2-gaps/`.
+- **Proximo paso:** (a) cablear `edms-predictions` + `edms-user-model` en wake-up del orquestador `/evol` (hoy disponibles como comandos, no auto-inyectados); (b) corregir bug pre-existente `edms-conflicts` (VerbatimStore no iterable, ver lecciones.md 2026-06-08); (c) validar TUI vs wireframes; (d) sincronizar VERSION (0.6.3 vs 0.6.0).
 - **PyPI:** https://pypi.org/project/evol-dd/
-- **Versiones publicadas:** 0.1.0 → 0.3.3 (update-memory) → 0.4.0 → 0.5.0 (readme-master)
+- **Versiones publicadas:** 0.1.0 → 0.3.3 → 0.4.0 → 0.5.0 → 0.6.0
 - **EDMS:** IMPLEMENTADO. Branch `feature/edms-memory-system` con 5 commits:
   - `16f109e` feat(edms): MemoryStore abstraction layer + 10 passing tests
   - `5e18054` feat(edms): extend evol-memory.py with EDMS subcommands
@@ -25,6 +26,10 @@
   - `fc1e530` feat(edms): Fase 5 - FlowScript queries + Team memory namespaces
 
 ## Decisiones Arquitectónicas Clave
+- 2026-06-13: EDMS Memory v2 +5 gaps (vs investigacion elagente 20 sistemas) — stdlib-first, LLM opcional tras `EVOL_MEMORY_LLM`, implementado en 3 fases con gate skip
+- 2026-06-13: Anti-feedback-loop — atomos derivados (prediction/thought) excluidos del input de dreaming para idempotencia (ver lecciones.md)
+- 2026-06-13: Decay temporal en RRF con half-life por tipo (decision=365d, riesgo=60d, prediction=30d); default temporal_decay=0 (backward-compat)
+- 2026-06-13: User-model = single-operator versionado, consume feedback del harness (no duplica); decision_patterns con confidence basada en evidencia (fix tras 2 evidencias)
 - 2026-06-02: Sprint 0 Bootstrap — xdd-init.sh legacy mode
 - 2026-06-02: 11 sprints completados en una sesion
 - 2026-06-02: Remote configurado a https://github.com/Cucholambr3ta/evol-system.git
@@ -66,10 +71,38 @@
 | 0.2.7 | 2026-06-04 | E5-E8: sprint-close, historias, gitflow, discipline-check (69 tests) |
 | 0.3.0 | 2026-06-05 | setup-repo, security-inventory, briefing idea.md, sprint eval |
 | 0.3.2 | 2026-06-05 | 31 disciplinas, rebrand x-dd→evol-dd, .gitignore limpio |
+| 0.6.3 | 2026-06-07 | Code Graph Indexer (Tree-sitter), Impact Analysis, Process Tracing, 17 tests |
 
 ---
 
 ## Bitácora de Sesiones
+
+### Sesión 2026-06-07 — Code Graph Indexer + Impact Analysis
+
+- **Meta:** Implementar Code Graph Indexer (Tree-sitter) con grafo separado, impact analysis, process tracing, y completar Sprint 1 de auditoría (dead code fix).
+- **Hitos:**
+  - Code Graph Indexer: Creado `evol_code_indexer.py` (Tree-sitter parser, CodeGraph class, 1000+ líneas). Parsea Python y JavaScript/TypeScript. Nodos: File, Module, Symbol, Test. Relaciones: IMPORTS, CALLS, EXTENDS, CONTAINS, EXPORTS, TESTS, MODIFIES, BLAME. Grafo separado en `evol_dd_codigo.lbug`.
+  - Impact Analysis: `edms-impact <symbol>` y `edms-trace <entry>` subcommands en `evol-memory.py`. `check-impact` command en `evol-compliance.py`.
+  - Sprint 1 Audit Fix: Hook `post-edit-memory-index.sh` ahora索引 archivos de código. Nuevo hook `post-commit-code-index.sh`. evol-analyst.md actualizado con code graph tools. registry.json: evol-analyst con skill `code-graph-tools`. evol-orchestrator.md: routing para impact analysis. edms_bootstrap() step 10 = code graph indexing. session-start-context-load.sh: code graph stats. get_context(): code graph section.
+- **Archivos creados:** evol_code_indexer.py, test_code_indexer.py, test_impact.py, post-commit-code-index.sh
+- **Archivos modificados:** pyproject.toml (v0.6.3, [code] deps), evol_cli/__init__.py, evol_memory_store.py, evol-memory.py, evol-compliance.py, post-edit-memory-index.sh, hooks.json, evol-analyst.md, registry.json, evol-orchestrator.md, session-start-context-load.sh, WORKING-CONTEXT.md, CHANGELOG.md, memoria.md
+- **QA:** 69/69 tests pasan (11 code_indexer + 6 impact + 31 memory_store + 10 compliance + 6 lessons + 5 contradictions). Smoke test: 85 archivos, 958 símbolos, 9641 relaciones indexadas.
+- **Estado:** Branch feature/edms-ui. v0.6.3. Code Graph Indexer funcional. Sprint 1 de auditoría completado (9/9 P0 gaps cerrados).
+- **Próxima sesión:** Sprint 2 de auditoría (P1 - Workflows) o wireframes del usuario.
+
+### Sesión 2026-06-06 — Real-Time Monitoring + EDMS Context Activation
+
+- **Meta:** Implementar sistema de monitoreo en tiempo real para EDMS (graph live-update, project state, loop detection) y activar lectura EDMS en /evol.
+- **Hitos:**
+  - EDMS Context Activation: Actualizado `session-start-context-load.sh` con `edms-blocked` + `edms-tensions`. Actualizado `evol.md` Protocolo de inicio con paso 5 (EDMS queries). Actualizado `constitucion.md` Art. 3 con EDMS. Budget: ~570 tokens.
+  - Real-Time Monitoring Phase 1: Creado `evol_traces.py` (NDJSON emitter stdlib, 270 líneas). Creado `evol_sse_server.py` (SSE server stdlib http.server, 380 líneas) con dashboard HTML. Integrado `emit_edms_index()` en `evol_memory_store.py:index()`, `emit_edms_search()` en `search()`, `emit_graph_node/relation()` en graph ops. Integrado `emit_session_start()` en session-start hook, `emit_file_event()` en post-edit hook.
+  - Real-Time Monitoring Phase 2: Creado `evol_state_machine.py` (Active/Paused/Error, 10min threshold, 200 líneas). Creado `evol_loop_detector.py` (sliding window 5min, threshold 3, 180 líneas). Integrados en SSE server.
+  - Memory Update: Actualizados átomos (decisiones, convenciones, riesgos), lecciones (4 nuevas), AGENT_MEMORY.md (5 preferencias nuevas), WORKING-CONTEXT.md.
+- **Archivos creados:** evol_traces.py, evol_sse_server.py, evol_state_machine.py, evol_loop_detector.py
+- **Archivos modificados:** evol_memory_store.py, session-start-context-load.sh, post-edit-memory-index.sh, evol.md, constitucion.md, decisiones.md, convenciones.md, riesgos.md, lecciones.md, AGENT_MEMORY.md, WORKING-CONTEXT.md, memoria.md
+- **QA:** Todos los imports verificados, emit() funcional, state machine funcional, loop detector funcional (test: 3 acciones → alerta). Memory split ejecutado.
+- **Estado:** Branch feature/edms-ui. v0.6.1. Real-time monitoring Phases 1-2 completadas. Wireframes pendientes de aprobación.
+- **Próxima sesión:** Aprobación de wireframes, luego implement React UI con SSE.
 
 ### Sesión 2026-06-06 — Auditoría de Documentación + Consistencia JSON + Mirroring
 
