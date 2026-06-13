@@ -1020,6 +1020,26 @@ def main():
     p.add_argument("--max", type=int, default=10, help="Max predictions to show")
     p.add_argument("--min-confidence", type=float, default=0.0, help="Min confidence filter")
 
+    p = sub.add_parser("edms-thought", help="Capture reasoning behind a decision (v2)")
+    p.add_argument("--chosen", required=True, help="The selected option")
+    p.add_argument("--alternatives", default="", help="Comma-separated options considered")
+    p.add_argument("--because", default="", help="Why the alternatives were rejected")
+    p.add_argument("--context", default="", help="Decision/topic this reasoning belongs to")
+
+    p = sub.add_parser("edms-thoughts", help="Show captured reasoning (v2)")
+    p.add_argument("--context", default="", help="Filter by context substring")
+    p.add_argument("--max", type=int, default=20, help="Max thoughts to show")
+
+    p = sub.add_parser("edms-user-model", help="View/update operator dialectic profile (v2)")
+    p.add_argument("--show", action="store_true", help="Show the profile (default action)")
+    p.add_argument("--set-pref", nargs=2, metavar=("KEY", "VALUE"), help="Set a preference")
+    p.add_argument("--add-trigger", nargs=2, metavar=("TRIGGER", "RESPONSE"),
+                   help="Add a trigger->response mapping")
+    p.add_argument("--observe-pattern", metavar="PATTERN",
+                   help="Record/reinforce a decision pattern")
+    p.add_argument("--evidence", default="", help="Evidence id for --observe-pattern")
+    p.add_argument("--context", default="", help="Context for trigger/pattern")
+
     p = sub.add_parser("edms-forget", help="Run forgetting engine (v2)")
     p.add_argument("--dry-run", action="store_true", help="Show what would be forgotten")
     p.add_argument("--max", type=int, default=10, help="Max items to forget")
@@ -1430,6 +1450,62 @@ def main():
                     )
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-thought":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.thought import Thought, ThoughtStore
+            alts = [a.strip() for a in args.alternatives.split(",") if a.strip()]
+            thought = Thought(
+                chosen=args.chosen,
+                alternatives=alts,
+                rejected_because=args.because,
+                context=args.context,
+            )
+            tid = ThoughtStore(v2._verbatim).capture(thought)
+            print(f"[evol-memory] v2 thought captured: {tid}")
+            print(f"  {thought.to_text()}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-thoughts":
+        v2 = _get_v2()
+        if v2:
+            from evol_memory_v2.thought import ThoughtStore
+            ts = ThoughtStore(v2._verbatim)
+            items = ts.for_context(args.context) if args.context else ts.all()
+            if not items:
+                print("[evol-memory] No thoughts captured yet.")
+            else:
+                print(f"\n[v2] Thoughts ({len(items)}):")
+                for it in items[:args.max]:
+                    meta = it.get("metadata", {})
+                    ctx = f" [{meta['context']}]" if meta.get("context") else ""
+                    print(f"  · {meta.get('chosen', '')}{ctx}")
+                    if meta.get("alternatives"):
+                        print(f"      vs {', '.join(meta['alternatives'])}"
+                              + (f" — {meta['rejected_because']}" if meta.get("rejected_because") else ""))
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-user-model":
+        from evol_memory_v2.user_model import UserModelStore
+        um = UserModelStore()
+        mutated = False
+        if args.set_pref:
+            um.set_preference(args.set_pref[0], args.set_pref[1])
+            mutated = True
+        if args.add_trigger:
+            um.add_trigger(args.add_trigger[0], args.add_trigger[1], args.context)
+            mutated = True
+        if args.observe_pattern:
+            entry = um.observe_decision_pattern(
+                args.observe_pattern, evidence_id=args.evidence, context=args.context
+            )
+            mutated = True
+            print(f"[evol-memory] pattern confidence={entry['confidence']} fixed={entry['fixed']}")
+        if mutated:
+            print("[evol-memory] user model updated.")
+        # Always show the resulting profile.
+        print(f"\n[v2] Operator profile (v{um.stats()['version']}):")
+        print(um.wake_up_summary())
     elif args.cmd == "edms-forget":
         v2 = _get_v2()
         if v2:
