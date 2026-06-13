@@ -28,6 +28,9 @@ class DreamSession:
     memories_processed: int = 0
     insights_generated: int = 0
     duration_ms: float = 0.0
+    # Per-phase audit log. Each entry: {phase, items_in, items_out, ...counts}.
+    # Mirrors Skales' dreaming_log table for consolidation observability.
+    phases: list[dict[str, Any]] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -99,6 +102,38 @@ class DreamingEngine:
 
         return session
 
+    def log_phase(
+        self,
+        phase: str,
+        items_in: int,
+        items_out: int,
+        **counts: int,
+    ) -> dict[str, Any]:
+        """Record a consolidation phase in the current session's audit log.
+
+        Args:
+            phase: Phase name (e.g. "consolidation", "forecasting").
+            items_in: Inputs the phase consumed.
+            items_out: Outputs the phase produced.
+            **counts: Extra named counters (dropped, merged, ...).
+
+        Returns:
+            The recorded entry. No-op-safe: returns the entry even if no
+            session is active (it is just not persisted in that case).
+        """
+        ratio = (items_out / items_in) if items_in else 0.0
+        entry: dict[str, Any] = {
+            "phase": phase,
+            "items_in": items_in,
+            "items_out": items_out,
+            "compression_ratio": round(ratio, 4),
+            "at": datetime.now().isoformat(),
+            **counts,
+        }
+        if self._current_session is not None:
+            self._current_session.phases.append(entry)
+        return entry
+
     def end_dream_session(self) -> DreamSession | None:
         """
         End the current dreaming session.
@@ -160,6 +195,9 @@ class DreamingEngine:
             # Store insights
             for insight in insights:
                 self._insights[insight.id] = insight
+
+        # Phase: consolidation (reflection over all memories -> insights)
+        self.log_phase("consolidation", len(memories), len(all_insights))
 
         session.insights_generated = len(all_insights)
 
@@ -243,6 +281,7 @@ class DreamingEngine:
                     "memories_processed": s.memories_processed,
                     "insights_generated": s.insights_generated,
                     "duration_ms": s.duration_ms,
+                    "phases": s.phases,
                     "metadata": s.metadata,
                 }
                 for s in self._sessions.values()
@@ -283,6 +322,7 @@ class DreamingEngine:
                 memories_processed=session_data.get("memories_processed", 0),
                 insights_generated=session_data.get("insights_generated", 0),
                 duration_ms=session_data.get("duration_ms", 0.0),
+                phases=session_data.get("phases", []),
                 metadata=session_data.get("metadata", {}),
             )
             engine._sessions[session.id] = session

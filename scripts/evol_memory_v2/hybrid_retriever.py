@@ -10,11 +10,77 @@ Part of EDMS Memory v2.0 Phase 2 - Hybrid Retrieval.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any
 
 from .bm25_retriever import BM25Retriever
 from .evidence import EvidenceBuilder, EvidenceContract
 from .graph_expander import GraphExpander
+
+# Default half-life (days) per atom type for temporal decay.
+# Architectural decisions decay slowly; volatile state (branch, version) fast.
+# Used only when temporal_decay > 0. Falls back to DEFAULT_HALF_LIFE_DAYS.
+DEFAULT_HALF_LIFE_DAYS = 90.0
+HALF_LIFE_BY_TIPO: dict[str, float] = {
+    "decision": 365.0,
+    "convencion": 365.0,
+    "leccion": 180.0,
+    "artefacto": 120.0,
+    "riesgo": 60.0,
+    "prediction": 30.0,
+    "resumen": 30.0,
+    "handoff": 14.0,
+}
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    """Parse an ISO-8601 timestamp into an aware datetime, or None.
+
+    Tolerates missing values, epoch floats/ints, and trailing 'Z'.
+    """
+    if value is None or value == "":
+        return None
+    if isinstance(value, (int, float)):
+        try:
+            return datetime.fromtimestamp(float(value), tz=timezone.utc)
+        except (OverflowError, OSError, ValueError):
+            return None
+    if isinstance(value, str):
+        text = value.strip().replace("Z", "+00:00")
+        try:
+            dt = datetime.fromisoformat(text)
+        except ValueError:
+            return None
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    return None
+
+
+def _temporal_weight(
+    created_at: Any,
+    half_life_days: float,
+    *,
+    now: datetime | None = None,
+) -> float:
+    """Exponential recency weight in (0, 1].
+
+    weight = 0.5 ** (age_days / half_life_days)
+
+    A fresh item scores ~1.0; one half-life old scores 0.5; etc. Missing or
+    unparseable timestamps return 1.0 (no penalty — neutral). half_life_days
+    <= 0 disables decay (returns 1.0).
+    """
+    if half_life_days <= 0:
+        return 1.0
+    ts = _parse_timestamp(created_at)
+    if ts is None:
+        return 1.0
+    reference = now or datetime.now(timezone.utc)
+    age_days = (reference - ts).total_seconds() / 86400.0
+    if age_days <= 0:
+        return 1.0
+    return float(0.5 ** (age_days / half_life_days))
 
 
 @dataclass
@@ -50,6 +116,8 @@ class HybridRetriever:
         use_vector: bool = True,
         use_bm25: bool = True,
         use_graph: bool = True,
+        temporal_decay: float = 0.0,
+        half_life_by_tipo: dict[str, float] | None = None,
     ):
         """
         Initialize hybrid retriever.
@@ -59,11 +127,21 @@ class HybridRetriever:
             use_vector: Enable vector search (requires ChromaDB)
             use_bm25: Enable BM25 keyword search
             use_graph: Enable graph-based query expansion
+            temporal_decay: Strength of recency weighting in [0, 1].
+                0.0 (default) disables it — fully backward-compatible. At 1.0
+                the recency weight multiplies the RRF score directly; values
+                in between blend toward 1.0 (no penalty).
+            half_life_by_tipo: Optional override of per-tipo half-lives (days).
+                Merged over HALF_LIFE_BY_TIPO defaults.
         """
         self.k = k
         self.use_vector = use_vector
         self.use_bm25 = use_bm25
         self.use_graph = use_graph
+        self.temporal_decay = max(0.0, min(1.0, temporal_decay))
+        self.half_life_by_tipo = dict(HALF_LIFE_BY_TIPO)
+        if half_life_by_tipo:
+            self.half_life_by_tipo.update(half_life_by_tipo)
 
         # BM25 retriever (always available)
         self._bm25 = BM25Retriever()
@@ -184,6 +262,12 @@ class HybridRetriever:
             for source, rank, original_score in data["scores"]:
                 rrf_score += 1.0 / (self.k + rank)
 
+            # Apply temporal recency weighting (no-op when temporal_decay == 0)
+            if self.temporal_decay > 0:
+                rrf_score *= self._recency_multiplier(
+                    self._documents.get(doc_id, {}).get("metadata", {})
+                )
+
             # Collect source names
             sources = list(set(data["sources"]))
 
@@ -216,6 +300,19 @@ class HybridRetriever:
             results.append(result)
 
         return results
+
+    def _recency_multiplier(self, metadata: dict[str, Any]) -> float:
+        """Blend the raw exponential recency weight by temporal_decay.
+
+        decay == 0 -> 1.0 (no effect); decay == 1 -> raw weight; in between,
+        linearly interpolate toward 1.0 so older items are only partially
+        penalized. Half-life is chosen by the atom's ``tipo``.
+        """
+        tipo = metadata.get("tipo", "")
+        half_life = self.half_life_by_tipo.get(tipo, DEFAULT_HALF_LIFE_DAYS)
+        created = metadata.get("created_at") or metadata.get("updated_at")
+        raw = _temporal_weight(created, half_life)
+        return (1.0 - self.temporal_decay) + self.temporal_decay * raw
 
     def _create_evidence(
         self,
@@ -261,5 +358,6 @@ class HybridRetriever:
                 "use_vector": self.use_vector,
                 "use_bm25": self.use_bm25,
                 "use_graph": self.use_graph,
+                "temporal_decay": self.temporal_decay,
             },
         }

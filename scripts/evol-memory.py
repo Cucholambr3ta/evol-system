@@ -1012,6 +1012,9 @@ def main():
     p = sub.add_parser("edms-dreaming", help="Run dreaming engine (v2)")
     p.add_argument("--sprint", default=None, help="Sprint context")
 
+    p = sub.add_parser("edms-dream-log", help="Show dreaming consolidation audit log (v2)")
+    p.add_argument("--last", type=int, default=0, help="Show only the last N sessions (0 = all)")
+
     p = sub.add_parser("edms-forget", help="Run forgetting engine (v2)")
     p.add_argument("--dry-run", action="store_true", help="Show what would be forgotten")
     p.add_argument("--max", type=int, default=10, help="Max items to forget")
@@ -1306,8 +1309,12 @@ def main():
     elif args.cmd == "edms-dreaming":
         v2 = _get_v2()
         if v2:
+            from pathlib import Path as _Path
+
             from evol_memory_v2.dreaming import DreamingEngine
-            dreaming = DreamingEngine()
+            # Persist session history so edms-dream-log can audit past runs.
+            state_path = _Path(v2._memory_dir) / "dreaming_state.json"
+            dreaming = DreamingEngine.load(state_path)
             # Get memories for dreaming
             memories = v2._verbatim.list_items()
             # Convert to MemoryItem format for dreaming engine
@@ -1323,11 +1330,48 @@ def main():
                 memory_items.append(item)
             # Run dreaming
             insights = dreaming.dream(memory_items, sprint_id=args.sprint)
+            dreaming.save(state_path)
             print(f"\n[v2] Dreaming session completed:")
             print(f"  Memories processed: {len(memory_items)}")
             print(f"  Insights generated: {len(insights)}")
             for insight in insights[:5]:  # Show top 5
                 print(f"    - {insight.insight_type}: {insight.summary}")
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-dream-log":
+        v2 = _get_v2()
+        if v2:
+            from pathlib import Path as _Path
+
+            from evol_memory_v2.dreaming import DreamingEngine
+            state_path = _Path(v2._memory_dir) / "dreaming_state.json"
+            dreaming = DreamingEngine.load(state_path)
+            sessions = sorted(
+                dreaming.get_session_history(),
+                key=lambda s: s.started_at,
+            )
+            if args.last:
+                sessions = sessions[-args.last:]
+            if not sessions:
+                print("[evol-memory] No dreaming sessions recorded yet.")
+            else:
+                print(f"\n[v2] Dreaming log — {len(sessions)} session(s):")
+                for s in sessions:
+                    print(
+                        f"  {s.id}  status={s.status}  "
+                        f"mem={s.memories_processed} insights={s.insights_generated} "
+                        f"dur={s.duration_ms:.0f}ms"
+                    )
+                    for ph in s.phases:
+                        print(
+                            f"      └─ {ph.get('phase')}: "
+                            f"in={ph.get('items_in')} out={ph.get('items_out')} "
+                            f"ratio={ph.get('compression_ratio')}"
+                            + (
+                                f" dropped={ph['dropped']}"
+                                if "dropped" in ph else ""
+                            )
+                        )
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
     elif args.cmd == "edms-forget":
