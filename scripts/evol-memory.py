@@ -888,7 +888,7 @@ def main():
 
     p = sub.add_parser("edms-index", help="Index text into EDMS")
     p.add_argument("text", help="Text to index")
-    p.add_argument("--tipo", default="artefacto", help="Tipo: decision|leccion|convencion|riesgo|artefacto|resumen|handoff")
+    p.add_argument("--tipo", default="artefacto", help="Tipo: decision|leccion|convencion|riesgo|artefacto|resumen|handoff|prediction|thought")
     p.add_argument("--disciplinas", default=None, help="Comma-separated disciplinas")
     p.add_argument("--sprint", default=None, help="Sprint number")
     p.add_argument("--phase", default=None, help="Pipeline phase")
@@ -1011,9 +1011,14 @@ def main():
 
     p = sub.add_parser("edms-dreaming", help="Run dreaming engine (v2)")
     p.add_argument("--sprint", default=None, help="Sprint context")
+    p.add_argument("--no-forecast", action="store_true", help="Disable Phase 3 forecasting")
 
     p = sub.add_parser("edms-dream-log", help="Show dreaming consolidation audit log (v2)")
     p.add_argument("--last", type=int, default=0, help="Show only the last N sessions (0 = all)")
+
+    p = sub.add_parser("edms-predictions", help="Show predictive memories for wake-up (v2)")
+    p.add_argument("--max", type=int, default=10, help="Max predictions to show")
+    p.add_argument("--min-confidence", type=float, default=0.0, help="Min confidence filter")
 
     p = sub.add_parser("edms-forget", help="Run forgetting engine (v2)")
     p.add_argument("--dry-run", action="store_true", help="Show what would be forgotten")
@@ -1311,12 +1316,20 @@ def main():
         if v2:
             from pathlib import Path as _Path
 
-            from evol_memory_v2.dreaming import DreamingEngine
+            from evol_memory_v2.dreaming import DreamConfig, DreamingEngine
             # Persist session history so edms-dream-log can audit past runs.
             state_path = _Path(v2._memory_dir) / "dreaming_state.json"
             dreaming = DreamingEngine.load(state_path)
-            # Get memories for dreaming
-            memories = v2._verbatim.list_items()
+            # Forecasting (Phase 3) on unless explicitly disabled.
+            dreaming.config = DreamConfig(enable_forecasting=not args.no_forecast)
+            # Get memories for dreaming. Exclude derived atoms (predictions,
+            # thoughts) so consolidation/forecasting never feed on their own
+            # output — that would make dreaming non-idempotent.
+            _DERIVED = {"prediction", "thought"}
+            memories = [
+                m for m in v2._verbatim.list_items()
+                if m.get("metadata", {}).get("tipo") not in _DERIVED
+            ]
             # Convert to MemoryItem format for dreaming engine
             from evol_memory_v2.reflection import MemoryItem
             memory_items = []
@@ -1330,12 +1343,26 @@ def main():
                 memory_items.append(item)
             # Run dreaming
             insights = dreaming.dream(memory_items, sprint_id=args.sprint)
+            predictions = dreaming.get_predictions()
+            # Persist predictions as type=prediction atoms. VerbatimStore.write()
+            # dedups by content hash, so re-running dreaming is idempotent; we
+            # only count those whose hash was not already present.
+            from evol_memory_v2.store import _content_hash
+            stored_preds = 0
+            for pred in predictions:
+                is_new = v2._verbatim.read_by_hash(_content_hash(pred.content)) is None
+                v2._verbatim.write(pred.content, pred.to_atom_metadata())
+                if is_new:
+                    stored_preds += 1
             dreaming.save(state_path)
             print(f"\n[v2] Dreaming session completed:")
             print(f"  Memories processed: {len(memory_items)}")
             print(f"  Insights generated: {len(insights)}")
+            print(f"  Predictions: {len(predictions)} ({stored_preds} new)")
             for insight in insights[:5]:  # Show top 5
                 print(f"    - {insight.insight_type}: {insight.summary}")
+            for pred in predictions[:5]:
+                print(f"    ~ prediction [{pred.confidence}]: {pred.content}")
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
     elif args.cmd == "edms-dream-log":
@@ -1372,6 +1399,35 @@ def main():
                                 if "dropped" in ph else ""
                             )
                         )
+        else:
+            print("[evol-memory] Memory v2.0 no disponible.")
+    elif args.cmd == "edms-predictions":
+        v2 = _get_v2()
+        if v2:
+            # Surface forward-looking predictive memories for session wake-up.
+            items = [
+                it for it in v2._verbatim.list_items(limit=1000)
+                if it.get("metadata", {}).get("tipo") == "prediction"
+            ]
+            items.sort(
+                key=lambda it: it.get("metadata", {}).get("confidence", 0.0),
+                reverse=True,
+            )
+            if args.min_confidence:
+                items = [
+                    it for it in items
+                    if it.get("metadata", {}).get("confidence", 0.0) >= args.min_confidence
+                ]
+            if not items:
+                print("[evol-memory] No predictions yet. Run edms-dreaming first.")
+            else:
+                print(f"\n[v2] Predictions ({len(items)}):")
+                for it in items[:args.max]:
+                    meta = it.get("metadata", {})
+                    print(
+                        f"  ~ [{meta.get('confidence')}] ({meta.get('horizon', '')}) "
+                        f"{it.get('verbatim', '')}"
+                    )
         else:
             print("[evol-memory] Memory v2.0 no disponible.")
     elif args.cmd == "edms-forget":

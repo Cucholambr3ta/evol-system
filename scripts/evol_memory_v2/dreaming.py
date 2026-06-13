@@ -15,6 +15,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .forecasting import ForecastEngine, Prediction
 from .reflection import Insight, MemoryItem, ReflectionEngine
 
 
@@ -45,6 +46,11 @@ class DreamConfig:
     enable_trends: bool = True
     enable_evolutions: bool = True
     enable_cross_cluster: bool = True
+    # Phase 3: forward-looking forecasting (Gap 1). Off by default keeps
+    # dream() behaviour identical for existing callers.
+    enable_forecasting: bool = False
+    forecast_min_occurrences: int = 2
+    forecast_min_confidence: float = 0.5
 
 
 class DreamingEngine:
@@ -70,6 +76,12 @@ class DreamingEngine:
             min_confidence=self.config.min_confidence,
         )
 
+        # Forecast engine (Phase 3) — lazily relevant only when enabled.
+        self._forecast = ForecastEngine(
+            min_occurrences=self.config.forecast_min_occurrences,
+            min_confidence=self.config.forecast_min_confidence,
+        )
+
         # Session history
         self._sessions: dict[str, DreamSession] = {}
 
@@ -78,6 +90,9 @@ class DreamingEngine:
 
         # Insight storage
         self._insights: dict[str, Insight] = {}
+
+        # Prediction storage (Phase 3 output)
+        self._predictions: dict[str, Prediction] = {}
 
         # Session counter for unique IDs
         self._session_counter: int = 0
@@ -201,6 +216,14 @@ class DreamingEngine:
 
         session.insights_generated = len(all_insights)
 
+        # Phase 3: forecasting (recurring patterns -> predictive memories).
+        if self.config.enable_forecasting:
+            predictions = self._forecast.forecast(memories, history=list(self._sessions.values()))
+            for pred in predictions:
+                self._predictions[pred.id] = pred
+            self.log_phase("forecasting", len(memories), len(predictions))
+            session.metadata["predictions_generated"] = len(predictions)
+
         # End session
         self.end_dream_session()
 
@@ -230,6 +253,15 @@ class DreamingEngine:
             insights = [i for i in insights if i.confidence >= min_confidence]
 
         return insights
+
+    def get_predictions(
+        self, min_confidence: float | None = None
+    ) -> list[Prediction]:
+        """Get forecast predictions (Phase 3 output), optionally filtered."""
+        preds = list(self._predictions.values())
+        if min_confidence is not None:
+            preds = [p for p in preds if p.confidence >= min_confidence]
+        return sorted(preds, key=lambda p: p.confidence, reverse=True)
 
     def get_session_history(self) -> list[DreamSession]:
         """Get history of all dreaming sessions."""
@@ -298,6 +330,19 @@ class DreamingEngine:
                 }
                 for i in self._insights.values()
             ],
+            "predictions": [
+                {
+                    "id": p.id,
+                    "content": p.content,
+                    "confidence": p.confidence,
+                    "horizon": p.horizon,
+                    "evidence_ids": p.evidence_ids,
+                    "source": p.source,
+                    "created_at": p.created_at,
+                    "metadata": p.metadata,
+                }
+                for p in self._predictions.values()
+            ],
         }
 
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
@@ -339,5 +384,19 @@ class DreamingEngine:
                 metadata=insight_data.get("metadata", {}),
             )
             engine._insights[insight.id] = insight
+
+        # Load predictions
+        for pred_data in data.get("predictions", []):
+            pred = Prediction(
+                id=pred_data["id"],
+                content=pred_data["content"],
+                confidence=pred_data.get("confidence", 0.5),
+                horizon=pred_data.get("horizon", ""),
+                evidence_ids=pred_data.get("evidence_ids", []),
+                source=pred_data.get("source", "forecasting"),
+                created_at=pred_data.get("created_at", ""),
+                metadata=pred_data.get("metadata", {}),
+            )
+            engine._predictions[pred.id] = pred
 
         return engine
