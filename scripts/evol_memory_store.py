@@ -14,6 +14,7 @@ Usage:
 import base64
 import hashlib
 import json
+import logging
 import os
 import re
 import sys
@@ -21,6 +22,21 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
+
+# ── Trace emitter (optional, fails silently) ─────────────────────────────
+try:
+    from evol_traces import (
+        emit_edms_index, emit_edms_search,
+        emit_graph_node, emit_graph_relation,
+    )
+    _TRACES_AVAILABLE = True
+except ImportError:
+    _TRACES_AVAILABLE = False
+
+    def emit_edms_index(*a, **kw): pass
+    def emit_edms_search(*a, **kw): pass
+    def emit_graph_node(*a, **kw): pass
+    def emit_graph_relation(*a, **kw): pass
 
 # ── Auto-detect project venv ───────────────────────────────────────────────────
 _VENV_PYTHON = Path(__file__).resolve().parent.parent / ".venv" / "bin" / "python3"
@@ -31,6 +47,8 @@ if _VENV_PYTHON.exists() and sys.executable != str(_VENV_PYTHON):
         os.execv(str(_VENV_PYTHON), [str(_VENV_PYTHON)] + sys.argv)
 
 # ── Optional imports with fallback ─────────────────────────────────────────────
+
+logger = logging.getLogger("evol.memory.store")
 
 try:
     import chromadb
@@ -61,6 +79,28 @@ def privacy_strip(text: str) -> str:
     for pattern, replacement in _PRIVACY_PATTERNS:
         text = pattern.sub(replacement, text)
     return text
+
+
+def _parse_ladybug_metadata(s: str) -> dict:
+    """Parse LadybugDB's non-JSON metadata format: {key: value, key2: value2}"""
+    if not s or s.strip() == '':
+        return {}
+    s = s.strip()
+    if s.startswith('{') and s.endswith('}'):
+        s = s[1:-1]
+    result = {}
+    for match in re.finditer(r'(\w+)\s*:\s*([^,}]+)', s):
+        key = match.group(1).strip()
+        val = match.group(2).strip()
+        if val == 'null' or val == 'None':
+            result[key] = None
+        elif val.startswith('"') and val.endswith('"'):
+            result[key] = val[1:-1]
+        elif val.replace('.', '', 1).replace('-', '', 1).isdigit():
+            result[key] = float(val) if '.' in val else int(val)
+        else:
+            result[key] = val
+    return result
 
 
 # ── Frontmatter / Section helpers ──────────────────────────────────────────────
@@ -187,7 +227,7 @@ class MemoryStore:
 
     def __init__(self, memory_dir: str | None = None):
         if memory_dir is None:
-            memory_dir = os.path.expanduser('~/.evol/memory')
+            memory_dir = os.environ.get('EVOL_MEMORY_DIR', os.path.expanduser('~/.evol/memory'))
         self.memory_dir = Path(memory_dir)
         self.memory_dir.mkdir(parents=True, exist_ok=True)
 
@@ -221,8 +261,63 @@ class MemoryStore:
         )
         self._lbug_conn.execute(
             "CREATE REL TABLE IF NOT EXISTS MemoryRel("
-            "FROM MemoryNode TO MemoryNode, relation STRING)"
+            "FROM MemoryNode TO MemoryNode, relation STRING, "
+            "metadata STRING)"
         )
+        # Migrate older DBs whose MemoryRel predates the metadata column.
+        self._rel_has_metadata = self._ensure_rel_metadata_column()
+
+    def _rel_columns(self) -> list[str]:
+        """Return MemoryRel column names via schema introspection.
+
+        Uses LadybugDB's table_info() call. Returns [] if it cannot be read.
+        """
+        try:
+            res = self._lbug_conn.execute(
+                "CALL table_info('MemoryRel') RETURN *"
+            )
+            cols: list[str] = []
+            while res.has_next():
+                row = res.get_next()
+                # row layout: [property_id, name, type, default, ...]
+                if len(row) > 1:
+                    cols.append(row[1])
+            return cols
+        except Exception as exc:
+            logger.warning("Could not introspect MemoryRel schema: %s", exc)
+            return []
+
+    def _ensure_rel_metadata_column(self) -> bool:
+        """Ensure MemoryRel has a `metadata` column. Returns True if present.
+
+        For freshly created tables the column already exists. For older DBs it
+        is added via ALTER TABLE (LadybugDB syntax: ``ADD <name> <type>``, no
+        COLUMN keyword). If introspection cannot confirm/repair the schema we
+        log a warning and report False so callers degrade gracefully instead
+        of crashing on a missing property.
+        """
+        cols = self._rel_columns()
+        if not cols:
+            # Introspection failed: assume the CREATE ... metadata STRING above
+            # took effect, but warn so a real schema problem is visible.
+            logger.warning(
+                "MemoryRel schema unreadable; assuming metadata column present"
+            )
+            return True
+        if "metadata" in cols:
+            return True
+        try:
+            self._lbug_conn.execute(
+                "ALTER TABLE MemoryRel ADD metadata STRING"
+            )
+            logger.info("Migrated MemoryRel: added missing 'metadata' column")
+            return "metadata" in self._rel_columns()
+        except Exception as exc:
+            logger.warning(
+                "Could not add 'metadata' column to MemoryRel (%s); "
+                "relations will be stored without metadata", exc
+            )
+            return False
 
     def _load_graph(self):
         """Load graph from disk (fallback when LadybugDB not available)."""
@@ -273,10 +368,23 @@ class MemoryStore:
                 documents=[clean_text],
                 metadatas=[meta]
             )
+            emit_edms_index(
+                project=meta.get('proyecto', ''),
+                tipo=meta.get('tipo', 'unknown'),
+                doc_id=doc_id,
+                agent=meta.get('agente', ''),
+            )
             return doc_id
 
         # Fallback: write to local JSON index
-        return self._index_local(clean_text, meta)
+        doc_id = self._index_local(clean_text, meta)
+        emit_edms_index(
+            project=meta.get('proyecto', ''),
+            tipo=meta.get('tipo', 'unknown'),
+            doc_id=doc_id,
+            agent=meta.get('agente', ''),
+        )
+        return doc_id
 
     def _auto_update_graph(self, text: str, meta: dict):
         """Auto-update knowledge graph based on indexed content metadata."""
@@ -448,10 +556,13 @@ class MemoryStore:
                         'metadata': results['metadatas'][0][i] if results['metadatas'] else {},
                         'distance': results['distances'][0][i] if results['distances'] else 0,
                     })
+            emit_edms_search(project=project or '', query=query, result_count=len(out))
             return out
 
         # Fallback: local JSON search (BM25-like keyword match)
-        return self._search_local(clean_query, filters, n_results)
+        out = self._search_local(clean_query, filters, n_results)
+        emit_edms_search(project=project or '', query=query, result_count=len(out))
+        return out
 
     def _search_local(self, query: str, filters: dict, n_results: int) -> list[dict]:
         idx_file = self.memory_dir / 'local_index.json'
@@ -510,35 +621,301 @@ class MemoryStore:
                 "SET n.type = $type, n.properties = $props",
                 parameters={"name": node_id, "type": node_type, "props": props_b64}
             )
+            emit_graph_node(
+                project=properties.get('name', ''),
+                node_type=node_type,
+                node_name=node_id,
+                action="created",
+            )
             return node_id
 
         # Fallback: in-memory dict
         key = f"{node_type}:{node_id}"
         self._graph[key] = {'type': node_type, 'properties': properties}
         self._save_graph()
+        emit_graph_node(
+            project=properties.get('name', ''),
+            node_type=node_type,
+            node_name=node_id,
+            action="created",
+        )
         return node_id
 
-    def graph_add_relation(self, source_id: str, relation_type: str, target_id: str) -> bool:
-        """Add a relation between two nodes.
+    def graph_add_relation(self, source_id: str, relation_type: str, target_id: str,
+                           valid_from: str = None, valid_to: str = None,
+                           confidence: float = 1.0) -> bool:
+        """Add a relation between two nodes with optional temporal validity.
+
+        Args:
+            source_id: Source node name
+            relation_type: Relation type (e.g. 'DEFINE', 'REFERENCIA')
+            target_id: Target node name
+            valid_from: ISO date when this relation became valid (default: now)
+            valid_to: ISO date when this relation stopped being valid (None = still active)
+            confidence: Confidence score 0.0-1.0 (default: 1.0)
 
         Returns:
             True if successful
         """
+        if not valid_from:
+            valid_from = datetime.now().isoformat()
+
+        # Build metadata JSON
+        metadata = json.dumps({
+            "valid_from": valid_from,
+            "valid_to": valid_to,
+            "confidence": confidence
+        }, ensure_ascii=False)
+
         if LADYBUG_AVAILABLE:
-            self._lbug_conn.execute(
-                "MATCH (a:MemoryNode), (b:MemoryNode) "
-                "WHERE a.name = $src AND b.name = $tgt "
-                "CREATE (a)-[:MemoryRel {relation: $rel}]->(b)",
-                parameters={"src": source_id, "tgt": target_id, "rel": relation_type}
+            # Degrade gracefully when the active schema lacks the metadata
+            # column (older DB that could not be migrated): create the relation
+            # without metadata rather than crashing with "Cannot find property
+            # metadata". getattr guard covers stores created before migration.
+            if getattr(self, "_rel_has_metadata", True):
+                self._lbug_conn.execute(
+                    "MATCH (a:MemoryNode), (b:MemoryNode) "
+                    "WHERE a.name = $src AND b.name = $tgt "
+                    "CREATE (a)-[:MemoryRel {relation: $rel, metadata: $meta}]->(b)",
+                    parameters={
+                        "src": source_id, "tgt": target_id, "rel": relation_type,
+                        "meta": metadata
+                    }
+                )
+            else:
+                logger.warning(
+                    "MemoryRel has no metadata column; storing relation "
+                    "%s -[%s]-> %s without metadata", source_id, relation_type,
+                    target_id
+                )
+                self._lbug_conn.execute(
+                    "MATCH (a:MemoryNode), (b:MemoryNode) "
+                    "WHERE a.name = $src AND b.name = $tgt "
+                    "CREATE (a)-[:MemoryRel {relation: $rel}]->(b)",
+                    parameters={
+                        "src": source_id, "tgt": target_id, "rel": relation_type
+                    }
+                )
+            emit_graph_relation(
+                project='',
+                source=source_id,
+                relation=relation_type,
+                target=target_id,
             )
             return True
 
         # Fallback: in-memory dict
         rel_key = f"{source_id}->{target_id}"
         if rel_key not in self._graph:
-            self._graph[rel_key] = {'type': relation_type}
+            self._graph[rel_key] = {
+                'type': relation_type,
+                'valid_from': valid_from,
+                'valid_to': valid_to,
+                'confidence': confidence,
+            }
             self._save_graph()
+            emit_graph_relation(
+                project='',
+                source=source_id,
+                relation=relation_type,
+                target=target_id,
+            )
         return True
+
+    def graph_query_temporal(self, node_name: str = None, as_of: str = None) -> list:
+        """Query relations with temporal filtering.
+
+        Args:
+            node_name: Filter by node name (optional, None = all)
+            as_of: ISO date to query "what was valid at this time?" (None = current)
+
+        Returns:
+            List of dicts with source, relation, target, valid_from, valid_to, confidence
+        """
+        if LADYBUG_AVAILABLE:
+            # Load invalidations if they exist
+            invalidations = {}
+            invalidations_file = self.memory_dir / 'invalidations.json'
+            if invalidations_file.exists():
+                with open(invalidations_file) as f:
+                    invalidations = json.load(f)
+
+            if node_name:
+                result = self._lbug_conn.execute(
+                    "MATCH (a:MemoryNode)-[r:MemoryRel]->(b:MemoryNode) "
+                    "WHERE a.name = $name "
+                    "RETURN a.name, r.relation, b.name, r.metadata",
+                    parameters={"name": node_name}
+                )
+            else:
+                result = self._lbug_conn.execute(
+                    "MATCH (a:MemoryNode)-[r:MemoryRel]->(b:MemoryNode) "
+                    "RETURN a.name, r.relation, b.name, r.metadata"
+                )
+            relations = []
+            for row in result:
+                meta = {}
+                if row[3]:
+                    try:
+                        meta = json.loads(row[3])
+                    except Exception:
+                        meta = _parse_ladybug_metadata(row[3])
+                vf = meta.get('valid_from')
+                vt = meta.get('valid_to')
+                cf = meta.get('confidence', 1.0)
+                
+                # Check if relation was invalidated
+                rel_key = f"{row[0]}->{row[1]}->{row[2]}"
+                if rel_key in invalidations:
+                    vt = invalidations[rel_key]
+                
+                # Filter by time
+                if as_of:
+                    if vf and vf > as_of:
+                        continue
+                    if vt and vt <= as_of:
+                        continue
+                else:
+                    # For current queries, skip relations that ended in the past
+                    if vt and vt < datetime.now().isoformat():
+                        continue
+                relations.append({
+                    "source": row[0], "relation": row[1], "target": row[2],
+                    "valid_from": vf, "valid_to": vt, "confidence": cf
+                })
+            return relations
+
+        # Fallback: in-memory dict
+        relations = []
+        for key, val in self._graph.items():
+            src, tgt = key.split("->", 1)
+            vf = val.get('valid_from')
+            vt = val.get('valid_to')
+            # Filter by node
+            if node_name and src != node_name and tgt != node_name:
+                continue
+            # Filter by time
+            if as_of:
+                if vf and vf > as_of:
+                    continue
+                if vt and vt <= as_of:
+                    continue
+            else:
+                if vt:  # Skip invalidated relations
+                    continue
+            relations.append({
+                "source": src, "relation": val.get('type'), "target": tgt,
+                "valid_from": vf, "valid_to": vt,
+                "confidence": val.get('confidence', 1.0)
+            })
+        return relations
+
+    def graph_invalidate(self, source_id: str, relation_type: str, target_id: str,
+                         ended: str = None) -> bool:
+        """Invalidate a relation (mark as ended).
+
+        Args:
+            source_id: Source node name
+            relation_type: Relation type to invalidate
+            target_id: Target node name
+            ended: ISO date when it ended (default: now)
+
+        Returns:
+            True if the relation was found and invalidated
+        """
+        if not ended:
+            ended = datetime.now().isoformat()
+
+        if LADYBUG_AVAILABLE:
+            # First, get the current metadata
+            result = self._lbug_conn.execute(
+                "MATCH (a:MemoryNode)-[r:MemoryRel]->(b:MemoryNode) "
+                "WHERE a.name = $src AND r.relation = $rel AND b.name = $tgt "
+                "RETURN r.metadata",
+                parameters={"src": source_id, "rel": relation_type, "tgt": target_id}
+            )
+            rows = list(result)
+            if not rows:
+                return False
+            
+            # Update metadata with valid_to
+            meta_str = rows[0][0] if rows[0][0] else "{}"
+            try:
+                meta = json.loads(meta_str)
+            except Exception:
+                meta = _parse_ladybug_metadata(meta_str)
+            meta['valid_to'] = ended
+            
+            # Store invalidation in a separate JSON file (LadybugDB doesn't support UPDATE on relations)
+            invalidations_file = self.memory_dir / 'invalidations.json'
+            invalidations = {}
+            if invalidations_file.exists():
+                with open(invalidations_file) as f:
+                    invalidations = json.load(f)
+            rel_key = f"{source_id}->{relation_type}->{target_id}"
+            invalidations[rel_key] = ended
+            with open(invalidations_file, 'w') as f:
+                json.dump(invalidations, f, indent=2)
+            
+            return True
+
+        # Fallback: in-memory dict
+        rel_key = f"{source_id}->{target_id}"
+        if rel_key in self._graph and self._graph[rel_key].get('type') == relation_type:
+            self._graph[rel_key]['valid_to'] = ended
+            self._save_graph()
+            return True
+        return False
+
+    def graph_timeline(self, node_name: str) -> list:
+        """Get chronological timeline of all relations for a node.
+
+        Args:
+            node_name: Node to get timeline for
+
+        Returns:
+            List of dicts sorted by valid_from, with status (active/ended)
+        """
+        if LADYBUG_AVAILABLE:
+            result = self._lbug_conn.execute(
+                "MATCH (a:MemoryNode)-[r:MemoryRel]->(b:MemoryNode) "
+                "WHERE a.name = $name OR b.name = $name "
+                "RETURN a.name, r.relation, b.name, r.metadata "
+                "ORDER BY r.metadata",
+                parameters={"name": node_name}
+            )
+            timeline = []
+            for row in result:
+                meta = {}
+                if row[3]:
+                    try:
+                        meta = json.loads(row[3])
+                    except Exception:
+                        meta = _parse_ladybug_metadata(row[3])
+                vf = meta.get('valid_from')
+                vt = meta.get('valid_to')
+                cf = meta.get('confidence', 1.0)
+                status = "active" if not vt else "ended"
+                timeline.append({
+                    "source": row[0], "relation": row[1], "target": row[2],
+                    "valid_from": vf, "valid_to": vt,
+                    "confidence": cf, "status": status
+                })
+            return timeline
+
+        # Fallback: in-memory dict
+        events = []
+        for key, val in self._graph.items():
+            src, tgt = key.split("->", 1)
+            if src == node_name or tgt == node_name:
+                status = "active" if not val.get('valid_to') else "ended"
+                events.append({
+                    "source": src, "relation": val.get('type'), "target": tgt,
+                    "valid_from": val.get('valid_from'), "valid_to": val.get('valid_to'),
+                    "confidence": val.get('confidence', 1.0), "status": status
+                })
+        events.sort(key=lambda x: x.get('valid_from') or '')
+        return events
 
     def graph_traverse(self, node_id: str, depth: int = 2) -> dict:
         """Traverse graph from a node.
@@ -650,6 +1027,17 @@ class MemoryStore:
             parts.append("Lecciones:")
             for l in lessons:
                 parts.append(f"  - {l['text'][:80]}")
+
+        # Code graph stats (~50 tokens)
+        try:
+            from evol_code_indexer import CodeGraph
+            code_graph = CodeGraph(self.memory_dir)
+            code_stats = code_graph.stats()
+            if code_stats.get('total_nodes', 0) > 0:
+                parts.append(f"Code Graph: {code_stats['total_nodes']} nodes, "
+                           f"{code_stats['total_relations']} relations")
+        except Exception:
+            pass  # Code graph not available
 
         context = '\n'.join(parts)
         # Truncate to ~170 tokens (~800 chars)
@@ -1204,6 +1592,93 @@ class MemoryStore:
         if len(context) > 800:
             context = context[:797] + '...'
         return context
+
+    # ── Code Graph Integration ──────────────────────────────────────────────
+
+    def get_code_graph(self):
+        """Get the CodeGraph instance for code indexing.
+
+        Returns:
+            CodeGraph instance or None if not available
+        """
+        try:
+            from evol_code_indexer import CodeGraph
+            return CodeGraph(self.memory_dir)
+        except ImportError:
+            return None
+
+    def index_code(self, project_root: str, incremental: bool = True) -> dict:
+        """Index code files into the code graph.
+
+        Args:
+            project_root: Root directory of the project
+            incremental: If True, only index changed files
+
+        Returns:
+            Stats dict
+        """
+        from pathlib import Path
+        graph = self.get_code_graph()
+        if not graph:
+            return {"error": "evol_code_indexer not available"}
+
+        from evol_code_indexer import index_project
+        return index_project(Path(project_root), incremental=incremental, graph=graph)
+
+    def code_impact(self, symbol: str, max_depth: int = 3) -> dict:
+        """Analyze impact of changing a symbol.
+
+        Args:
+            symbol: Symbol name to analyze
+            max_depth: Maximum depth for impact analysis
+
+        Returns:
+            Impact analysis dict
+        """
+        graph = self.get_code_graph()
+        if not graph:
+            return {"error": "evol_code_indexer not available"}
+        return graph.get_impact(symbol, max_depth=max_depth)
+
+    def code_trace(self, entry_point: str, max_depth: int = 5) -> dict:
+        """Trace execution flow from an entry point.
+
+        Args:
+            entry_point: Entry point symbol
+            max_depth: Maximum depth for trace
+
+        Returns:
+            Trace dict
+        """
+        graph = self.get_code_graph()
+        if not graph:
+            return {"error": "evol_code_indexer not available"}
+        return graph.get_trace(entry_point, max_depth=max_depth)
+
+    def code_query(self, symbol: str) -> list[dict]:
+        """Query information about a code symbol.
+
+        Args:
+            symbol: Symbol name to query
+
+        Returns:
+            List of matching results
+        """
+        graph = self.get_code_graph()
+        if not graph:
+            return []
+        return graph.query_symbol(symbol)
+
+    def code_stats(self) -> dict:
+        """Get code graph statistics.
+
+        Returns:
+            Stats dict
+        """
+        graph = self.get_code_graph()
+        if not graph:
+            return {"error": "evol_code_indexer not available"}
+        return graph.stats()
 
         with open(idx_file) as f:
             idx = json.load(f)

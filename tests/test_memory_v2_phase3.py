@@ -496,6 +496,28 @@ class TestConflictDetector:
         assert stats["total_conflicts"] == 1
         assert stats["unresolved"] == 1
 
+    def test_detect_with_verbatim_mapped_items(self):
+        """Regression: edms-conflicts maps VerbatimStore items (verbatim ->
+        text) and passes a materialized list — never the store object.
+        Mirrors the fixed CLI handler so the contract stays correct."""
+        # Shape returned by VerbatimStore.list_items()
+        verbatim_items = [
+            {"id": "m1", "verbatim": "ChromaDB es rápido", "metadata": {}, "created_at": ""},
+            {"id": "m2", "verbatim": "ChromaDB no es rápido", "metadata": {}, "created_at": ""},
+        ]
+        memories = [
+            {"id": it["id"], "text": it["verbatim"],
+             "metadata": it["metadata"], "created_at": it["created_at"]}
+            for it in verbatim_items
+        ]
+        # No-arg constructor (passing a store here was the original bug)
+        detector = ConflictDetector()
+        conflicts = detector.detect(memories)
+        # Must not raise and attribute access (not dict) must work
+        for c in conflicts:
+            assert isinstance(c.conflict_type, str)
+            assert isinstance(c.description, str)
+
 
 # ============================================================================
 # Integration Tests

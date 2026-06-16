@@ -399,6 +399,194 @@ def test_backward_compatibility():
         assert len(results) > 0
 
 
+def test_temporal_add_relation_with_validity():
+    """Add relation with temporal validity windows."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        store = MemoryStore()
+        store.graph_add_node("test", {"name": "N1"})
+        store.graph_add_node("test", {"name": "N2"})
+        store.graph_add_relation("N1", "RELATES_TO", "N2",
+                                 valid_from="2026-01-01", valid_to="2027-06-01",
+                                 confidence=0.9)
+        rels = store.graph_query_temporal("N1")
+        assert len(rels) >= 1
+        found = [r for r in rels if r['source'] == 'N1' and r['target'] == 'N2']
+        assert len(found) == 1
+        assert found[0]['valid_from'] == '2026-01-01'
+        assert found[0]['valid_to'] == '2027-06-01'
+        assert found[0]['confidence'] == 0.9
+        del os.environ['EVOL_MEMORY_DIR']
+
+
+def test_temporal_query_current():
+    """Query only currently active relations (valid_to is None)."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        store = MemoryStore()
+        store.graph_add_node("test", {"name": "A"})
+        store.graph_add_node("test", {"name": "B"})
+        store.graph_add_node("test", {"name": "C"})
+        store.graph_add_relation("A", "ACTIVE_REL", "B")
+        store.graph_add_relation("A", "ENDED_REL", "C", valid_to="2026-01-01")
+        active = store.graph_query_temporal("A")
+        active_targets = [r['target'] for r in active]
+        assert 'B' in active_targets
+        assert 'C' not in active_targets
+        del os.environ['EVOL_MEMORY_DIR']
+
+
+def test_temporal_query_as_of():
+    """Query relations valid at a specific date."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        store = MemoryStore()
+        store.graph_add_node("test", {"name": "X"})
+        store.graph_add_node("test", {"name": "Y"})
+        store.graph_add_node("test", {"name": "Z"})
+        store.graph_add_relation("X", "WAS", "Y", valid_from="2026-01-01", valid_to="2026-03-01")
+        store.graph_add_relation("X", "IS", "Z", valid_from="2026-02-01")
+        # In Jan 2026: only WAS relation
+        jan = store.graph_query_temporal("X", as_of="2026-01-15")
+        jan_targets = [r['target'] for r in jan]
+        assert 'Y' in jan_targets
+        assert 'Z' not in jan_targets
+        # In April 2026: only IS relation
+        apr = store.graph_query_temporal("X", as_of="2026-04-15")
+        apr_targets = [r['target'] for r in apr]
+        assert 'Z' in apr_targets
+        assert 'Y' not in apr_targets
+        del os.environ['EVOL_MEMORY_DIR']
+
+
+def test_temporal_invalidate():
+    """Invalidate a relation sets valid_to."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        store = MemoryStore()
+        store.graph_add_node("test", {"name": "P"})
+        store.graph_add_node("test", {"name": "Q"})
+        store.graph_add_relation("P", "LINKS", "Q", valid_from="2026-01-01")
+        result = store.graph_invalidate("P", "LINKS", "Q", ended="2026-06-01")
+        assert result is True
+        # Should not appear in current queries (ended in past)
+        active = store.graph_query_temporal("P")
+        active_targets = [r['target'] for r in active]
+        assert 'Q' not in active_targets
+        # Should appear in as_of queries before invalidation
+        jan = store.graph_query_temporal("P", as_of="2026-03-01")
+        jan_targets = [r['target'] for r in jan]
+        assert 'Q' in jan_targets
+        del os.environ['EVOL_MEMORY_DIR']
+
+
+def test_temporal_timeline():
+    """Timeline returns chronological history of a node."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        store = MemoryStore()
+        store.graph_add_node("test", {"name": "T1"})
+        store.graph_add_node("test", {"name": "T2"})
+        store.graph_add_node("test", {"name": "T3"})
+        store.graph_add_relation("T1", "FIRST", "T2", valid_from="2026-01-01", valid_to="2026-03-01")
+        store.graph_add_relation("T1", "SECOND", "T3", valid_from="2026-03-01")
+        tl = store.graph_timeline("T1")
+        assert len(tl) >= 2
+        statuses = [e['status'] for e in tl]
+        assert 'ended' in statuses
+        assert 'active' in statuses
+        del os.environ['EVOL_MEMORY_DIR']
+
+
+# ── Regression: MemoryRel metadata-column schema migration ──────────────────
+
+import pytest  # noqa: E402
+from evol_memory_store import LADYBUG_AVAILABLE  # noqa: E402
+
+
+def _forge_old_schema_db(tmpdir):
+    """Create a ladybug.lbug whose MemoryRel predates the metadata column."""
+    import ladybug as lb
+    path = os.path.join(tmpdir, "ladybug.lbug")
+    conn = lb.Connection(lb.Database(path))
+    conn.execute(
+        "CREATE NODE TABLE IF NOT EXISTS MemoryNode("
+        "name STRING PRIMARY KEY, type STRING, properties STRING)"
+    )
+    # Old REL TABLE: relation only, NO metadata column
+    conn.execute(
+        "CREATE REL TABLE IF NOT EXISTS MemoryRel("
+        "FROM MemoryNode TO MemoryNode, relation STRING)"
+    )
+    conn.execute("CREATE (a:MemoryNode {name:'A', type:'t', properties:'{}'})")
+    conn.execute("CREATE (b:MemoryNode {name:'B', type:'t', properties:'{}'})")
+    del conn
+
+
+@pytest.mark.skipif(not LADYBUG_AVAILABLE, reason="ladybug not installed")
+def test_old_schema_db_migrates_metadata_column():
+    """Opening a pre-metadata DB migrates MemoryRel without crashing."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        _forge_old_schema_db(tmpdir)
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        try:
+            store = MemoryStore()
+            assert store._rel_has_metadata is True
+            assert "metadata" in store._rel_columns()
+        finally:
+            del os.environ['EVOL_MEMORY_DIR']
+
+
+@pytest.mark.skipif(not LADYBUG_AVAILABLE, reason="ladybug not installed")
+def test_old_schema_graph_add_relation_no_crash():
+    """graph_add_relation must not raise on a migrated old-schema DB."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        _forge_old_schema_db(tmpdir)
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        try:
+            store = MemoryStore()
+            assert store.graph_add_relation("A", "REFERENCIA", "B") is True
+        finally:
+            del os.environ['EVOL_MEMORY_DIR']
+
+
+@pytest.mark.skipif(not LADYBUG_AVAILABLE, reason="ladybug not installed")
+def test_degraded_relation_without_metadata_column():
+    """If metadata cannot be added, relation is stored without it (no crash)."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        _forge_old_schema_db(tmpdir)
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        try:
+            store = MemoryStore()
+            # Force the degraded path (simulate ALTER not having worked)
+            store._rel_has_metadata = False
+            assert store.graph_add_relation("A", "REFERENCIA", "B") is True
+            res = store._lbug_conn.execute(
+                "MATCH (a)-[r:MemoryRel]->(b) RETURN r.relation"
+            )
+            rels = []
+            while res.has_next():
+                rels.append(res.get_next())
+            assert ["REFERENCIA"] in rels
+        finally:
+            del os.environ['EVOL_MEMORY_DIR']
+
+
+@pytest.mark.skipif(not LADYBUG_AVAILABLE, reason="ladybug not installed")
+def test_bootstrap_index_on_old_schema_db():
+    """index() drives _auto_update_graph -> graph_add_relation; must not crash
+    on an old-schema DB (the original edms-index / edms-bootstrap failure)."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        _forge_old_schema_db(tmpdir)
+        os.environ['EVOL_MEMORY_DIR'] = tmpdir
+        try:
+            store = MemoryStore()
+            # Should complete without "Cannot find property metadata"
+            store.index("Decidimos usar ChromaDB para el indice", {"tipo": "decision"})
+        finally:
+            del os.environ['EVOL_MEMORY_DIR']
+
+
 if __name__ == "__main__":
     test_privacy_strip()
     test_privacy_strip_github_token()
@@ -420,4 +608,9 @@ if __name__ == "__main__":
     test_tier_stats_real()
     test_jaccard_similarity()
     test_extract_key_sentence()
+    test_temporal_add_relation_with_validity()
+    test_temporal_query_current()
+    test_temporal_query_as_of()
+    test_temporal_invalidate()
+    test_temporal_timeline()
     print("All tests passed!")

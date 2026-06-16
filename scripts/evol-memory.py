@@ -1529,13 +1529,24 @@ def main():
         v2 = _get_v2()
         if v2:
             from evol_memory_v2.conflict_detector import ConflictDetector
-            detector = ConflictDetector(v2._verbatim)
-            memories = v2._verbatim.list_items()
+            detector = ConflictDetector()
+            # detect() expects dicts with a "text" key; VerbatimStore stores the
+            # content under "verbatim". Map and pass a materialized list (never
+            # the store object itself).
+            memories = [
+                {
+                    "id": it.get("id"),
+                    "text": it.get("verbatim", ""),
+                    "metadata": it.get("metadata", {}),
+                    "created_at": it.get("created_at", ""),
+                }
+                for it in v2._verbatim.list_items(limit=1000)
+            ]
             conflicts = detector.detect(memories)
             if conflicts:
                 print(f"\n[v2] Conflicts detected: {len(conflicts)}")
                 for conflict in conflicts:
-                    print(f"  - {conflict['type']}: {conflict['description']}")
+                    print(f"  - {conflict.conflict_type}: {conflict.description}")
             else:
                 print("[evol-memory] No conflicts detected.")
         else:
