@@ -217,6 +217,20 @@
       ],
       "description": "Crea, audita y actualiza archivos README.md utilizando la estructura y el nivel de diseño de los repositorios Top 100 de código abierto. Aplica técnicas de Storytelling (DX vs Open Source Ecosystem) y maquetación HTML avanzada (tablas, detalles colapsables, alineación). Activar antes de cualquier acción hacia develop o main, o al crear repositorios.",
       "file": "skills/readme-master/SKILL.md"
+    },
+    {
+      "name": "evol-minimal",
+      "category": "quality-gate",
+      "trigger": "/minimal",
+      "triggers": [
+        "/minimal",
+        "lo mas simple posible",
+        "sin sobre-ingenieria",
+        "minimo viable",
+        "no agregues dependencias"
+      ],
+      "description": "Anti-over-engineering enforcer. Decision ladder (YAGNI -> stdlib -> feature nativa -> dep instalada -> one-line -> minimo). Niveles lite/full/ultra/off. Guardrails (validacion/seguridad/a11y) nunca se recortan. Subcomandos review/audit/debt/gain. Inspirada en ponytail.",
+      "file": "skills/evol-minimal/SKILL.md"
     }
   ]
 }

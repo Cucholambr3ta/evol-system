@@ -219,6 +219,31 @@
       "file": "skills/readme-master/SKILL.md"
     },
     {
+      "name": "update-memory",
+      "category": "memory",
+      "trigger": "/update-memory",
+      "triggers": [
+        "/update-memory",
+        "actualizar memoria",
+        "sincronizar memoria"
+      ],
+      "description": "Revisa y actualiza todos los documentos de memoria persistente (decisiones, convenciones, riesgos) con Memory v2.0. Ejecutar despues de cambios significativos.",
+      "file": "skills/update-memory/SKILL.md"
+    },
+    {
+      "name": "update-context",
+      "category": "context",
+      "trigger": "/update-context",
+      "triggers": [
+        "/update-context",
+        "sincronizar contexto",
+        "actualizar contexto",
+        "sync context"
+      ],
+      "description": "Sincroniza contexto entre IDEs/maquinas usando archivos de memoria actualizados. Requiere git pull previo.",
+      "file": "skills/update-context/SKILL.md"
+    },
+    {
       "name": "lightweight-charts",
       "category": "charting",
       "trigger": "/lightweight-charts",
@@ -233,6 +258,20 @@
       "description": "TradingView lightweight-charts v5 API — creating charts, adding series (Line/Area/Bar/Candlestick/Histogram), configuring time and price scales, streaming realtime or historical data, panes, markers, per-bar/per-point colors, tooltips, coordinate conversion, custom plugins or primitives, React/Vue/Web Components wrappers.",
       "file": "skills/lightweight-charts/SKILL.md",
       "local_only": true
+    },
+    {
+      "name": "evol-minimal",
+      "category": "quality-gate",
+      "trigger": "/minimal",
+      "triggers": [
+        "/minimal",
+        "lo mas simple posible",
+        "sin sobre-ingenieria",
+        "minimo viable",
+        "no agregues dependencias"
+      ],
+      "description": "Anti-over-engineering enforcer. Decision ladder (YAGNI -> stdlib -> feature nativa -> dep instalada -> one-line -> minimo). Niveles lite/full/ultra/off. Guardrails (validacion/seguridad/a11y) nunca se recortan. Subcomandos review/audit/debt/gain cablean a code-review/evol-shield/debt-budget/evol-eval. Inspirada en ponytail.",
+      "file": "skills/evol-minimal/SKILL.md"
     }
   ]
 }

@@ -26,6 +26,7 @@
   - `fc1e530` feat(edms): Fase 5 - FlowScript queries + Team memory namespaces
 
 ## Decisiones Arquitectónicas Clave
+- 2026-06-20: Skill `evol-minimal` (inspirada en ponytail) — anti-over-engineering. Decision ladder + niveles lite/full/ultra/off (reusa mecanica de evol-compact), guardrails inviolables, subcomandos review/audit/debt/gain cablean a code-review/evol-shield/debt-budget/evol-eval. Script stdlib `minimal.py` (level + scan de marcadores `minimal:`). Portada a 7 IDEs + mirror src/evol_cli/skills/. NO se clono el plugin ponytail (Cero Duplicados): se reusaron capacidades existentes.
 - 2026-06-13: EDMS Memory v2 +5 gaps (vs investigacion elagente 20 sistemas) — stdlib-first, LLM opcional tras `EVOL_MEMORY_LLM`, implementado en 3 fases con gate skip
 - 2026-06-13: Anti-feedback-loop — atomos derivados (prediction/thought) excluidos del input de dreaming para idempotencia (ver lecciones.md)
 - 2026-06-13: Decay temporal en RRF con half-life por tipo (decision=365d, riesgo=60d, prediction=30d); default temporal_decay=0 (backward-compat)

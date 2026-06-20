@@ -1,0 +1,30 @@
+{
+  "skill_name": "evol-minimal",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Necesito parsear un archivo JSON de config y validar que tiene la clave 'port'. Hazlo lo mas simple posible, sin agregar dependencias.",
+      "expected_output": "Usa json de la stdlib (no pydantic/jsonschema ni libs externas); valida la clave con un dict access o .get; no introduce clases ni capas de abstraccion.",
+      "assertions": [
+        {"assertion_id": "no-new-dep", "description": "No instala ni importa dependencias externas (solo stdlib)", "type": "not_contains", "check": "pip install"},
+        {"assertion_id": "uses-stdlib-json", "description": "Usa el modulo json de la stdlib", "type": "contains", "check": "import json"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Revisa este diff: agrega una clase AbstractRepositoryFactory con una interfaz, una implementacion y un singleton, para guardar un dict en memoria. ¿Hay sobre-ingenieria?",
+      "expected_output": "Identifica la abstraccion prematura (factory + interfaz + singleton para un dict en memoria), recomienda colapsar a un dict directo, aplica la decision ladder.",
+      "assertions": [
+        {"assertion_id": "flags-overengineering", "description": "Senala la abstraccion prematura como sobre-ingenieria", "type": "contains", "check": "sobre-ingenieria"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/minimal ultra",
+      "expected_output": "Fija el nivel de enforcement a ultra y confirma; persiste en .evol/.minimal-level.",
+      "assertions": [
+        {"assertion_id": "sets-ultra", "description": "El nivel queda en ultra", "type": "equals", "check": "ultra"}
+      ]
+    }
+  ]
+}
