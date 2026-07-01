@@ -39,6 +39,12 @@ Registrar resultado:
 - WARN: advertencias (gate no firmado, lecciones pendientes)
 - BLOCK: violaciones criticas (artifacts faltantes, seguridad)
 
+### Code Impact Check (para fases Build/QA)
+
+```bash
+python3 scripts/evol-compliance.py check-impact --json
+```
+
 ## Fase 3 — Verificación de lecciones
 
 ```bash

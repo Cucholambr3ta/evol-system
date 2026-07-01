@@ -1,0 +1,197 @@
+"""Sistema i18n para EVOL-DD TUI (es/en/pt)."""
+from typing import Callable, Dict, List, Optional
+
+I18N: Dict[str, Dict[str, str]] = {
+    "es": {
+        "nav.main": "Principal", "nav.workspace": "Workspace",
+        "nav.dashboard": "Tablero", "nav.projects": "Proyectos",
+        "nav.knowledge": "Conocimiento", "nav.devGraph": "Desarrollo",
+        "nav.search": "Búsqueda", "nav.memory": "Memoria",
+        "nav.agents": "Agentes", "nav.skills": "Habilidades",
+        "nav.disciplines": "Disciplinas", "nav.analytics": "Analítica",
+        "breadcrumb.dashboard": "Tablero", "breadcrumb.knowledgeGraph": "Grafo de conocimiento",
+        "breadcrumb.devGraph": "Grafo de desarrollo", "breadcrumb.projects": "Proyectos",
+        "breadcrumb.memory": "Memoria", "breadcrumb.agents": "Agentes",
+        "breadcrumb.skills": "Habilidades", "breadcrumb.disciplines": "Disciplinas",
+        "breadcrumb.analytics": "Analítica", "breadcrumb.search": "Búsqueda",
+        "metric.projects.label": "Proyectos", "metric.projects.delta": "+2 este mes",
+        "metric.agents.label": "Agentes activos", "metric.agents.delta": "En ejecución",
+        "metric.gherkin.label": "Casos Gherkin", "metric.gherkin.delta": "+12 este sprint",
+        "metric.tasks.label": "Tareas", "metric.tasks.delta": "47 bloqueadas",
+        "metric.health.label": "Índice de salud", "metric.health.delta": "Bueno",
+        "metric.velocity.label": "Velocidad", "metric.velocity.delta": "pts / sprint",
+        "graph.title": "Grafo de conocimiento", "graph.opt.knowledge": "Conocimiento",
+        "graph.opt.dev": "Desarrollo", "graph.opt.allProjects": "Todos los proyectos",
+        "graph.viewFull": "Ver grafo completo",
+        "graph.legend.hub": "Proyecto / hub de dominio", "graph.legend.node": "Nodo de conocimiento",
+        "agents.coreTitle": "Agentes núcleo", "agents.permanentCount": "18 permanentes",
+        "agents.col.agent": "Agente", "agents.col.spec": "Especialidad",
+        "agents.col.status": "Estado", "agents.col.runs": "Ejecuciones", "agents.col.last": "Última",
+        "status.active": "Activo", "status.inactive": "Inactivo",
+        "skills.metric.total": "Skills totales", "skills.filterPlaceholder": "Filtrar skills...",
+        "disc.categories.all": "Todas", "disc.categories.base": "Base",
+        "disc.categories.extended": "Extendidas",
+        "mem.totalItems.label": "Items totales", "mem.drawers.label": "Drawers",
+        "mem.consolidationLevels": "Niveles de consolidación",
+        "common.close": "Cerrar", "common.back": "Volver", "common.empty": "Sin resultados.",
+        "common.search": "Buscar", "common.loading": "Cargando...",
+        "lang.es": "Español", "lang.en": "English", "lang.pt": "Português",
+        "theme.name.bruma": "Bruma", "theme.name.lavanda": "Lavanda",
+        "theme.name.marfil": "Marfil", "theme.name.ambar": "Ámbar",
+        "theme.name.nocturna": "Nocturna", "theme.name.bosque": "Bosque",
+        "theme.name.grafito": "Grafito", "theme.name.salvia": "Salvia",
+        "theme.name.coral": "Coral", "theme.name.pizarra": "Pizarra",
+        "theme.name.oceano": "Océano", "theme.name.arena": "Arena",
+        "theme.name.violeta": "Violeta",
+        "phase.briefing": "Briefing", "phase.spec": "Spec", "phase.plan": "Plan",
+        "phase.build": "Build", "phase.qa": "QA", "phase.retro": "Retro",
+        "status.inProgress": "En progreso", "status.atRisk": "En riesgo",
+        "status.done": "Completado",
+        "help.title": "Atajos de teclado",
+        "help.nav": "Navegación: 1-9 pantallas, / búsqueda",
+        "help.actions": "Acciones: Enter seleccionar, Esc volver, q salir",
+        "help.lang": "L: cambiar idioma  T: cambiar tema",
+        "search.placeholder": "Buscar páginas, proyectos, agentes, skills...",
+        "search.group.pages": "Páginas", "search.group.agents": "Agentes",
+        "search.group.skills": "Skills",
+        "topbar.lang": "Idioma",
+    },
+    "en": {
+        "nav.main": "Main", "nav.workspace": "Workspace",
+        "nav.dashboard": "Dashboard", "nav.projects": "Projects",
+        "nav.knowledge": "Knowledge", "nav.devGraph": "Development",
+        "nav.search": "Search", "nav.memory": "Memory",
+        "nav.agents": "Agents", "nav.skills": "Skills",
+        "nav.disciplines": "Disciplines", "nav.analytics": "Analytics",
+        "breadcrumb.dashboard": "Dashboard", "breadcrumb.knowledgeGraph": "Knowledge graph",
+        "breadcrumb.devGraph": "Development graph", "breadcrumb.projects": "Projects",
+        "breadcrumb.memory": "Memory", "breadcrumb.agents": "Agents",
+        "breadcrumb.skills": "Skills", "breadcrumb.disciplines": "Disciplines",
+        "breadcrumb.analytics": "Analytics", "breadcrumb.search": "Search",
+        "metric.projects.label": "Projects", "metric.projects.delta": "+2 this month",
+        "metric.agents.label": "Active agents", "metric.agents.delta": "Running",
+        "metric.gherkin.label": "Gherkin cases", "metric.gherkin.delta": "+12 this sprint",
+        "metric.tasks.label": "Tasks", "metric.tasks.delta": "47 blocked",
+        "metric.health.label": "Health index", "metric.health.delta": "Good",
+        "metric.velocity.label": "Velocity", "metric.velocity.delta": "pts / sprint",
+        "graph.title": "Knowledge graph", "graph.opt.knowledge": "Knowledge",
+        "graph.opt.dev": "Development", "graph.opt.allProjects": "All projects",
+        "graph.viewFull": "View full graph",
+        "graph.legend.hub": "Project / domain hub", "graph.legend.node": "Knowledge node",
+        "agents.coreTitle": "Core agents", "agents.permanentCount": "18 permanent",
+        "agents.col.agent": "Agent", "agents.col.spec": "Specialty",
+        "agents.col.status": "Status", "agents.col.runs": "Runs", "agents.col.last": "Last",
+        "status.active": "Active", "status.inactive": "Inactive",
+        "skills.metric.total": "Total skills", "skills.filterPlaceholder": "Filter skills...",
+        "disc.categories.all": "All", "disc.categories.base": "Base",
+        "disc.categories.extended": "Extended",
+        "mem.totalItems.label": "Total items", "mem.drawers.label": "Drawers",
+        "mem.consolidationLevels": "Consolidation levels",
+        "common.close": "Close", "common.back": "Back", "common.empty": "No results.",
+        "common.search": "Search", "common.loading": "Loading...",
+        "lang.es": "Español", "lang.en": "English", "lang.pt": "Português",
+        "theme.name.bruma": "Bruma", "theme.name.lavanda": "Lavanda",
+        "theme.name.marfil": "Marfil", "theme.name.ambar": "Amber",
+        "theme.name.nocturna": "Nocturnal", "theme.name.bosque": "Forest",
+        "theme.name.grafito": "Graphite", "theme.name.salvia": "Sage",
+        "theme.name.coral": "Coral", "theme.name.pizarra": "Slate",
+        "theme.name.oceano": "Ocean", "theme.name.arena": "Sand",
+        "theme.name.violeta": "Violet",
+        "phase.briefing": "Briefing", "phase.spec": "Spec", "phase.plan": "Plan",
+        "phase.build": "Build", "phase.qa": "QA", "phase.retro": "Retro",
+        "status.inProgress": "In progress", "status.atRisk": "At risk",
+        "status.done": "Done",
+        "help.title": "Keyboard shortcuts",
+        "help.nav": "Navigation: 1-9 screens, / search",
+        "help.actions": "Actions: Enter select, Esc back, q quit",
+        "help.lang": "L: cycle language  T: change theme",
+        "search.placeholder": "Search pages, projects, agents, skills...",
+        "search.group.pages": "Pages", "search.group.agents": "Agents",
+        "search.group.skills": "Skills",
+        "topbar.lang": "Lang",
+    },
+    "pt": {
+        "nav.main": "Principal", "nav.workspace": "Workspace",
+        "nav.dashboard": "Painel", "nav.projects": "Projetos",
+        "nav.knowledge": "Conhecimento", "nav.devGraph": "Desenvolvimento",
+        "nav.search": "Busca", "nav.memory": "Memória",
+        "nav.agents": "Agentes", "nav.skills": "Habilidades",
+        "nav.disciplines": "Disciplinas", "nav.analytics": "Analítica",
+        "breadcrumb.dashboard": "Painel", "breadcrumb.knowledgeGraph": "Grafo de conhecimento",
+        "breadcrumb.devGraph": "Grafo de desenvolvimento", "breadcrumb.projects": "Projetos",
+        "breadcrumb.memory": "Memória", "breadcrumb.agents": "Agentes",
+        "breadcrumb.skills": "Habilidades", "breadcrumb.disciplines": "Disciplinas",
+        "breadcrumb.analytics": "Analítica", "breadcrumb.search": "Busca",
+        "metric.projects.label": "Projetos", "metric.projects.delta": "+2 este mês",
+        "metric.agents.label": "Agentes ativos", "metric.agents.delta": "Em execução",
+        "metric.gherkin.label": "Casos Gherkin", "metric.gherkin.delta": "+12 este sprint",
+        "metric.tasks.label": "Tarefas", "metric.tasks.delta": "47 bloqueadas",
+        "metric.health.label": "Índice de saúde", "metric.health.delta": "Bom",
+        "metric.velocity.label": "Velocidade", "metric.velocity.delta": "pts / sprint",
+        "graph.title": "Grafo de conhecimento", "graph.opt.knowledge": "Conhecimento",
+        "graph.opt.dev": "Desenvolvimento", "graph.opt.allProjects": "Todos os projetos",
+        "graph.viewFull": "Ver grafo completo",
+        "graph.legend.hub": "Projeto / hub de domínio", "graph.legend.node": "Nó de conhecimento",
+        "agents.coreTitle": "Agentes núcleo", "agents.permanentCount": "18 permanentes",
+        "agents.col.agent": "Agente", "agents.col.spec": "Especialidade",
+        "agents.col.status": "Estado", "agents.col.runs": "Execuções", "agents.col.last": "Última",
+        "status.active": "Ativo", "status.inactive": "Inativo",
+        "skills.metric.total": "Skills totais", "skills.filterPlaceholder": "Filtrar skills...",
+        "disc.categories.all": "Todas", "disc.categories.base": "Base",
+        "disc.categories.extended": "Extendidas",
+        "mem.totalItems.label": "Itens totais", "mem.drawers.label": "Drawers",
+        "mem.consolidationLevels": "Níveis de consolidação",
+        "common.close": "Fechar", "common.back": "Voltar", "common.empty": "Sem resultados.",
+        "common.search": "Buscar", "common.loading": "Carregando...",
+        "lang.es": "Español", "lang.en": "English", "lang.pt": "Português",
+        "theme.name.bruma": "Bruma", "theme.name.lavanda": "Lavanda",
+        "theme.name.marfil": "Marfil", "theme.name.ambar": "Âmbar",
+        "theme.name.nocturna": "Noturna", "theme.name.bosque": "Bosque",
+        "theme.name.grafito": "Grafite", "theme.name.salvia": "Sálvia",
+        "theme.name.coral": "Coral", "theme.name.pizarra": "Ardósia",
+        "theme.name.oceano": "Oceano", "theme.name.arena": "Areia",
+        "theme.name.violeta": "Violeta",
+        "phase.briefing": "Briefing", "phase.spec": "Spec", "phase.plan": "Plano",
+        "phase.build": "Build", "phase.qa": "QA", "phase.retro": "Retro",
+        "status.inProgress": "Em andamento", "status.atRisk": "Em risco",
+        "status.done": "Concluído",
+        "help.title": "Atalhos de teclado",
+        "help.nav": "Navegação: 1-9 telas, / busca",
+        "help.actions": "Ações: Enter selecionar, Esc voltar, q sair",
+        "help.lang": "L: alternar idioma  T: mudar tema",
+        "search.placeholder": "Buscar páginas, projetos, agentes, skills...",
+        "search.group.pages": "Páginas", "search.group.agents": "Agentes",
+        "search.group.skills": "Skills",
+        "topbar.lang": "Idioma",
+    },
+}
+
+
+class I18n:
+    """Sistema de internacionalización para EVOL-DD TUI."""
+
+    LANGS = ("es", "en", "pt")
+    CYCLE = {"es": "en", "en": "pt", "pt": "es"}
+
+    def __init__(self, default_lang: str = "es") -> None:
+        self._lang = default_lang if default_lang in self.LANGS else "es"
+        self._listeners: List[Callable[[str], None]] = []
+
+    @property
+    def lang(self) -> str:
+        return self._lang
+
+    def set_lang(self, code: str) -> None:
+        if code in self.LANGS and code != self._lang:
+            self._lang = code
+            for cb in self._listeners:
+                cb(code)
+
+    def cycle_lang(self) -> None:
+        self.set_lang(self.CYCLE[self._lang])
+
+    def t(self, key: str, fallback: Optional[str] = None) -> str:
+        return I18N.get(self._lang, {}).get(key, fallback if fallback is not None else key)
+
+    def on_change(self, callback: Callable[[str], None]) -> None:
+        self._listeners.append(callback)

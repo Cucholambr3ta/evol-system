@@ -1,0 +1,23 @@
+/* Tema "Nocturna" — paleta dark para EVOL-DD TUI */
+
+$primary: #394b6b;
+$primary-darken-1: #394b6b;
+$primary-darken-2: #11151c;
+$primary-darken-3: #070a0e;
+
+$surface: #11151c;
+$surface-darken-1: #11151c;
+$background: #070a0e;
+
+$text: #cfd8e6;
+$text-muted: #5a7fb5;
+
+$accent: #5a7fb5;
+$success: #5a7fb5;
+$warning: #394b6b;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

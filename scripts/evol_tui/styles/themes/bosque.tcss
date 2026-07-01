@@ -1,0 +1,23 @@
+/* Tema "Bosque" — paleta dark para EVOL-DD TUI */
+
+$primary: #3f6b4f;
+$primary-darken-1: #3f6b4f;
+$primary-darken-2: #1a261d;
+$primary-darken-3: #0f1712;
+
+$surface: #1a261d;
+$surface-darken-1: #1a261d;
+$background: #0f1712;
+
+$text: #d8e9dd;
+$text-muted: #6fae7f;
+
+$accent: #6fae7f;
+$success: #6fae7f;
+$warning: #3f6b4f;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

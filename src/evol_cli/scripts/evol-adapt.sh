@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # evol-adapt.sh — Genera configs IDE desde .agent/workflows/ SSoT.
-# Copia REAL (no symlinks). Sin MCP en ningun adapter.
+# Copia REAL (no symlinks). MCP habilitado (gestionado por evol-mcp.sh).
 set -eu
 
 TRIGGER="${EVOL_TRIGGER:-evol}"
@@ -263,13 +263,6 @@ main() {
             generate_vscode_copilot "$DEST"
             generate_antigravity    "$DEST"
             generate_codex          "$DEST"
-            echo ""
-            echo "[all] Verificando 0 refs MCP..."
-            grep -rn 'mcpServers\|evol-mcp-server' \
-                "$DEST/.claude/" "$DEST/.opencode/" "$DEST/.cursor/" \
-                "$DEST/.windsurf/" "$DEST/.agents/" \
-                --include='*.md' --include='*.json' 2>/dev/null \
-                || echo "[all] OK: 0 refs MCP"
             ;;
         *) echo "Target desconocido: $target"; usage; exit 1 ;;
     esac

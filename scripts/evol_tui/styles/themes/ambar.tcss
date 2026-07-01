@@ -1,0 +1,23 @@
+/* Tema "Ámbar" — paleta dark para EVOL-DD TUI */
+
+$primary: #b07d2e;
+$primary-darken-1: #b07d2e;
+$primary-darken-2: #2a2118;
+$primary-darken-3: #1a140d;
+
+$surface: #2a2118;
+$surface-darken-1: #2a2118;
+$background: #1a140d;
+
+$text: #f0ddc0;
+$text-muted: #f0a83a;
+
+$accent: #f0a83a;
+$success: #f0a83a;
+$warning: #b07d2e;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

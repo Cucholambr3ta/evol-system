@@ -1,0 +1,23 @@
+/* Tema "Grafito" — paleta dark para EVOL-DD TUI */
+
+$primary: #52585f;
+$primary-darken-1: #52585f;
+$primary-darken-2: #202327;
+$primary-darken-3: #16181b;
+
+$surface: #202327;
+$surface-darken-1: #202327;
+$background: #16181b;
+
+$text: #dde1e4;
+$text-muted: #8a939c;
+
+$accent: #8a939c;
+$success: #8a939c;
+$warning: #52585f;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 """Evol-DD Orchestration Engine — Multi-agent runtime coordination.
 
-Patterns: sequential, parallel, parallel_then_sync, party.
+Patterns: sequential, parallel, parallel_then_sync, party, autonomous_loop.
 Records orchestration runs in SQLite (orchestrations table).
+
+autonomous_loop (ralph-style): ejecuta un PLAN ya aprobado por gate como bucle
+multi-contexto. Por cada item pendiente: implementa -> testea -> commit -> actualiza
+estado -> repite, hasta agotar el backlog. Reusa artefactos existentes de Evol-DD:
+  - backlog  = PLAN.md + CASOS_GHERKIN.md (Fase 3, aprobados por gate HMAC)
+  - progreso = memoria.md + WORKING-CONTEXT.md
+  - estado   = evol-state (SQLite)
+  - commits  = evol-gitflow por iteracion
+Inspirado en snarktank/ralph (atribucion en NOTICE). Opera DENTRO de Fase 4 (Build),
+nunca salta el gate de aprobacion previo.
 """
 import os, sys, json, argparse, time, subprocess
 from datetime import datetime
@@ -65,6 +75,21 @@ BUILTIN_PATTERNS = {
             {"agent": "evol-ux", "task": "User experience ideas"},
             {"agent": "evol-pm", "task": "Product priorities"},
         ],
+    },
+    "autonomous_loop": {
+        "type": "autonomous_loop",
+        "description": "Ralph-style: implement an approved PLAN item-by-item across "
+                       "contexts (implement -> test -> commit -> update -> repeat)",
+        "steps": [
+            {"agent": "evol-builder", "task": "Implement next pending PLAN item"},
+            {"agent": "evol-qa", "task": "Test the implemented item"},
+            {"agent": "evol-devops", "task": "Commit via evol-gitflow + update state"},
+        ],
+        "backlog_source": "PLAN.md",
+        "progress_sink": "memoria.md",
+        "max_iterations": 50,
+        "requires_gate": "plan",
+        "timeout": 600,
     },
 }
 
@@ -158,6 +183,8 @@ def run_pattern(pattern_name, exec_mode=False, as_json=False, timeout=None):
         _run_parallel_then_sync(steps, result, exec_mode, run_timeout, pattern.get("sync_point"))
     elif pattern_type == "party":
         _run_party(steps, result, exec_mode, run_timeout)
+    elif pattern_type == "autonomous_loop":
+        _run_autonomous_loop(steps, result, exec_mode, run_timeout, pattern)
 
     elapsed = time.time() - start_time
     result["elapsed_seconds"] = round(elapsed, 2)
@@ -224,6 +251,98 @@ def _run_party(steps, result, exec_mode, timeout):
     for i, step in enumerate(steps):
         step_result = _execute_step(step, i, exec_mode, timeout)
         result["steps"].append(step_result)
+
+
+def _run_autonomous_loop(steps, result, exec_mode, timeout, pattern):
+    """Ralph-style autonomous loop over an approved PLAN.
+
+    Each iteration runs the step sequence (implement -> test -> commit) on the
+    next pending backlog item, then re-evaluates the backlog. Stops when the
+    backlog is empty, a step fails, or max_iterations is reached.
+
+    Backlog tracking reuses Evol-DD artifacts: PLAN.md (items) + memoria.md
+    (progress) + evol-state (status). In dry-run (exec_mode=False) it reports
+    the planned iterations without executing agents or commits.
+    """
+    backlog_src = pattern.get("backlog_source", "PLAN.md")
+    progress_sink = pattern.get("progress_sink", "memoria.md")
+    max_iter = pattern.get("max_iterations", 50)
+    required_gate = pattern.get("requires_gate")
+
+    result["loop"] = {
+        "backlog_source": backlog_src,
+        "progress_sink": progress_sink,
+        "max_iterations": max_iter,
+        "requires_gate": required_gate,
+        "iterations": [],
+    }
+
+    # Gate guard: an autonomous loop must run on an already-approved PLAN.
+    if required_gate:
+        marker = Path(f".evol/.gate-{required_gate}-approved")
+        gate_ok = marker.exists() or os.environ.get("EVOL_SKIP_GATE_CHECK") == "1"
+        result["loop"]["gate_ok"] = gate_ok
+        if not gate_ok:
+            logger.warning("autonomous_loop: gate '%s' not approved; refusing to run",
+                           required_gate)
+            result["steps"].append({
+                "agent": "evol-orchestrator",
+                "task": f"gate check ({required_gate})",
+                "status": "failed",
+                "error": f"PLAN gate '{required_gate}' not approved. "
+                         f"Run /evol gate approve --phase {required_gate} first "
+                         f"(or set EVOL_SKIP_GATE_CHECK=1 to override).",
+            })
+            return
+
+    backlog = _load_plan_backlog(backlog_src)
+    result["loop"]["backlog_count"] = len(backlog)
+
+    if not backlog:
+        logger.info("autonomous_loop: empty backlog in %s", backlog_src)
+        result["steps"].append({
+            "agent": "evol-orchestrator",
+            "task": "load backlog",
+            "status": "skipped",
+            "reason": f"no pending items found in {backlog_src}",
+        })
+        return
+
+    for iteration, item in enumerate(backlog[:max_iter]):
+        iter_log = {"iteration": iteration + 1, "item": item, "steps": []}
+        failed = False
+        for i, step in enumerate(steps):
+            scoped = dict(step)
+            scoped["task"] = f"{step['task']} [{item}]"
+            step_result = _execute_step(scoped, i, exec_mode, timeout)
+            iter_log["steps"].append(step_result)
+            result["steps"].append(step_result)
+            if step_result["status"] == "failed":
+                failed = True
+                break
+        iter_log["status"] = "failed" if failed else "completed"
+        result["loop"]["iterations"].append(iter_log)
+        if failed:
+            logger.warning("autonomous_loop: iteration %d failed on '%s', stopping",
+                           iteration + 1, item)
+            break
+
+
+def _load_plan_backlog(plan_path):
+    """Extract pending items from a PLAN.md backlog.
+
+    Pending = unchecked task list entries ('- [ ] ...'). Completed entries
+    ('- [x] ...') are skipped. Returns a list of item descriptions.
+    """
+    p = Path(plan_path)
+    if not p.exists():
+        return []
+    items = []
+    for line in p.read_text(encoding="utf-8", errors="ignore").splitlines():
+        s = line.strip()
+        if s.startswith("- [ ]") or s.startswith("* [ ]"):
+            items.append(s[5:].strip())
+    return items
 
 
 def _execute_step(step, index, exec_mode, timeout):

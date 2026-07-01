@@ -32,3 +32,25 @@ Peer code review, quality analysis, improvement suggestions.
 ## References
 - docs/constitucion.md (Art. 4)
 - CLAUDE.md (quality guidelines)
+- skills/code-indexer/SKILL.md (code graph tools)
+
+## Code Graph Awareness
+
+When reviewing code changes, use the code graph indexer to:
+
+1. **Impact analysis**: Check blast radius of modified functions/classes
+   ```bash
+   python3 scripts/evol_code_indexer.py impact <ModifiedSymbol> --depth=2
+   ```
+
+2. **Process tracing**: Verify execution paths are not broken
+   ```bash
+   python3 scripts/evol_code_indexer.py trace <EntryPoint>
+   ```
+
+3. **Caller verification**: Ensure all callers are updated when signature changes
+   ```bash
+   python3 scripts/evol_code_indexer.py impact <FunctionName> --depth=1
+   ```
+
+If blast radius > 10 symbols at depth-1, flag for additional review.

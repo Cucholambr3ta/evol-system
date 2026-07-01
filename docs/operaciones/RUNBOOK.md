@@ -71,6 +71,61 @@ bash scripts/evol-doctor.sh
 
 ---
 
+### PROC-003b: Reconstruir code graph index
+
+**Sintoma:** code graph corrupto, desactualizado, o erroneo.
+
+**Causa probable:** indexacion incremental fallida, archivos eliminados sin re-index, o cambio de schema.
+
+**Comandos:**
+
+```bash
+# 1. Verificar estado actual del code graph
+python3 scripts/evol_code_indexer.py stats
+
+# 2. Re-index completo del proyecto
+python3 scripts/evol_code_indexer.py index
+
+# 3. Verificar que la indexacion fue exitosa
+python3 scripts/evol_code_indexer.py stats
+
+# 4. Si LadybugDB no esta disponible, verificar fallback JSON
+ls -la .evol/memory/code_graph.json
+
+# 5. Probar analisis de impacto
+python3 scripts/evol_code_indexer.py impact MemoryStore --depth=2
+```
+
+**Verificacion:** `evol_code_indexer.py stats` muestra counts actualizados y last index reciente.
+
+---
+
+### PROC-003c: Analisis de impacto pre-refactor
+
+**Sintoma:** se necesita refactorizar una funcion/clase y se quiere entender el blast radius.
+
+**Causa probable:** refactoring sin understanding de callers puede causar regressions.
+
+**Comandos:**
+
+```bash
+# 1. Indexar codigo (si no esta actualizado)
+python3 scripts/evol_code_indexer.py incremental
+
+# 2. Analizar impacto del simbolo
+python3 scripts/evol_code_indexer.py impact <SymbolName> --depth=3
+
+# 3. Ver trazado de ejecucion
+python3 scripts/evol_code_indexer.py trace <EntryPoint>
+
+# 4. Verificar que tests existen para callers afectados
+python3 scripts/evol_compliance.py check-impact --json
+```
+
+**Verificacion:** reporte muestra callers por depth y risk level (LOW/MEDIUM/HIGH).
+
+---
+
 ### PROC-003: Recuperar agente efimero retirado (recall)
 
 **Sintoma:** se necesita restaurar un agente que fue retirado con `evol-agent-lifecycle.py retire`.

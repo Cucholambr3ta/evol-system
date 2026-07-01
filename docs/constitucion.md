@@ -35,12 +35,13 @@ El pipeline no avanza por default — avanza por aprobacion.
 
 ## Art. 3 — Preservacion de Contexto (Flight Recorder)
 
-**Leer `memoria.md` al abrir cualquier proyecto.**
+**Leer `memoria.md` al abrir cualquier proyecto. Consultar EDMS para contexto completo.**
 
 Sesion inicia:
 1. Leer `memoria.md` — estado del proyecto, decisiones, hitos
 2. Leer `lecciones.md` — lecciones relevantes al area de trabajo
 3. Leer `WORKING-CONTEXT.md` — branch activo, fase, PRs recientes
+4. Consultar EDMS: `edms-wake-up` + `edms-blocked` + `edms-tensions` + `edms-search` con el topic del usuario
 
 Sesion termina:
 1. Actualizar `memoria.md` — decisiones, artefactos, abiertos

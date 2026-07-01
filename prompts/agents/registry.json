@@ -205,7 +205,7 @@
         "/evol analyze",
         "/evol analyst"
       ],
-      "skills": [],
+      "skills": ["code-graph-tools"],
       "ephemeral": false,
       "retired": null
     },

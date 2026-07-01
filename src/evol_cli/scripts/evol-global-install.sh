@@ -138,7 +138,7 @@ WRAPPER
 install_global_ide_triggers() {
     # Instala /evol como trigger global en Claude Code y OpenCode.
     # El trigger queda disponible en CUALQUIER directorio del PC,
-    # igual que /anmax esta disponible globalmente en agent_anmax.
+    # igual que cualquier trigger global configurado.
     local trigger="${EVOL_TRIGGER:-evol}"
     local workflows_dir="$REPO_ROOT/.agent/workflows"
     local count=0

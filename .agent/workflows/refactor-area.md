@@ -37,7 +37,28 @@ trigger: /evol refactor-area
 
 El detalle operativo se delega a la skill especializada para mantener la agilidad del workflow.
 
-### 3.1 Caracterización y Línea Base
+### 3.1 Code Impact Pre-check
+
+Before starting any refactor, compute the blast radius:
+
+```bash
+python3 scripts/evol_memory_store.py code-impact <SymbolName> --depth=3 --json
+```
+
+Or via the orchestrator tool:
+
+```bash
+edms-impact <SymbolName> --depth=3
+```
+
+This shows:
+- **Depth-1**: Direct callers (immediately affected)
+- **Depth-2**: Callers of callers (indirectly affected)
+- **Depth-3**: Deeper transitive impact
+
+If blast radius > 20 symbols at depth-1, split the refactor into smaller increments.
+
+### 3.2 Caracterización y Línea Base
 
 * **Referencia:** `skill-refactoring-details.md > Sección 1.1`
 * Escritura de tests de caracterización si la cobertura es insuficiente.

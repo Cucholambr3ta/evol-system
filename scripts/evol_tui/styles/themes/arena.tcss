@@ -1,0 +1,23 @@
+/* Tema "Arena" — paleta light para EVOL-DD TUI */
+
+$primary: #bba07a;
+$primary-darken-1: #bba07a;
+$primary-darken-2: #f5efe3;
+$primary-darken-3: #fffdf9;
+
+$surface: #f5efe3;
+$surface-darken-1: #f5efe3;
+$background: #fffdf9;
+
+$text: #3a3325;
+$text-muted: #d9bb8e;
+
+$accent: #d9bb8e;
+$success: #d9bb8e;
+$warning: #bba07a;
+$error: #b03a2e;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

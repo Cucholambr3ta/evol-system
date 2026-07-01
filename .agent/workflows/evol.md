@@ -24,7 +24,13 @@ Al recibir `/evol`, antes de cualquier accion:
 2. Leer `lecciones.md` — patrones aprendidos relevantes al contexto actual
 3. Leer `WORKING-CONTEXT.md` si existe — contexto vivo de la sesion
 4. Verificar fase activa via `evol gate status`
-5. Resolver dinamicamente los perfiles requeridos para la accion solicitada comparando `manifests/workflow-profiles.json` con `evol.profile.yml`. Si el perfil instalado es inferior, escalar automaticamente via `evol-init.sh --profile=<perfil> --upgrade` y configurar la variable `EVOL_HOOK_PROFILE` correspondiente.
+5. Consultar EDMS para contexto completo:
+   a. `edms-wake-up` — resumen del proyecto (ya cargado por hook de sesion)
+   b. `edms-blocked` — riesgos bloqueantes activos
+   c. `edms-tensions` — conflictos entre lecciones o decisiones
+   d. `edms-search "<topic del usuario>"` — decisiones y artefactos relacionados con el input del usuario
+6. Verificar code graph: `python3 scripts/evol_code_indexer.py stats`
+7. Resolver dinamicamente los perfiles requeridos para la accion solicitada comparando `manifests/workflow-profiles.json` con `evol.profile.yml`. Si el perfil instalado es inferior, escalar automaticamente via `evol-init.sh --profile=<perfil> --upgrade` y configurar la variable `EVOL_HOOK_PROFILE` correspondiente.
 
 ---
 
@@ -258,7 +264,7 @@ el estado de lecciones en `lecciones.md`.
 
 ```
 1. Usuario: /evol
-2. Orquestador: lee memoria.md + lecciones.md + gate status
+2. Orquestador: lee memoria.md + lecciones.md + gate status + EDMS (blocked + tensions + search del topic)
 3. Orquestador: reporta estado actual y propone siguiente paso
 4. Usuario: aprueba o redirige
 5. Orquestador: delega al agente core correspondiente
@@ -270,7 +276,7 @@ el estado de lecciones en `lecciones.md`.
 
 ## Invariantes (nunca violar)
 
-- Integración MCP en los adapters IDE
+- MCP habilitado por defecto (servers gestionados via `evol-mcp.sh`)
 - `"APROBADO"` requerido antes de cada transicion de fase
 - `memoria.md` se actualiza al final de cada sesion significativa
 - Lecciones se consultan ANTES de proponer arquitectura

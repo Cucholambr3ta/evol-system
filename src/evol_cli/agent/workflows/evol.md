@@ -213,7 +213,7 @@ verificar (fact-check), y no genera prompts subóptimos (prompt-master).
 
 ## Invariantes (nunca violar)
 
-- Integración MCP en los adapters IDE
+- MCP habilitado por defecto (servers gestionados via `evol-mcp.sh`)
 - `"APROBADO"` requerido antes de cada transicion de fase
 - `memoria.md` se actualiza al final de cada sesion significativa
 - Lecciones se consultan ANTES de proponer arquitectura

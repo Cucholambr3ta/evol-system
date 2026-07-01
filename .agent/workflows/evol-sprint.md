@@ -26,6 +26,10 @@ skills:
    ```
 4. Leer `acuerdos/memoria/MEMORY.md` + `acuerdos/memoria/sprint-NN.md` anterior.
 5. Consultar el [Catalogo de Skills](file:///home/alejandro/Documentos/Desarrollos/personal/evol-dd/skills/CATALOG.md) para identificar las capacidades reutilizables necesarias para las tareas de este sprint.
+6. Verificar code graph freshness:
+   ```bash
+   python3 scripts/evol_code_indexer.py stats
+   ```
 
 ---
 

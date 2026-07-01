@@ -55,3 +55,28 @@ evol-init.sh . --profile=full --upgrade
 ## Migración desde X-DD
 
 Si vienes de la versión anterior del framework (X-DD) y estás haciendo la transición a Evol-DD, consulta la [RETROFIT_GUIDE.md](../RETROFIT_GUIDE.md) para los pasos específicos de migración de estado y variables de entorno.
+
+## Instalar Code Graph Indexer (v0.6.3+)
+
+Evol-DD v0.6.3+ incluye un code graph indexer basado en Tree-sitter. Para instalarlo:
+
+```bash
+# Instalar con dependencias de code graph
+pip install evol-dd[code]
+
+# O instalar todo (memory + graph + code)
+pip install evol-dd[full]
+```
+
+**Dependencias optional `[code]`:**
+- `tree-sitter>=0.23.0` — Parser incremental
+- `tree-sitter-python` — Gramatica Python
+- `tree-sitter-javascript` — Gramatica JavaScript
+- `tree-sitter-typescript` — Gramatica TypeScript
+
+**Sin `[code]`:** El code graph indexer no estara disponible. Los hooks y workflows que dependen de el mostraran advertencias pero no bloquearan el sistema.
+
+**Verificar instalacion:**
+```bash
+python3 scripts/evol_code_indexer.py stats
+```

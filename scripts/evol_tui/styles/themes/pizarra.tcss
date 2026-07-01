@@ -1,0 +1,23 @@
+/* Tema "Pizarra" — paleta dark para EVOL-DD TUI */
+
+$primary: #46586b;
+$primary-darken-1: #46586b;
+$primary-darken-2: #1c242e;
+$primary-darken-3: #11161d;
+
+$surface: #1c242e;
+$surface-darken-1: #1c242e;
+$background: #11161d;
+
+$text: #d6dee6;
+$text-muted: #7d97b3;
+
+$accent: #7d97b3;
+$success: #7d97b3;
+$warning: #46586b;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

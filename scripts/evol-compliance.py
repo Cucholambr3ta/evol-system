@@ -546,6 +546,140 @@ def _write_report_md(path, report, phases, violations, lesson_status):
         f.write("\n".join(lines) + "\n")
 
 
+def cmd_check_contradictions(args):
+    """Check for contradictions in the memory system."""
+    try:
+        from evol_contradictions import ContradictionDetector
+        detector = ContradictionDetector()
+        contradictions = detector.detect()
+        suggestions = detector.suggest_resolution(contradictions)
+        
+        result = {
+            "contradictions_total": len(contradictions),
+            "by_type": {},
+            "suggestions": suggestions[:10],  # Top 10 suggestions
+        }
+        
+        # Group by type
+        for c in contradictions:
+            t = c.get('type', 'unknown')
+            result["by_type"][t] = result["by_type"].get(t, 0) + 1
+        
+        if args.json:
+            print(json.dumps(result, indent=2))
+        else:
+            print(f"CONTRADICTIONS: {len(contradictions)} found")
+            for t, count in result["by_type"].items():
+                print(f"  {t}: {count}")
+            if suggestions:
+                print("\nTop suggestions:")
+                for s in suggestions[:5]:
+                    print(f"  [{s['priority'].upper()}] {s['recommendation']}")
+    except ImportError:
+        if args.json:
+            print(json.dumps({"error": "evol_contradictions not available"}, indent=2))
+        else:
+            print("CONTRADICTIONS: evol_contradictions module not available")
+
+
+def cmd_check_impact(args):
+    """Analyze impact of changed files using code graph."""
+    import subprocess
+
+    # Get changed files from git diff if not provided
+    files = args.files
+    if not files:
+        try:
+            result = subprocess.run(
+                ["git", "diff", "--name-only", "--diff-filter=ACMR", "HEAD~1..HEAD"],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode == 0:
+                files = [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
+        except Exception:
+            pass
+
+    if not files:
+        if args.json:
+            print(json.dumps({"error": "No files to analyze"}, indent=2))
+        else:
+            print("IMPACT: No files to analyze")
+        return
+
+    # Filter to code files
+    code_exts = {".py", ".js", ".jsx", ".ts", ".tsx"}
+    code_files = [f for f in files if any(f.endswith(ext) for ext in code_exts)]
+
+    if not code_files:
+        if args.json:
+            print(json.dumps({"error": "No code files in changeset"}, indent=2))
+        else:
+            print("IMPACT: No code files in changeset")
+        return
+
+    # Load code graph
+    try:
+        from evol_code_indexer import CodeGraph
+        graph = CodeGraph()
+
+        # Get symbols from changed files
+        affected_symbols = []
+        for f in code_files:
+            results = graph.query_symbol(f)
+            for r in results:
+                if "properties" in r and r["properties"].get("file") == f:
+                    affected_symbols.append(r["name"])
+
+        # Analyze impact for each symbol
+        total_impact = {"symbol_count": len(affected_symbols), "depths": [], "total_affected": 0}
+        for sym in affected_symbols[:10]:  # Limit to 10 symbols
+            impact = graph.get_impact(sym, max_depth=args.max_depth)
+            total_impact["total_affected"] += impact["total_affected"]
+            for d in impact["depths"]:
+                # Merge depth data
+                found = False
+                for existing in total_impact["depths"]:
+                    if existing["depth"] == d["depth"]:
+                        existing["callers"].extend(d["callers"])
+                        existing["count"] = len(existing["callers"])
+                        found = True
+                        break
+                if not found:
+                    total_impact["depths"].append(d)
+
+        # Risk assessment
+        risk = "LOW"
+        if total_impact["total_affected"] > 10:
+            risk = "MEDIUM"
+        if total_impact["total_affected"] > 25:
+            risk = "HIGH"
+
+        result = {
+            "changed_files": code_files,
+            "affected_symbols": affected_symbols[:10],
+            "impact": total_impact,
+            "risk": risk,
+            "suggestion": "Run full test suite before commit" if risk != "LOW" else "Tests should cover changes",
+        }
+
+        if args.json:
+            print(json.dumps(result, indent=2))
+        else:
+            print(f"\nImpact Analysis")
+            print("=" * 40)
+            print(f"Changed files: {len(code_files)}")
+            print(f"Affected symbols: {len(affected_symbols)}")
+            print(f"Total affected: {total_impact['total_affected']}")
+            print(f"Risk: {risk}")
+            print(f"\nSuggestion: {result['suggestion']}")
+
+    except ImportError:
+        if args.json:
+            print(json.dumps({"error": "evol_code_indexer not available"}, indent=2))
+        else:
+            print("IMPACT: evol_code_indexer module not available")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evol-DD Compliance Auditor")
     sub = parser.add_subparsers(dest="cmd")
@@ -574,6 +708,14 @@ def main():
     p.add_argument("--sprint", type=int, required=True)
     p.add_argument("--json", action="store_true")
 
+    p = sub.add_parser("check-contradictions", help="Check for contradictions in memory")
+    p.add_argument("--json", action="store_true")
+
+    p = sub.add_parser("check-impact", help="Analyze impact of changed files")
+    p.add_argument("--files", nargs="*", help="Files to analyze (default: git diff)")
+    p.add_argument("--max-depth", type=int, default=3, help="Max depth for impact analysis")
+    p.add_argument("--json", action="store_true")
+
     args = parser.parse_args()
 
     if args.cmd == "check":
@@ -586,6 +728,10 @@ def main():
         cmd_verify_applied(args)
     elif args.cmd == "report":
         cmd_report(args)
+    elif args.cmd == "check-contradictions":
+        cmd_check_contradictions(args)
+    elif args.cmd == "check-impact":
+        cmd_check_impact(args)
     else:
         parser.print_help()
 

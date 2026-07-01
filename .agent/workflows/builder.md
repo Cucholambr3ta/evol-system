@@ -26,3 +26,4 @@ Implement code following TDD, build features per spec.
 3. Implement to pass test
 4. Refactor
 5. Run full test suite
+6. Re-index code graph: `python3 scripts/evol_code_indexer.py index .`

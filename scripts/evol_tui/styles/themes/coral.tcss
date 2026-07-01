@@ -1,0 +1,23 @@
+/* Tema "Coral" — paleta dark para EVOL-DD TUI */
+
+$primary: #a8513f;
+$primary-darken-1: #a8513f;
+$primary-darken-2: #2b1d1a;
+$primary-darken-3: #1a1110;
+
+$surface: #2b1d1a;
+$surface-darken-1: #2b1d1a;
+$background: #1a1110;
+
+$text: #f0d8d2;
+$text-muted: #e8806a;
+
+$accent: #e8806a;
+$success: #e8806a;
+$warning: #a8513f;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

@@ -1,0 +1,23 @@
+/* Tema "Océano" — paleta dark para EVOL-DD TUI */
+
+$primary: #2c6e7f;
+$primary-darken-1: #2c6e7f;
+$primary-darken-2: #102228;
+$primary-darken-3: #0a161a;
+
+$surface: #102228;
+$surface-darken-1: #102228;
+$background: #0a161a;
+
+$text: #cfe7ec;
+$text-muted: #52a8bd;
+
+$accent: #52a8bd;
+$success: #52a8bd;
+$warning: #2c6e7f;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

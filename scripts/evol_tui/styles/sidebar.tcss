@@ -1,0 +1,6 @@
+/* Sidebar estilos */
+Sidebar {
+    background: $surface-darken-1;
+    border-right: solid $primary-darken-2;
+    padding: 1;
+}

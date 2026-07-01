@@ -1,0 +1,23 @@
+/* Tema "Lavanda" — paleta dark para EVOL-DD TUI */
+
+$primary: #6c5b8c;
+$primary-darken-1: #6c5b8c;
+$primary-darken-2: #2a2438;
+$primary-darken-3: #1a1622;
+
+$surface: #2a2438;
+$surface-darken-1: #2a2438;
+$background: #1a1622;
+
+$text: #e6def2;
+$text-muted: #b39ddb;
+
+$accent: #b39ddb;
+$success: #b39ddb;
+$warning: #6c5b8c;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

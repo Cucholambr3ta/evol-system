@@ -30,46 +30,46 @@ ficha sin fuentes es INCOMPLETA — el validador la rechaza.
 
 ## Tabla de disciplinas base (9 — nucleo Constitucion)
 
-| Disciplina | Archivo | Fase principal | Artefacto clave | Gate asociado |
-|------------|---------|---------------|-----------------|---------------|
-| SDD — Spec-Driven Development | [SDD.md](./SDD.md) | Todas (transversal) | `docs/specs/SPEC.md` | Todos los gates |
-| FDD — Feature-Driven Development | [FDD.md](./FDD.md) | Fase 1 + Fase 3 | `docs/features/FEATURES.md` | Gate 1 + Gate 3 |
-| DDD — Domain-Driven Design | [DDD.md](./DDD.md) | Fase 2 | `docs/specs/DOMAIN.md` | Gate 2 |
-| BDD — Behavior-Driven Development | [BDD.md](./BDD.md) | Fase 1 + Fase 5 | `tests/features/*.feature` | Gate 1 + Gate 5 |
-| ATDD — Acceptance Test-Driven Development | [ATDD.md](./ATDD.md) | Fase 1 + Fase 5 | `tests/acceptance/*.acceptance.test.ts` | Gate 1 + Gate 5 |
-| TDD — Test-Driven Development | [TDD.md](./TDD.md) | Fase 4 | `tests/unit/*.test.ts` | Gate 4 |
-| STDD — Security-Test-Driven Development | [STDD.md](./STDD.md) | Fase 4 | `tests/security/**/*.security.test.ts` | Gate 4 |
-| SecDD — Security-Driven Development | [SecDD.md](./SecDD.md) | Fase 5 | `.evol/qa/QA_REPORT.md` | Gate 5 |
-| Threat-Driven Development | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | Fase 2 | `docs/specs/THREATS.md` | Gate 2 |
+| Disciplina | Archivo | Fase principal | Artefacto clave | Gate asociado | Skill Evol-DD |
+|------------|---------|---------------|-----------------|---------------|---------------|
+| SDD — Spec-Driven Development | [SDD.md](./SDD.md) | Todas (transversal) | `docs/specs/SPEC.md` | Todos los gates | `evol-sdd-spec` |
+| FDD — Feature-Driven Development | [FDD.md](./FDD.md) | Fase 1 + Fase 3 | `docs/features/FEATURES.md` | Gate 1 + Gate 3 | `evol-fdd-feature` |
+| DDD — Domain-Driven Design | [DDD.md](./DDD.md) | Fase 2 | `docs/specs/DOMAIN.md` | Gate 2 | `evol-ddd-domain` |
+| BDD — Behavior-Driven Development | [BDD.md](./BDD.md) | Fase 1 + Fase 5 | `tests/features/*.feature` | Gate 1 + Gate 5 | `evol-bdd-behavior` |
+| ATDD — Acceptance Test-Driven Development | [ATDD.md](./ATDD.md) | Fase 1 + Fase 5 | `tests/acceptance/*.acceptance.test.ts` | Gate 1 + Gate 5 | `evol-atdd-acceptance` |
+| TDD — Test-Driven Development | [TDD.md](./TDD.md) | Fase 4 | `tests/unit/*.test.ts` | Gate 4 | `evol-tdd-unit` |
+| STDD — Security-Test-Driven Development | [STDD.md](./STDD.md) | Fase 4 | `tests/security/**/*.security.test.ts` | Gate 4 | `evol-stdd-security-test` |
+| SecDD — Security-Driven Development | [SecDD.md](./SecDD.md) | Fase 5 | `.evol/qa/QA_REPORT.md` | Gate 5 | `evol-secdd-security` |
+| Threat-Driven Development | [THREAT-DRIVEN.md](./THREAT-DRIVEN.md) | Fase 2 | `docs/specs/THREATS.md` | Gate 2 | `evol-threat-model` |
 
 ---
 
 ## Tabla de disciplinas extendidas (22 — activables por profile)
 
-| # | Disciplina | Archivo | Fase principal | executor | Forma |
-|---|------------|---------|----------------|----------|-------|
-| 1 | ODD_API — OpenAPI-Driven | [ODD_API.md](./ODD_API.md) | Spec | `api-contract` | mapeo |
-| 2 | UXDD — UX-Driven | [UXDD.md](./UXDD.md) | Briefing | `ux-driven` | skill nueva |
-| 3 | A11yDD — Accessibility-Driven | [A11yDD.md](./A11yDD.md) | Briefing + QA | `a11y-audit` | mapeo |
-| 4 | RDD — Refactoring-Driven | [RDD.md](./RDD.md) | Build | `refactor-area` | mapeo |
-| 5 | PDD — Performance-Driven | [PDD.md](./PDD.md) | QA | `perf-budget` + tags | mapeo + declarativa |
-| 6 | Chaos — Resiliency-Driven | [CHAOS.md](./CHAOS.md) | QA | `dr-drill` + sandbox | extension |
-| 7 | MDD — Migration-Driven | [MDD.md](./MDD.md) | Plan | `db-migrate` | mapeo |
-| 8 | CDCDD — Change Data Capture | [CDCDD.md](./CDCDD.md) | Plan | `data-pipeline` | extension |
-| 9 | ESDD — Event Sourcing-Driven | [ESDD.md](./ESDD.md) | Spec | `event-sourcing` | skill nueva |
-| 10 | CCDD — Consumer-Driven Contract | [CCDD.md](./CCDD.md) | QA | `contract-test` | mapeo |
-| 11 | APIVDD — API Versioning-Driven | [APIVDD.md](./APIVDD.md) | Plan | `api-versioning` | skill nueva |
-| 12 | ODD_Obs — Observability-Driven | [ODD_OBS.md](./ODD_OBS.md) | QA | `observability-init` | mapeo |
-| 13 | SLO/SLA-Driven | [SLODRIVEN.md](./SLODRIVEN.md) | QA | obs + perf (sub-gate) | declarativa |
-| 14 | IODD — Infrastructure-as-Code | [IODD.md](./IODD.md) | Spec | `iac-driven` | skill nueva |
-| 15 | Pipeline-Driven | [PIPELINE-DRIVEN.md](./PIPELINE-DRIVEN.md) | Build | `deploy-prod` + `rollback` | mapeo |
-| 16 | Compliance-Driven | [COMPLIANCE.md](./COMPLIANCE.md) | Spec | `privacy-review` (ext) | extension |
-| 17 | PrivacyDD — Privacy by Design | [PrivacyDD.md](./PrivacyDD.md) | Spec | `privacy-review` | mapeo |
-| 18 | DebtBudgetDD — Tech Debt Budgeting | [DebtBudgetDD.md](./DebtBudgetDD.md) | Plan | `debt-budget` | skill nueva |
-| 19 | DeprecationDD — Deprecation-Driven | [DeprecationDD.md](./DeprecationDD.md) | Plan | `dependency-update` (ext) | extension |
-| 20 | ADD — Architecture-Driven | [ADD.md](./ADD.md) | Spec | `adr-new` | mapeo |
-| 21 | EDA — Event-Driven Architecture | [EDA.md](./EDA.md) | Spec | `data-pipeline` (ext) | extension |
-| 22 | UDD — Use-Case-Driven | [UDD.md](./UDD.md) | Briefing | `use-case-driven` | skill nueva |
+| # | Disciplina | Archivo | Fase principal | executor | Skill Evol-DD |
+|---|------------|---------|----------------|----------|---------------|
+| 1 | ODD_API — OpenAPI-Driven | [ODD_API.md](./ODD_API.md) | Spec | `api-contract` | `evol-odd-api` |
+| 2 | UXDD — UX-Driven | [UXDD.md](./UXDD.md) | Briefing | `ux-driven` | `evol-uxdd-ux` |
+| 3 | A11yDD — Accessibility-Driven | [A11yDD.md](./A11yDD.md) | Briefing + QA | `a11y-audit` | `evol-a11ydd` |
+| 4 | RDD — Refactoring-Driven | [RDD.md](./RDD.md) | Build | `refactor-area` | `evol-rdd-refactor` |
+| 5 | PDD — Performance-Driven | [PDD.md](./PDD.md) | QA | `perf-budget` + tags | `evol-pdd-perf` |
+| 6 | Chaos — Resiliency-Driven | [CHAOS.md](./CHAOS.md) | QA | `dr-drill` + sandbox | `evol-chaos-resilience` |
+| 7 | MDD — Migration-Driven | [MDD.md](./MDD.md) | Plan | `db-migrate` | `evol-mdd-migrate` |
+| 8 | CDCDD — Change Data Capture | [CDCDD.md](./CDCDD.md) | Plan | `data-pipeline` | `evol-cdcdd` |
+| 9 | ESDD — Event Sourcing-Driven | [ESDD.md](./ESDD.md) | Spec | `event-sourcing` | `evol-esdd-events` |
+| 10 | CCDD — Consumer-Driven Contract | [CCDD.md](./CCDD.md) | QA | `contract-test` | `evol-ccdd-contract` |
+| 11 | APIVDD — API Versioning-Driven | [APIVDD.md](./APIVDD.md) | Plan | `api-versioning` | `evol-apivdd` |
+| 12 | ODD_Obs — Observability-Driven | [ODD_OBS.md](./ODD_OBS.md) | QA | `observability-init` | `evol-odd-obs` |
+| 13 | SLO/SLA-Driven | [SLODRIVEN.md](./SLODRIVEN.md) | QA | obs + perf (sub-gate) | `evol-slo-sla` |
+| 14 | IODD — Infrastructure-as-Code | [IODD.md](./IODD.md) | Spec | `iac-driven` | `evol-iodd-iac` |
+| 15 | Pipeline-Driven | [PIPELINE-DRIVEN.md](./PIPELINE-DRIVEN.md) | Build | `deploy-prod` + `rollback` | `evol-pipeline-ci` |
+| 16 | Compliance-Driven | [COMPLIANCE.md](./COMPLIANCE.md) | Spec | `privacy-review` (ext) | `evol-compliance-drivers` |
+| 17 | PrivacyDD — Privacy by Design | [PrivacyDD.md](./PrivacyDD.md) | Spec | `privacy-review` | `evol-privacy-drivers` |
+| 18 | DebtBudgetDD — Tech Debt Budgeting | [DebtBudgetDD.md](./DebtBudgetDD.md) | Plan | `debt-budget` | `evol-debt-budget` |
+| 19 | DeprecationDD — Deprecation-Driven | [DeprecationDD.md](./DeprecationDD.md) | Plan | `dependency-update` (ext) | `evol-deprecation` |
+| 20 | ADD — Architecture-Driven | [ADD.md](./ADD.md) | Spec | `adr-new` | `evol-add-arch` |
+| 21 | EDA — Event-Driven Architecture | [EDA.md](./EDA.md) | Spec | `data-pipeline` (ext) | `evol-eda` |
+| 22 | UDD — Use-Case-Driven | [UDD.md](./UDD.md) | Briefing | `use-case-driven` | `evol-udd-usecase` |
 
 ---
 

@@ -43,3 +43,25 @@ Quality assurance, test strategy, Gherkin/BDD cases.
 - docs/qa/PLAN_QA.md
 - docs/qa/CASOS_GHERKIN.md
 - docs/DOC_STANDARD.md (Gherkin section)
+- skills/code-indexer/SKILL.md (code graph tools)
+
+## Code Graph Awareness
+
+When designing test plans, use the code graph indexer to:
+
+1. **Identify test targets**: Find all functions/classes in modified files
+   ```bash
+   python3 scripts/evol_code_indexer.py query <ModifiedFile>
+   ```
+
+2. **Coverage gaps**: Check which callers lack test coverage
+   ```bash
+   python3 scripts/evol_code_indexer.py impact <FunctionName> --depth=2
+   ```
+
+3. **Regression risk**: High blast radius symbols need additional test cases
+   ```bash
+   python3 scripts/evol_compliance.py check-impact --json
+   ```
+
+Prioritize test cases for symbols with blast radius > 5 at depth-1.

@@ -1,0 +1,23 @@
+/* Tema "Marfil" — paleta light para EVOL-DD TUI */
+
+$primary: #a08a6f;
+$primary-darken-1: #a08a6f;
+$primary-darken-2: #f2ece1;
+$primary-darken-3: #ffffff;
+
+$surface: #f2ece1;
+$surface-darken-1: #f2ece1;
+$background: #ffffff;
+
+$text: #2c261d;
+$text-muted: #c9a876;
+
+$accent: #c9a876;
+$success: #c9a876;
+$warning: #a08a6f;
+$error: #b03a2e;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

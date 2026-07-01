@@ -30,14 +30,42 @@ GET  /api/v1/compliance/report       → Sprint compliance report
 
 ## Pantallas (wireframes de referencia)
 
+Wireframes activos: perfil `enterprise-minimal` (Linear/Vercel/GitHub Projects),
+generados con la skill `evol-frontend-design` + capa de motion `evol-remotion`.
+Viven en `acuerdos/design/wireframes/propuesta/`. Design tokens en `propuesta/styles.css`.
+
 | Pantalla | Wireframe | Descripción |
 |----------|-----------|-------------|
-| Global View | `acuerdos/design/wireframes/edms-global.html` | Knowledge graph, memory health, sectors |
-| Project Board | `acuerdos/design/wireframes/edms-project-board.html` | Gantt, Kanban, metrics |
-| Navigation Flow | `acuerdos/design/wireframes/edms-navigation-flow.html` | User flow diagram |
+| Dashboard | `acuerdos/design/wireframes/propuesta/index.html` | Métricas ejecutivas, proyectos, milestones, activity |
+| Project Board | `acuerdos/design/wireframes/propuesta/edms-project-board.html` | Gantt monocromático, Kanban estilo Linear, metrics |
+| Knowledge Graph | `acuerdos/design/wireframes/propuesta/edms-navigation-flow.html` | Grafo canvas + node detail panel |
+| Search / Global | `acuerdos/design/wireframes/propuesta/edms-global.html` | Búsqueda con highlight, filter chips, activity |
+
+Sistema de diseño:
+
+- `aesthetic_profile: enterprise-minimal` (en `evol.profile.yml`)
+- Paleta dark-first `#0F1115` + acento único `#4F46E5`; light theme persistente (localStorage)
+- Tipografía Geist/Inter; iconografía SVG monocromática (sin emojis)
+- Motion CSS sobrio: reveals escalonados (IntersectionObserver), transiciones 150-180ms,
+  `prefers-reduced-motion` respetado. Remotion-ready para la migración a React 19.
 
 ## Bloqueante
 
 - [ ] Diseños finales de pantallas (aprobación del usuario)
 - [ ] Definición de endpoints exactos (POST bodies, respuestas)
 - [ ] Autenticación (si aplica)
+
+## Code Graph API Routes (pendiente de implementar)
+
+El dashboard necesita endpoints para exponer el code graph indexer:
+
+| Endpoint | Metodo | Descripcion |
+|----------|--------|-------------|
+| `/api/v1/code/stats` | GET | Estadisticas del code graph (nodes, relations, last index) |
+| `/api/v1/code/impact/<symbol>` | GET | Analisis de impacto de un simbolo |
+| `/api/v1/code/trace/<entry>` | GET | Trazado de ejecucion desde un punto de entrada |
+| `/api/v1/code/query/<pattern>` | GET | Busqueda de simbolos por patron |
+| `/api/v1/code/index` | POST | Trigger indexacion completa |
+| `/api/v1/code/index/incremental` | POST | Trigger indexacion incremental |
+
+**Nota:** Estos endpoints requieren `evol_code_indexer.py` y estan disponibles solo cuando `[code]` esta instalado.

@@ -15,7 +15,7 @@ trigger: /evol analisis-impacto
 
 **Orquestador:** Evol-DD Orchestrator (00)
 **Asistentes Operativos (Swarm):** Swarm de Diseño (02 Clones)
-**Skills Requeridas:** `skill-impacto-details.md`, `skill-dependency-analysis.md`, `skill-code-audit.md`, `skill-risk-assessment.md`
+**Skills Requeridas:** `code-graph-tools`
 **Cultura:** Cirugía de Precisión · Anticipación · Zero Sorpresas
 
 
@@ -69,16 +69,19 @@ Referencia: `skill-workflow-asset-protocol.md`.
 | :--- | :--- | :--- | :--- |
 | `IMPACT_REPORT` | Markdown | Sistema | `docs/impacto/impacto-[runId].md` |
 | `IMPACT_EVENTS` | Log NDJSON | Sistema | `tests/results/impact_${runId}.ndjson` |
-| `DEP_GRAPH` | JSON/Dot | Sistema | Mapa de dependencias del cambio |
+| `CODE_GRAPH_IMPACT` | JSON | `evol_code_indexer.py impact` | Blast radius del cambio |
+| `CODE_GRAPH_TRACE` | JSON | `evol_code_indexer.py trace` | Flujos de ejecución |
 | `RISK_MATRIX` | Tabla | Sistema | Parte central del informe final |
 
 ## 5. FLUJO OPERATIVO (RESUMEN)
 
 1. **Invocación:** El humano lanza `/analisis-impacto` con la descripción del cambio.
-2. **Escaneo:** Swarm 02 examina código y referencias mediante análisis estático.
-3. **Mapeo:** Análisis de arquitectura (`SAD.md`) y dependencias de base de datos.
-4. **Evaluación:** Aplicación de la matriz de riesgos y detección de puntos ciegos.
-5. **Cierre:** Generación del informe formal y registro de eventos de diseño.
+2. **Code Graph Query:** Ejecutar `python3 scripts/evol_code_indexer.py impact <symbol>` para blast radius.
+3. **Process Tracing:** Ejecutar `python3 scripts/evol_code_indexer.py trace <entry_point>` para flujos de ejecución.
+4. **Escaneo:** Swarm 02 examina código y referencias mediante análisis estático.
+5. **Mapeo:** Análisis de arquitectura (`SAD.md`) y dependencias de base de datos.
+6. **Evaluación:** Aplicación de la matriz de riesgos y detección de puntos ciegos.
+7. **Cierre:** Generación del informe formal y registro de eventos de diseño.
 
 ## 6. RESULTADOS ESPERADOS (NDJSON)
 

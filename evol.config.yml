@@ -1,3 +1,7 @@
 mcp:
   enabled: true
-  servers: {}
+  servers:
+    context7:
+      args:
+      - '@upstash/context7-mcp'
+      command: npx

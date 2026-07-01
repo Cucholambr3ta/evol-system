@@ -1,0 +1,23 @@
+/* Tema "Salvia" — paleta light para EVOL-DD TUI */
+
+$primary: #7c9474;
+$primary-darken-1: #7c9474;
+$primary-darken-2: #eef2ea;
+$primary-darken-3: #ffffff;
+
+$surface: #eef2ea;
+$surface-darken-1: #eef2ea;
+$background: #ffffff;
+
+$text: #28321f;
+$text-muted: #9bbf8d;
+
+$accent: #9bbf8d;
+$success: #9bbf8d;
+$warning: #7c9474;
+$error: #b03a2e;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

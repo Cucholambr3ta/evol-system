@@ -1,0 +1,23 @@
+/* Tema "Violeta" — paleta dark para EVOL-DD TUI */
+
+$primary: #6b4f9c;
+$primary-darken-1: #6b4f9c;
+$primary-darken-2: #241c33;
+$primary-darken-3: #171120;
+
+$surface: #241c33;
+$surface-darken-1: #241c33;
+$background: #171120;
+
+$text: #e2d9f0;
+$text-muted: #a47fd6;
+
+$accent: #a47fd6;
+$success: #a47fd6;
+$warning: #6b4f9c;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

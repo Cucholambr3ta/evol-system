@@ -1,0 +1,39 @@
+/* EVOL-DD TUI — Estilos globales */
+
+Screen {
+    background: $surface;
+    color: $text;
+}
+
+.metric-card {
+    width: 1fr;
+    height: 5;
+    border: solid $primary-darken-2;
+    padding: 0 1;
+    margin: 0 1;
+    content-align: center middle;
+}
+
+#title {
+    height: 1;
+    background: $primary-darken-3;
+    padding: 0 1;
+    color: $text;
+    text-style: bold;
+}
+
+#metrics {
+    height: 5;
+    margin: 1 0;
+}
+
+#activity-title, #gates-title {
+    margin-top: 1;
+    color: $text-muted;
+    text-style: bold;
+}
+
+DataTable {
+    height: 1fr;
+    border: solid $primary-darken-2;
+}

@@ -88,6 +88,7 @@ SCRIPTS = {
     "research":    "evol-researcher.py",
     "memory":      "evol-memory.py",
     "lessons":     "evol-lessons.py",
+    "code-indexer": "evol_code_indexer.py",
     "update":      "evol-update.py",
 }
 
@@ -186,6 +187,7 @@ def evolve():      sys.argv = ["evol-evolve"] + sys.argv[2:]; _run(SCRIPTS["evol
 def research():    sys.argv = ["evol-research"] + sys.argv[2:]; _run(SCRIPTS["research"])
 def memory():      sys.argv = ["evol-memory"] + sys.argv[2:]; _run(SCRIPTS["memory"])
 def lessons():     sys.argv = ["evol-lessons"] + sys.argv[2:]; _run(SCRIPTS["lessons"])
+def code_indexer(): sys.argv = ["evol_code_indexer"] + sys.argv[2:]; _run(SCRIPTS["code-indexer"])
 
 
 def _install_vscode_global_tasks(home: Path, trigger: str) -> None:
@@ -236,7 +238,7 @@ def install_global() -> int:
 
     Copia workflows a los directorios globales de cada IDE. El trigger
     queda disponible en CUALQUIER directorio del PC sin configuracion
-    por proyecto — igual que /anmax funciona globalmente.
+    por proyecto — igual que cualquier trigger global configurado.
 
     IDEs cubiertos:
       Claude Code   ~/.claude/commands/

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "evol-dd"
-version = "0.6.0"
+version = "0.6.3"
 description = "El framework que evoluciona."
 readme = "README.md"
 license = {text = "MIT"}
@@ -39,10 +39,20 @@ graph = [
     "ladybug>=0.17.0",
     "networkx>=3.0",
 ]
+code = [
+    "tree-sitter>=0.23.0",
+    "tree-sitter-python>=0.23.0",
+    "tree-sitter-javascript>=0.23.0",
+    "tree-sitter-typescript>=0.23.0",
+]
 full = [
     "chromadb>=0.4.0",
     "ladybug>=0.17.0",
     "networkx>=3.0",
+    "tree-sitter>=0.23.0",
+    "tree-sitter-python>=0.23.0",
+    "tree-sitter-javascript>=0.23.0",
+    "tree-sitter-typescript>=0.23.0",
 ]
 
 [project.scripts]
@@ -58,6 +68,7 @@ evol-evolve = "evol_cli:evolve"
 evol-research = "evol_cli:research"
 evol-memory = "evol_cli:memory"
 evol-lessons = "evol_cli:lessons"
+evol-code-indexer = "evol_cli:code_indexer"
 evol-profile = "evol_cli:profile"
 evol-install-global = "evol_cli:install_global"
 

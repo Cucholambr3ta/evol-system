@@ -42,6 +42,7 @@ Inspired by BMAD pattern.
 - Quality -> evol-qa
 - Security -> evol-sec
 - Maintenance -> evol-devops
+- Impact analysis / Blast radius -> evol-analyst
 
 ## Commands
 ```bash

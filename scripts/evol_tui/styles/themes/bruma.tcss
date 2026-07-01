@@ -1,0 +1,23 @@
+/* Tema "Bruma" — paleta dark para EVOL-DD TUI */
+
+$primary: #3b4a5a;
+$primary-darken-1: #3b4a5a;
+$primary-darken-2: #1c2530;
+$primary-darken-3: #10161e;
+
+$surface: #1c2530;
+$surface-darken-1: #1c2530;
+$background: #10161e;
+
+$text: #dbe4ec;
+$text-muted: #7fb3d5;
+
+$accent: #7fb3d5;
+$success: #7fb3d5;
+$warning: #3b4a5a;
+$error: #c0392b;
+
+Screen {
+    background: $surface;
+    color: $text;
+}

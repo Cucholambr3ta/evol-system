@@ -39,5 +39,35 @@ Community skills ported natively (re-implemented, no runtime dependency):
    Source: nidhinjs/prompt-master
    Used for: tool-specific prompt optimization for 30+ AI tools.
 
+7. frontend-design  →  evol-frontend-design skill
+   Source: https://github.com/anthropics/skills (skills/frontend-design)
+   Used for: design-thinking-before-coding, anti-AI-slop checklist, design tokens.
+             Evol-DD adds a dual aesthetic_profile (bold / enterprise-minimal),
+             the enterprise-minimal profile is original (Linear/Vercel/GitHub Projects).
+
+8. context7  →  evol-context7 skill + MCP server (evol-mcp.sh add context7)
+   Source: https://github.com/upstash/context7
+   License: MIT
+   Used for: up-to-date, version-specific library docs injected into context.
+             External service, not reimplemented; integrated via MCP / ctx7 CLI.
+
+9. ralph  →  autonomous_loop pattern in evol-orchestrate.py
+   Source: https://github.com/snarktank/ralph
+   Used for: autonomous multi-context loop over an approved PLAN
+             (implement -> test -> commit -> update -> repeat). Reuses Evol-DD
+             artifacts (PLAN.md / memoria.md / evol-state / evol-gitflow).
+
+10. superpowers (writing-skills)  →  CSO + RED-GREEN-REFACTOR added to crear-skill
+    Source: https://github.com/obra/superpowers
+    Used for: Claude Search Optimization (trigger-condition descriptions) and
+              test-first skill authoring (RED-GREEN-REFACTOR). Methodology only,
+              no code ported.
+
+11. remotion  →  evol-remotion skill
+    Source: https://github.com/remotion-dev/skills
+    Used for: programmatic motion/video in React (useCurrentFrame, interpolate,
+              Sequence). Integrated as the motion layer of the Evol-DD design
+              toolkit alongside evol-frontend-design.
+
 All ported skills were reimplemented with Evol-DD identity and integrated into
 the Evol-DD 6-phase pipeline. Original authors retain credit per their licenses.
